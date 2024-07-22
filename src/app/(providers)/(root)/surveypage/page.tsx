@@ -1,7 +1,9 @@
+// src/app/(providers)/(root)/surveypage/page.tsx
 import React from 'react';
+import SurveyLayout from './surveylayout';
 
 function surveypage() {
-    return <div>설문페이지</div>;
+    return <SurveyLayout />;
 }
 
 export default surveypage;
