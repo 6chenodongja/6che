@@ -2,6 +2,7 @@
 import { createClient } from '@/supabase/client';
 import Link from 'next/link';
 import React, { useState } from 'react';
+import { Tables } from '../../../../../../types/supabase';
 
 function PostDetail() {
     const supabase = createClient();
