@@ -1,9 +1,4 @@
-'use client';
-import React from 'react';
-import SurveyLayout from './surveyinitial';
-
-function surveypage() {
-    return <SurveyLayout />;
+import SurveyPage from "./surveyinitial";
+export default function Survey() {
+  return <SurveyPage />;
 }
-
-export default surveypage;

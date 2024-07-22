@@ -1,22 +1,23 @@
-'use client';
-import React from 'react';
+import React from "react";
 
 const SurveyLayout: React.FC = () => {
-    return (
-        <div className="relative flex flex-col items-center justify-between h-screen bg-white">
-            <div className="absolute top-10 right-10 w-20 h-20 rounded-full flex items-center justify-center">
-                <span className="text-blue-500 text-4xl">Q</span>
-            </div>
-            <div className="flex flex-col items-center mt-24">
-                <h1 className="text-2xl font-bold mb-2">내 코디 찾기</h1>
-                <p className="text-center text-gray-600">
-                    질문의 답변을 통해
-                    <br />내 성향에 맞는 코디를 추천해드려요
-                </p>
-            </div>
-            <button className="mb-28 px-8 py-2 bg-gray-300 text-gray-700 rounded-md">시작하기</button>
-        </div>
-    );
+  return (
+    <div className="w-80 mx-auto relative flex flex-col items-center justify-between h-screen bg-white">
+      <div className="absolute top-20 right-10 w-20 h-20 rounded-full flex items-center justify-center">
+        <span className="text-blue-300 h-12 text-7xl">Q</span>
+      </div>
+      <div className="flex flex-col items-center mt-40">
+        <h1 className="text-3xl h-20 font-bold mb-2">내 코디 찾기</h1>
+        <p className="text-center text-gray-600 font-black">
+          질문의 답변을 통해
+          <br />내 성향에 맞는 코디를 추천해드려요
+        </p>
+      </div>
+      <button className="mb-28 px-20 py-2 bg-gray-300  text-gray-700 rounded-md font-black">
+        시작하기
+      </button>
+    </div>
+  );
 };
 
 export default SurveyLayout;
