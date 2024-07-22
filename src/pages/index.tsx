@@ -1,7 +1,5 @@
 import MainPage from "../app/(providers)/(root)/mainpage/page";
 
-const Home = () => {
+export default function Home() {
   return <MainPage />;
-};
-
-export default Home;
+}
