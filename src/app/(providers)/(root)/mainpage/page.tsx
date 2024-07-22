@@ -70,13 +70,13 @@ const MainPage = () => {
             xmlns="http://www.w3.org/2000/svg"
             className="flex-grow-0 flex-shrink-0"
             preserveAspectRatio="xMidYMid meet"
-          >
-            <circle cx={7} cy={7} r="5.5" stroke="black" strokeWidth={3} />
-          </svg>
+          ></svg>
         </div>
         <p className="text-lg text-black">
           {difference !== null
-            ? `어제보다 ${difference.toFixed(1)}° ${difference > 0 ? '높아요' : '낮아요'}`
+            ? `어제보다 ${difference.toFixed(1)}° ${
+                difference > 0 ? '높아요' : '낮아요'
+              }`
             : '...'}
         </p>
       </div>
