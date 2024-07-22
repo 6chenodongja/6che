@@ -62,21 +62,11 @@ const MainPage = () => {
           {/* 현재 온도와 기호를 같은 줄에 배치 */}
         </div>
         <div className="flex items-center pt-3.5 pb-[62px]">
-          <svg
-            width={14}
-            height={14}
-            viewBox="0 0 14 14"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            className="flex-grow-0 flex-shrink-0"
-            preserveAspectRatio="xMidYMid meet"
-          ></svg>
+          {/* 여기에 있는 원형 기호 제거 */}
         </div>
         <p className="text-lg text-black">
           {difference !== null
-            ? `어제보다 ${difference.toFixed(1)}° ${
-                difference > 0 ? '높아요' : '낮아요'
-              }`
+            ? `어제보다 ${difference.toFixed(1)}° ${difference > 0 ? '높아요' : '낮아요'}`
             : '...'}
         </p>
       </div>
