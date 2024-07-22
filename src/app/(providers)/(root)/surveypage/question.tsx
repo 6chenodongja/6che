@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import React from "react";
 
 const QuestionPage: React.FC = () => {
@@ -14,16 +14,16 @@ const QuestionPage: React.FC = () => {
           <div className="h-2 flex-1 bg-gray-300 rounded-md"></div>
         </div>
       </div>
-      <h2 className="text-xl font-bold ">
+      <p className="flex-grow-0 flex-shrink-0 w-[265px] text-xl font-medium text-black ">
         Q 오늘 기분은 어떠신가요?
-      </h2>
+      </p>
       <div className="grid grid-cols-2 gap-4 mb-4">
-        <div className="bg-gray-300 w-36 h-36 flex items-center justify-center">봄</div>
+        <div className="bg-gray-300 w-36 h-36"></div>
         <div className="bg-gray-300 w-36 h-36"></div>
         <div className="bg-gray-300 w-36 h-36"></div>
         <div className="bg-gray-300 w-36 h-36"></div>
       </div>
-      <button className="mb-28 px-20 py-2 bg-gray-300 text-gray-700 rounded-md font-medium">
+      <button className="mb-28 px-20 py-2 bg-[#d9d9d9] text-gray-700 rounded-lg font-medium">
         다음
       </button>
     </div>
