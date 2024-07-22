@@ -1,6 +1,6 @@
-// src/app/(providers)/(root)/surveypage/page.tsx
+'use client';
 import React from 'react';
-import SurveyLayout from './surveylayout';
+import SurveyLayout from './surveyinitial';
 
 function surveypage() {
     return <SurveyLayout />;
