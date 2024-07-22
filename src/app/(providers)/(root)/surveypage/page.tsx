@@ -1,12 +1,7 @@
-// "use client"
-// import React from 'react'
+import React from 'react';
 
-// function page() {
-//   return (
-//     <div>
+function surveypage() {
+    return <div>설문페이지</div>;
+}
 
-//     </div>
-//   )
-// }
-
-// export default page
+export default surveypage;
