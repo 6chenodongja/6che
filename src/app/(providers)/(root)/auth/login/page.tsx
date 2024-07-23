@@ -4,86 +4,6 @@ function LoginPage() {
   // const [name, setName] = useState("");
   return (
     <main className="w-80 h-[1486px] relative overflow-hidden bg-white">
-      {/* <div className="w-80 h-14 absolute left-0 top-0 overflow-hidden bg-[#a2a2a2]">
-        <div className="w-[30px] h-[30px] absolute left-[15px] top-3 bg-[#d9d9d9]" />
-        <div className="w-[30px] h-[30px] absolute left-[273px] top-3 bg-[#d9d9d9]" />
-        <div className="flex justify-start items-center h-[30px] absolute left-[46px] top-[13px] gap-4 pl-3.5">
-          <div className="flex justify-center items-center flex-grow-0 flex-shrink-0 relative gap-2 pr-1 py-1">
-            <p className="flex-grow-0 flex-shrink-0 text-sm text-left text-white">
-              날씨
-            </p>
-          </div>
-          <div className="flex justify-center items-center flex-grow-0 flex-shrink-0 relative gap-2 p-1">
-            <p className="flex-grow-0 flex-shrink-0 text-sm text-left text-white">
-              코디
-            </p>
-          </div>
-          <div className="flex justify-center items-center flex-grow-0 flex-shrink-0 relative gap-2 p-1">
-            <p className="flex-grow-0 flex-shrink-0 text-sm text-left text-white">
-              기온 별 옷차림
-            </p>
-          </div>
-          <div className="flex justify-center items-center flex-grow-0 flex-shrink-0 relative gap-2 p-1">
-            <p className="flex-grow-0 flex-shrink-0 text-sm text-left text-white">
-              취향 코디
-            </p>
-          </div>
-        </div>
-        <svg
-          width={30}
-          height={30}
-          viewBox="0 0 30 30"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          className="w-[30px] h-[30px]"
-          preserveAspectRatio="none"
-        >
-          <rect width={30} height={30} fill="#F7F7F7" />
-          <circle cx={13} cy={14} r={7} stroke="black" stroke-width={2} />
-          <path d="M18 19L25 26" stroke="black" stroke-width={2} />
-        </svg>
-      </div> */}
-      {/* <div className="flex flex-col justify-start items-start w-80 absolute left-0 top-[880px] px-8 pt-[60px] pb-[100px] bg-[#a8a8a8]">
-        <div className="flex justify-start items-center flex-grow-0 flex-shrink-0 relative gap-2 pr-9 pt-5">
-          <div className="flex-grow-0 flex-shrink-0 w-[38px] h-[38px] bg-[#d9d9d9]" />
-        </div>
-        <div className="flex flex-col justify-start items-start flex-grow-0 flex-shrink-0 w-40 relative gap-0.5 py-5">
-          <p className="self-stretch flex-grow-0 flex-shrink-0 w-40 text-base font-medium text-left text-white">
-            날씨
-          </p>
-        </div>
-        <div className="flex flex-col justify-start items-start flex-grow-0 flex-shrink-0 w-40 relative py-5">
-          <div className="flex justify-start items-center self-stretch flex-grow-0 flex-shrink-0 relative gap-2 pb-2.5">
-            <p className="flex-grow w-40 text-base font-medium text-left text-white">
-              코디
-            </p>
-          </div>
-          <p className="self-stretch flex-grow-0 flex-shrink-0 w-40 opacity-70 text-base text-left text-white">
-            코디 올리기
-          </p>
-        </div>
-        <div className="flex flex-col justify-start items-start flex-grow-0 flex-shrink-0 w-40 relative gap-0.5 py-5">
-          <p className="self-stretch flex-grow-0 flex-shrink-0 w-40 text-base font-medium text-left text-white">
-            기온 별 옷차림
-          </p>
-        </div>
-        <div className="flex flex-col justify-start items-start flex-grow-0 flex-shrink-0 w-40 relative py-5">
-          <div className="flex justify-start items-center self-stretch flex-grow-0 flex-shrink-0 relative gap-2 pb-2.5">
-            <p className="flex-grow w-40 text-base font-medium text-left text-white">
-              마이페이지
-            </p>
-          </div>
-          <p className="self-stretch flex-grow-0 flex-shrink-0 w-40 opacity-70 text-base text-left text-white">
-            좋아요한 게시글{" "}
-          </p>
-          <p className="self-stretch flex-grow-0 flex-shrink-0 w-40 opacity-70 text-base text-left text-white">
-            내가 쓴 게시글
-          </p>
-          <p className="flex-grow-0 flex-shrink-0 w-40 opacity-70 text-base text-left text-white">
-            설정
-          </p>
-        </div>
-      </div> */}
       <p className="absolute left-4 top-[138px] text-2xl font-medium text-center text-black">
         로그인
       </p>
@@ -132,26 +52,6 @@ function LoginPage() {
       <button className="absolute left-[130px] top-[569px] text-sm text-left text-black">
         소셜 로그인
       </button>
-      {/* <div className="flex justify-center items-center absolute left-[138px] top-[837.5px] gap-2 p-1">
-        <p className="flex-grow-0 flex-shrink-0 text-sm text-left text-white">
-          기온 별 옷차림
-        </p>
-      </div>
-      <div className="flex justify-center items-center absolute left-[138px] top-[837.5px] gap-2 p-1">
-        <p className="flex-grow-0 flex-shrink-0 text-sm text-left text-white">
-          기온 별 옷차림
-        </p>
-      </div>
-      <div className="flex justify-center items-center absolute left-[138px] top-[837.5px] gap-2 p-1">
-        <p className="flex-grow-0 flex-shrink-0 text-sm text-left text-white">
-          기온 별 옷차림
-        </p>
-      </div>
-      <div className="flex justify-center items-center absolute left-[138px] top-[837.5px] gap-2 p-1">
-        <p className="flex-grow-0 flex-shrink-0 text-sm text-left text-white">
-          기온 별 옷차림
-        </p>
-      </div> */}
     </main>
   );
 }
