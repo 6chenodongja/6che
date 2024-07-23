@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { getWeather } from '../../../api/weather/weather';
+import axios from 'axios';
 import '../../../../app/globals.css';
 
 const MainPage = () => {
@@ -12,16 +12,27 @@ const MainPage = () => {
     const fetchWeather = async () => {
       try {
         // 날씨 데이터 요청
-        const weatherData = await getWeather('226081'); // 서울의 위치 키 예시
+        const response = await axios.get('/api/weather');
+        const weatherData = response.data;
+
         if (weatherData.current && weatherData.historical) {
-          const currentTemp = weatherData.current.Temperature.Metric.Value; // 현재 온도
+          const currentTemp = weatherData.current.Temperature?.Metric?.Value; // 현재 온도
           const historicalTemp =
-            weatherData.historical.Temperature.Metric.Value; // 어제 온도
-          setWeather(weatherData.current);
-          setDifference(currentTemp - historicalTemp); // 온도 차이 계산
+            weatherData.historical.Temperature?.Metric?.Value; // 어제 온도
+
+          if (currentTemp !== undefined && historicalTemp !== undefined) {
+            setWeather(weatherData.current);
+            setDifference(currentTemp - historicalTemp); // 온도 차이 계산
+          } else {
+            console.error('날씨 데이터 형식이 올바르지 않습니다.');
+          }
         }
-      } catch (error) {
-        console.error('날씨 데이터 요청 오류:', error);
+      } catch (error: any) {
+        // 오류 발생 시, 상세히 로그를 기록
+        console.error(
+          '날씨 데이터 요청 오류:',
+          error?.response?.data || error.message,
+        );
       }
     };
 
@@ -56,10 +67,9 @@ const MainPage = () => {
       <div className="w-80 h-[294px] absolute left-0 top-14 bg-[#d7d7d7] flex flex-col items-center justify-center">
         <div className="flex items-center">
           <p className="text-6xl text-black">
-            {weather ? weather.Temperature.Metric.Value : '...'}
+            {weather ? weather.Temperature?.Metric?.Value : '...'}
           </p>
-          <p className="text-4xl text-black ml-2">°</p>{' '}
-          {/* 현재 온도와 기호를 같은 줄에 배치 */}
+          <p className="text-4xl text-black ml-2">°</p>
         </div>
         <div className="flex items-center pt-3.5 pb-[62px]">
           {/* 여기에 있는 원형 기호 제거 */}
@@ -120,22 +130,27 @@ const MainPage = () => {
       <div className="flex flex-col justify-start items-start w-72 absolute left-4 top-[760px] gap-3">
         <p className="text-lg font-medium text-left text-black">오늘 옷차림</p>
         <p className="text-xs font-medium text-left text-black">
-          옷을 선택하면 코디를 볼 수 있어요
+          기온: {weather ? weather.Temperature?.Metric?.Value : '...'}°
         </p>
-        <div className="flex justify-start items-center relative gap-2">
+        <p className="text-xs font-medium text-left text-black">
+          체감온도:{' '}
+          {weather ? weather.ApparentTemperature?.Metric?.Value : '...'}°
+        </p>
+        <p className="text-xs font-medium text-left text-black">
+          습도: {weather ? weather.RelativeHumidity : '...'}%
+        </p>
+        <p className="text-xs font-medium text-left text-black">
+          바람: {weather ? weather.Wind?.Speed?.Metric?.Value : '...'}{' '}
+          {weather ? weather.Wind?.Speed?.Metric?.Unit : ''}
+        </p>
+        <div className="flex gap-2">
+          <p className="text-xs font-medium text-left text-black">사진</p>
           {Array(4)
             .fill(null)
             .map((_, index) => (
-              <div key={index} className="w-20 h-28 bg-[#d9d9d9]" />
+              <div key={index} className="w-20 h-20 bg-[#d9d9d9] rounded-2xl" />
             ))}
-          <div className="w-[45px] h-16 bg-white" />
         </div>
-      </div>
-
-      <div className="flex justify-center items-center w-72 h-12 absolute left-4 top-[900px] rounded-lg bg-[#d9d9d9]">
-        <p className="text-lg font-medium text-center text-black">
-          내 취향 코디 추천받기
-        </p>
       </div>
     </div>
   );
