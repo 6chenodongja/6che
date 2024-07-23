@@ -8,7 +8,9 @@ const useWeather = (locationKey: string) => {
   useEffect(() => {
     const fetchWeather = async () => {
       try {
-        const response = await axios.get(`/api/weather/${locationKey}`);
+        const response = await axios.get(
+          `/api/weather?locationKey=${locationKey}`,
+        );
         setWeather(response.data);
       } catch (error) {
         console.error('날씨 데이터 요청 오류:', error);
