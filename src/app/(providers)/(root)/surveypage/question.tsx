@@ -32,21 +32,20 @@ const QuestionPage: React.FC = () => {
     };
 
     const handleShowResultClick = () => {
-        // 추후 결과 페이지 만들예정
-        alert('결과를 확인하세요!');
+        // 추후 결과 페이지 만들예정        
     };
 
     return (
         <div className="w-80 mx-auto flex flex-col items-center justify-start h-screen bg-white p-4 relative gap-4 mt-20">
             <div className="flex items-center w-full">
+                <h1 className="text-xl font-medium h-10 text-black">내 코디 찾기</h1>
+            </div>
+            <div className="flex flex-col items-start w-full gap-2">
                 {currentQuestionIndex > 0 && (
                     <button onClick={handleBackClick} className="text-xl font-medium text-black mr-2">
                         ᐸ
                     </button>
                 )}
-                <h1 className="text-xl font-medium text-black">내 코디 찾기</h1>
-            </div>
-            <div className="flex flex-col items-start w-full gap-2">
                 <div className="flex justify-start items-start w-full relative overflow-hidden gap-2 rounded">
                     {Array(questions.length)
                         .fill(0)
@@ -61,7 +60,7 @@ const QuestionPage: React.FC = () => {
                 </div>
             </div>
             <div className="flex flex-col items-start w-full gap-4">
-                <div className="flex justify-start items-center w-full relative gap-0.5">
+                <div className="flex justify-start items-center w-full h-20 relative gap-0.5">
                     <p className="text-2xl font-medium text-center text-black">Q&nbsp;</p>
                     <p className="text-xl font-medium text-left text-black">
                         {questions[currentQuestionIndex].question}
