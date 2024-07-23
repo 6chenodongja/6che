@@ -1,36 +1,42 @@
+import Link from "next/link";
 import React, { useState } from "react";
 
 function LoginPage() {
   // const [name, setName] = useState("");
   return (
     <main className="w-80 h-[1486px] relative overflow-hidden bg-white">
-      <p className="absolute left-4 top-[138px] text-2xl font-medium text-center text-black">
+      <h1 className="absolute left-4 top-[138px] text-2xl font-medium text-center text-black">
         로그인
-      </p>
-      <div className="flex flex-col justify-start items-start w-72 absolute left-4 top-[207px] pb-3">
-        <p className="self-stretch flex-grow-0 flex-shrink-0 w-72 text-lg text-left text-black">
+      </h1>
+      <form className="flex flex-col justify-start items-start w-72 absolute left-4 top-[207px] pb-3">
+        <label className="self-stretch flex-grow-0 flex-shrink-0 w-72 text-lg text-left text-black">
           아이디
-        </p>
+        </label>
         <input className="self-stretch flex-grow-0 flex-shrink-0 h-[42px] opacity-50 rounded-lg bg-[#d9d9d9]" />
-      </div>
-      <div className="flex flex-col justify-start items-start w-72 absolute left-4 top-72 pb-2.5">
-        <p className="self-stretch flex-grow-0 flex-shrink-0 w-72 text-lg text-left text-black">
+      </form>
+      <form className="flex flex-col justify-start items-start w-72 absolute left-4 top-72 pb-2.5">
+        <label className="self-stretch flex-grow-0 flex-shrink-0 w-72 text-lg text-left text-black">
           비밀번호
-        </p>
+        </label>
         <input className="self-stretch flex-grow-0 flex-shrink-0 h-[42px] opacity-50 rounded-lg bg-[#d9d9d9]" />
+      </form>
+      <div className="w-72 h-[46px] absolute left-[15px] top-[425px] rounded-lg bg-[#d9d9d9] text-center">
+        <button className="text-lg font-medium text-black">로그인</button>
       </div>
-      <div className="w-72 h-[46px] absolute left-[15px] top-[425px] rounded-lg bg-[#d9d9d9]" />
-      <button className="absolute left-[135px] top-[435px] text-lg font-medium text-left text-black">
-        로그인
-      </button>
       <div className="flex justify-start items-center absolute left-[50px] top-[493px] gap-2">
-        <button className="flex-grow-0 flex-shrink-0 text-base text-left text-black">
+        <Link
+          href={""}
+          className="flex-grow-0 flex-shrink-0 text-base text-left text-black"
+        >
           아이디/비밀번호 찾기
-        </button>
+        </Link>
         <div className="flex-grow-0 flex-shrink-0 w-px h-[22px] bg-[#d9d9d9]" />
-        <button className="flex-grow-0 flex-shrink-0 text-base text-left text-black">
+        <Link
+          href={"/auth/signup"}
+          className="flex-grow-0 flex-shrink-0 text-base text-left text-black"
+        >
           회원가입
-        </button>
+        </Link>
       </div>
       <div className="w-72 h-12 absolute left-[15px] top-[600px] rounded-3xl bg-[#d9d9d9]" />
       <div className="w-72 h-12 absolute left-[15px] top-[658px] rounded-3xl bg-[#d9d9d9]" />

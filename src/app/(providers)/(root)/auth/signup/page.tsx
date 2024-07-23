@@ -1,7 +1,7 @@
 import React from "react";
 
 function SingUpPage() {
-  return <div></div>;
+  return <div>회원가입 페이지 입니다.</div>;
 }
 
 export default SingUpPage;
