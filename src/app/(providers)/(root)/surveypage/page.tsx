@@ -1,4 +1,4 @@
-import SurveyPage from "./surveyinitial";
+import SurveyPage from './surveyinitial';
 export default function Survey() {
-  return <SurveyPage />;
+    return <SurveyPage />;
 }
