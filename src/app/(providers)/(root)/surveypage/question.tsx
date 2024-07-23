@@ -1,4 +1,5 @@
-'use client';
+"use client";
+
 import React, { useState } from 'react';
 import { questions } from '@/utils/questions';
 
@@ -36,7 +37,7 @@ const QuestionPage: React.FC = () => {
     };
 
     return (
-        <div className="w-80 mx-auto flex flex-col items-center justify-start h-screen bg-white p-4 relative gap-4">
+        <div className="w-80 mx-auto flex flex-col items-center justify-start h-screen bg-white p-4 relative gap-4 mt-20">
             <div className="flex items-center w-full">
                 {currentQuestionIndex > 0 && (
                     <button onClick={handleBackClick} className="text-xl font-medium text-black mr-2">
@@ -81,7 +82,7 @@ const QuestionPage: React.FC = () => {
                 </div>
             </div>
             {showResultButton && (
-                <button className="w-full h-12 bg-[#b9b5b5] text-white rounded-lg mt-4" onClick={handleShowResultClick}>
+                <button className="w-full h-12 bg-[#d9d9d9] text-white rounded-lg mt-4" onClick={handleShowResultClick}>
                     결과 확인
                 </button>
             )}
