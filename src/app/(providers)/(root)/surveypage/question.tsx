@@ -62,7 +62,7 @@ const QuestionPage: React.FC = () => {
             </div>
             <div className="flex flex-col items-start w-full gap-4">
                 <div className="flex justify-start items-center w-full relative gap-0.5">
-                    <p className="text-2xl font-medium text-center text-black">Q</p>
+                    <p className="text-2xl font-medium text-center text-black">Q&nbsp;</p>
                     <p className="text-xl font-medium text-left text-black">
                         {questions[currentQuestionIndex].question}
                     </p>
