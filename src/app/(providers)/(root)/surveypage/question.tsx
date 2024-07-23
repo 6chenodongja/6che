@@ -1,14 +1,18 @@
-'use client';
+"use client";
 import React, { useState } from "react";
 import { questions } from "@/utils/questions";
 
 const QuestionPage: React.FC = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [selectedOptions, setSelectedOptions] = useState<string[]>(
+    Array(questions.length).fill(null)
+  );
   const [showResultButton, setShowResultButton] = useState(false);
 
   const handleNextClick = () => {
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
+      setShowResultButton(false);
     } else {
       setShowResultButton(true);
     }
@@ -21,7 +25,10 @@ const QuestionPage: React.FC = () => {
     }
   };
 
-  const handleOptionClick = () => {
+  const handleOptionClick = (option: string) => {
+    const updatedOptions = [...selectedOptions];
+    updatedOptions[currentQuestionIndex] = option;
+    setSelectedOptions(updatedOptions);
     handleNextClick();
   };
 
@@ -34,7 +41,10 @@ const QuestionPage: React.FC = () => {
     <div className="w-80 mx-auto flex flex-col items-center justify-start h-screen bg-white p-4 relative gap-4">
       <div className="flex items-center w-full">
         {currentQuestionIndex > 0 && (
-          <button onClick={handleBackClick} className="text-xl font-medium text-black mr-2">
+          <button
+            onClick={handleBackClick}
+            className="text-xl font-medium text-black mr-2"
+          >
             ᐸ
           </button>
         )}
@@ -42,9 +52,18 @@ const QuestionPage: React.FC = () => {
       </div>
       <div className="flex flex-col items-start w-full gap-2">
         <div className="flex justify-start items-start w-full relative overflow-hidden gap-2 rounded">
-          {Array(questions.length).fill(0).map((_, index) => (
-            <div key={index} className={`flex-grow h-2 ${index <= currentQuestionIndex ? 'bg-[#434343]' : 'bg-[#d9d9d9]'} rounded-md`}></div>
-          ))}
+          {Array(questions.length)
+            .fill(0)
+            .map((_, index) => (
+              <div
+                key={index}
+                className={`flex-grow h-2 ${
+                  index <= currentQuestionIndex
+                    ? "bg-[#434343]"
+                    : "bg-[#d9d9d9]"
+                } rounded-md`}
+              ></div>
+            ))}
         </div>
       </div>
       <div className="flex flex-col items-start w-full gap-4">
@@ -58,8 +77,12 @@ const QuestionPage: React.FC = () => {
           {questions[currentQuestionIndex].options.map((option, index) => (
             <button
               key={index}
-              className="w-full h-12 border border-black-400 rounded-lg text-black-400 hover:bg-gray-200"
-              onClick={handleOptionClick}
+              className={`w-full h-12 border border-black-400 rounded-lg text-black-400 hover:bg-gray-200 ${
+                selectedOptions[currentQuestionIndex] === option
+                  ? "bg-gray-300"
+                  : ""
+              }`}
+              onClick={() => handleOptionClick(option)}
             >
               {option}
             </button>
