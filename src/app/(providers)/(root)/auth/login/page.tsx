@@ -12,13 +12,19 @@ function LoginPage() {
         <label className="self-stretch flex-grow-0 flex-shrink-0 w-72 text-lg text-left text-black">
           아이디
         </label>
-        <input className="self-stretch flex-grow-0 flex-shrink-0 h-[42px] opacity-50 rounded-lg bg-[#d9d9d9]" />
+        <input
+          type="email"
+          className="self-stretch flex-grow-0 flex-shrink-0 h-[42px] opacity-50 rounded-lg bg-[#d9d9d9]"
+        />
       </form>
       <form className="flex flex-col justify-start items-start w-72 absolute left-4 top-72 pb-2.5">
         <label className="self-stretch flex-grow-0 flex-shrink-0 w-72 text-lg text-left text-black">
           비밀번호
         </label>
-        <input className="self-stretch flex-grow-0 flex-shrink-0 h-[42px] opacity-50 rounded-lg bg-[#d9d9d9]" />
+        <input
+          type="password"
+          className="self-stretch flex-grow-0 flex-shrink-0 h-[42px] opacity-50 rounded-lg bg-[#d9d9d9]"
+        />
       </form>
       <div className="w-72 h-[46px] absolute left-[15px] top-[425px] rounded-lg bg-[#d9d9d9] text-center">
         <button className="text-lg font-medium text-black">로그인</button>
