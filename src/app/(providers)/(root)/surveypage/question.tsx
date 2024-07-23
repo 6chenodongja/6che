@@ -4,16 +4,20 @@ import { questions } from "@/utils/questions";
 
 const QuestionPage: React.FC = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [showResultButton, setShowResultButton] = useState(false);
 
   const handleNextClick = () => {
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
+    } else {
+      setShowResultButton(true);
     }
   };
 
   const handleBackClick = () => {
     if (currentQuestionIndex > 0) {
       setCurrentQuestionIndex(currentQuestionIndex - 1);
+      setShowResultButton(false);
     }
   };
 
@@ -21,10 +25,22 @@ const QuestionPage: React.FC = () => {
     handleNextClick();
   };
 
+  const handleShowResultClick = () => {
+    // 추후 결과 페이지 만들예정
+    alert("결과를 확인하세요!");
+  };
+
   return (
     <div className="w-80 mx-auto flex flex-col items-center justify-start h-screen bg-white p-4 relative gap-4">
-      <div className="flex flex-col items-start mt-10 w-full gap-2">
+      <div className="flex items-center w-full">
+        {currentQuestionIndex > 0 && (
+          <button onClick={handleBackClick} className="text-xl font-medium text-black mr-2">
+            ᐸ
+          </button>
+        )}
         <h1 className="text-xl font-medium text-black">내 코디 찾기</h1>
+      </div>
+      <div className="flex flex-col items-start w-full gap-2">
         <div className="flex justify-start items-start w-full relative overflow-hidden gap-2 rounded">
           {Array(questions.length).fill(0).map((_, index) => (
             <div key={index} className={`flex-grow h-2 ${index <= currentQuestionIndex ? 'bg-[#434343]' : 'bg-[#d9d9d9]'} rounded-md`}></div>
@@ -50,16 +66,14 @@ const QuestionPage: React.FC = () => {
           ))}
         </div>
       </div>
-      <div className="flex justify-between w-full mt-4">
-        {currentQuestionIndex > 0 && (
-          <button onClick={handleBackClick} className="w-1/2 h-[46px] rounded-lg bg-[#d9d9d9] text-lg font-medium flex items-center justify-center mr-2">
-            뒤로
-          </button>
-        )}
-        <button onClick={handleNextClick} className="w-1/2 h-[46px] rounded-lg bg-[#d9d9d9] text-lg font-medium flex items-center justify-center">
-          다음
+      {showResultButton && (
+        <button
+          className="w-full h-12 bg-[#b9b5b5] text-white rounded-lg mt-4"
+          onClick={handleShowResultClick}
+        >
+          결과 확인
         </button>
-      </div>
+      )}
     </div>
   );
 };
