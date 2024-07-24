@@ -181,7 +181,7 @@ const PostFormPage = () => {
           </div>
         </label>
 
-        {/* 간단한 글 작성 섹션 */}
+        {/* 글 작성 섹션 */}
         <label className="mb-4">
           <div className="border-t border-gray-300 pt-2"></div>
           <textarea
