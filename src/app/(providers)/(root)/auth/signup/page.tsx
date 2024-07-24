@@ -27,13 +27,13 @@ function SingUpPage() {
   };
 
   // 새로고침 안 하게 하는 로직
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
   };
 
   return (
     <main className="w-80 h-[1407px] relative overflow-hidden bg-white m-auto">
-      <form onSubmit={onSubmit} className="font-">
+      <form onSubmit={onSubmit}>
         <h1 className="absolute left-4 top-36 text-2xl font-bold text-center text-black">
           회원가입
         </h1>
