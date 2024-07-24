@@ -1,8 +1,13 @@
-"use client";
+'use client';
 
 import React, { useState } from 'react';
 import { questions } from '@/utils/questions';
 import Link from 'next/link';
+import Image from 'next/image';
+import springImage from '@/assets/spring.jpg';
+import summerImage from '@/assets/summer.jpg';
+import autumnImage from '@/assets/autumn.jpg';
+import winterImage from '@/assets/winter.jpg';
 
 const QuestionPage: React.FC = () => {
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -30,7 +35,22 @@ const QuestionPage: React.FC = () => {
         updatedOptions[currentQuestionIndex] = option;
         setSelectedOptions(updatedOptions);
         handleNextClick();
-    };  
+    };
+
+    const getOptionImage = (option: string) => {
+        switch (option) {
+            case '봄':
+                return springImage;
+            case '여름':
+                return summerImage;
+            case '가을':
+                return autumnImage;
+            case '겨울':
+                return winterImage;
+            default:
+                return '';
+        }
+    };
 
     return (
         <div className="w-80 mx-auto flex flex-col items-center justify-start h-screen bg-white p-4 relative gap-4 mt-20">
@@ -66,15 +86,15 @@ const QuestionPage: React.FC = () => {
                 {currentQuestionIndex === 0 ? (
                     <div className="grid grid-cols-2 gap-4 mb-4">
                         {questions[currentQuestionIndex].options.map((option, index) => (
-                            <button
+                            <div
                                 key={index}
-                                className={`w-36 h-36 border border-black-400 rounded-lg text-black-400 hover:bg-gray-200 flex items-center justify-center ${
+                                className={`relative w-36 h-36 border border-black-400 rounded-lg flex items-center justify-center cursor-pointer ${
                                     selectedOptions[currentQuestionIndex] === option ? 'bg-gray-300' : ''
                                 }`}
                                 onClick={() => handleOptionClick(option)}
                             >
-                                {option}
-                            </button>
+                                <Image src={getOptionImage(option)} alt={option} layout="fill" objectFit="cover" className="rounded-lg" />
+                            </div>
                         ))}
                     </div>
                 ) : (
