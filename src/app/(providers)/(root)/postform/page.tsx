@@ -3,8 +3,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { createClient } from "../../../../supabase/client";
-import { Database, ExtendedPostInsert } from "../../../../../types/supabase";
+import { supabase } from "../../../../supabase/client";
+import { ExtendedPostInsert } from "../../../../../types/extended";
 import WeatherDropdown from "./components/WeatherDropdown";
 
 const PostFormPage = () => {
@@ -18,25 +18,30 @@ const PostFormPage = () => {
   const [temperature, setTemperature] = useState<string | null>(null);
   const [seasonError, setSeasonError] = useState(false);
   const [locationError, setLocationError] = useState(false);
+  const [imageError, setImageError] = useState(false);
 
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const supabase = createClient();
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
-    if (seasonError || locationError) {
+    if (seasonError || locationError || imageError) {
       timer = setTimeout(() => {
         setSeasonError(false);
         setLocationError(false);
+        setImageError(false);
       }, 1000);
     }
     return () => clearTimeout(timer);
-  }, [seasonError, locationError]);
+  }, [seasonError, locationError, imageError]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const filesArray = Array.from(e.target.files);
+      if (images.length + filesArray.length > 3) {
+        setImageError(true);
+        return;
+      }
       setImages((prevImages) => [...prevImages, ...filesArray]);
     }
   };
@@ -52,6 +57,11 @@ const PostFormPage = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (images.length === 0) {
+      setImageError(true);
+      return;
+    }
 
     // 이미지 업로드
     const uploadedImageUrls: string[] = [];
@@ -73,18 +83,18 @@ const PostFormPage = () => {
     // 데이터 삽입
     const postData: ExtendedPostInsert = {
       user_id: "your-user-id",
-      imageUrl: uploadedImageUrls,
+      imageUrl: uploadedImageUrls.join(","),
       comment: description,
       created_at: new Date().toISOString(),
       like: 0,
       gender: gender,
       style: style,
-      seasons: seasons,
-      locations: locations,
+      seasons: seasons.join(","),
+      locations: locations.join(","),
       weather: `${weatherIcon} ${temperature}`,
     };
 
-    const { error } = await supabase.from("posts").insert(postData);
+    const { error } = await supabase.from("posts").insert([postData]);
 
     if (error) {
       console.error("Error inserting data:", error);
@@ -168,6 +178,7 @@ const PostFormPage = () => {
               onClick={handleFileUploadClick}
               className="w-24 h-32 bg-gray-200 flex justify-center items-center border border-gray-300 cursor-pointer flex-shrink-0"
             >
+              {/* 숨겨진 파일 입력 요소 */}
               <input
                 type="file"
                 accept="image/*"
@@ -182,7 +193,13 @@ const PostFormPage = () => {
           </div>
         </label>
 
-        {/* 글 작성 섹션 */}
+        {imageError && (
+          <div className="text-sm absolute bottom-5 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white py-2 px-4 w-80 rounded">
+            최대 3개의 이미지만 업로드할 수 있습니다.
+          </div>
+        )}
+
+        {/* 간단한 글 작성 섹션 */}
         <label className="mb-4">
           <div className="border-t border-gray-300 pt-2"></div>
           <textarea
@@ -264,6 +281,9 @@ const PostFormPage = () => {
         {/* 계절 선택 섹션 추가 */}
         <label className="mb-4">
           <div className="font-bold">계절</div>
+          <div className="text-sm text-gray-400 mb-1">
+            최대 2개까지 선택 가능
+          </div>
           <div className="flex gap-2 mt-1">
             {["봄", "여름", "가을", "겨울"].map((seasonItem) => (
               <button
@@ -321,6 +341,11 @@ const PostFormPage = () => {
         {locationError && (
           <div className="text-sm absolute bottom-5 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white py-2 px-4 w-80 rounded">
             장소/상황 정보는 최대 2개까지 입력 가능합니다.
+          </div>
+        )}
+        {imageError && (
+          <div className="text-sm absolute bottom-5 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white py-2 px-4 w-80 rounded">
+            최대 3개의 이미지만 업로드할 수 있습니다.
           </div>
         )}
 
