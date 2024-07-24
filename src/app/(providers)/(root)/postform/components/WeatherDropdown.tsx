@@ -1,18 +1,19 @@
+import React from "react";
 import Select from "react-select";
 import Image from "next/image";
 
 const weatherIcons = [
   {
     value: "/Sunny.png",
-    label: <Image src="/Sunny.png" alt="Sunny" width={24} height={24} />,
+    label: <Image src="/Sunny.png" alt="Sunny" width={20} height={20} />,
   },
   {
     value: "/Cloudy.png",
-    label: <Image src="/Cloudy.png" alt="Cloudy" width={24} height={24} />,
+    label: <Image src="/Cloudy.png" alt="Cloudy" width={20} height={20} />,
   },
   {
     value: "/Ice.png",
-    label: <Image src="/Ice.png" alt="Ice" width={24} height={24} />,
+    label: <Image src="/Ice.png" alt="Ice" width={20} height={20} />,
   },
 ];
 
@@ -32,14 +33,12 @@ const WeatherDropdown = ({
   setTemperature,
 }: {
   setWeatherIcon: (icon: string | null) => void;
-  setTemperature: (temp: string | null) => void;
+  setTemperature: (temperature: string | null) => void;
 }) => {
-  // 날씨 아이콘 선택 핸들러
   const handleWeatherIconChange = (selectedOption: any) => {
     setWeatherIcon(selectedOption ? selectedOption.value : null);
   };
 
-  // 기온 선택 핸들러
   const handleTemperatureChange = (selectedOption: any) => {
     setTemperature(selectedOption ? selectedOption.value : null);
   };
@@ -51,14 +50,12 @@ const WeatherDropdown = ({
         onChange={handleWeatherIconChange}
         placeholder="날씨 선택"
         className="w-32"
-        components={{ IndicatorSeparator: () => null }}
       />
       <Select
         options={temperatures}
         onChange={handleTemperatureChange}
         placeholder="기온 선택"
         className="w-32"
-        components={{ IndicatorSeparator: () => null }}
       />
     </div>
   );

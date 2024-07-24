@@ -158,6 +158,8 @@ const PostFormPage = () => {
                 <Image
                   src={URL.createObjectURL(image)}
                   alt={`Uploaded ${index}`}
+                  width={96}
+                  height={128}
                   className="w-full h-full object-cover border border-gray-300"
                 />
               </div>
@@ -166,7 +168,6 @@ const PostFormPage = () => {
               onClick={handleFileUploadClick}
               className="w-24 h-32 bg-gray-200 flex justify-center items-center border border-gray-300 cursor-pointer flex-shrink-0"
             >
-              {/* 숨겨진 파일 입력 요소 */}
               <input
                 type="file"
                 accept="image/*"
