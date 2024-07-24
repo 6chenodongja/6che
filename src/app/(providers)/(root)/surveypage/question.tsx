@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { questions } from '@/utils/questions';
+import Link from 'next/link';
 
 const QuestionPage: React.FC = () => {
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -29,23 +30,18 @@ const QuestionPage: React.FC = () => {
         updatedOptions[currentQuestionIndex] = option;
         setSelectedOptions(updatedOptions);
         handleNextClick();
-    };
-
-    const handleShowResultClick = () => {
-        // 추후 결과 페이지 만들예정
-    };
+    };  
 
     return (
         <div className="w-80 mx-auto flex flex-col items-center justify-start h-screen bg-white p-4 relative gap-4 mt-20">
-            
-            <div className="flex items-center h-20 w-full">   
-            {currentQuestionIndex > 0 && (
-                <button onClick={handleBackClick} className="absolute top-0 left-4 text-xl font-medium text-black">
-                    ᐸ
-                </button>
-            )}        
+            <div className="flex items-center h-20 w-full">
+                {currentQuestionIndex > 0 && (
+                    <button onClick={handleBackClick} className="absolute top-0 left-4 text-xl font-medium text-black">
+                        ᐸ
+                    </button>
+                )}
                 <h1 className="text-xl font-medium h-10 text-black">내 코디 찾기</h1>
-            </div>            
+            </div>
             <div className="flex flex-col items-start w-full gap-2">
                 <div className="flex justify-start items-start w-full relative overflow-hidden gap-2 rounded">
                     {Array(questions.length)
@@ -98,9 +94,9 @@ const QuestionPage: React.FC = () => {
                 )}
             </div>
             {showResultButton && (
-                <button className="w-full h-12 bg-[#d9d9d9] text-white rounded-lg mt-4" onClick={handleShowResultClick}>
-                    결과 확인
-                </button>
+                <Link href="/surveypage/result">
+                    <button className="w-72 h-[46px] bg-[#d9d9d9] text-white rounded-lg mt-4"> 결과 확인</button>
+                </Link>
             )}
         </div>
     );
