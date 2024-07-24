@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 function SingUpPage() {
@@ -66,9 +67,12 @@ function SingUpPage() {
 
         {/* 아래 코드는 지울 예정입니다. */}
         <div className="w-72 h-[46px] absolute left-[14px] top-[740px] rounded-lg bg-[#d9d9d9]" />
-        <button className="absolute left-[100px] top-[750px] text-lg font-medium text-left text-black ">
+        <Link
+          href={"/auth/login"}
+          className="absolute left-[100px] top-[750px] text-lg font-medium text-left text-black "
+        >
           로그인하러 가기
-        </button>
+        </Link>
       </form>
     </main>
   );
