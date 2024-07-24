@@ -33,8 +33,8 @@ function SingUpPage() {
 
   return (
     <main className="w-80 h-[1407px] relative overflow-hidden bg-white m-auto">
-      <form onSubmit={onSubmit}>
-        <h1 className="absolute left-4 top-36 text-2xl font-medium text-center text-black">
+      <form onSubmit={onSubmit} className="font-">
+        <h1 className="absolute left-4 top-36 text-2xl font-bold text-center text-black">
           회원가입
         </h1>
         <div className="flex flex-col justify-start items-start w-72 absolute left-4 top-[207px] pb-3">
@@ -72,13 +72,6 @@ function SingUpPage() {
             placeholder="이메일 아이디"
             className="flex-grow h-[42px] opacity-50 rounded-lg bg-[#d9d9d9]"
           />
-          <input
-            type="email"
-            onChange={onChangeEmail}
-            value={email}
-            placeholder="이메일 주소"
-            className="flex-grow h-[42px] opacity-50 rounded-lg bg-[#d9d9d9]"
-          />
         </div>
         <div className="flex flex-col justify-start items-start w-72 absolute left-4 top-[450px] pb-3">
           <label className="self-stretch flex-grow-0 flex-shrink-0 w-72 text-lg text-left text-black">
@@ -108,7 +101,6 @@ function SingUpPage() {
         <button className="absolute left-[126px] top-[689px] text-lg font-medium text-left text-black ">
           회원가입
         </button>
-
         {/* 아래 코드는 지울 예정입니다. */}
         <div className="w-72 h-[46px] absolute left-[14px] top-[740px] rounded-lg bg-[#d9d9d9]" />
         <Link
