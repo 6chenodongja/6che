@@ -50,3 +50,25 @@ export async function getWeather(locationKey: string) {
     };
   }
 }
+
+export async function getWeeklyWeather(locationKey: string) {
+  try {
+    const apiKey = 'U8AuE7Glix0G2AZ76oRKO1yPSW0gg5WR'; // AccuWeather API 키
+
+    // 주간 날씨 데이터 요청
+    const weeklyWeatherResponse = await axios.get(
+      `https://dataservice.accuweather.com/forecasts/v1/daily/5day/${locationKey}`,
+      {
+        params: {
+          apikey: apiKey,
+          language: 'ko-kr',
+        },
+      },
+    );
+
+    return weeklyWeatherResponse.data.DailyForecasts;
+  } catch (error) {
+    console.error('주간 날씨 API 요청 오류:', error);
+    return [];
+  }
+}

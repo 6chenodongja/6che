@@ -1,12 +1,13 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { getWeather } from '../../../api/weather/route'; // route.ts에서 가져옵니다
+import { getWeather, getWeeklyWeather } from '../../../api/weather/route'; // route.ts에서 가져옵니다
 import '../../../../app/globals.css';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import SwiperCore, { Navigation, Pagination } from 'swiper';
+import { motion, AnimatePresence } from 'framer-motion';
 
 SwiperCore.use([Navigation, Pagination]);
 
@@ -18,6 +19,8 @@ const MainPage = () => {
   const [weather, setWeather] = useState<any>(null); // 현재 날씨 상태
   const [difference, setDifference] = useState<number | null>(null); // 온도 차이
   const [hourlyWeather, setHourlyWeather] = useState<any[]>([]); // 시간별 날씨 상태
+  const [weeklyWeather, setWeeklyWeather] = useState<any[]>([]); // 주간 날씨 상태
+  const [isWeeklyWeatherVisible, setIsWeeklyWeatherVisible] = useState(false); // 주간 날씨 표시 여부
 
   useEffect(() => {
     const fetchWeather = async () => {
@@ -38,6 +41,18 @@ const MainPage = () => {
 
     fetchWeather();
   }, []);
+
+  const handleWeeklyWeatherClick = async () => {
+    if (!isWeeklyWeatherVisible) {
+      try {
+        const weeklyWeatherData = await getWeeklyWeather('226081'); // 서울의 위치 키 예시
+        setWeeklyWeather(weeklyWeatherData);
+      } catch (error) {
+        console.error('주간 날씨 데이터 요청 오류:', error);
+      }
+    }
+    setIsWeeklyWeatherVisible(!isWeeklyWeatherVisible);
+  };
 
   return (
     <div className="w-80 h-[1926px] relative overflow-hidden bg-white">
@@ -138,8 +153,56 @@ const MainPage = () => {
         <p className="flex-grow-0 flex-shrink-0 text-lg font-medium text-center text-black">
           이번주 날씨
         </p>
-        <div className="flex-grow-0 flex-shrink-0 w-6 h-6 bg-[#d9d9d9]" />
+        <div
+          className="flex-grow-0 flex-shrink-0 w-6 h-6 bg-[#d9d9d9] cursor-pointer"
+          onClick={handleWeeklyWeatherClick}
+        />
       </div>
+      <AnimatePresence>
+        {isWeeklyWeatherVisible && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.5 }}
+            className="flex flex-col justify-start items-start w-72 py-2 rounded-2xl bg-[#ededed] mx-auto"
+            style={{ position: 'relative', top: '665px', zIndex: 10 }}
+          >
+            {weeklyWeather.map((day, index) => (
+              <div
+                key={index}
+                className="flex justify-between items-center self-stretch flex-grow-0 flex-shrink-0 relative px-4 py-2"
+              >
+                <div className="flex flex-col justify-center items-center flex-grow-0 flex-shrink-0 w-[30px] relative gap-px">
+                  <p className="self-stretch flex-grow-0 flex-shrink-0 w-[30px] text-base font-medium text-left text-black">
+                    {new Date(day.Date).toLocaleDateString('ko-KR', {
+                      weekday: 'short',
+                    })}
+                  </p>
+                  <p className="self-stretch flex-grow-0 flex-shrink-0 w-[30px] opacity-70 text-xs font-medium text-center text-black">
+                    {new Date(day.Date).getMonth() + 1}.
+                    {new Date(day.Date).getDate()}
+                  </p>
+                </div>
+                <div className="flex justify-start items-center flex-grow-0 flex-shrink-0 relative gap-2">
+                  <div className="flex-grow-0 flex-shrink-0 w-[38px] h-[38px] bg-[#d9d9d9]" />
+                  <div className="flex-grow-0 flex-shrink-0 w-[38px] h-[38px] bg-[#d9d9d9]" />
+                </div>
+                <p className="flex-grow-0 flex-shrink-0 text-base text-left text-black">
+                  {convertFahrenheitToCelsius(
+                    day.Temperature.Minimum.Value,
+                  ).toFixed(1)}
+                  ° /
+                  {convertFahrenheitToCelsius(
+                    day.Temperature.Maximum.Value,
+                  ).toFixed(1)}
+                  °
+                </p>
+              </div>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
       <div className="flex flex-col justify-start items-start w-72 absolute left-4 top-[760px] gap-3">
         <p className="self-stretch flex-grow-0 flex-shrink-0 w-72 text-lg font-medium text-left text-black">
           오늘 옷차림
