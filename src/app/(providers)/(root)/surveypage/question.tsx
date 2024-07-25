@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { questions, optionTags } from '@/utils/questions';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import springImage from '@/assets/spring.jpg';
 import summerImage from '@/assets/summer.jpg';
@@ -18,6 +18,7 @@ const QuestionPage: React.FC = () => {
     const [selectedOptions, setSelectedOptions] = useState<string[]>(Array(questions.length).fill(null));
     const [tags, setTags] = useState<string[]>([]);
     const [showResultButton, setShowResultButton] = useState(false);
+    const router = useRouter();
 
     const handleNextClick = () => {
         if (currentQuestionIndex < questions.length - 1) {
@@ -67,9 +68,16 @@ const QuestionPage: React.FC = () => {
             return acc;
         }, {});
 
-        console.log('태그 빈도수:', tagCount);
-        const sortedTags = Object.entries(tagCount).sort(([, a], [, b]) => b - a);
-        console.log('가장 많이 나온 태그:', sortedTags.slice(0, 4));
+        const sortedTags = Object.entries(tagCount)
+            .sort(([, a], [, b]) => b - a)
+            .map(([tag]) => tag);
+
+        const gender = sortedTags.find(tag => ['남성', '여성', '선택 안함'].includes(tag)) || '선택 안함';
+        const style = sortedTags.find(tag => ['미니멀', '아메카지', '시티보이', '캐주얼', '비즈니스캐주얼', '스포츠', '빈티지'].includes(tag)) || '캐주얼';
+        const seasons = sortedTags.filter(tag => ['봄', '여름', '가을', '겨울'].includes(tag)).slice(0, 2);
+        const locations = sortedTags.filter(tag => ['데이트', '캠퍼스', '카페', '출근', '결혼식', '바다', '여행', '데일리'].includes(tag)).slice(0, 2);
+
+        router.push(`/surveypage/result?gender=${gender}&style=${style}&seasons=${seasons.join(',')}&locations=${locations.join(',')}`);
     };
 
     return (
@@ -134,11 +142,9 @@ const QuestionPage: React.FC = () => {
                 )}
             </div>
             {showResultButton && (
-                <Link href="/surveypage/result">
-                    <button onClick={handleShowResultClick} className="w-72 h-[46px] bg-[#d9d9d9] text-white rounded-lg mt-4">
-                        결과 확인
-                    </button>
-                </Link>
+                <button onClick={handleShowResultClick} className="w-72 h-[46px] bg-[#d9d9d9] text-white rounded-lg mt-4">
+                    결과 확인
+                </button>
             )}
         </div>
     );
