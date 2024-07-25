@@ -8,6 +8,7 @@ import springImage from '@/assets/spring.jpg';
 import summerImage from '@/assets/summer.jpg';
 import autumnImage from '@/assets/autumn.jpg';
 import winterImage from '@/assets/winter.jpg';
+import { useTagStore } from '@/zustand/store/useTagStore';
 
 interface TagCount {
     [key: string]: number;
@@ -19,6 +20,7 @@ const QuestionPage: React.FC = () => {
     const [tags, setTags] = useState<string[]>([]);
     const [showResultButton, setShowResultButton] = useState(false);
     const router = useRouter();
+    const setTagsInStore = useTagStore((state) => state.setTags);
 
     const handleNextClick = () => {
         if (currentQuestionIndex < questions.length - 1) {
@@ -77,7 +79,9 @@ const QuestionPage: React.FC = () => {
         const seasons = sortedTags.filter(tag => ['봄', '여름', '가을', '겨울'].includes(tag)).slice(0, 2);
         const locations = sortedTags.filter(tag => ['데이트', '캠퍼스', '카페', '출근', '결혼식', '바다', '여행', '데일리'].includes(tag)).slice(0, 2);
 
-        router.push(`/surveypage/result?gender=${gender}&style=${style}&seasons=${seasons.join(',')}&locations=${locations.join(',')}`);
+        setTagsInStore({ gender, style, seasons, locations });
+
+        router.push(`/surveypage/result`);
     };
 
     return (

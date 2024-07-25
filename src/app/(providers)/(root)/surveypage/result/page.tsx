@@ -1,9 +1,9 @@
 'use client';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
-import { useSearchParams } from 'next/navigation';
 import { createClient } from '@/supabase/client';
 import Image from 'next/image';
+import { useTagStore } from '@/zustand/store/useTagStore';
 
 interface Post {
     id: string;
@@ -13,11 +13,7 @@ interface Post {
 const ResultPage: React.FC = () => {
     const [likes, setLikes] = useState(Array(4).fill(false));
     const [posts, setPosts] = useState<Post[]>([]);
-    const searchParams = useSearchParams();
-    const gender = searchParams ? searchParams.get('gender') : null;
-    const style = searchParams ? searchParams.get('style') : null;
-    const seasons = searchParams ? searchParams.get('seasons')?.split(',') || [] : [];
-    const locations = searchParams ? searchParams.get('locations')?.split(',') || [] : [];
+    const { gender, style, seasons, locations } = useTagStore();
 
     useEffect(() => {
         if (gender && style && seasons.length > 0 && locations.length > 0) {
