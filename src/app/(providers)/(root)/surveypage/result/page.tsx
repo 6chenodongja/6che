@@ -7,17 +7,17 @@ import Image from 'next/image';
 
 interface Post {
     id: string;
-    imageUrl: string;
+    image_url: string;
 }
 
 const ResultPage: React.FC = () => {
     const [likes, setLikes] = useState(Array(4).fill(false));
     const [posts, setPosts] = useState<Post[]>([]);
     const searchParams = useSearchParams();
-    const gender = searchParams.get('gender');
-    const style = searchParams.get('style');
-    const seasons = searchParams.get('seasons')?.split(',') || [];
-    const locations = searchParams.get('locations')?.split(',') || [];
+    const gender = searchParams ? searchParams.get('gender') : null;
+    const style = searchParams ? searchParams.get('style') : null;
+    const seasons = searchParams ? searchParams.get('seasons')?.split(',') || [] : [];
+    const locations = searchParams ? searchParams.get('locations')?.split(',') || [] : [];
 
     useEffect(() => {
         if (gender && style && seasons.length > 0 && locations.length > 0) {
@@ -38,8 +38,10 @@ const ResultPage: React.FC = () => {
 
         if (error) {
             console.error('Error fetching posts:', error);
+        } else if (data && Array.isArray(data) && data.every(post => 'id' in post && 'image_url' in post)) {
+            setPosts(data as Post[]);
         } else {
-            setPosts(data || []);
+            console.error('Data format is incorrect:', data);
         }
     };
 
