@@ -221,7 +221,7 @@ const PostFormPage = () => {
           <div className="font-bold">유형</div>
 
           <div className="flex gap-2 mt-1">
-            {["남성", "여성"].map((genderItem) => (
+            {["남성", "여성", "선택 안함"].map((genderItem) => (
               <button
                 key={genderItem}
                 type="button"
