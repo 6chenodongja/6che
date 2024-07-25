@@ -9,7 +9,6 @@ import summerImage from '@/assets/summer.jpg';
 import autumnImage from '@/assets/autumn.jpg';
 import winterImage from '@/assets/winter.jpg';
 
-
 interface TagCount {
     [key: string]: number;
 }
@@ -40,7 +39,10 @@ const QuestionPage: React.FC = () => {
         const updatedOptions = [...selectedOptions];
         updatedOptions[currentQuestionIndex] = option;
         setSelectedOptions(updatedOptions);
-        setTags((prevTags) => [...prevTags, optionTags[option]]);
+
+        const optionTagArray = optionTags[option];
+        setTags((prevTags) => [...prevTags, ...optionTagArray]);
+
         handleNextClick();
     };
 
@@ -65,10 +67,9 @@ const QuestionPage: React.FC = () => {
             return acc;
         }, {});
 
-
         console.log('태그 빈도수:', tagCount);
         const sortedTags = Object.entries(tagCount).sort(([, a], [, b]) => b - a);
-        console.log('가장 많이 나온 태그:', sortedTags.slice(0, 5));
+        console.log('가장 많이 나온 태그:', sortedTags.slice(0, 4));
     };
 
     return (
