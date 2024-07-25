@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { questions } from '@/utils/questions';
+import { questions, optionTags } from '@/utils/questions';
 import Link from 'next/link';
 import Image from 'next/image';
 import springImage from '@/assets/spring.jpg';
@@ -9,9 +9,15 @@ import summerImage from '@/assets/summer.jpg';
 import autumnImage from '@/assets/autumn.jpg';
 import winterImage from '@/assets/winter.jpg';
 
+
+interface TagCount {
+    [key: string]: number;
+}
+
 const QuestionPage: React.FC = () => {
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [selectedOptions, setSelectedOptions] = useState<string[]>(Array(questions.length).fill(null));
+    const [tags, setTags] = useState<string[]>([]);
     const [showResultButton, setShowResultButton] = useState(false);
 
     const handleNextClick = () => {
@@ -34,6 +40,7 @@ const QuestionPage: React.FC = () => {
         const updatedOptions = [...selectedOptions];
         updatedOptions[currentQuestionIndex] = option;
         setSelectedOptions(updatedOptions);
+        setTags((prevTags) => [...prevTags, optionTags[option]]);
         handleNextClick();
     };
 
@@ -50,6 +57,18 @@ const QuestionPage: React.FC = () => {
             default:
                 return '';
         }
+    };
+
+    const handleShowResultClick = () => {
+        const tagCount: TagCount = tags.reduce((acc: TagCount, tag: string) => {
+            acc[tag] = (acc[tag] || 0) + 1;
+            return acc;
+        }, {});
+
+
+        console.log('태그 빈도수:', tagCount);
+        const sortedTags = Object.entries(tagCount).sort(([, a], [, b]) => b - a);
+        console.log('가장 많이 나온 태그:', sortedTags.slice(0, 5));
     };
 
     return (
@@ -115,7 +134,9 @@ const QuestionPage: React.FC = () => {
             </div>
             {showResultButton && (
                 <Link href="/surveypage/result">
-                    <button className="w-72 h-[46px] bg-[#d9d9d9] text-white rounded-lg mt-4"> 결과 확인</button>
+                    <button onClick={handleShowResultClick} className="w-72 h-[46px] bg-[#d9d9d9] text-white rounded-lg mt-4">
+                        결과 확인
+                    </button>
                 </Link>
             )}
         </div>
