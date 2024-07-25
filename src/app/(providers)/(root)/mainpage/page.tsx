@@ -20,6 +20,7 @@ const MainPage = () => {
   const [difference, setDifference] = useState<number | null>(null); // 온도 차이
   const [hourlyWeather, setHourlyWeather] = useState<any[]>([]); // 시간별 날씨 상태
   const [weeklyWeather, setWeeklyWeather] = useState<any[]>([]); // 주간 날씨 상태
+  const [extraWeatherInfo, setExtraWeatherInfo] = useState<any[]>([]); // 추가 날씨 정보 상태
   const [isWeeklyWeatherVisible, setIsWeeklyWeatherVisible] = useState(false); // 주간 날씨 표시 여부
 
   useEffect(() => {
@@ -33,6 +34,20 @@ const MainPage = () => {
           setWeather(weatherData.current);
           setDifference(parseFloat((currentTemp - historicalTemp).toFixed(1))); // 온도 차이 계산, 소수점 한 자리까지 표시
           setHourlyWeather(weatherData.hourly || []); // 시간별 날씨 데이터 설정
+          setExtraWeatherInfo([
+            {
+              label: 'Max UV Index',
+              value: weatherData.current.UVIndex || 'N/A',
+            },
+            {
+              label: 'Wind Gusts',
+              value: `${weatherData.current.WindGust?.Speed?.Metric?.Value || 'N/A'} km/h`,
+            },
+            {
+              label: 'Precipitation',
+              value: `${weatherData.current.PrecipitationSummary?.Precipitation?.Metric?.Value || 'N/A'} mm`,
+            },
+          ]);
         }
       } catch (error) {
         console.error('날씨 데이터 요청 오류:', error);
@@ -107,23 +122,16 @@ const MainPage = () => {
         </div>
       </div>
       <div className="flex justify-start items-center w-[280px] absolute left-4 top-[318px] gap-2">
-        <div
-          className="flex-grow-0 flex-shrink-0 w-[76px] h-[100px] relative overflow-hidden rounded-2xl bg-white/30 backdrop-blur-2xl"
-          style={{ boxShadow: '4px 4px 20px 0 rgba(0,0,0,0.05)' }}
-        />
-        <div
-          className="flex-grow-0 flex-shrink-0 w-[76px] h-[100px] relative overflow-hidden rounded-2xl bg-white/30 backdrop-blur-2xl"
-          style={{ boxShadow: '4px 4px 20px 0 rgba(0,0,0,0.05)' }}
-        />
-        <div
-          className="flex-grow-0 flex-shrink-0 w-[76px] h-[100px] relative overflow-hidden rounded-2xl bg-white/30 backdrop-blur-2xl"
-          style={{ boxShadow: '4px 4px 20px 0 rgba(0,0,0,0.05)' }}
-        />
-        <div
-          className="flex-grow-0 flex-shrink-0 w-[76px] h-[100px] relative overflow-hidden rounded-2xl bg-white/30 backdrop-blur-2xl"
-          style={{ boxShadow: '4px 4px 20px 0 rgba(0,0,0,0.05)' }}
-        />
-        <div className="flex-grow-0 flex-shrink-0 w-[30px] h-[30px] bg-[#d9d9d9]" />
+        {extraWeatherInfo.map((info, index) => (
+          <div
+            key={index}
+            className="flex-grow-0 flex-shrink-0 w-[76px] h-[100px] relative overflow-hidden rounded-2xl bg-white/30 backdrop-blur-2xl"
+            style={{ boxShadow: '4px 4px 20px 0 rgba(0,0,0,0.05)' }}
+          >
+            <p className="text-center text-sm">{info.label}</p>
+            <p className="text-center text-lg">{info.value}</p>
+          </div>
+        ))}
       </div>
       <p className="absolute left-[118px] top-[478px] text-xl font-medium text-center text-black">
         오늘 하루

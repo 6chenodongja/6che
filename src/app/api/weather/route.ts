@@ -12,6 +12,7 @@ export async function getWeather(locationKey: string) {
       {
         params: {
           apikey: apiKey,
+          details: true, // 상세 정보를 포함하도록 요청
         },
       },
     );
