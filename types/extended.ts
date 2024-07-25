@@ -2,5 +2,8 @@ import { Database } from "./supabase";
 
 export type ExtendedPostInsert =
   Database["public"]["Tables"]["posts"]["Insert"] & {
-    weather: string;
+    gender?: string;
+    style?: string;
+    seasons?: string[];
+    locations?: string[];
   };
