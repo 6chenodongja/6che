@@ -37,7 +37,7 @@ function PostList() {
         if (postFetchError) {
           console.log('해당 포스트의 좋아요 수 가져오기 오류', postFetchError);
         }
-
+        //좋아요 마이너스
         const newLikeCount = (postData?.like || 0) - 1;
         await supabase
           .from('posts')
@@ -67,7 +67,7 @@ function PostList() {
             postFetchError,
           );
         }
-
+        //좋아요 플러스
         const newLikeCount = (postData?.like || 0) + 1;
         await supabase
           .from('posts')
@@ -89,7 +89,7 @@ function PostList() {
       console.error(error);
     }
   };
-
+  // 포스트 리스트 가져오기
   const fetchPostList = async () => {
     const { data: postList, error } = await supabase
       .from('posts')
@@ -155,6 +155,7 @@ function PostList() {
             <div className="mt-2">
               <div className="font-bold"></div>
               <div className="text-sm">
+                <div className="font-bold text-[20px]">닉네임</div>
                 <div className="truncate">{post.comment}</div>
                 <div className="flex justify-between">
                   <span>{post.created_at?.split('T')[0]}</span>
