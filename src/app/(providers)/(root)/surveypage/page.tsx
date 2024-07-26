@@ -1,7 +1,4 @@
-import React from 'react';
-
-function surveypage() {
-  return <div>설문페이지</div>;
+import SurveyPage from './surveyinitial';
+export default function Survey() {
+    return <SurveyPage />;
 }
-
-export default surveypage;
