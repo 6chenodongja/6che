@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React, { useState } from "react";
 
 function SingUpPage() {
@@ -9,6 +10,12 @@ function SingUpPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
+  const [error, setError] = useState({
+    password: "",
+    passwordConfirm: "",
+  });
+
+  const router = useRouter();
 
   const onChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
