@@ -147,7 +147,7 @@ const QuestionPage: React.FC = () => {
             </div>
             {showResultButton && (
                 <button onClick={handleShowResultClick} className="w-72 h-[46px] bg-[#d9d9d9] text-white rounded-lg mt-4">
-                    결과 확인
+                    결과 확인.
                 </button>
             )}
         </div>
