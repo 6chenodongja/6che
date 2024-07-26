@@ -318,25 +318,15 @@ const MainPage = () => {
           추천 코디
         </p>
         <div className="w-72 h-[46px] absolute left-[15px] top-[1200px] rounded-lg bg-[#d9d9d9]" />
-        <p className="absolute left-[79px] top-[1210px] text-lg font-medium text-left text-black">
-          내 취향 코디 추천받기
-        </p>
+        <Link href="/surveypage">
+          <p className="absolute left-[79px] top-[1210px] text-lg font-medium text-left text-black">
+            내 취향 코디 추천받기
+          </p>
+        </Link>
         <p className="absolute left-[266px] top-[990px] text-sm font-medium text-left text-black">
           더보기
         </p>
       </div>
-      <p className="absolute left-[17px] top-[983px] text-base font-medium text-left text-black">
-        추천 코디
-      </p>
-      <div className="w-72 h-[46px] absolute left-[15px] top-[1200px] rounded-lg bg-[#d9d9d9]" />
-      <Link href="/surveypage">
-        <p className="absolute left-[79px] top-[1210px] text-lg font-medium text-left text-black">
-          내 취향 코디 추천받기
-        </p>
-      </Link>
-      <p className="absolute left-[266px] top-[990px] text-sm font-medium text-left text-black">
-        더보기
-      </p>
     </div>
   );
 };
