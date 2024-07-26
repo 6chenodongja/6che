@@ -1,16 +1,16 @@
-"use client";
+'use client';
 
-import { createClient } from "@/supabase/client";
-import Image from "next/image";
-import Link from "next/link";
-import React, { useEffect, useState } from "react";
-import { Tables } from "../../../../../../types/supabase";
+import { createClient } from '@/supabase/client';
+import Image from 'next/image';
+import Link from 'next/link';
+import React, { useEffect, useState } from 'react';
+import { Tables } from '../../../../../../types/supabase';
 
 function PostList() {
   const [liked, setLiked] = useState<{ [key: string]: boolean }>({});
-  const [post, setPost] = useState<Tables<"posts">[]>([]);
+  const [post, setPost] = useState<Tables<'posts'>[]>([]);
 
-  const User = "a184313d-fac7-4c5d-8ee3-89e367cfb86f";
+  const User = 'a184313d-fac7-4c5d-8ee3-89e367cfb86f';
   const supabase = createClient();
 
   const handleLike = async (postId: string, userId: string) => {
@@ -20,64 +20,64 @@ function PostList() {
       if (isLiked) {
         // 좋아요 취소
         await supabase
-          .from("post_likes")
+          .from('post_likes')
           .delete()
-          .eq("post_id", postId)
-          .eq("user_id", userId);
+          .eq('post_id', postId)
+          .eq('user_id', userId);
 
-        console.log("postId =>", postId);
-        console.log("userId =>", userId); // userId가 undefined 뜬다 = > 해결
+        console.log('postId =>', postId);
+        console.log('userId =>', userId);
 
         const { data: postData, error: postFetchError } = await supabase
-          .from("posts")
-          .select("like")
-          .eq("id", postId)
+          .from('posts')
+          .select('like')
+          .eq('id', postId)
           .single();
 
         if (postFetchError) {
-          console.log("해당 포스트의 좋아요 수 가져오기 오류", postFetchError);
+          console.log('해당 포스트의 좋아요 수 가져오기 오류', postFetchError);
         }
 
         const newLikeCount = (postData?.like || 0) - 1;
         await supabase
-          .from("posts")
+          .from('posts')
           .update({ like: newLikeCount })
-          .eq("id", postId);
+          .eq('id', postId);
 
         setPost((prevPosts) =>
           prevPosts.map((post) =>
-            post.id === postId ? { ...post, like: newLikeCount } : post
-          )
+            post.id === postId ? { ...post, like: newLikeCount } : post,
+          ),
         );
       } else {
         // 좋아요 추가
         await supabase
-          .from("post_likes")
+          .from('post_likes')
           .insert({ post_id: postId, user_id: User });
 
         const { data: postData, error: postFetchError } = await supabase
-          .from("posts")
-          .select("like")
-          .eq("id", postId)
+          .from('posts')
+          .select('like')
+          .eq('id', postId)
           .single();
 
         if (postFetchError) {
           console.log(
-            "해당 포스트의 좋아요 수 가져오기 실패..",
-            postFetchError
+            '해당 포스트의 좋아요 수 가져오기 실패..',
+            postFetchError,
           );
         }
 
         const newLikeCount = (postData?.like || 0) + 1;
         await supabase
-          .from("posts")
+          .from('posts')
           .update({ like: newLikeCount })
-          .eq("id", postId);
+          .eq('id', postId);
 
         setPost((prevPosts) =>
           prevPosts.map((post) =>
-            post.id === postId ? { ...post, like: newLikeCount } : post
-          )
+            post.id === postId ? { ...post, like: newLikeCount } : post,
+          ),
         );
       }
 
@@ -92,9 +92,9 @@ function PostList() {
 
   const fetchPostList = async () => {
     const { data: postList, error } = await supabase
-      .from("posts")
-      .select("*")
-      .eq("user_id", User); // User바꾸기
+      .from('posts')
+      .select('*')
+      .eq('user_id', User); // User바꾸기
 
     if (error) {
       console.error(error);
@@ -115,7 +115,7 @@ function PostList() {
         <p>날씨에 맞는 스타일링</p>
       </div>
       <div className="mt-20">
-        <Link href={"/detail"} className="border border-black p-2 rounded-lg">
+        <Link href={'/detail'} className="border border-black p-2 rounded-lg">
           코디 등록 ➕
         </Link>
         <span className="flex justify-end">
@@ -145,11 +145,11 @@ function PostList() {
               </div>
               <div
                 className={`absolute bottom-0 right-0 bg-white bg-opacity-50 p-1 m-1 text-sm rounded-lg cursor-pointer ${
-                  liked[post.id] ? "text-red-500" : ""
+                  liked[post.id] ? 'text-red-500' : ''
                 }`}
                 onClick={() => handleLike(post.id, post.user_id)}
               >
-                {liked[post.id] ? "❤️" : "🤍"}
+                {liked[post.id] ? '❤️' : '🤍'}
               </div>
             </div>
             <div className="mt-2">
@@ -157,7 +157,7 @@ function PostList() {
               <div className="text-sm">
                 <div className="truncate">{post.comment}</div>
                 <div className="flex justify-between">
-                  <span>{post.created_at?.split("T")[0]}</span>
+                  <span>{post.created_at?.split('T')[0]}</span>
                   <span>❤️{post.like}</span>
                 </div>
               </div>
