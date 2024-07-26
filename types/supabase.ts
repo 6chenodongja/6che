@@ -46,25 +46,37 @@ export type Database = {
         Row: {
           comment: string | null
           created_at: string | null
+          gender: string | null
           id: string
-          imageUrl: string | null
+          image_url: string | null
           like: number | null
+          locations: string | null
+          seasons: string | null
+          style: string | null
           user_id: string
         }
         Insert: {
           comment?: string | null
           created_at?: string | null
+          gender?: string | null
           id?: string
-          imageUrl?: string | null
+          image_url?: string | null
           like?: number | null
+          locations?: string | null
+          seasons?: string | null
+          style?: string | null
           user_id?: string
         }
         Update: {
           comment?: string | null
           created_at?: string | null
+          gender?: string | null
           id?: string
-          imageUrl?: string | null
+          image_url?: string | null
           like?: number | null
+          locations?: string | null
+          seasons?: string | null
+          style?: string | null
           user_id?: string
         }
         Relationships: [
@@ -82,16 +94,19 @@ export type Database = {
           email: string
           id: string
           nickname: string | null
+          password: string | null
         }
         Insert: {
           email: string
           id: string
           nickname?: string | null
+          password?: string | null
         }
         Update: {
           email?: string
           id?: string
           nickname?: string | null
+          password?: string | null
         }
         Relationships: [
           {
