@@ -15,7 +15,7 @@ function SingUpPage() {
     passwordConfirm: '',
   });
 
-  const router = useRouter();
+  // const router = useRouter();
 
   const onChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
