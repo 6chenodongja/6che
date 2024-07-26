@@ -47,7 +47,6 @@ function LoginPage() {
         </div>
         <div className="w-72 h-12 absolute left-[15px] top-[600px] rounded-3xl bg-[#d9d9d9]" />
         <div className="w-72 h-12 absolute left-[15px] top-[658px] rounded-3xl bg-[#d9d9d9]" />
-        <div className="w-72 h-12 absolute left-[15px] top-[716px] rounded-3xl bg-[#d9d9d9]" />
         <button className="absolute left-[145px] top-[613px] text-base text-left text-black">
           구글
         </button>
