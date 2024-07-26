@@ -1,5 +1,5 @@
-import Link from "next/link";
-import React, { useState } from "react";
+import Link from 'next/link';
+import React, { useState } from 'react';
 
 function LoginPage() {
   // const [name, setName] = useState("");
@@ -32,14 +32,14 @@ function LoginPage() {
         </div>
         <div className="flex justify-start items-center absolute left-[50px] top-[493px] gap-2">
           <Link
-            href={""}
+            href={''}
             className="flex-grow-0 flex-shrink-0 text-base text-left text-black"
           >
             아이디/비밀번호 찾기
           </Link>
           <div className="flex-grow-0 flex-shrink-0 w-px h-[22px] bg-[#d9d9d9]" />
           <Link
-            href={"/auth/signup"}
+            href={'/auth/signup'}
             className="flex-grow-0 flex-shrink-0 text-base text-left text-black"
           >
             회원가입
@@ -47,15 +47,11 @@ function LoginPage() {
         </div>
         <div className="w-72 h-12 absolute left-[15px] top-[600px] rounded-3xl bg-[#d9d9d9]" />
         <div className="w-72 h-12 absolute left-[15px] top-[658px] rounded-3xl bg-[#d9d9d9]" />
-        <div className="w-72 h-12 absolute left-[15px] top-[716px] rounded-3xl bg-[#d9d9d9]" />
         <button className="absolute left-[145px] top-[613px] text-base text-left text-black">
           구글
         </button>
         <button className="absolute left-[130px] top-[671px] text-base text-left text-black">
           카카오톡
-        </button>
-        <button className="absolute left-[145px] top-[729px] text-base text-left text-black">
-          애플
         </button>
         <div className="w-72 h-px absolute left-[15px] top-[557px] bg-[#d9d9d9]" />
         <input
