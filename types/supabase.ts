@@ -1,119 +1,134 @@
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
 export type Database = {
-    public: {
-        Tables: {
-            post_likes: {
-                Row: {
-                    id: string;
-                    post_id: string;
-                    user_id: string | null;
-                };
-                Insert: {
-                    id?: string;
-                    post_id: string;
-                    user_id?: string | null;
-                };
-                Update: {
-                    id?: string;
-                    post_id?: string;
-                    user_id?: string | null;
-                };
-                Relationships: [
-                    {
-                        foreignKeyName: 'post_likes_post_id_fkey';
-                        columns: ['post_id'];
-                        isOneToOne: false;
-                        referencedRelation: 'posts';
-                        referencedColumns: ['id'];
-                    },
-                    {
-                        foreignKeyName: 'post_likes_user_id_fkey';
-                        columns: ['user_id'];
-                        isOneToOne: false;
-                        referencedRelation: 'users';
-                        referencedColumns: ['id'];
-                    }
-                ];
-            };
-            posts: {
-                Row: {
-                    comment: string | null;
-                    created_at: string | null;
-                    id: string;
-                    imageUrl: string | null;
-                    like: number | null;
-                    user_id: string;
-                };
-                Insert: {
-                    comment?: string | null;
-                    created_at?: string | null;
-                    id?: string;
-                    imageUrl?: string | null;
-                    like?: number | null;
-                    user_id?: string;
-                };
-                Update: {
-                    comment?: string | null;
-                    created_at?: string | null;
-                    id?: string;
-                    imageUrl?: string | null;
-                    like?: number | null;
-                    user_id?: string;
-                };
-                Relationships: [
-                    {
-                        foreignKeyName: 'posts_user_id_fkey';
-                        columns: ['user_id'];
-                        isOneToOne: false;
-                        referencedRelation: 'users';
-                        referencedColumns: ['id'];
-                    }
-                ];
-            };
-            users: {
-                Row: {
-                    email: string;
-                    id: string;
-                    nickname: string | null;
-                };
-                Insert: {
-                    email: string;
-                    id: string;
-                    nickname?: string | null;
-                };
-                Update: {
-                    email?: string;
-                    id?: string;
-                    nickname?: string | null;
-                };
-                Relationships: [
-                    {
-                        foreignKeyName: 'users_id_fkey';
-                        columns: ['id'];
-                        isOneToOne: true;
-                        referencedRelation: 'users';
-                        referencedColumns: ['id'];
-                    }
-                ];
-            };
-        };
-        Views: {
-            [_ in never]: never;
-        };
-        Functions: {
-            [_ in never]: never;
-        };
-        Enums: {
-            [_ in never]: never;
-        };
-        CompositeTypes: {
-            [_ in never]: never;
-        };
-    };
-};
+  public: {
+    Tables: {
+      post_likes: {
+        Row: {
+          id: string
+          post_id: string
+          user_id: string | null
+        }
+        Insert: {
+          id?: string
+          post_id: string
+          user_id?: string | null
+        }
+        Update: {
+          id?: string
+          post_id?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "post_likes_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "post_likes_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      posts: {
+        Row: {
+          comment: string | null
+          created_at: string | null
+          gender: string | null
+          id: string
+          image_url: string | null
+          like: number | null
+          locations: string | null
+          seasons: string | null
+          style: string | null
+          user_id: string
+        }
+        Insert: {
+          comment?: string | null
+          created_at?: string | null
+          gender?: string | null
+          id?: string
+          image_url?: string | null
+          like?: number | null
+          locations?: string | null
+          seasons?: string | null
+          style?: string | null
+          user_id?: string
+        }
+        Update: {
+          comment?: string | null
+          created_at?: string | null
+          gender?: string | null
+          id?: string
+          image_url?: string | null
+          like?: number | null
+          locations?: string | null
+          seasons?: string | null
+          style?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "posts_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      users: {
+        Row: {
+          email: string
+          id: string
+          nickname: string | null
+          password: string | null
+        }
+        Insert: {
+          email: string
+          id: string
+          nickname?: string | null
+          password?: string | null
+        }
+        Update: {
+          email?: string
+          id?: string
+          nickname?: string | null
+          password?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "users_id_fkey"
+            columns: ["id"]
+            isOneToOne: true
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+    }
+    Views: {
+      [_ in never]: never
+    }
+    Functions: {
+      [_ in never]: never
+    }
+    Enums: {
+      [_ in never]: never
+    }
+    CompositeTypes: {
+      [_ in never]: never
+    }
+  }
+}
 
-export type PublicSchema = Database['public'];
+type PublicSchema = Database[Extract<keyof Database, "public">]
 
 export type Tables<
     PublicTableNameOrOptions extends
