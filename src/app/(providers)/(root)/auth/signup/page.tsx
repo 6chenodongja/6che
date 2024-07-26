@@ -1,18 +1,18 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { useRouter } from "next/router";
-import React, { useState } from "react";
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import React, { useState } from 'react';
 
 function SingUpPage() {
-  const [name, setName] = useState("");
-  const [nickname, setNickname] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [passwordConfirm, setPasswordConfirm] = useState("");
+  const [name, setName] = useState('');
+  const [nickname, setNickname] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [passwordConfirm, setPasswordConfirm] = useState('');
   const [error, setError] = useState({
-    password: "",
-    passwordConfirm: "",
+    password: '',
+    passwordConfirm: '',
   });
 
   const router = useRouter();
@@ -111,7 +111,7 @@ function SingUpPage() {
         {/* 아래 코드는 지울 예정입니다. */}
         <div className="w-72 h-[46px] absolute left-[14px] top-[740px] rounded-lg bg-[#d9d9d9]" />
         <Link
-          href={"/auth/login"}
+          href={'/auth/login'}
           className="absolute left-[100px] top-[750px] text-lg font-medium text-left text-black "
         >
           로그인하러 가기
