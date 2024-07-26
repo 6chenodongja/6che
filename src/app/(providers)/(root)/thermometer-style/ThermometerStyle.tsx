@@ -6,13 +6,13 @@ import { useRouter } from "next/navigation";
 import Header from "../../(components)/Header";
 
 const outfits = {
-  hot: ["/images.jpeg", "/images.jpeg", "/images.jpeg", "/images.jpeg"],
-  warm: ["/images.jpeg", "/images.jpeg", "/images.jpeg", "/images.jpeg"],
-  mild: ["/images.jpeg", "/images.jpeg", "/images.jpeg", "/images.jpeg"],
-  cool: ["/images.jpeg", "/images.jpeg", "/images.jpeg", "/images.jpeg"],
-  chilly: ["/images.jpeg", "/images.jpeg", "/images.jpeg", "/images.jpeg"],
-  cold: ["/images.jpeg", "/images.jpeg", "/images.jpeg", "/images.jpeg"],
-  coldest: ["/images.jpeg", "/images.jpeg", "/images.jpeg", "/images.jpeg"],
+  hot: ["/images.jpeg", "/muffler.png", "/images.jpeg", "/images.jpeg"],
+  warm: ["/images.jpeg", "/images.jpeg", "/muffler.png", "/images.jpeg"],
+  mild: ["/images.jpeg", "/images.jpeg", "/images.jpeg", "/muffler.png"],
+  cool: ["/muffler.png", "/muffler.png", "/images.jpeg", "/images.jpeg"],
+  chilly: ["/images.jpeg", "/muffler.png", "/muffler.png", "/images.jpeg"],
+  cold: ["/images.jpeg", "/images.jpeg", "/muffler.png", "/muffler.png"],
+  coldest: ["/muffler.png", "/muffler.png", "/muffler.png", "/muffler.png"],
 };
 
 const temperatureRanges = [
