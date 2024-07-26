@@ -5,6 +5,14 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'image.msscdn.net',
       },
+    ],
+  },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'image.msscdn.net',
+      },
       {
         protocol: 'https',
         hostname: 'developer.accuweather.com',
