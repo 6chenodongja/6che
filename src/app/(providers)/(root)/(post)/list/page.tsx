@@ -9,6 +9,7 @@ import { Tables } from '../../../../../../types/supabase';
 function PostList() {
   const [liked, setLiked] = useState<{ [key: string]: boolean }>({});
   const [post, setPost] = useState<Tables<'posts'>[]>([]);
+  const [users, setUsers] = useState<Tables<'users'>[]>([]);
 
   const User = 'a184313d-fac7-4c5d-8ee3-89e367cfb86f';
   const supabase = createClient();
@@ -108,6 +109,27 @@ function PostList() {
     fetchPostList();
   }, []);
 
+  // 유저 닉네임 가져오기
+  const fetchUsers = async () => {
+    const { data: userList } = await supabase
+      .from('users')
+      .select('*')
+      .eq('id', User);
+
+    if (userList) {
+      setUsers(userList);
+    }
+  };
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  const getNickName = (userId: string) => {
+    const user = users.find((user) => user.id === userId);
+    return user ? user.nick_name : 'Unknown';
+  };
+
   return (
     <div className="max-w-sm mx-auto h-auto m-10">
       <div>
@@ -155,7 +177,9 @@ function PostList() {
             <div className="mt-2">
               <div className="font-bold"></div>
               <div className="text-sm">
-                <div className="font-bold text-[20px]">닉네임</div>
+                <div className="font-bold text-[20px]">
+                  {getNickName(post.user_id)}
+                </div>
                 <div className="truncate">{post.comment}</div>
                 <div className="flex justify-between">
                   <span>{post.created_at?.split('T')[0]}</span>
