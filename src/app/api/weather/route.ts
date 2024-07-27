@@ -4,7 +4,7 @@ import axios from 'axios';
 // API 호출 및 데이터 반환
 export async function getWeather(locationKey: string) {
   try {
-    // const apiKey = 'U8AuE7Glix0G2AZ76oRKO1yPSW0gg5WR'; // AccuWeather API 키
+    const apiKey = 'U8AuE7Glix0G2AZ76oRKO1yPSW0gg5WR'; // AccuWeather API 키
 
     // 현재 날씨 데이터 요청
     const currentWeatherResponse = await axios.get(
