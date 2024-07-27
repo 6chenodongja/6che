@@ -73,7 +73,9 @@ const MainPage = () => {
 
   return (
     <div className="w-full h-full flex justify-center items-center bg-white">
-      <div className="w-80 h-[1926px] relative overflow-hidden bg-white">
+      <div
+        className={`w-80 ${isWeeklyWeatherVisible ? 'h-[2100px]' : 'h-[1926px]'} relative overflow-hidden bg-white`}
+      >
         <div className="w-80 h-14 absolute left-0 top-0 overflow-hidden bg-[#a2a2a2]">
           <div className="w-[30px] h-[30px] absolute left-[15px] top-3 bg-[#d9d9d9]" />
           <div className="w-[30px] h-[30px] absolute left-[273px] top-3 bg-[#d9d9d9]" />
