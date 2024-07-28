@@ -1,9 +1,9 @@
+
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-// import Header from "../../(components)/Header";
 
 const outfits = {
   hot: ["/images.jpeg", "/muffler.png", "/images.jpeg", "/images.jpeg"],
@@ -27,18 +27,16 @@ const temperatureRanges = [
 ];
 
 const ThermometerStyle = () => {
-  const [temperature, setTemperature] = useState("18°C");
+  const [temperatureIndex, setTemperatureIndex] = useState(4);
   const sliderRef = useRef<HTMLDivElement | null>(null);
   const controllerRef = useRef<HTMLDivElement | null>(null);
   const [isDragging, setIsDragging] = useState(false);
+
   const router = useRouter();
 
-  const handleTemperatureChange = (newTemperature: number) => {
-    const range = temperatureRanges.find(
-      (range) => newTemperature >= range.min
-    );
-    if (range) {
-      setTemperature(range.display);
+  const handleTemperatureChange = (newIndex: number) => {
+    if (newIndex >= 0 && newIndex < temperatureRanges.length) {
+      setTemperatureIndex(newIndex);
     }
   };
 
@@ -49,10 +47,10 @@ const ThermometerStyle = () => {
     const y = "clientY" in e ? e.clientY : e.touches[0].clientY;
     const sliderHeight = sliderRect.height;
     const relativeY = y - sliderRect.top;
-    const percentage = 1 - relativeY / sliderHeight;
-    const newTemperature = Math.round(percentage * 24 + 4);
+    const percentage = relativeY / sliderHeight;
+    const newIndex = Math.round((temperatureRanges.length - 1) * percentage);
 
-    handleTemperatureChange(newTemperature);
+    handleTemperatureChange(newIndex);
   };
 
   const handleMouseDown = () => {
@@ -86,29 +84,36 @@ const ThermometerStyle = () => {
     };
   }, []);
 
-  const getOutfitsForTemperature = (temp: string) => {
-    const range = temperatureRanges.find((range) => range.display === temp);
+  const getOutfitsForTemperature = (tempIndex: number) => {
+    const range = temperatureRanges[tempIndex];
     return range ? outfits[range.label] : outfits.coldest;
   };
 
-  const currentOutfits = getOutfitsForTemperature(temperature) || [];
+  const currentOutfits = getOutfitsForTemperature(temperatureIndex) || [];
 
   const handleSurveyPage = () => {
     router.push("/surveypage");
   };
 
   return (
-    <div>
-      {/* <Header /> */}
-      <div className="max-w-sm mx-auto h-auto m-10">
-        <h1 className="text-2xl font-bold mb-4">기온별 옷차림</h1>
-        <p className="mb-4">기온에 따라 다른 옷차림을 확인해보세요.</p>
-        <div className="flex items-center mb-4">
+    <div className="max-w-sm mx-auto h-auto m-10">
+      <h1 className="text-2xl font-bold mb-4">기온별 옷차림</h1>
+      <p className="mb-4">기온에 따라 다른 옷차림을 확인해보세요.</p>
+      <div className="flex items-center">
+        <div className="flex flex-col items-center mr-4">
+          <button
+            className="bg-transparent mb-2"
+            onClick={() => handleTemperatureChange(temperatureIndex - 1)}
+          >
+            ▲
+          </button>
           <div
             ref={sliderRef}
-            className="relative h-64 w-10 flex-shrink-0"
+            className="relative h-64 w-10 flex-shrink-0 flex flex-col items-center justify-between"
             onMouseMove={handleMouseMove}
             onTouchMove={handleTouchMove}
+            onMouseDown={handleMouseDown}
+            onTouchStart={handleMouseDown}
           >
             <Image
               src="/thermometer-body.png"
@@ -119,43 +124,49 @@ const ThermometerStyle = () => {
             />
             <div
               ref={controllerRef}
-              className="absolute w-full cursor-pointer bg-white rounded-full border-2 border-gray-300"
+              className="absolute cursor-pointer bg-white rounded-md border-2 border-gray-300"
               style={{
-                top: `${100 - ((parseInt(temperature) - 4) / 24) * 100}%`,
+                top: `${(temperatureIndex / (temperatureRanges.length - 1)) * 100}%`,
                 transform: "translateY(-50%)",
-                width: "40px",
-                height: "40px",
+                width: "50px",
+                height: "25px",
               }}
-              onMouseDown={handleMouseDown}
-              onTouchStart={handleMouseDown}
             />
           </div>
-          <span className="ml-2 text-sm w-20 text-center whitespace-nowrap">
-            {temperature}
-          </span>
-          <div className="grid grid-cols-2 gap-4 ml-4">
-            {currentOutfits.map((src, index) => (
-              <Image
-                key={index}
-                src={src}
-                alt={`Outfit ${index + 1}`}
-                width={100}
-                height={100}
-              />
-            ))}
-          </div>
-        </div>
-        <div className="flex flex-col items-center w-full mt-4">
-          <button className="w-full px-4 py-2 bg-gray-200 rounded mb-2">
-            코디 보러가기
-          </button>
           <button
-            className="w-full px-4 py-2 bg-gray-200 rounded"
-            onClick={handleSurveyPage}
+            className="bg-transparent mt-2"
+            onClick={() => handleTemperatureChange(temperatureIndex + 1)}
           >
-            내 취향 코디 추천받기
+            ▼
           </button>
         </div>
+        <div className="flex flex-col items-center">
+          <span className="block text-center mb-2 text-sm w-full whitespace-nowrap">
+            {temperatureRanges[temperatureIndex].display}
+          </span>
+        </div>
+        <div className="grid grid-cols-2 gap-4 ml-4">
+          {currentOutfits.map((src, index) => (
+            <Image
+              key={index}
+              src={src}
+              alt={`Outfit ${index + 1}`}
+              width={100}
+              height={100}
+            />
+          ))}
+        </div>
+      </div>
+      <div className="flex flex-col items-center w-full mt-4">
+        <button className="w-full px-4 py-2 bg-gray-200 rounded mb-2">
+          코디 보러가기
+        </button>
+        <button
+          className="w-full px-4 py-2 bg-gray-200 rounded"
+          onClick={handleSurveyPage}
+        >
+          내 취향 코디 추천받기
+        </button>
       </div>
     </div>
   );
