@@ -153,10 +153,10 @@ const PostFormPage = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen">
+    <div className="max-w-sm mx-auto h-auto m-10">
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col w-full sm:w-96 p-5 border border-gray-300 relative"
+        className="flex flex-col w-full p-5 relative bg-white shadow-md rounded-lg"
       >
         <h2 className="text-xl font-bold mb-4">게시글 작성</h2>
 

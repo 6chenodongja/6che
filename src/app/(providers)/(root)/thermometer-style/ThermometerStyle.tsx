@@ -3,7 +3,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import Header from "../../(components)/Header";
+// import Header from "../../(components)/Header";
 
 const outfits = {
   hot: ["/images.jpeg", "/muffler.png", "/images.jpeg", "/images.jpeg"],
@@ -99,8 +99,8 @@ const ThermometerStyle = () => {
 
   return (
     <div>
-      <Header />
-      <div className="flex flex-col items-center p-4">
+      {/* <Header /> */}
+      <div className="max-w-sm mx-auto h-auto m-10">
         <h1 className="text-2xl font-bold mb-4">기온별 옷차림</h1>
         <p className="mb-4">기온에 따라 다른 옷차림을 확인해보세요.</p>
         <div className="flex items-center mb-4">
