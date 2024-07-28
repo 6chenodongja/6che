@@ -386,12 +386,13 @@ const PostFormPage = () => {
   const [images, setImages] = useState<File[]>([]);
   const [description, setDescription] = useState('');
   const [gender, setGender] = useState('');
-  const [style, setStyle] = useState('');
+  const [style, setStyle] = useState<string[]>([]);
   const [seasons, setSeasons] = useState<string[]>([]);
   const [locations, setLocations] = useState<string[]>([]);
   const [weatherIcon, setWeatherIcon] = useState<string | null>(null);
   const [temperature, setTemperature] = useState<string | null>(null);
   const [seasonError, setSeasonError] = useState(false);
+  const [styleError, setStyleError] = useState(false);
   const [locationError, setLocationError] = useState(false);
   const [imageError, setImageError] = useState(false);
 
@@ -403,6 +404,7 @@ const PostFormPage = () => {
     if (seasonError || locationError || imageError) {
       timer = setTimeout(() => {
         setSeasonError(false);
+        setStyleError(false);
         setLocationError(false);
         setImageError(false);
       }, 1000);
@@ -461,7 +463,7 @@ const PostFormPage = () => {
       created_at: new Date().toISOString(),
       like: 0,
       gender: gender,
-      style: style,
+      style: style.join(','), // 문자열 배열을 문자열로 변환
       seasons: seasons.join(','), // 문자열 배열을 문자열로 변환
       locations: locations.join(','), // 문자열 배열을 문자열로 변환
       //weather: `${weatherIcon} ${temperature}`,
@@ -479,7 +481,7 @@ const PostFormPage = () => {
     setImages([]);
     setDescription('');
     setGender('');
-    setStyle('');
+    setStyle([]);
     setSeasons([]);
     setLocations([]);
   };
@@ -499,7 +501,17 @@ const PostFormPage = () => {
   };
 
   const handleStyleClick = (selectedStyle: string) => {
-    setStyle(selectedStyle);
+    setStyle((prevStyles) => {
+      if (prevStyles.includes(selectedStyle)) {
+        return prevStyles.filter((style) => style !== selectedStyle);
+      } else if (prevStyles.length < 2) {
+        setStyleError(false);
+        return [...prevStyles, selectedStyle];
+      } else {
+        setStyleError(true);
+        return prevStyles;
+      }
+    });
   };
 
   const handleLocationClick = (selectedLocation: string) => {
@@ -522,6 +534,11 @@ const PostFormPage = () => {
       fileInputRef.current.click();
     }
   };
+
+  const buttonClass = (selected: boolean) =>
+    `px-2 py-0.5 border cursor-pointer rounded ${
+      selected ? 'border-2 border-black' : 'border-gray-300'
+    } text-black bg-white`;
 
   return (
     <div className="max-w-sm mx-auto h-auto m-10">
@@ -597,9 +614,7 @@ const PostFormPage = () => {
                 key={genderItem}
                 type="button"
                 onClick={() => setGender(genderItem)}
-                className={`px-2 py-0.5 border border-gray-300 cursor-pointer ${
-                  gender === genderItem ? 'bg-black text-white' : 'bg-gray-200 text-black'
-                }`}
+                className={buttonClass(gender === genderItem)}
               >
                 {genderItem}
               </button>
@@ -622,9 +637,7 @@ const PostFormPage = () => {
                 key={season}
                 type="button"
                 onClick={() => handleSeasonClick(season)}
-                className={`px-2 py-0.5 border border-gray-300 cursor-pointer ${
-                  seasons.includes(season) ? 'bg-black text-white' : 'bg-gray-200 text-black'
-                }`}
+                className={buttonClass(seasons.includes(season))}
               >
                 {season}
               </button>
@@ -637,30 +650,27 @@ const PostFormPage = () => {
           )}
         </label>
 
-                {/* 스타일 선택 섹션 */}
-                <label className="mb-8">
+        {/* 스타일 선택 섹션 */}
+        <label className="mb-8">
           <div className="font-semibold">스타일</div>
           <div className="flex flex-wrap gap-2 mt-1">
-            {['캐주얼','스트릿','걸리시','미니멀','스포티','시크','시티보이','로맨틱','시크','고프코어','워크웨어','레트로','클래식','프레피','에스닉','리조트'].map((styleItem) => (
+            {['캐주얼','스트릿','걸리시','미니멀','스포티','시크','시티보이','로맨틱','고프코어','워크웨어','레트로','클래식','프레피','에스닉','리조트'].map((styleItem) => (
               <button
                 key={styleItem}
                 type="button"
-                onClick={() => handleSeasonClick(styleItem)}
-                className={`px-2 py-0.5 border border-gray-300 cursor-pointer ${
-                  seasons.includes(styleItem) ? 'bg-black text-white' : 'bg-gray-200 text-black'
-                }`}
+                onClick={() => handleStyleClick(styleItem)}
+                className={buttonClass(style.includes(styleItem))}
               >
                 {styleItem}
               </button>
             ))}
           </div>
-          {seasonError && (
+          {styleError && (
             <div className="text-red-500 text-sm mt-1">
-              최대 2개의 계절을 선택할 수 있습니다.
+              최대 2개의 스타일을 선택할 수 있습니다.
             </div>
           )}
         </label>
-
 
         {/* 장소 선택 섹션 */}
         <label className="mb-8">
@@ -671,9 +681,7 @@ const PostFormPage = () => {
                 key={location}
                 type="button"
                 onClick={() => handleLocationClick(location)}
-                className={`px-2 py-0.5 border border-gray-300 cursor-pointer ${
-                  locations.includes(location) ? 'bg-black text-white' : 'bg-gray-200 text-black'
-                }`}
+                className={buttonClass(locations.includes(location))}
               >
                 {location}
               </button>
@@ -685,8 +693,6 @@ const PostFormPage = () => {
             </div>
           )}
         </label>
-
-
 
         <button
           type="submit"
