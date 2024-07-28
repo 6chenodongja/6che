@@ -400,17 +400,41 @@ const PostFormPage = () => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
-    let timer: NodeJS.Timeout;
-    if (seasonError || locationError || imageError) {
-      timer = setTimeout(() => {
+    let seasonTimer: NodeJS.Timeout;
+    if (seasonError) {
+      seasonTimer = setTimeout(() => {
         setSeasonError(false);
+      }, 1000);
+    }
+
+    let styleTimer: NodeJS.Timeout;
+    if (styleError) {
+      styleTimer = setTimeout(() => {
         setStyleError(false);
+      }, 1000);
+    }
+
+    let locationTimer: NodeJS.Timeout;
+    if (locationError) {
+      locationTimer = setTimeout(() => {
         setLocationError(false);
+      }, 1000);
+    }
+
+    let imageTimer: NodeJS.Timeout;
+    if (imageError) {
+      imageTimer = setTimeout(() => {
         setImageError(false);
       }, 1000);
     }
-    return () => clearTimeout(timer);
-  }, [seasonError, locationError, imageError]);
+
+    return () => {
+      clearTimeout(seasonTimer);
+      clearTimeout(styleTimer);
+      clearTimeout(locationTimer);
+      clearTimeout(imageTimer);
+    };
+  }, [seasonError, styleError, locationError, imageError]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
