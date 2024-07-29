@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
@@ -15,12 +14,28 @@ const PostFormPage = () => {
   const [style, setStyle] = useState<string[]>([]);
   const [seasons, setSeasons] = useState<string[]>([]);
   const [locations, setLocations] = useState<string[]>([]);
+  const [newStyle, setNewStyle] = useState('');
+  const [newLocation, setNewLocation] = useState('');
+  const [showStyleInput, setShowStyleInput] = useState(false);
+  const [showLocationInput, setShowLocationInput] = useState(false);
   const [weatherIcon, setWeatherIcon] = useState<string | null>(null);
   const [temperature, setTemperature] = useState<string | null>(null);
   const [seasonError, setSeasonError] = useState(false);
   const [styleError, setStyleError] = useState(false);
   const [locationError, setLocationError] = useState(false);
   const [imageError, setImageError] = useState(false);
+
+  const initialStyles = [
+    '캐주얼', '스트릿', '걸리시', '미니멀', '스포티', '시크', '시티보이', 
+    '로맨틱', '고프코어', '워크웨어', '레트로', '클래식', '프레피', '에스닉', '리조트'
+  ];
+  const initialLocations = [
+    '데일리', '데이트', '캠퍼스', '여행', '캠핑', '카페', '피크닉', '테니스',
+    '페스티벌', '바다', '등산', '러닝', '소개팅', '요가'
+  ];
+
+  const [styles, setStyles] = useState(initialStyles);
+  const [locationsList, setLocationsList] = useState(initialLocations);
 
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -209,6 +224,22 @@ const PostFormPage = () => {
     }
   };
 
+  const handleAddStyle = () => {
+    if (newStyle && !styles.includes(newStyle)) {
+      setStyles((prevStyles) => [...prevStyles, newStyle]);
+      setNewStyle('');
+      setShowStyleInput(false);
+    }
+  };
+
+  const handleAddLocation = () => {
+    if (newLocation && !locationsList.includes(newLocation)) {
+      setLocationsList((prevLocations) => [...prevLocations, newLocation]);
+      setNewLocation('');
+      setShowLocationInput(false);
+    }
+  };
+
   const buttonClass = (selected: boolean) =>
     `px-2 py-0.5 border cursor-pointer rounded ${
       selected ? 'border-2 border-black' : 'border-gray-300'
@@ -339,7 +370,7 @@ const PostFormPage = () => {
         <label className="mb-8">
           <div className="font-semibold">스타일 (최대 2개)</div>
           <div className="flex flex-wrap gap-2 mt-1">
-            {['캐주얼','스트릿','걸리시','미니멀','스포티','시크','시티보이','로맨틱','고프코어','워크웨어','레트로','클래식','프레피','에스닉','리조트'].map((styleItem) => (
+            {styles.map((styleItem) => (
               <button
                 key={styleItem}
                 type="button"
@@ -349,6 +380,31 @@ const PostFormPage = () => {
                 {styleItem}
               </button>
             ))}
+            {showStyleInput ? (
+              <div className="flex items-center gap-2">
+                <input
+                  type="text"
+                  value={newStyle}
+                  onChange={(e) => setNewStyle(e.target.value)}
+                  className="px-2 py-1 border border-gray-300 rounded"
+                />
+                <button
+                  type="button"
+                  onClick={handleAddStyle}
+                  className="px-2 py-1 bg-gray-200 rounded"
+                >
+                  추가
+                </button>
+              </div>
+            ) : (
+              <button
+                type="button"
+                onClick={() => setShowStyleInput(true)}
+                className="px-2 py-0.5 border border-gray-300 rounded"
+              >
+                +
+              </button>
+            )}
           </div>
           {styleError && (
             <div className="text-red-500 text-sm mt-1">
@@ -361,7 +417,7 @@ const PostFormPage = () => {
         <label className="mb-8">
           <div className="font-semibold">장소 (최대 2개)</div>
           <div className="flex flex-wrap gap-2 mt-1">
-            {['데일리','데이트','캠퍼스','여행','캠핑','카페','피크닉','테니스','페스티벌','바다','등산','러닝','소개팅','요가'].map((location) => (
+            {locationsList.map((location) => (
               <button
                 key={location}
                 type="button"
@@ -371,6 +427,31 @@ const PostFormPage = () => {
                 {location}
               </button>
             ))}
+            {showLocationInput ? (
+              <div className="flex items-center gap-2">
+                <input
+                  type="text"
+                  value={newLocation}
+                  onChange={(e) => setNewLocation(e.target.value)}
+                  className="px-2 py-1 border border-gray-300 rounded"
+                />
+                <button
+                  type="button"
+                  onClick={handleAddLocation}
+                  className="px-2 py-1 bg-gray-200 rounded"
+                >
+                  추가
+                </button>
+              </div>
+            ) : (
+              <button
+                type="button"
+                onClick={() => setShowLocationInput(true)}
+                className="px-2 py-0.5 border border-gray-300 rounded"
+              >
+                +
+              </button>
+            )}
           </div>
           {locationError && (
             <div className="text-red-500 text-sm mt-1">
@@ -391,6 +472,3 @@ const PostFormPage = () => {
 };
 
 export default PostFormPage;
-
-
-
