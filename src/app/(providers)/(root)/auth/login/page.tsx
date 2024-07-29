@@ -1,26 +1,27 @@
-'use client';
+"use client";
 
-import { createClient } from '@/supabase/client';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import React from 'react';
+import { createClient } from "@/supabase/client";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import React, { Provider } from "react";
+import { useAuthStore } from "@/zustand/store/useTagStore";
 
 const LoginPage = () => {
   const router = useRouter();
+  const setIsLoggedIn = useAuthStore((state) => state.setIsLoggedIn);
 
-  const handleKakaoLogin = async () => {
+  const handleSocialLogin = async (provider: 'google' | 'kakao') => {
     try {
       const supabase = createClient();
-      const { data, error } = await supabase.auth.signInWithOAuth({
-        provider: 'kakao',
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider,
         options: {
           redirectTo: `${process.env.NEXT_PUBLIC_BASE_URL}/auth/callback`,
         },
       });
-      if (error) throw error;
-      router.push(data.url);
+      if (error) throw error;      
     } catch (error) {
-      console.error("ERROR KAKAO", error.message);
+      console.error(`ERROR ${provider.toUpperCase()}`, error.message);
     }
   };
 
@@ -53,14 +54,14 @@ const LoginPage = () => {
         </div>
         <div className="flex justify-start items-center absolute left-[50px] top-[493px] gap-2">
           <Link
-            href={''}
+            href={""}
             className="flex-grow-0 flex-shrink-0 text-base text-left text-black"
           >
             아이디/비밀번호 찾기
           </Link>
           <div className="flex-grow-0 flex-shrink-0 w-px h-[22px] bg-[#d9d9d9]" />
           <Link
-            href={'/auth/signup'}
+            href={"/auth/signup"}
             className="flex-grow-0 flex-shrink-0 text-base text-left text-black"
           >
             회원가입
@@ -68,11 +69,11 @@ const LoginPage = () => {
         </div>
         <div className="w-72 h-12 absolute left-[15px] top-[600px] rounded-3xl bg-[#d9d9d9]" />
         <div className="w-72 h-12 absolute left-[15px] top-[658px] rounded-3xl bg-[#d9d9d9]" />
-        <button onClick={handleKakaoLogin} className="absolute left-[130px] top-[671px] text-base text-left text-black">
-          카카오톡
-        </button>
-        <button className="absolute left-[145px] top-[613px] text-base text-left text-black">
+        <button onClick={() => handleSocialLogin("google")} className="absolute left-[145px] top-[613px] text-base text-left text-black">
           구글
+        </button>
+        <button onClick={() => handleSocialLogin("kakao")} className="absolute left-[130px] top-[671px] text-base text-left text-black">
+          카카오톡
         </button>
         <div className="w-72 h-px absolute left-[15px] top-[557px] bg-[#d9d9d9]" />
         <input
