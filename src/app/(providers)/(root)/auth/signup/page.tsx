@@ -82,7 +82,7 @@ function SingUpPage() {
   };
 
   return (
-    <main className="w-80 h-[1407px] relative overflow-hidden bg-white m-auto">
+    <main className="w-[1600px] h-[1407px] relative overflow-hidden bg-white m-auto">
       <form onSubmit={onSubmit}>
         <h1 className="absolute left-4 top-36 text-2xl font-bold text-center text-black">
           회원가입
@@ -115,19 +115,22 @@ function SingUpPage() {
           <label className="self-stretch flex-grow-0 flex-shrink-0 w-72 text-lg text-left text-black">
             이메일
           </label>
-          <input
-            type="text"
-            onChange={onChangeId}
-            value={id}
-            placeholder="아이디"
-            className="flex-grow h-[42px] opacity-50 rounded-lg bg-[#d9d9d9]"
-          />
-          <input
-            type="text"
-            onChange={onChangeEmail}
-            value={email}
-            placeholder="이메일"
-          />
+          <div className="flex gap-2 h-[42px]">
+            <input
+              type="text"
+              onChange={onChangeId}
+              value={id}
+              placeholder="아이디"
+              className="opacity-40 rounded-lg bg-[#d9d9d9]"
+            />
+            <input
+              type="text"
+              onChange={onChangeEmail}
+              value={email}
+              placeholder="이메일"
+              className="opacity-40 rounded-lg bg-[#d9d9d9]"
+            />
+          </div>
         </div>
         <div className="flex flex-col justify-start items-start w-72 absolute left-4 top-[450px] pb-3">
           <label className="self-stretch flex-grow-0 flex-shrink-0 w-72 text-lg text-left text-black">
