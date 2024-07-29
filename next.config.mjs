@@ -26,9 +26,9 @@
 
 // 7/28 20:59
 //7/29 12:29
-// next.config.mjs
 
-/** @type {import('next').NextConfig} */
+
+
 const nextConfig = {
     images: {
       remotePatterns: [
