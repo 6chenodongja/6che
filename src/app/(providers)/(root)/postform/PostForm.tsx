@@ -1,5 +1,4 @@
 
-
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
@@ -72,6 +71,10 @@ const PostFormPage = () => {
       }
       setImages((prevImages) => [...prevImages, ...filesArray]);
     }
+  };
+
+  const handleRemoveImage = (index: number) => {
+    setImages((prevImages) => prevImages.filter((_, i) => i !== index));
   };
 
   const handleDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -202,6 +205,7 @@ const PostFormPage = () => {
   const handleFileUploadClick = () => {
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
+      fileInputRef.current.click();
     }
   };
 
@@ -222,7 +226,7 @@ const PostFormPage = () => {
         <label className="mb-4 flex flex-col items-start">
           <div className="flex gap-2 overflow-x-auto">
             {images.map((image, index) => (
-              <div key={index} className="w-24 h-32 p-1.5 flex-shrink-0">
+              <div key={index} className="relative w-24 h-32 p-1.5 flex-shrink-0">
                 <Image
                   src={URL.createObjectURL(image)}
                   alt={`Uploaded ${index}`}
@@ -230,26 +234,35 @@ const PostFormPage = () => {
                   height={128}
                   className="w-full h-full object-cover border border-gray-300"
                 />
+                <button
+                  type="button"
+                  className="absolute top-1 right-1 bg-white rounded-full text-gray-500 w-6 h-6 flex items-center justify-center"
+                  onClick={() => handleRemoveImage(index)}
+                >
+                  ×
+                </button>
               </div>
             ))}
-            <div
-              onClick={handleFileUploadClick}
-              className="w-24 h-32 bg-white flex flex-col justify-center items-center border border-gray-300 cursor-pointer flex-shrink-0 rounded-md"
-            >
-              {/* 숨겨진 파일 입력 요소 */}
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleImageChange}
-                className="hidden"
-                ref={fileInputRef}
-                multiple
-              />
-              {/* + 버튼 */}
-              <div className="text-2xl text-gray-500">+</div>
-               {/* 이미지 개수 표시 */}
-              <div className="text-sm text-gray-500 mt-1">{images.length}/3</div> 
-            </div>
+            {images.length < 3 && (
+              <div
+                onClick={handleFileUploadClick}
+                className="w-24 h-32 bg-white flex flex-col justify-center items-center border border-gray-300 cursor-pointer flex-shrink-0 rounded-md"
+              >
+                {/* 숨겨진 파일 입력 요소 */}
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className="hidden"
+                  ref={fileInputRef}
+                  multiple
+                />
+                {/* + 버튼 */}
+                <div className="text-2xl text-gray-500">+</div>
+                {/* 이미지 개수 표시 */}
+                <div className="text-sm text-gray-500 mt-1">{images.length}/3</div>
+              </div>
+            )}
           </div>
         </label>
 
@@ -378,5 +391,6 @@ const PostFormPage = () => {
 };
 
 export default PostFormPage;
+
 
 
