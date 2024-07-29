@@ -1,5 +1,7 @@
 'use client';
 
+import { createClient } from '@/supabase/client';
+import { SupabaseClient } from '@supabase/supabase-js';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
@@ -7,6 +9,7 @@ import React, { useState } from 'react';
 function SingUpPage() {
   const [name, setName] = useState('');
   const [nickname, setNickname] = useState('');
+  const [id, setId] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
@@ -14,7 +17,7 @@ function SingUpPage() {
     password: '',
     passwordConfirm: '',
   });
-
+  const supabase = createClient();
   // const router = useRouter();
 
   const onChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -23,19 +26,59 @@ function SingUpPage() {
   const onChangeNickname = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNickname(e.target.value);
   };
+  const onChangeId = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setId(e.target.value);
+  };
   const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
   };
   const onChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
+    if (e.target.value.length < 8) {
+      setError({
+        ...error,
+        password: '비밀번호는 최소 8자 이상입니다.',
+      });
+    } else {
+      setError({
+        ...error,
+        password: '',
+      });
+    }
   };
   const onChangePasswordConfirm = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPasswordConfirm(e.target.value);
+    if (e.target.value.length < 8) {
+      setError({
+        ...error,
+        passwordConfirm: '비밀번호는 최소 8자 이상입니다.',
+      });
+    }
   };
 
   // 새로고침 안 하게 하는 로직
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (email === '' || password === '' || passwordConfirm === '') {
+      alert('모든 항목을 입력 해 주세요.');
+      return;
+    }
+
+    if (password !== passwordConfirm) {
+      alert('비밀번호와 비밀번호 확인이 일치하지 않습니다.');
+      return;
+    }
+
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          name,
+          nickname,
+        },
+      },
+    });
   };
 
   return (
@@ -73,11 +116,17 @@ function SingUpPage() {
             이메일
           </label>
           <input
-            type="email"
+            type="text"
+            onChange={onChangeId}
+            value={id}
+            placeholder="아이디"
+            className="flex-grow h-[42px] opacity-50 rounded-lg bg-[#d9d9d9]"
+          />
+          <input
+            type="text"
             onChange={onChangeEmail}
             value={email}
-            placeholder="이메일 아이디"
-            className="flex-grow h-[42px] opacity-50 rounded-lg bg-[#d9d9d9]"
+            placeholder="이메일"
           />
         </div>
         <div className="flex flex-col justify-start items-start w-72 absolute left-4 top-[450px] pb-3">

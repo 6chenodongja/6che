@@ -1,7 +1,10 @@
+'use client';
+import { useRouter } from 'next/router';
 import React from 'react';
 
-function Logout() {
-  return <div></div>;
+function LogoutButton() {
+  const router = useRouter();
+  return <button className="">로그아웃</button>;
 }
 
-export default Logout;
+export default LogoutButton;
