@@ -1,12 +1,4 @@
-const nextConfig = {
-    images: {
-        remotePatterns: [
-            {
-                protocol: 'https',
-                hostname: 'image.msscdn.net'
-            }
-        ]
-    },
+const nextConfig = {  
     images: {
         remotePatterns: [
             {
