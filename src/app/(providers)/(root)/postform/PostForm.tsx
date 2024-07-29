@@ -1,4 +1,6 @@
 
+
+
 // 'use client';
 
 // import React, { useState, useRef, useEffect } from 'react';
@@ -133,9 +135,9 @@
 //       created_at: new Date().toISOString(),
 //       like: 0,
 //       gender: gender,
-//       style: style.join(','), 
-//       seasons: seasons.join(','), 
-//       locations: locations.join(','), 
+//       style: style.join(','), // 문자열 배열을 문자열로 변환
+//       seasons: seasons.join(','), // 문자열 배열을 문자열로 변환
+//       locations: locations.join(','), // 문자열 배열을 문자열로 변환
 //       weather: weatherInfo,
 //     };
 
@@ -233,7 +235,7 @@
 //             ))}
 //             <div
 //               onClick={handleFileUploadClick}
-//               className="w-24 h-32 bg-gray-200 flex justify-center items-center border border-gray-300 cursor-pointer flex-shrink-0"
+//               className="w-24 h-32  bg-white flex flex-col justify-center items-center border border-gray-300 cursor-pointer flex-shrink-0 relative"
 //             >
 //               {/* 숨겨진 파일 입력 요소 */}
 //               <input
@@ -246,6 +248,10 @@
 //               />
 //               {/* + 버튼 */}
 //               <div className="text-2xl text-gray-500">+</div>
+//               {/* 이미지 개수 표시 */}
+//               <div className="absolute bottom-1 text-xs text-gray-500">
+//                 {`${images.length}/3`}
+//               </div>
 //             </div>
 //           </div>
 //         </label>
@@ -429,7 +435,7 @@ const PostFormPage = () => {
     if (imageError) {
       imageTimer = setTimeout(() => {
         setImageError(false);
-      }, 1500);
+      }, 1000);
     }
 
     return () => {
@@ -611,7 +617,7 @@ const PostFormPage = () => {
             ))}
             <div
               onClick={handleFileUploadClick}
-              className="w-24 h-32 bg-gray-200 flex justify-center items-center border border-gray-300 cursor-pointer flex-shrink-0"
+              className="w-24 h-32 bg-white flex flex-col justify-center items-center border border-gray-300 cursor-pointer flex-shrink-0 rounded-md"
             >
               {/* 숨겨진 파일 입력 요소 */}
               <input
@@ -624,12 +630,13 @@ const PostFormPage = () => {
               />
               {/* + 버튼 */}
               <div className="text-2xl text-gray-500">+</div>
+              <div className="text-sm text-gray-500 mt-1">{images.length}/3</div> 
             </div>
           </div>
         </label>
 
         {imageError && (
-          <div className="text-red-500 text-sm mt-1">
+          <div className="text-sm absolute bottom-5 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white py-2 px-4 w-80 rounded">
             최대 3개의 이미지만 업로드할 수 있습니다.
           </div>
         )}
