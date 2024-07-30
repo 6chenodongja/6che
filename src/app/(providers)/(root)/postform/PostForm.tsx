@@ -387,7 +387,7 @@ const PostFormPage = () => {
         <label className="mb-8">
         <div className='flex items-baseline'>
           <div className="font-semibold">계절</div>
-          <div className='ml-2'>(최대 2개)</div>
+          <div className='ml-2 text-gray-600'>(최대 2개)</div>
           </div>
           <div className="flex flex-wrap gap-2 mt-1">
             {['봄', '여름', '가을', '겨울'].map((season) => (
@@ -408,112 +408,116 @@ const PostFormPage = () => {
           )}
         </label>
 
-        {/* 스타일 선택 섹션 */}
-        <label className="mb-8">
-          <div className='flex items-baseline'>
-          <div className="font-semibold">스타일</div>
-          <div className='ml-2'>(최대 2개)</div>
-          </div>
-          <div className="flex flex-wrap gap-2 mt-1">
-            {styles.map((styleItem) => (
-              <button
-                key={styleItem}
-                type="button"
-                onClick={() => handleStyleClick(styleItem)}
-                className={buttonClass(style.includes(styleItem))}
-              >
-                {styleItem}
-              </button>
-            ))}
-            {showStyleInput ? (
-              <div className="flex items-center gap-2">
-                <input
-                  type="text"
-                  value={newStyle}
-                  onChange={(e) => setNewStyle(e.target.value)}
-                  className="px-2 py-1 border border-gray-300 rounded"
-                />
-                <button
-                  type="button"
-                  onClick={handleAddStyle}
-                  className="px-2 py-1 bg-gray-200 rounded"
-                >
-                  추가
-                </button>
-              </div>
-            ) : (
-              <button
-                type="button"
-                onClick={() => setShowStyleInput(true)}
-                className="px-2 py-0.5 border border-gray-300 rounded"
-              >
-                +
-              </button>
-            )}
-          </div>
-          {styleError && (
-            <div className="text-red-500 text-sm mt-1">
-              최대 2개의 스타일을 선택할 수 있습니다.
-            </div>
-          )}
-        </label>
+{/*input창 사이즈 고정 */}
+{/* 스타일 선택 섹션 */}
+<label className="mb-8">
+  <div className="flex items-center justify-between">
+    <div className="flex items-baseline">
+      <div className="font-semibold">스타일</div>
+      <div className="ml-1 text-gray-600">(최대 2개)</div>
+    </div>
+    <button
+      type="button"
+      onClick={() => setShowStyleInput(true)}
+      className="text-xl leading-none bg-transparent border-none cursor-pointer"
+    >
+      +
+    </button>
+  </div>
+  <div className="flex flex-wrap gap-2 mt-1">
+    {styles.map((styleItem) => (
+      <button
+        key={styleItem}
+        type="button"
+        onClick={() => handleStyleClick(styleItem)}
+        className={buttonClass(style.includes(styleItem))}
+      >
+        {styleItem}
+      </button>
+    ))}
+    {showStyleInput && (
+      <div className="flex items-center gap-2">
+        <input
+          type="text"
+          value={newStyle}
+          onChange={(e) => setNewStyle(e.target.value)}
+          className="px-2 py-1 border border-gray-300 rounded"
+          onBlur={handleAddStyle} // 입력 필드에서 포커스가 벗어났을 때 태그 추가
+          autoFocus
+        />
+      </div>
+    )}
+  </div>
+  {styleError && (
+    <div className="text-red-500 text-sm mt-1">
+      최대 2개의 스타일을 선택할 수 있습니다.
+    </div>
+  )}
+</label>
+
+
+
 
         {/* 장소 선택 섹션 */}
-        <label className="mb-8">
-        <div className='flex items-baseline'>
-          <div className="font-semibold">장소</div>
-          <div className='ml-2'>(최대 2개)</div>
-          </div>
-          <div className="flex flex-wrap gap-2 mt-1">
-            {locationsList.map((location) => (
-              <button
-                key={location}
-                type="button"
-                onClick={() => handleLocationClick(location)}
-                className={buttonClass(locations.includes(location))}
-              >
-                {location}
-              </button>
-            ))}
-            {showLocationInput ? (
-              <div className="flex items-center gap-2">
-                <input
-                  type="text"
-                  value={newLocation}
-                  onChange={(e) => setNewLocation(e.target.value)}
-                  className="px-2 py-1 border border-gray-300 rounded"
-                />
-                <button
-                  type="button"
-                  onClick={handleAddLocation}
-                  className="px-2 py-1 bg-gray-200 rounded"
-                >
-                  추가
-                </button>
-              </div>
-            ) : (
-              <button
-                type="button"
-                onClick={() => setShowLocationInput(true)}
-                className="px-2 py-0.5 border border-gray-300 rounded"
-              >
-                +
-              </button>
-            )}
-          </div>
-          {locationError && (
-            <div className="text-red-500 text-sm mt-1">
-              최대 2개의 장소를 선택할 수 있습니다.
-            </div>
-          )}
-        </label>
-
+<label className="mb-8">
+  <div className="flex items-center justify-between">
+    <div className="flex items-baseline">
+      <div className="font-semibold">장소</div>
+      <div className="ml-1 text-gray-600">(최대 2개)</div>
+    </div>
+    {showLocationInput ? (
+      <div className="flex items-center gap-2">
+        <input
+          type="text"
+          value={newLocation}
+          onChange={(e) => setNewLocation(e.target.value)}
+          className="px-2 py-1 border border-gray-300 rounded"
+        />
         <button
+          type="button"
+          onClick={handleAddLocation}
+          className="px-2 py-1 bg-gray-200 rounded"
+        >
+          추가
+        </button>
+      </div>
+    ) : (
+      <button
+        type="button"
+        onClick={() => setShowLocationInput(true)}
+        className="text-black bg-transparent"
+        style={{ border: 'none', backgroundColor: 'transparent' }}
+      >
+        +
+      </button>
+    )}
+  </div>
+  <div className="flex flex-wrap gap-2 mt-1">
+    {locationsList.map((locationItem) => (
+      <button
+        key={locationItem}
+        type="button"
+        onClick={() => handleLocationClick(locationItem)}
+        className={buttonClass(locations.includes(locationItem))}
+      >
+        {locationItem}
+      </button>
+    ))}
+  </div>
+  {locationError && (
+    <div className="text-red-500 text-sm mt-1">
+      최대 2개의 장소를 선택할 수 있습니다.
+    </div>
+  )}
+</label>
+
+
+        {/* <button
           type="submit"
           className="bg-gray-950 text-white py-2 rounded mt-8"
         >
           작성 완료
-        </button>
+        </button> */}
       </form>
     </div>
   );

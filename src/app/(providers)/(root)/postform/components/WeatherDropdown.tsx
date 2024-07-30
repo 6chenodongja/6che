@@ -342,9 +342,9 @@ import Autocomplete from "@mui/material/Autocomplete";
 import Image from "next/image";
 
 const weatherIcons = [
-  { value: "/Sunny.png", label: "Sunny", src: "/Sunny.png" },
-  { value: "/Cloudy.png", label: "Cloudy", src: "/Cloudy.png" },
-  { value: "/Ice.png", label: "Ice", src: "/Ice.png" },
+  { value: "/Sunny.png", label: "맑음", src: "/Sunny.png" },
+  { value: "/Cloudy.png", label: "흐림", src: "/Cloudy.png" },
+  { value: "/Ice.png", label: "눈", src: "/Ice.png" },
 ];
 
 const temperatures = [
