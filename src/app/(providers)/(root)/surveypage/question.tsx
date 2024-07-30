@@ -66,7 +66,12 @@ const QuestionPage: React.FC = () => {
     setSelectedOptions(updatedOptions);
 
     const optionTagArray = optionTags[option] || [];
-    setTags((prevTags) => [...new Set([...prevTags, ...optionTagArray])]);
+    setTags((prevTags) => {
+      const newTags = [...new Set([...prevTags, ...optionTagArray])];
+    //   console.log('Updated Tags:', newTags); 
+      return newTags;
+    });
+    
   };
 
   const getOptionImage = (option: string) => {
@@ -127,6 +132,7 @@ const QuestionPage: React.FC = () => {
         ].includes(tag),
       )
       .slice(0, 2);
+    //   console.log('Final Tags:', { gender, style, seasons, locations });
 
     setTagsInStore({ gender, style, seasons, locations });
 
