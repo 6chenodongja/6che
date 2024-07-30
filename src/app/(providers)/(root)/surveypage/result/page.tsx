@@ -3,6 +3,7 @@ import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { createClient } from '@/supabase/client';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { useTagStore } from '@/zustand/store/useTagStore';
 
 interface Post {
@@ -14,6 +15,7 @@ const ResultPage: React.FC = () => {
     const [likes, setLikes] = useState(Array(4).fill(false));
     const [posts, setPosts] = useState<Post[]>([]);
     const { gender, style, seasons, locations } = useTagStore();
+    const router = useRouter();
 
     useEffect(() => {
         if (gender && style && seasons.length > 0 && locations.length > 0) {
@@ -47,10 +49,18 @@ const ResultPage: React.FC = () => {
         setLikes(newLikes);
     };
 
+    const handleBackClick = () => {
+        router.back();
+    };
+
     return (
         <div className="w-80 mx-auto flex flex-col items-center justify-start h-screen bg-white p-4 relative gap-4 mt-20">
-            <h1 className="text-xl font-medium text-left text-black w-full">내 코디 찾기</h1>
-            <div className="grid grid-cols-2 gap-4 mb-4 mt-4">
+            <div className="flex items-center w-full absolute top-0 left-4">
+                <button onClick={handleBackClick} className="text-xl font-medium text-black">
+                    ᐸ
+                </button>
+            </div>
+            <div className="grid grid-cols-2 gap-4 mb-4 mt-20">
                 {posts.map((post, index) => (
                     <div
                         key={post.id}
@@ -71,11 +81,10 @@ const ResultPage: React.FC = () => {
                         </button>
                     </div>
                 ))}
-            </div>
-            <h2 className="h-20 text-lg font-medium text-center text-black w-full">결과</h2>
-            <h3 className="text-sm text-left text-black">더 많은 코디를 보고싶다면</h3>
+            </div>            
+            <h2 className="text-sm text-left text-[#121212]" style={{marginTop:'40px'}}>더 많은 코디를 보고싶다면</h2>
             <Link href="/list">
-                <button className="w-72 h-[46px] rounded-lg bg-[#d9d9d9]">게시글 보러가기</button>
+                <button className="w-72 h-[46px] rounded-lg bg-[#121212] text-white">게시글 보러가기</button>
             </Link>
         </div>
     );
