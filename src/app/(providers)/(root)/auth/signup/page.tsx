@@ -1,24 +1,26 @@
 'use client';
 
 import { createClient } from '@/supabase/client';
-import { SupabaseClient } from '@supabase/supabase-js';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
 function SingUpPage() {
   const [name, setName] = useState('');
   const [nickname, setNickname] = useState('');
-  const [id, setId] = useState('');
+  // const [id, setId] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
   const [error, setError] = useState({
+    name: '',
+    nickname: '',
     password: '',
     passwordConfirm: '',
   });
+
   const supabase = createClient();
-  // const router = useRouter();
+  const router = useRouter();
 
   const onChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
@@ -26,9 +28,9 @@ function SingUpPage() {
   const onChangeNickname = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNickname(e.target.value);
   };
-  const onChangeId = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setId(e.target.value);
-  };
+  // const onChangeId = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   setId(e.target.value);
+  // };
   const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
   };
@@ -53,6 +55,11 @@ function SingUpPage() {
         ...error,
         passwordConfirm: '비밀번호는 최소 8자 이상입니다.',
       });
+    } else {
+      setError({
+        ...error,
+        passwordConfirm: '',
+      });
     }
   };
 
@@ -69,6 +76,7 @@ function SingUpPage() {
       return;
     }
 
+    // supabase 연결
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
@@ -79,10 +87,19 @@ function SingUpPage() {
         },
       },
     });
+
+    if (error) {
+      return alert(error.message);
+    }
+    // 확인용 알럿입니다. (추후에 페이지로 회원가입 완료 되었다 라고 보이게 변경 될 것 같습니다.)
+    alert('회원가입이 완료 됐습니다.');
+
+    // 메인 페이지로 이동
+    router.replace('/auth/login');
   };
 
   return (
-    <main className="w-80 h-[1407px] relative overflow-hidden bg-white m-auto">
+    <main className="w-[1600px] h-[1407px] relative overflow-hidden bg-white m-auto">
       <form onSubmit={onSubmit}>
         <h1 className="absolute left-4 top-36 text-2xl font-bold text-center text-black">
           회원가입
@@ -115,19 +132,22 @@ function SingUpPage() {
           <label className="self-stretch flex-grow-0 flex-shrink-0 w-72 text-lg text-left text-black">
             이메일
           </label>
-          <input
-            type="text"
-            onChange={onChangeId}
-            value={id}
-            placeholder="아이디"
-            className="flex-grow h-[42px] opacity-50 rounded-lg bg-[#d9d9d9]"
-          />
-          <input
-            type="text"
-            onChange={onChangeEmail}
-            value={email}
-            placeholder="이메일"
-          />
+          <div className="flex gap-2 h-[42px]">
+            <input
+              type="text"
+              onChange={onChangeEmail}
+              value={email}
+              placeholder="아이디"
+              className="opacity-40 rounded-lg bg-[#d9d9d9]"
+            />
+            {/* <input
+              type="text"
+              onChange={onChangeEmail}
+              value={email}
+              placeholder="이메일"
+              className="opacity-40 rounded-lg bg-[#d9d9d9]"
+            /> */}
+          </div>
         </div>
         <div className="flex flex-col justify-start items-start w-72 absolute left-4 top-[450px] pb-3">
           <label className="self-stretch flex-grow-0 flex-shrink-0 w-72 text-lg text-left text-black">
@@ -141,6 +161,9 @@ function SingUpPage() {
             className="self-stretch flex-grow-0 flex-shrink-0 h-[42px] opacity-50 rounded-lg bg-[#d9d9d9]"
           />
         </div>
+        {error.passwordConfirm && (
+          <p className="text-red-500">{error.passwordConfirm}</p>
+        )}
         <div className="flex flex-col justify-start items-start w-72 absolute left-4 top-[531px] pb-3">
           <label className="self-stretch flex-grow-0 flex-shrink-0 w-72 text-lg text-left text-black">
             비밀번호 확인
@@ -153,6 +176,9 @@ function SingUpPage() {
             className="self-stretch flex-grow-0 flex-shrink-0 h-[42px] opacity-50 rounded-lg bg-[#d9d9d9]"
           />
         </div>
+        {error.passwordConfirm && (
+          <p className="text-red-500">{error.passwordConfirm}</p>
+        )}
         <div className="w-72 h-[46px] absolute left-[15px] top-[679px] rounded-lg bg-[#d9d9d9]" />
         <button className="absolute left-[126px] top-[689px] text-lg font-medium text-left text-black ">
           회원가입
