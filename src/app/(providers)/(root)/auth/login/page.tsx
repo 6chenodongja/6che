@@ -1,8 +1,30 @@
-import Link from "next/link";
-import React, { useState } from "react";
+"use client";
 
-function LoginPage() {
-  // const [name, setName] = useState("");
+import { createClient } from "@/supabase/client";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import React, { Provider } from "react";
+import { useAuthStore } from "@/zustand/store/useTagStore";
+
+const LoginPage = () => {
+  const router = useRouter();
+  const setIsLoggedIn = useAuthStore((state) => state.setIsLoggedIn);
+
+  const handleSocialLogin = async (provider: 'google' | 'kakao') => {
+    try {
+      const supabase = createClient();
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider,
+        options: {
+          redirectTo: `${process.env.NEXT_PUBLIC_BASE_URL}/auth/callback`,
+        },
+      });
+      if (error) throw error;      
+    } catch (error) {
+      console.error(`ERROR ${provider.toUpperCase()}`, error.message);
+    }
+  };
+
   return (
     <main className="w-80 h-[1486px] relative overflow-hidden bg-white m-auto">
       <div>
@@ -47,15 +69,11 @@ function LoginPage() {
         </div>
         <div className="w-72 h-12 absolute left-[15px] top-[600px] rounded-3xl bg-[#d9d9d9]" />
         <div className="w-72 h-12 absolute left-[15px] top-[658px] rounded-3xl bg-[#d9d9d9]" />
-        <div className="w-72 h-12 absolute left-[15px] top-[716px] rounded-3xl bg-[#d9d9d9]" />
-        <button className="absolute left-[145px] top-[613px] text-base text-left text-black">
+        <button onClick={() => handleSocialLogin("google")} className="absolute left-[145px] top-[613px] text-base text-left text-black">
           구글
         </button>
-        <button className="absolute left-[130px] top-[671px] text-base text-left text-black">
+        <button onClick={() => handleSocialLogin("kakao")} className="absolute left-[130px] top-[671px] text-base text-left text-black">
           카카오톡
-        </button>
-        <button className="absolute left-[145px] top-[729px] text-base text-left text-black">
-          애플
         </button>
         <div className="w-72 h-px absolute left-[15px] top-[557px] bg-[#d9d9d9]" />
         <input
