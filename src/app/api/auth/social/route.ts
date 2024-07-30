@@ -7,24 +7,22 @@ export async function GET(request: Request) {
   const provider = url.searchParams.get('provider');
 
   if (!provider) {
-    console.error('Provider is required');
     return NextResponse.json(
       { error: 'Provider is required' },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
-  let redirectTo = `${process.env.NEXT_PUBLIC_BASE_URL}/auth/callback`;
+  const redirectTo = `${process.env.NEXT_PUBLIC_BASE_URL}/auth/callback`;
 
   const { data, error } = await supabase.auth.signInWithOAuth({
-    provider: provider as 'kakao' | 'google',
+    provider: provider as 'google' | 'kakao',
     options: {
       redirectTo,
     },
   });
 
   if (error) {
-    console.error('Error in signInWithOAuth:', error.message);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 

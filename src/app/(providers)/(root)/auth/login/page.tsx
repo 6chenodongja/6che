@@ -4,12 +4,14 @@ import { createClient } from '@/supabase/client';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useRef } from 'react';
+import { useAuthStore } from '@/zustand/store/useTagStore';
 
 function LoginPage() {
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const supabase = createClient();
   const router = useRouter();
+  const setIsLoggedIn = useAuthStore((state) => state.setIsLoggedIn);
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -33,28 +35,21 @@ function LoginPage() {
 
     router.prefetch('/');
   };
-"use client";
-
-import { createClient } from "@/supabase/client";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import React, { Provider } from "react";
-import { useAuthStore } from "@/zustand/store/useTagStore";
-
-const LoginPage = () => {
-  const router = useRouter();
-  const setIsLoggedIn = useAuthStore((state) => state.setIsLoggedIn);
 
   const handleSocialLogin = async (provider: 'google' | 'kakao') => {
     try {
-      const supabase = createClient();
-      const { error } = await supabase.auth.signInWithOAuth({
+      const { data, error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
           redirectTo: `${process.env.NEXT_PUBLIC_BASE_URL}/auth/callback`,
         },
       });
-      if (error) throw error;      
+      if (error) throw error;
+
+      if (data) {
+        setIsLoggedIn(true);
+        window.location.href = data.url;
+      }
     } catch (error) {
       console.error(`ERROR ${provider.toUpperCase()}`, error.message);
     }
@@ -113,17 +108,21 @@ const LoginPage = () => {
       </div>
       <div className="w-72 h-12 absolute left-[15px] top-[600px] rounded-3xl bg-[#d9d9d9]" />
       <div className="w-72 h-12 absolute left-[15px] top-[658px] rounded-3xl bg-[#d9d9d9]" />
-      <button className="absolute left-[145px] top-[613px] text-base text-left text-black">
+      <button
+        type="button"
+        onClick={() => handleSocialLogin('google')}
+        className="absolute left-[145px] top-[613px] text-base text-left text-black"
+      >
         구글
       </button>
-      <button className="absolute left-[130px] top-[671px] text-base text-left text-black">
+      <button
+        type="button"
+        onClick={() => handleSocialLogin('kakao')}
+        className="absolute left-[130px] top-[671px] text-base text-left text-black"
+      >
         카카오톡
       </button>
       <div className="w-72 h-px absolute left-[15px] top-[557px] bg-[#d9d9d9]" />
-      {/* <input
-        type="checkbox"
-        className="w-5 h-5 absolute left-[15px] top-[395px] bg-[#d9d9d9]"
-      /> */}
       <p className="absolute left-[43px] top-[395px] text-sm text-left text-black">
         자동로그인
       </p>
