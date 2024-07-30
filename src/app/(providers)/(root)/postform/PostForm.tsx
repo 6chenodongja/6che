@@ -1,3 +1,8 @@
+// 7/30 10:49
+// 파일 업로드 부분 수정
+// 파일 업로드 창 2번 뜨는 거 수정 완료
+// 삭제 버튼 누르면 파일 업로드 창도 같이 뜨는 거 
+// 사진 삭제
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
@@ -26,24 +31,10 @@ const PostFormPage = () => {
   const [imageError, setImageError] = useState(false);
 
   const initialStyles = [
-    "미니멀",
-    "아메카지",
-    "시티보이",
-    "캐주얼",
-    "비즈니스캐주얼",
-    "스포츠",
-    "빈티지",
-
+    '미니멀', '아메카지', '시티보이', '캐주얼', '비즈니스캐주얼', '스포츠', '빈티지'
   ];
   const initialLocations = [
-"데이트",
-              "캠퍼스",
-              "카페",
-              "출근",
-              "결혼식",
-              "바다",
-              "여행",
-              "데일리"
+    '데이트', '캠퍼스', '카페', '출근', '결혼식', '바다', '여행', '데일리'
   ];
 
   const [styles, setStyles] = useState(initialStyles);
@@ -51,6 +42,7 @@ const PostFormPage = () => {
 
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  // const [isFileUploadClicked, setIsFileUploadClicked] = useState(false);
 
   useEffect(() => {
     let seasonTimer: NodeJS.Timeout;
@@ -92,12 +84,14 @@ const PostFormPage = () => {
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const filesArray = Array.from(e.target.files);
+      console.log(filesArray);
       if (images.length + filesArray.length > 3) {
         setImageError(true);
         return;
       }
       setImages((prevImages) => [...prevImages, ...filesArray]);
     }
+    // setIsFileUploadClicked(false); // 파일 선택 후 다시 false로 설정
   };
 
   const handleRemoveImage = (index: number) => {
@@ -170,13 +164,29 @@ const PostFormPage = () => {
       weather: weatherInfo,
     };
 
-    const { error } = await supabase.from('posts').insert([postData]);
+    const { error: postError } = await supabase.from('posts').insert([postData]);
 
-    if (error) {
-      console.error('Error inserting data:', error);
+    if (postError) {
+      console.error('Error inserting data:', postError);
     } else {
       console.log('Data inserted successfully');
       router.push('/list');
+    }
+
+    // 사용자 정의 태그 저장
+    const user_id = 'a184313d-fac7-4c5d-8ee3-89e367cfb86f'; // 실제 UUID 값 사용
+    const customTags = [
+      ...styles.filter(styleItem => !initialStyles.includes(styleItem)).map(tag => ({ user_id, tag_type: 'style', tag_name: tag })),
+      ...locations.filter(locationItem => !initialLocations.includes(locationItem)).map(tag => ({ user_id, tag_type: 'location', tag_name: tag }))
+    ];
+
+    if (customTags.length > 0) {
+      const { error: customTagError } = await supabase.from('custom_tags').insert(customTags);
+      if (customTagError) {
+        console.error('Error inserting custom tags:', customTagError);
+      } else {
+        console.log('Custom tags inserted successfully');
+      }
     }
 
     setImages([]);
@@ -229,12 +239,18 @@ const PostFormPage = () => {
     });
   };
 
-  const handleFileUploadClick = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
-      fileInputRef.current.click();
-    }
-  };
+
+  // 수정
+  // const handleFileUploadClick = () => {
+  //   setIsFileUploadClicked(true); // 파일 업로드 버튼이 클릭됨을 설정
+  // // };
+
+  // useEffect(() => {
+  //   if (isFileUploadClicked && fileInputRef.current) {
+  //     fileInputRef.current.value = '';
+  //     fileInputRef.current.click();
+  //   }
+  // }, [isFileUploadClicked]);
 
   const handleAddStyle = () => {
     if (newStyle && !styles.includes(newStyle)) {
@@ -252,10 +268,14 @@ const PostFormPage = () => {
     }
   };
 
+
+
   const buttonClass = (selected: boolean) =>
-    `px-2 py-0.5 border cursor-pointer rounded ${
-      selected ? 'border-2 border-black' : 'border-gray-300'
-    } text-black bg-white`;
+    `px-2 py-0.5 border-2 cursor-pointer rounded ${
+      selected ? 'border-black bg-black text-white' : 'border-gray-100 bg-gray-100 text-black'
+    }`;
+  
+  
 
   return (
     <div className="max-w-sm mx-auto h-auto m-10">
@@ -263,7 +283,14 @@ const PostFormPage = () => {
         onSubmit={handleSubmit}
         className="flex flex-col w-full sm:w-96 p-5 border border-gray-300 relative"
       >
-        <h2 className="text-xl font-bold mb-4">게시글 작성</h2>
+
+
+        <div className='flex justify-between items-center mb-4'>
+          <h2 className='text-xl font-bold'>게시글 작성</h2>
+          <button 
+            type='submit'
+            className='bg-black text-white py-2 px-3 rounded-xl'>완료</button>
+        </div>
 
         {/* 사진 업로드 섹션 */}
         <label className="mb-4 flex flex-col items-start">
@@ -287,8 +314,8 @@ const PostFormPage = () => {
               </div>
             ))}
             {images.length < 3 && (
-              <div
-                onClick={handleFileUploadClick}
+              <label
+                // onClick={handleFileUploadClick}
                 className="w-24 h-32 bg-white flex flex-col justify-center items-center border border-gray-300 cursor-pointer flex-shrink-0 rounded-md"
               >
                 {/* 숨겨진 파일 입력 요소 */}
@@ -297,14 +324,14 @@ const PostFormPage = () => {
                   accept="image/*"
                   onChange={handleImageChange}
                   className="hidden"
-                  ref={fileInputRef}
+                  // ref={fileInputRef}
                   multiple
                 />
                 {/* + 버튼 */}
                 <div className="text-2xl text-gray-500">+</div>
                 {/* 이미지 개수 표시 */}
                 <div className="text-sm text-gray-500 mt-1">{images.length}/3</div>
-              </div>
+              </label>
             )}
           </div>
         </label>
@@ -322,7 +349,7 @@ const PostFormPage = () => {
             value={description}
             onChange={handleDescriptionChange}
             className="w-full h-24 p-2 mt-1 border-none border-b border-gray-300 placeholder-gray-400 resize-none"
-            placeholder="착용한 #아이템 및 스타일을 소개해 주세요."
+            placeholder="스타일에 대한 이야기를 써주세요"
             maxLength={200}
             required
           />
@@ -336,7 +363,7 @@ const PostFormPage = () => {
         <label className="mb-8">
           <div className="font-bold">유형</div>
 
-          <div className="flex gap-2 mt-1">
+          <div className="flex gap-2 mt-1 ">
             {['남성', '여성', '선택 안함'].map((genderItem) => (
               <button
                 key={genderItem}
@@ -358,7 +385,10 @@ const PostFormPage = () => {
 
         {/* 계절 선택 섹션 */}
         <label className="mb-8">
-          <div className="font-semibold">계절 (최대 2개)</div>
+        <div className='flex items-baseline'>
+          <div className="font-semibold">계절</div>
+          <div className='ml-2'>(최대 2개)</div>
+          </div>
           <div className="flex flex-wrap gap-2 mt-1">
             {['봄', '여름', '가을', '겨울'].map((season) => (
               <button
@@ -380,7 +410,10 @@ const PostFormPage = () => {
 
         {/* 스타일 선택 섹션 */}
         <label className="mb-8">
-          <div className="font-semibold">스타일 (최대 2개)</div>
+          <div className='flex items-baseline'>
+          <div className="font-semibold">스타일</div>
+          <div className='ml-2'>(최대 2개)</div>
+          </div>
           <div className="flex flex-wrap gap-2 mt-1">
             {styles.map((styleItem) => (
               <button
@@ -427,7 +460,10 @@ const PostFormPage = () => {
 
         {/* 장소 선택 섹션 */}
         <label className="mb-8">
-          <div className="font-semibold">장소 (최대 2개)</div>
+        <div className='flex items-baseline'>
+          <div className="font-semibold">장소</div>
+          <div className='ml-2'>(최대 2개)</div>
+          </div>
           <div className="flex flex-wrap gap-2 mt-1">
             {locationsList.map((location) => (
               <button
@@ -484,3 +520,5 @@ const PostFormPage = () => {
 };
 
 export default PostFormPage;
+
+
