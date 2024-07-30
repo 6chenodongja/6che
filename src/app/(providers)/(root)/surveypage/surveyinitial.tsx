@@ -27,6 +27,7 @@ const SurveyLayout: React.FC = () => {
             <div className="relative">
               <div className="absolute top-[-60px] right-[-60px]">
                 <Image src={top} alt="Top Clothes" width={90} height={112} />
+                {/* figma 위치값 수정 후 재수정 해야함 */}
               </div>
               <div className="absolute top-[20px] left-[-60px]">
                 <Image
@@ -35,6 +36,7 @@ const SurveyLayout: React.FC = () => {
                   width={60}
                   height={60}
                 />
+                {/* figma 위치값 수정 후 재수정 해야함 */}
               </div>
               <div className="absolute top-[60px] right-[-40px]">
                 <Image
@@ -43,6 +45,7 @@ const SurveyLayout: React.FC = () => {
                   width={60}
                   height={60}
                 />
+                {/* figma 위치값 수정 후 재수정 해야함 */}
               </div>
               <div
                 className="flex justify-center items-center gap-2 px-4 py-2 rounded-[1000px] bg-[#ffc329]/80 border border-white/50 backdrop-blur-[20px]"
