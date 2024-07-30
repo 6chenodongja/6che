@@ -55,6 +55,11 @@ function SingUpPage() {
         ...error,
         passwordConfirm: '비밀번호는 최소 8자 이상입니다.',
       });
+    } else {
+      setError({
+        ...error,
+        passwordConfirm: '',
+      });
     }
   };
 
@@ -70,6 +75,7 @@ function SingUpPage() {
       alert('비밀번호와 비밀번호 확인이 일치하지 않습니다.');
       return;
     }
+
     // supabase 연결
     const { data, error } = await supabase.auth.signUp({
       email,
@@ -89,7 +95,7 @@ function SingUpPage() {
     alert('회원가입이 완료 됐습니다.');
 
     // 메인 페이지로 이동
-    router.replace('/');
+    router.replace('/auth/login');
   };
 
   return (
@@ -155,7 +161,9 @@ function SingUpPage() {
             className="self-stretch flex-grow-0 flex-shrink-0 h-[42px] opacity-50 rounded-lg bg-[#d9d9d9]"
           />
         </div>
-        {error.password && <p className="text-red-500">{error.password}</p>}
+        {error.passwordConfirm && (
+          <p className="text-red-500">{error.passwordConfirm}</p>
+        )}
         <div className="flex flex-col justify-start items-start w-72 absolute left-4 top-[531px] pb-3">
           <label className="self-stretch flex-grow-0 flex-shrink-0 w-72 text-lg text-left text-black">
             비밀번호 확인

@@ -1,17 +1,37 @@
 'use client';
 
+import { createClient } from '@/supabase/client';
 import Link from 'next/link';
-import React, { useRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import React, { useRef } from 'react';
 
 function LoginPage() {
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
+  const supabase = createClient();
+  const router = useRouter();
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (emailRef.current && passwordRef.current) {
-      console.log(emailRef.current.value, passwordRef.current.value);
+    const email = emailRef.current?.value;
+    const password = passwordRef.current?.value;
+
+    if (!email || !password) {
+      alert('모든 항목을 입력해 주세요.');
+      return;
     }
+
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: email,
+      password: password,
+    });
+
+    if (error) {
+      alert(error.message);
+      return;
+    }
+
+    router.prefetch('/');
   };
   return (
     <form
@@ -22,7 +42,10 @@ function LoginPage() {
         로그인
       </h1>
       <div className="flex flex-col justify-start items-start w-72 absolute left-4 top-[207px] pb-3">
-        <label className="self-stretch flex-grow-0 flex-shrink-0 w-72 text-lg text-left text-black">
+        <label
+          htmlFor="email"
+          className="self-stretch flex-grow-0 flex-shrink-0 w-72 text-lg text-left text-black"
+        >
           이메일
         </label>
         <input
@@ -70,10 +93,10 @@ function LoginPage() {
         카카오톡
       </button>
       <div className="w-72 h-px absolute left-[15px] top-[557px] bg-[#d9d9d9]" />
-      <input
+      {/* <input
         type="checkbox"
         className="w-5 h-5 absolute left-[15px] top-[395px] bg-[#d9d9d9]"
-      />
+      /> */}
       <p className="absolute left-[43px] top-[395px] text-sm text-left text-black">
         자동로그인
       </p>
