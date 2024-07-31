@@ -59,7 +59,7 @@ const MainPage = () => {
     fetchWeather();
   }, []);
 
-  const nphandleWeeklyWeatherClick = async () => {
+  const handleWeeklyWeatherClick = async () => {
     if (!isWeeklyWeatherVisible) {
       try {
         const weeklyWeatherData = await getWeeklyWeather('226081'); // 서울의 위치 키 예시
