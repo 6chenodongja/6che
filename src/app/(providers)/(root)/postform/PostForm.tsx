@@ -309,7 +309,6 @@ const PostFormPage = () => {
               <div
                 key={index}
                 className="relative w-24 h-32 p-1.5 flex-shrink-0"
-                // style={{ width: '96px', height: '128px' }}
               >
                 <Image
                   src={URL.createObjectURL(image)}
@@ -333,7 +332,6 @@ const PostFormPage = () => {
             {images.length < 3 && (
               <div
                 className="w-24 h-32 bg-white flex flex-col justify-center items-center border border-gray-300 cursor-pointer flex-shrink-0 rounded-md"
-                // style={{ width: '96px', height: '128px' }}
                 onClick={(e) => {
                   e.stopPropagation();
                   fileInputRef.current?.click();
@@ -444,7 +442,7 @@ const PostFormPage = () => {
               onClick={() => setShowStyleInput(!showStyleInput)}
               className="text-xl leading-none bg-transparent border-none cursor-pointer"
             >
-              +
+              <Image src="/plus.svg" alt="+" width={20} height={20} />
             </button>
           </div>
           <div className="flex flex-wrap gap-2 mt-1">
@@ -494,7 +492,7 @@ const PostFormPage = () => {
               onClick={() => setShowLocationInput(!showLocationInput)}
               className="text-xl leading-none bg-transparent border-none cursor-pointer"
             >
-              +
+              <Image src="/plus.svg" alt="+" width={20} height={20} />
             </button>
           </div>
           <div className="flex flex-wrap gap-2 mt-1">
