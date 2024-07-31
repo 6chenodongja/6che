@@ -9,6 +9,7 @@ import springImage from '@/assets/spring.jpg';
 import summerImage from '@/assets/summer.jpg';
 import autumnImage from '@/assets/autumn.jpg';
 import winterImage from '@/assets/winter.jpg';
+import leftbutton from '@/assets/arrow_Left.png';
 import { useTagStore } from '@/zustand/store/useTagStore';
 
 const modak = Modak({ weight: '400', subsets: ['latin'] });
@@ -68,7 +69,6 @@ const QuestionPage: React.FC = () => {
     const optionTagArray = optionTags[option] || [];
     setTags((prevTags) => {
       const newTags = [...new Set([...prevTags, ...optionTagArray])];
-    //   console.log('Updated Tags:', newTags); 
       return newTags;
     });
     
@@ -132,7 +132,6 @@ const QuestionPage: React.FC = () => {
         ].includes(tag),
       )
       .slice(0, 2);
-    //   console.log('Final Tags:', { gender, style, seasons, locations });
 
     setTagsInStore({ gender, style, seasons, locations });
 
@@ -149,7 +148,7 @@ const QuestionPage: React.FC = () => {
           onClick={handleBackClick}
           className={`text-xl font-medium text-black ${currentQuestionIndex === 0 ? 'invisible' : 'visible'}`}
         >
-          ᐸ
+          <Image src={leftbutton} alt="뒤로가기" width={24} height={24} />
         </button>
         <p
           className="text-lg text-left text-[#666]"
@@ -296,7 +295,7 @@ const QuestionPage: React.FC = () => {
                     className={`flex justify-center items-center w-[140px] h-[140px] relative overflow-hidden gap-2 p-3 rounded-lg cursor-pointer ${
                       selectedOptions[currentQuestionIndex] === option
                         ? 'bg-[#fff7d4] border border-[#ffc329]/80'
-                        : 'bg-white/50 border border-[#808080] backdrop-blur-[10px]'
+                        : 'bg-white/50 border border-[#808080] backdrop-blur-[10px] hover:bg-[#FFF7D4] hover:border-[rgba(255,214,94,0.80)]'
                     }`}
                     onClick={() => handleOptionClick(option)}
                   >
@@ -317,7 +316,7 @@ const QuestionPage: React.FC = () => {
                 className={`flex justify-center items-center w-72 relative overflow-hidden gap-2 p-3 rounded-lg cursor-pointer ${
                   selectedOptions[currentQuestionIndex] === '선택 안함'
                     ? 'bg-[#fff7d4] border border-[#ffc329]/80'
-                    : 'bg-white/50 border border-[#808080] backdrop-blur-[10px]'
+                    : 'bg-white/50 border border-[#808080] backdrop-blur-[10px] hover:bg-[#FFF7D4] hover:border-[rgba(255,214,94,0.80)]'
                 }`}
                 onClick={() => handleOptionClick('선택 안함')}
               >
@@ -335,7 +334,9 @@ const QuestionPage: React.FC = () => {
           </div>
         ) : (
           <div
-            className={`flex ${currentQuestionIndex === 3 ? 'flex-wrap justify-between' : 'flex-col'} w-full gap-2`}
+            className={`flex ${
+              currentQuestionIndex === 3 ? 'flex-wrap justify-between' : 'flex-col'
+            } w-full gap-2`}
           >
             {questions[currentQuestionIndex].options.map((option, index) => (
               <div
@@ -349,7 +350,7 @@ const QuestionPage: React.FC = () => {
                     selectedFourthQuestionOptions.includes(option)) ||
                   selectedOptions[currentQuestionIndex] === option
                     ? 'bg-[#fff7d4] border border-[#ffc329]/80'
-                    : 'bg-white/50 border border-[#808080] backdrop-blur-[10px]'
+                    : 'bg-white/50 border border-[#808080] backdrop-blur-[10px] hover:bg-[#FFF7D4] hover:border-[rgba(255,214,94,0.80)]'
                 }`}
                 onClick={() => handleOptionClick(option)}
               >
@@ -372,7 +373,7 @@ const QuestionPage: React.FC = () => {
       {showResultButton && (
         <button
           onClick={handleShowResultClick}
-          className="w-72 h-[46px] bg-[#121212] text-white rounded-lg mt-4"
+          className="w-72 h-[46px] bg-[#121212] text-white rounded-lg mt-4 hover:bg-[rgba(94,176,255,0.80)]"
         >
           결과 보기
         </button>

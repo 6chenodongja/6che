@@ -73,15 +73,13 @@ const SurveyLayout: React.FC = () => {
             </p>
           </div>
           <div
-            className="flex justify-center items-center w-72 relative overflow-hidden gap-2 p-3 rounded-lg bg-[#121212] cursor-pointer"
+            className="flex justify-center items-center w-72 relative overflow-hidden gap-2 p-3 rounded-lg bg-[#121212] cursor-pointer hover:bg-[rgba(94,176,255,0.80)] active:bg-[rgba(88, 168, 243, 0.8)]"
             style={{ marginTop: '208px', marginBottom: '234px' }}
             onClick={handleStartClick}
           >
             <p className="flex-grow-0 flex-shrink-0 text-base font-medium text-left text-white">
               시작하기
             </p>
-            {/*호버 rgba(94, 176, 255, 0.80) */}
-            {/*클릭 rgba(94, 176, 255, 0.80) */}
           </div>
         </>
       )}
