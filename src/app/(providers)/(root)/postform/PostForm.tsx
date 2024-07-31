@@ -828,13 +828,20 @@ const PostFormPage = () => {
               />
               <button
                 type="button"
-                className="absolute top-1 right-1 bg-white rounded-full text-gray-500 w-6 h-6 flex items-center justify-center"
+                className="absolute top-1 right-1 bg-black text-white w-5 h-5 flex items-center justify-center rounded-full text-sm"
                 onClick={(e) => {
                   e.stopPropagation();
                   handleRemoveImage(index);
                 }}
               >
-                ×
+                <Image
+                  src="/x.svg"
+                  alt="Remove"
+                  width={12}
+                  height={12}
+                  className="w-3 h-3"
+                  style={{ filter: 'invert(1)' }}
+                />
               </button>
             </div>
           ))}
