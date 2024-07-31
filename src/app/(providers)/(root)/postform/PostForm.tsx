@@ -57,6 +57,25 @@ const PostFormPage = () => {
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
+  //
+  // 추가된 상태 훅
+  const [isHovered, setIsHovered] = useState(false);
+  const [isClicked, setIsClicked] = useState(false);
+
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+    setIsClicked(false); // 마우스가 떠나면 클릭 상태 해제
+  };
+
+  const handleClick = () => {
+    setIsClicked((prevState) => !prevState); // 클릭 시 상태 토글
+  };
+  //
+
   useEffect(() => {
     let seasonTimer: NodeJS.Timeout;
     if (seasonError) {
@@ -292,22 +311,39 @@ const PostFormPage = () => {
         : 'border-gray-100 bg-gray-100 text-black'
     }`;
 
+  // return (
+  //   <div className="max-w-sm mx-auto h-auto m-10">
+  //     {/*  <div className="container mx-auto px-4 py-6"> */}
+  //     {/* <form
+  //       onSubmit={handleSubmit}
+  //       className="flex flex-col w-full sm:w-96 p-5 border border-gray-300 relative"
+  //     > */}
+
+  //     <div className="flex flex-col w-full p-5 border border-gray-300 relative">
+
+  //       <div className="flex justify-between items-center mb-4">
+  //         <h2 className="text-xl font-bold">스타일 등록</h2>
+  //         <button
+  //           type="submit"
+  //           className="bg-black text-white py-2 px-3 rounded-xl"
+  //         >
+  //           완료
+  //         </button>
+  //       </div>
+
   return (
     <div className="max-w-sm mx-auto h-auto m-10">
-      {/*  <div className="container mx-auto px-4 py-6"> */}
-      {/* <form
-        onSubmit={handleSubmit}
-        className="flex flex-col w-full sm:w-96 p-5 border border-gray-300 relative"
-      > */}
-
-      {/* 수정 */}
       <div className="flex flex-col w-full p-5 border border-gray-300 relative">
-        {/*이 전까지 수정함  */}
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-bold">스타일 등록</h2>
           <button
             type="submit"
-            className="bg-black text-white py-2 px-3 rounded-xl"
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+            onClick={handleClick}
+            className={`py-2 px-3 rounded-xl ${
+              isClicked ? 'bg-blue-500' : isHovered ? 'bg-blue-400' : 'bg-black'
+            } text-white`}
           >
             완료
           </button>
@@ -409,8 +445,8 @@ const PostFormPage = () => {
 
           {/* 성별(유형) 선택 섹션 */}
           <div className="mb-8 ">
-            <div className="font-bold">유형</div>
-            <div className="flex gap-2 mt-1">
+            <div className="font-bold text-gray-700">유형</div>
+            <div className="flex gap-2 mt-1 ">
               {['남성', '여성', '선택 안함'].map((genderItem) => (
                 <button
                   key={genderItem}
@@ -427,7 +463,7 @@ const PostFormPage = () => {
 
           {/* 날씨, 기온선택 선택 섹션 */}
           <div className="mb-8 ">
-            <div className="font-semibold">날씨</div>
+            <div className="font-semibold text-gray-700">날씨</div>
             <WeatherDropdown
               setWeatherIcon={setWeatherIcon}
               setTemperature={setTemperature}
@@ -437,10 +473,10 @@ const PostFormPage = () => {
           {/* 계절 선택 섹션 */}
           <div className="mb-8">
             <div className="flex items-baseline">
-              <div className="font-semibold">계절</div>
-              <div className="ml-1 text-black-700">(최대 2개)</div>
+              <div className="font-semibold text-gray-700">계절</div>
+              <div className="ml-1 text-gray-600">(최대 2개)</div>
             </div>
-            <div className="flex flex-wrap gap-2 mt-1">
+            <div className="flex flex-wrap gap-2 mt-2">
               {['봄', '여름', '가을', '겨울'].map((season) => (
                 <button
                   key={season}
@@ -463,13 +499,13 @@ const PostFormPage = () => {
           <div className="mb-8">
             <div className="flex items-center justify-between">
               <div className="flex items-baseline">
-                <div className="font-semibold">스타일</div>
-                <div className="ml-1 text-black-700">(최대 2개)</div>
+                <div className="font-semibold text-gray-700">스타일</div>
+                <div className="ml-1 text-gray-600">(최대 2개)</div>
               </div>
               <button
                 type="button"
                 onClick={() => setShowStyleInput(!showStyleInput)}
-                className="text-xl leading-none bg-transparent border-none cursor-pointer"
+                className="mt-2 text-xl leading-none bg-transparent border-none cursor-pointer"
               >
                 <Image src="/plus.svg" alt="+" width={20} height={20} />
               </button>
@@ -513,13 +549,13 @@ const PostFormPage = () => {
           <div className="mb-8">
             <div className="flex items-center justify-between">
               <div className="flex items-baseline">
-                <div className="font-semibold">장소</div>
-                <div className="ml-1 text-black-700">(최대 2개)</div>
+                <div className="font-semibold text-gray-700">장소</div>
+                <div className="ml-1 text-gray-600">(최대 2개)</div>
               </div>
               <button
                 type="button"
                 onClick={() => setShowLocationInput(!showLocationInput)}
-                className="text-xl leading-none bg-transparent border-none cursor-pointer"
+                className="mt-2 text-xl leading-none bg-transparent border-none cursor-pointer"
               >
                 <Image src="/plus.svg" alt="+" width={20} height={20} />
               </button>
