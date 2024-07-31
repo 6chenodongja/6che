@@ -57,8 +57,6 @@ const PostFormPage = () => {
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  //
-  // 추가된 상태 훅
   const [isHovered, setIsHovered] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
 
@@ -68,13 +66,12 @@ const PostFormPage = () => {
 
   const handleMouseLeave = () => {
     setIsHovered(false);
-    setIsClicked(false); // 마우스가 떠나면 클릭 상태 해제
+    setIsClicked(false);
   };
 
   const handleClick = () => {
-    setIsClicked((prevState) => !prevState); // 클릭 시 상태 토글
+    setIsClicked((prevState) => !prevState);
   };
-  //
 
   useEffect(() => {
     let seasonTimer: NodeJS.Timeout;
@@ -311,26 +308,6 @@ const PostFormPage = () => {
         : 'border-gray-100 bg-gray-100 text-black'
     }`;
 
-  // return (
-  //   <div className="max-w-sm mx-auto h-auto m-10">
-  //     {/*  <div className="container mx-auto px-4 py-6"> */}
-  //     {/* <form
-  //       onSubmit={handleSubmit}
-  //       className="flex flex-col w-full sm:w-96 p-5 border border-gray-300 relative"
-  //     > */}
-
-  //     <div className="flex flex-col w-full p-5 border border-gray-300 relative">
-
-  //       <div className="flex justify-between items-center mb-4">
-  //         <h2 className="text-xl font-bold">스타일 등록</h2>
-  //         <button
-  //           type="submit"
-  //           className="bg-black text-white py-2 px-3 rounded-xl"
-  //         >
-  //           완료
-  //         </button>
-  //       </div>
-
   return (
     <div className="max-w-sm mx-auto h-auto m-10">
       <div className="flex flex-col w-full p-5 border border-gray-300 relative">
@@ -377,8 +354,8 @@ const PostFormPage = () => {
                     <Image
                       src="/x.svg"
                       alt="Remove Icon"
-                      width={24} // 아이콘의 너비 설정
-                      height={24} // 아이콘의 높이 설정
+                      width={24}
+                      height={24}
                       className="invert"
                     />
                   </button>
@@ -403,7 +380,6 @@ const PostFormPage = () => {
                     ref={fileInputRef}
                   />
                   {/* 사진 업로드 버튼 */}
-                  {/* <div className="text-2xl text-gray-500">+ </div> */}
                   <Image
                     src="/photo.svg"
                     alt="Upload Icon"
@@ -452,7 +428,6 @@ const PostFormPage = () => {
                   key={genderItem}
                   type="button"
                   onClick={() => setGender(genderItem)}
-                  // className={buttonClass(gender === genderItem)}
                   className={buttonClass(false)}
                 >
                   {genderItem}
@@ -560,7 +535,7 @@ const PostFormPage = () => {
                 <Image src="/plus.svg" alt="+" width={20} height={20} />
               </button>
             </div>
-            <div className="flex flex-wrap gap-2 mt-1">
+            <div className="flex flex-wrap gap-2 mt-1  ">
               {locationsList.map((locationItem, index) => (
                 <button
                   key={index}
