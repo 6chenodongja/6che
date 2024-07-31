@@ -964,7 +964,12 @@ const PostFormPage = () => {
                 type="text"
                 value={newStyle}
                 onChange={(e) => setNewStyle(e.target.value)}
-                onBlur={handleAddStyle}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                    handleAddStyle();
+                  }
+                }}
                 autoFocus
                 className="px-2 py-1 border border-gray-300 rounded"
                 style={{ minWidth: '50px', maxWidth: '100px' }}
@@ -1009,7 +1014,12 @@ const PostFormPage = () => {
                 type="text"
                 value={newLocation}
                 onChange={(e) => setNewLocation(e.target.value)}
-                onBlur={handleAddLocation}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                    handleAddLocation();
+                  }
+                }}
                 autoFocus
                 className="px-2 py-1 border border-gray-300 rounded"
                 style={{ minWidth: '50px', maxWidth: '100px' }}
