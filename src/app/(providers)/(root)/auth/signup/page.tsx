@@ -8,7 +8,6 @@ import React, { useState } from 'react';
 function SingUpPage() {
   const [name, setName] = useState('');
   const [nickname, setNickname] = useState('');
-  // const [id, setId] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
@@ -18,22 +17,46 @@ function SingUpPage() {
     password: '',
     passwordConfirm: '',
   });
+  const regexPw =
+    /^[a-z0-9#?!@$%^&*-](?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-])[a-z0-9#?!@$%^&*-]{1,10}$/;
 
   const supabase = createClient();
   const router = useRouter();
 
   const onChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
+    if (e.target.value.length > 8) {
+      setError({
+        ...error,
+        name: '이름은 최소 8글자 이하입니다.',
+      });
+    } else {
+      setError({
+        ...error,
+        name: '',
+      });
+    }
   };
+
   const onChangeNickname = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNickname(e.target.value);
+    if (e.target.value.length > 10) {
+      setError({
+        ...error,
+        nickname: '닉네임은 최소 10글자 이하입니다.',
+      });
+    } else {
+      setError({
+        ...error,
+        nickname: '',
+      });
+    }
   };
-  // const onChangeId = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   setId(e.target.value);
-  // };
+
   const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
   };
+
   const onChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
     if (e.target.value.length < 8) {
@@ -48,6 +71,7 @@ function SingUpPage() {
       });
     }
   };
+
   const onChangePasswordConfirm = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPasswordConfirm(e.target.value);
     if (e.target.value.length < 8) {
@@ -116,6 +140,7 @@ function SingUpPage() {
             className="self-stretch flex-grow-0 flex-shrink-0 h-[42px] opacity-50 rounded-lg bg-[#d9d9d9]"
           />
         </div>
+        {error.name && <p className="text-red-500">{error.name}</p>}
         <div className="flex flex-col justify-start items-start w-72 absolute left-4 top-72 pb-3">
           <label className="self-stretch flex-grow-0 flex-shrink-0 w-72 text-lg text-left text-black">
             닉네임
@@ -128,6 +153,7 @@ function SingUpPage() {
             className="self-stretch flex-grow-0 flex-shrink-0 h-[42px] opacity-50 rounded-lg bg-[#d9d9d9]"
           />
         </div>
+        {error.nickname && <p className="text-red-500">{error.nickname}</p>}
         <div className="flex flex-col justify-start items-start w-72 absolute left-4 top-[369px] pb-3">
           <label className="self-stretch flex-grow-0 flex-shrink-0 w-72 text-lg text-left text-black">
             이메일
