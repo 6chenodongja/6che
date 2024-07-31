@@ -7,6 +7,8 @@ import { supabase } from '../../../../supabase/client';
 import { ExtendedPostInsert } from '../../../../../types/extended';
 import WeatherDropdown from './components/WeatherDropdown';
 
+// import { Noto_Sans_KR } from 'next/font/google';
+
 const PostFormPage = () => {
   const [images, setImages] = useState<File[]>([]);
   const [description, setDescription] = useState('');
@@ -24,6 +26,10 @@ const PostFormPage = () => {
   const [styleError, setStyleError] = useState(false);
   const [locationError, setLocationError] = useState(false);
   const [imageError, setImageError] = useState(false);
+
+  // const noto = Noto_Sans_KR({
+  //   subsets: ['latin'],
+  // });
 
   const initialStyles = [
     '미니멀',
@@ -288,10 +294,15 @@ const PostFormPage = () => {
 
   return (
     <div className="max-w-sm mx-auto h-auto m-10">
-      <form
+      {/*  <div className="container mx-auto px-4 py-6"> */}
+      {/* <form
         onSubmit={handleSubmit}
         className="flex flex-col w-full sm:w-96 p-5 border border-gray-300 relative"
-      >
+      > */}
+
+      {/* 수정 */}
+      <div className="flex flex-col w-full p-5 border border-gray-300 relative">
+        {/*이 전까지 수정함  */}
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-bold">스타일 등록</h2>
           <button
@@ -301,235 +312,254 @@ const PostFormPage = () => {
             완료
           </button>
         </div>
+        <div className="container mx-auto px-4">
+          {/* 사진 업로드 섹션 */}
+          <div className="mb-4 flex flex-col items-start">
+            <div className="flex gap-2 overflow-x-auto">
+              {images.map((image, index) => (
+                <div
+                  key={index}
+                  className="relative w-24 h-32 p-1.5 flex-shrink-0"
+                >
+                  <Image
+                    src={URL.createObjectURL(image)}
+                    alt={`Uploaded ${index}`}
+                    width={96}
+                    height={128}
+                    className="w-full h-full object-cover border border-gray-300"
+                  />
+                  <button
+                    type="button"
+                    // 버튼 크기 조정 및 배경색, 아이콘 설정
+                    className="absolute top-1 right-1 bg-black rounded-full w-6 h-6 flex items-center justify-center"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleRemoveImage(index);
+                    }}
+                  >
+                    {/* 아이콘 이미지 */}
+                    <Image
+                      src="/x.svg"
+                      alt="Remove Icon"
+                      width={24} // 아이콘의 너비 설정
+                      height={24} // 아이콘의 높이 설정
+                      className="invert"
+                    />
+                  </button>
+                </div>
+              ))}
 
-        {/* 사진 업로드 섹션 */}
-        <div className="mb-4 flex flex-col items-start">
-          <div className="flex gap-2 overflow-x-auto">
-            {images.map((image, index) => (
-              <div
-                key={index}
-                className="relative w-24 h-32 p-1.5 flex-shrink-0"
-              >
-                <Image
-                  src={URL.createObjectURL(image)}
-                  alt={`Uploaded ${index}`}
-                  width={96}
-                  height={128}
-                  className="w-full h-full object-cover border border-gray-300"
-                />
-                <button
-                  type="button"
-                  className="absolute top-1 right-1 bg-white rounded-full text-gray-500 w-6 h-6 flex items-center justify-center"
+              {images.length < 3 && (
+                <div
+                  className="w-24 h-32 bg-black flex flex-col justify-center items-center border border-gray-300 cursor-pointer flex-shrink-0 rounded-md"
                   onClick={(e) => {
                     e.stopPropagation();
-                    handleRemoveImage(index);
+                    fileInputRef.current?.click();
                   }}
                 >
-                  ×
-                </button>
-              </div>
-            ))}
-            {images.length < 3 && (
-              <div
-                className="w-24 h-32 bg-white flex flex-col justify-center items-center border border-gray-300 cursor-pointer flex-shrink-0 rounded-md"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  fileInputRef.current?.click();
-                }}
-              >
-                {/* 숨겨진 파일 입력 요소 */}
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageChange}
-                  className="hidden"
-                  multiple
-                  ref={fileInputRef}
-                />
-                {/* + 버튼 */}
-                <div className="text-2xl text-gray-500">+</div>
-                {/* 이미지 개수 표시 */}
-                <div className="text-sm text-gray-500 mt-1">
-                  {images.length}/3
+                  {/* 숨겨진 파일 입력 요소 */}
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    className="hidden"
+                    multiple
+                    ref={fileInputRef}
+                  />
+                  {/* 사진 업로드 버튼 */}
+                  {/* <div className="text-2xl text-gray-500">+ </div> */}
+                  <Image
+                    src="/photo.svg"
+                    alt="Upload Icon"
+                    width={24}
+                    height={24}
+                    className="text-white filter invert"
+                  />
+
+                  {/* 이미지 개수 표시 */}
+                  <div className="text-sm text-white mt-1">
+                    {images.length}/3
+                  </div>
                 </div>
+              )}
+            </div>
+          </div>
+          {imageError && (
+            <div className="text-sm absolute bottom-5 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white py-2 px-4 w-80 rounded">
+              최대 3개의 이미지만 업로드할 수 있습니다.
+            </div>
+          )}
+
+          {/* 글 작성 섹션 */}
+          <div className="mb-4 ">
+            <div className="border-t border-gray-300 pt-2"></div>
+            <textarea
+              value={description}
+              onChange={handleDescriptionChange}
+              className="w-full h-24 px-4 py-2 mt-1 border-none border-b border-gray-300 placeholder-black-600 resize-none focus:outline-none focus:border-transparent"
+              placeholder="스타일에 대한 이야기를 써주세요"
+              maxLength={200}
+              required
+            />
+            <div className="text-right mt-1 text-gray-600">
+              {description.length}/200
+            </div>
+            <div className="border-b border-gray-300 pb-2"></div>
+          </div>
+
+          {/* 성별(유형) 선택 섹션 */}
+          <div className="mb-8 ">
+            <div className="font-bold">유형</div>
+            <div className="flex gap-2 mt-1">
+              {['남성', '여성', '선택 안함'].map((genderItem) => (
+                <button
+                  key={genderItem}
+                  type="button"
+                  onClick={() => setGender(genderItem)}
+                  // className={buttonClass(gender === genderItem)}
+                  className={buttonClass(false)}
+                >
+                  {genderItem}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* 날씨, 기온선택 선택 섹션 */}
+          <div className="mb-8 ">
+            <div className="font-semibold">날씨</div>
+            <WeatherDropdown
+              setWeatherIcon={setWeatherIcon}
+              setTemperature={setTemperature}
+            />
+          </div>
+
+          {/* 계절 선택 섹션 */}
+          <div className="mb-8">
+            <div className="flex items-baseline">
+              <div className="font-semibold">계절</div>
+              <div className="ml-1 text-black-700">(최대 2개)</div>
+            </div>
+            <div className="flex flex-wrap gap-2 mt-1">
+              {['봄', '여름', '가을', '겨울'].map((season) => (
+                <button
+                  key={season}
+                  type="button"
+                  onClick={() => handleSeasonClick(season)}
+                  className={buttonClass(seasons.includes(season))}
+                >
+                  {season}
+                </button>
+              ))}
+            </div>
+            {seasonError && (
+              <div className="text-red-500 text-sm mt-1">
+                최대 2개의 계절을 선택할 수 있습니다.
+              </div>
+            )}
+          </div>
+
+          {/* 스타일 선택 섹션 */}
+          <div className="mb-8">
+            <div className="flex items-center justify-between">
+              <div className="flex items-baseline">
+                <div className="font-semibold">스타일</div>
+                <div className="ml-1 text-black-700">(최대 2개)</div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowStyleInput(!showStyleInput)}
+                className="text-xl leading-none bg-transparent border-none cursor-pointer"
+              >
+                <Image src="/plus.svg" alt="+" width={20} height={20} />
+              </button>
+            </div>
+            <div className="flex flex-wrap gap-2 mt-1">
+              {styles.map((styleItem, index) => (
+                <button
+                  key={index}
+                  type="button"
+                  onClick={() => handleStyleClick(styleItem)}
+                  className={buttonClass(style.includes(styleItem))}
+                >
+                  {styleItem}
+                </button>
+              ))}
+              {showStyleInput && (
+                <input
+                  type="text"
+                  value={newStyle}
+                  onChange={(e) => setNewStyle(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      handleAddStyle();
+                    }
+                  }}
+                  autoFocus
+                  className="px-2 py-1 border border-gray-300 rounded"
+                  style={{ minWidth: '50px', maxWidth: '100px' }}
+                />
+              )}
+            </div>
+            {styleError && (
+              <div className="text-red-500 text-sm mt-1">
+                최대 2개의 스타일을 선택할 수 있습니다.
+              </div>
+            )}
+          </div>
+
+          {/* 장소 선택 섹션 */}
+          <div className="mb-8">
+            <div className="flex items-center justify-between">
+              <div className="flex items-baseline">
+                <div className="font-semibold">장소</div>
+                <div className="ml-1 text-black-700">(최대 2개)</div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowLocationInput(!showLocationInput)}
+                className="text-xl leading-none bg-transparent border-none cursor-pointer"
+              >
+                <Image src="/plus.svg" alt="+" width={20} height={20} />
+              </button>
+            </div>
+            <div className="flex flex-wrap gap-2 mt-1">
+              {locationsList.map((locationItem, index) => (
+                <button
+                  key={index}
+                  type="button"
+                  onClick={() => handleLocationClick(locationItem)}
+                  className={buttonClass(locations.includes(locationItem))}
+                >
+                  {locationItem}
+                </button>
+              ))}
+              {showLocationInput && (
+                <input
+                  type="text"
+                  value={newLocation}
+                  onChange={(e) => setNewLocation(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      handleAddLocation();
+                    }
+                  }}
+                  autoFocus
+                  className="px-2 py-1 border border-gray-300 rounded"
+                  style={{ minWidth: '50px', maxWidth: '100px' }}
+                />
+              )}
+            </div>
+            {locationError && (
+              <div className="text-red-500 text-sm mt-1">
+                최대 2개의 장소를 선택할 수 있습니다.
               </div>
             )}
           </div>
         </div>
-        {imageError && (
-          <div className="text-sm absolute bottom-5 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white py-2 px-4 w-80 rounded">
-            최대 3개의 이미지만 업로드할 수 있습니다.
-          </div>
-        )}
-
-        {/* 글 작성 섹션 */}
-        <div className="mb-4">
-          <div className="border-t border-gray-300 pt-2"></div>
-          <textarea
-            value={description}
-            onChange={handleDescriptionChange}
-            className="w-full h-24 p-2 mt-1 border-none border-b border-gray-300 placeholder-gray-400 resize-none focus:outline-none focus:border-transparent"
-            placeholder="스타일에 대한 이야기를 써주세요"
-            maxLength={200}
-            required
-          />
-          <div className="text-right mt-1 text-gray-600">
-            {description.length}/200
-          </div>
-          <div className="border-b border-gray-300 pb-2"></div>
-        </div>
-
-        {/* 성별(유형) 선택 섹션 */}
-        <div className="mb-8">
-          <div className="font-bold">유형</div>
-          <div className="flex gap-2 mt-1">
-            {['남성', '여성', '선택 안함'].map((genderItem) => (
-              <button
-                key={genderItem}
-                type="button"
-                onClick={() => setGender(genderItem)}
-                className={buttonClass(gender === genderItem)}
-              >
-                {genderItem}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* 날씨, 기온선택 선택 섹션 */}
-        <div className="mb-8">
-          <div className="font-semibold">날씨</div>
-          <WeatherDropdown
-            setWeatherIcon={setWeatherIcon}
-            setTemperature={setTemperature}
-          />
-        </div>
-
-        {/* 계절 선택 섹션 */}
-        <div className="mb-8">
-          <div className="flex items-baseline">
-            <div className="font-semibold">계절</div>
-            <div className="ml-1 text-gray-600">(최대 2개)</div>
-          </div>
-          <div className="flex flex-wrap gap-2 mt-1">
-            {['봄', '여름', '가을', '겨울'].map((season) => (
-              <button
-                key={season}
-                type="button"
-                onClick={() => handleSeasonClick(season)}
-                className={buttonClass(seasons.includes(season))}
-              >
-                {season}
-              </button>
-            ))}
-          </div>
-          {seasonError && (
-            <div className="text-red-500 text-sm mt-1">
-              최대 2개의 계절을 선택할 수 있습니다.
-            </div>
-          )}
-        </div>
-
-        {/* 스타일 선택 섹션 */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between">
-            <div className="flex items-baseline">
-              <div className="font-semibold">스타일</div>
-              <div className="ml-1 text-gray-600">(최대 2개)</div>
-            </div>
-            <button
-              type="button"
-              onClick={() => setShowStyleInput(!showStyleInput)}
-              className="text-xl leading-none bg-transparent border-none cursor-pointer"
-            >
-              <Image src="/plus.svg" alt="+" width={20} height={20} />
-            </button>
-          </div>
-          <div className="flex flex-wrap gap-2 mt-1">
-            {styles.map((styleItem, index) => (
-              <button
-                key={index}
-                type="button"
-                onClick={() => handleStyleClick(styleItem)}
-                className={buttonClass(style.includes(styleItem))}
-              >
-                {styleItem}
-              </button>
-            ))}
-            {showStyleInput && (
-              <input
-                type="text"
-                value={newStyle}
-                onChange={(e) => setNewStyle(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
-                    e.preventDefault();
-                    handleAddStyle();
-                  }
-                }}
-                autoFocus
-                className="px-2 py-1 border border-gray-300 rounded"
-                style={{ minWidth: '50px', maxWidth: '100px' }}
-              />
-            )}
-          </div>
-          {styleError && (
-            <div className="text-red-500 text-sm mt-1">
-              최대 2개의 스타일을 선택할 수 있습니다.
-            </div>
-          )}
-        </div>
-
-        {/* 장소 선택 섹션 */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between">
-            <div className="flex items-baseline">
-              <div className="font-semibold">장소</div>
-              <div className="ml-1 text-gray-600">(최대 2개)</div>
-            </div>
-            <button
-              type="button"
-              onClick={() => setShowLocationInput(!showLocationInput)}
-              className="text-xl leading-none bg-transparent border-none cursor-pointer"
-            >
-              <Image src="/plus.svg" alt="+" width={20} height={20} />
-            </button>
-          </div>
-          <div className="flex flex-wrap gap-2 mt-1">
-            {locationsList.map((locationItem, index) => (
-              <button
-                key={index}
-                type="button"
-                onClick={() => handleLocationClick(locationItem)}
-                className={buttonClass(locations.includes(locationItem))}
-              >
-                {locationItem}
-              </button>
-            ))}
-            {showLocationInput && (
-              <input
-                type="text"
-                value={newLocation}
-                onChange={(e) => setNewLocation(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
-                    e.preventDefault();
-                    handleAddLocation();
-                  }
-                }}
-                autoFocus
-                className="px-2 py-1 border border-gray-300 rounded"
-                style={{ minWidth: '50px', maxWidth: '100px' }}
-              />
-            )}
-          </div>
-          {locationError && (
-            <div className="text-red-500 text-sm mt-1">
-              최대 2개의 장소를 선택할 수 있습니다.
-            </div>
-          )}
-        </div>
-      </form>
+      </div>
     </div>
   );
 };
