@@ -80,6 +80,8 @@ const SurveyLayout: React.FC = () => {
             <p className="flex-grow-0 flex-shrink-0 text-base font-medium text-left text-white">
               시작하기
             </p>
+            {/*호버 rgba(94, 176, 255, 0.80) */}
+            {/*클릭 rgba(94, 176, 255, 0.80) */}
           </div>
         </>
       )}
