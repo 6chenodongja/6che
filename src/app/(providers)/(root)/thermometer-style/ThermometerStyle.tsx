@@ -129,24 +129,7 @@ const ThermometerStyle: React.FC = () => {
       <div className="flex flex-col items-center mt-4 mb-8">
         <h1 className="text-2xl font-bold mb-4">기온 별 옷차림</h1>
         <div className="relative">
-          {temperatureIndex === 1 && !initialView && (
-            <>
-              <Image
-                src="/weather-piece-Sun.svg"
-                alt="Sun Icon"
-                width={46}
-                height={46}
-                className="absolute -top-8 -left-8"
-              />
-              <Image
-                src="/weather-piece-leaf.svg"
-                alt="Leaf Icon"
-                width={46}
-                height={46}
-                className="absolute -top-8 -right-8"
-              />
-            </>
-          )}
+          {/* Sun and Leaf Icons Removed */}
           <div className="grid grid-cols-2 gap-4 mb-6">
             {currentOutfits.map((src: string, index: number) => (
               <div
