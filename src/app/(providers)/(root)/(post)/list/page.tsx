@@ -10,7 +10,7 @@ import ScrollButtons from './_components/ScrollButtons';
 
 function PostList() {
   const [liked, setLiked] = useState<{ [key: string]: boolean }>({});
-  const [post, setPost] = useState<Tables<'posts'>[]>([]);
+  const [posts, setPosts] = useState<Tables<'posts'>[]>([]);
   const [users, setUsers] = useState<Tables<'users'>[]>([]);
   const [latest, setLatest] = useState('latest');
   const [filteredPosts, setFilteredPosts] = useState<Tables<'posts'>[]>([]);
@@ -46,7 +46,7 @@ function PostList() {
           .update({ like: newLikeCount })
           .eq('id', postId);
 
-        setPost((prevPosts) =>
+        setPosts((prevPosts) =>
           prevPosts.map((post) =>
             post.id === postId ? { ...post, like: newLikeCount } : post,
           ),
@@ -74,7 +74,7 @@ function PostList() {
           .update({ like: newLikeCount })
           .eq('id', postId);
 
-        setPost((prevPosts) =>
+        setPosts((prevPosts) =>
           prevPosts.map((post) =>
             post.id === postId ? { ...post, like: newLikeCount } : post,
           ),
@@ -112,13 +112,12 @@ function PostList() {
     const { data, error } = await supabase
       .from('posts')
       .select('*')
-      .eq('user_id', User)
       .order(orderColumn, { ascending: false });
 
     if (error) {
       console.error(error);
     } else {
-      setPost(data);
+      setPosts(data);
       setFilteredPosts(data);
     }
   };
@@ -132,7 +131,7 @@ function PostList() {
   };
 
   const filterPosts = () => {
-    let filtered = [...post];
+    let filtered = [...posts];
 
     selectedOptions.forEach((option) => {
       if (selectedTab === '유형') {
@@ -153,7 +152,7 @@ function PostList() {
 
   useEffect(() => {
     filterPosts();
-  }, [selectedOptions, selectedTab]);
+  }, [selectedOptions]);
 
   const handleOptionClick = (option: string) => {
     if (selectedOptions.includes(option)) {
@@ -162,7 +161,8 @@ function PostList() {
       setSelectedOptions([...selectedOptions, option]);
     }
   };
-  console.log(post);
+  console.log(posts);
+
   return (
     <div className="max-w-sm mx-auto h-auto m-10">
       <ListHeader />

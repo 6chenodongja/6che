@@ -127,7 +127,9 @@ function ListSelects({
               {['유형', '날씨', '계절', '스타일', '장소'].map((item) => (
                 <button
                   key={item}
-                  className={`w-[50px] h-[33px] flex justify-center items-center rounded-lg text-[#121212] relative `}
+                  className={`w-[50px] h-[33px] flex justify-center items-center rounded-lg text-[#121212] relative ${
+                    selectedTab === item ? 'font-bold' : ''
+                  }`}
                   onClick={() => handleTabClick(item)}
                 >
                   {item}
