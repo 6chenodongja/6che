@@ -1,0 +1,1 @@
+export { IconFrame } from "./IconFrame";
