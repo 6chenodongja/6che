@@ -118,8 +118,8 @@ function SingUpPage() {
     // 확인용 알럿입니다. (추후에 페이지로 회원가입 완료 되었다 라고 보이게 변경 될 것 같습니다.)
     alert('회원가입이 완료 됐습니다.');
 
-    // 로그인 페이지로 이동
-    router.replace('/auth/login');
+    // 프로필 선택 완료 페이지로 이동
+    router.replace('/auth/signUpDone');
   };
 
   return (
