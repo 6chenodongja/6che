@@ -19,6 +19,7 @@ import { IconWeatherThunderstorm } from '@/icons/IconWeatherThunderstorm';
 import { Component3533 } from '@/components/Component3533';
 import { IconFrame } from '@/components/IconFrame';
 import { IconArrowDown2 } from '@/icons/IconArrowDown2';
+// import 'swiper/swiper-bundle.min.css';
 
 // 화씨 온도를 섭씨로 변환하는 함수
 const convertFahrenheitToCelsius = (fahrenheit: number) => {
@@ -42,6 +43,52 @@ const getAirQualityImage = (phrase: string) => {
 const getHumidityImage = (humidity: number | null) => {
   const range = humidity !== null ? Math.floor(humidity / 10) * 10 : 0;
   return `/images/Humidity/${range}.svg`;
+};
+
+// WeatherIcon에 따라 적절한 이미지 경로를 반환하는 함수 추가
+const getWeatherIconImage = (iconNumber: number) => {
+  const iconMap: { [key: number]: string } = {
+    1: '/images/Weather/sun.svg',
+    2: '/images/Weather/sun.svg',
+    3: '/images/Weather/sun.svg',
+    4: '/images/Weather/once_cloudy.svg',
+    5: '/images/Weather/thread_fog.svg',
+    6: '/images/Weather/thread_fog.svg',
+    7: '/images/Weather/blur.svg',
+    8: '/images/Weather/blur.svg',
+    11: '/images/Weather/fog.svg',
+    12: '/images/Weather/drizzling.svg',
+    13: '/images/Weather/drizzling.svg',
+    14: '/images/Weather/drizzling.svg',
+    41: '/images/Weather/drizzling.svg',
+    42: '/images/Weather/drizzling.svg',
+    15: '/images/Weather/thunderstorm.svg',
+    16: '/images/Weather/thunderstorm.svg',
+    17: '/images/Weather/thunderstorm.svg',
+    18: '/images/Weather/rain.svg',
+    19: '/images/Weather/snow.svg',
+    20: '/images/Weather/snow.svg',
+    21: '/images/Weather/snow.svg',
+    22: '/images/Weather/heavy_snow.svg',
+    23: '/images/Weather/heavy_snow.svg',
+    43: '/images/Weather/heavy_snow.svg',
+    44: '/images/Weather/heavy_snow.svg',
+    24: '/images/Weather/sleet.svg',
+    25: '/images/Weather/sleet.svg',
+    26: '/images/Weather/sleet.svg',
+    29: '/images/Weather/sleet.svg',
+    31: '/images/Weather/wind.svg',
+    32: '/images/Weather/wind.svg',
+    33: '/images/Weather/night.svg',
+    34: '/images/Weather/night.svg',
+    35: '/images/Weather/once_cloudy_night.svg',
+    36: '/images/Weather/once_cloudy_night.svg',
+    37: '/images/Weather/once_cloudy.svg',
+    38: '/images/Weather/once_cloudy.svg',
+    39: '/images/Weather/drizzling_night.svg',
+    40: '/images/Weather/drizzling_night.svg',
+  };
+  return iconMap[iconNumber] || '/images/Weather/default.svg'; // 기본 이미지 경로 설정
 };
 
 const MainPage = () => {
@@ -278,19 +325,113 @@ const MainPage = () => {
           <h2 className="text-xl font-semibold mb-4 text-black">
             시간대별 날씨
           </h2>
-          <div className="flex overflow-x-scroll">
-            {hourlyWeather.map((weather, index) => (
-              <div key={index} className="flex flex-col items-center mx-2">
-                <span>{weather.time}</span>
-                <img
-                  src="/images/weather-icon.png"
-                  alt="날씨 아이콘"
-                  className="w-12 h-12"
-                />
-                <span>{weather.temperature}°</span>
-              </div>
-            ))}
-          </div>
+          <Swiper
+            spaceBetween={10}
+            slidesPerView={6}
+            // navigation
+            // pagination={{ clickable: true }}
+            // className="w-full"
+          >
+            {hourlyWeather.map((weather, index) => {
+              // WeatherIcon 숫자에 따른 이미지 파일 이름 결정
+              const getWeatherIconSrc = (iconNumber: number) => {
+                switch (iconNumber) {
+                  case 1:
+                  case 2:
+                  case 3:
+                  case 30:
+                    return '/images/Weather/sun.svg';
+                  case 4:
+                    return '/images/Weather/once_cloudy.svg';
+                  case 5:
+                  case 6:
+                    return '/images/Weather/thread_fog.svg';
+                  case 7:
+                  case 8:
+                    return '/images/Weather/blur.svg';
+                  case 11:
+                    return '/images/Weather/fog.svg';
+                  case 12:
+                  case 13:
+                  case 14:
+                  case 41:
+                  case 42:
+                    return '/images/Weather/drizzling.svg';
+                  case 15:
+                  case 16:
+                  case 17:
+                    return '/images/Weather/thunderstorm.svg';
+                  case 18:
+                    return '/images/Weather/rain.svg';
+                  case 19:
+                  case 20:
+                  case 21:
+                    return '/images/Weather/snow.svg';
+                  case 22:
+                  case 23:
+                  case 43:
+                  case 44:
+                    return '/images/Weather/heavy_snow.svg';
+                  case 24:
+                  case 25:
+                  case 26:
+                  case 29:
+                    return '/images/Weather/sleet.svg';
+                  case 31:
+                  case 32:
+                    return '/images/Weather/wind.svg';
+                  case 33:
+                  case 34:
+                    return '/images/Weather/night.svg';
+                  case 35:
+                  case 36:
+                    return '/images/Weather/once_cloudy_night.svg';
+                  case 37:
+                  case 38:
+                    return '/images/Weather/once_cloudy.svg';
+                  case 39:
+                  case 40:
+                    return '/images/Weather/drizzling_night.svg';
+                  default:
+                    return '/images/Weather/default.svg'; // 기본 이미지
+                }
+              };
+
+              // ISO8601 날짜 형식에서 시간만 추출
+              const formatTime = (dateTime: string) => {
+                const date = new Date(dateTime);
+                const hours = date.getHours();
+                return `${hours}시`; // 시간과 "시"를 같은 문자열로 반환
+              };
+
+              // 섭씨로 변환하는 함수
+              const fahrenheitToCelsius = (fahrenheit: number) => {
+                return ((fahrenheit - 32) * 5) / 9;
+              };
+
+              return (
+                <SwiperSlide
+                  key={index}
+                  className="flex flex-col items-center mx-2"
+                >
+                  <div className="flex flex-col items-center justify-center h-full">
+                    <span className="text-lg font-medium mt-2">
+                      {formatTime(weather.DateTime)}
+                    </span>
+                  </div>
+                  <img
+                    src={getWeatherIconSrc(weather.WeatherIcon)}
+                    alt="날씨 아이콘"
+                    className="w-12 h-12"
+                  />
+                  <span className="text-lg font-medium mt-1">
+                    {Math.round(fahrenheitToCelsius(weather.Temperature.Value))}
+                    °C
+                  </span>
+                </SwiperSlide>
+              );
+            })}
+          </Swiper>
         </section>
 
         <button
