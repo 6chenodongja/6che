@@ -7,8 +7,6 @@ import { supabase } from '../../../../supabase/client';
 import { ExtendedPostInsert } from '../../../../../types/extended';
 import WeatherDropdown from './components/WeatherDropdown';
 
-// import { Noto_Sans_KR } from 'next/font/google';
-
 const PostFormPage = () => {
   const [images, setImages] = useState<File[]>([]);
   const [description, setDescription] = useState('');
@@ -26,10 +24,6 @@ const PostFormPage = () => {
   const [styleError, setStyleError] = useState(false);
   const [locationError, setLocationError] = useState(false);
   const [imageError, setImageError] = useState(false);
-
-  // const noto = Noto_Sans_KR({
-  //   subsets: ['latin'],
-  // });
 
   const initialStyles = [
     '미니멀',
@@ -332,30 +326,30 @@ const PostFormPage = () => {
               {images.map((image, index) => (
                 <div
                   key={index}
-                  className="relative w-24 h-32 p-1.5 flex-shrink-0"
+                  className="relative w-[60px] h-[80px] flex-shrink-0"
                 >
                   <Image
                     src={URL.createObjectURL(image)}
                     alt={`Uploaded ${index}`}
-                    width={96}
-                    height={128}
-                    className="w-full h-full object-cover border border-gray-300"
+                    layout="fill"
+                    objectFit="cover"
+                    className="border border-gray-300 rounded-[4px]"
                   />
                   <button
                     type="button"
                     // 버튼 크기 조정 및 배경색, 아이콘 설정
-                    className="absolute top-1 right-1 bg-black rounded-full w-6 h-6 flex items-center justify-center"
+                    className="absolute top-1 right-1 bg-black rounded-full w-4.5 h-4.5 flex items-center justify-center"
                     onClick={(e) => {
                       e.stopPropagation();
                       handleRemoveImage(index);
                     }}
                   >
-                    {/* 아이콘 이미지 */}
+                    {/* 삭제 아이콘 이미지 */}
                     <Image
                       src="/x.svg"
                       alt="Remove Icon"
-                      width={24}
-                      height={24}
+                      width={12}
+                      height={12}
                       className="invert"
                     />
                   </button>
@@ -364,7 +358,7 @@ const PostFormPage = () => {
 
               {images.length < 3 && (
                 <div
-                  className="w-24 h-32 bg-black flex flex-col justify-center items-center border border-gray-300 cursor-pointer flex-shrink-0 rounded-md"
+                  className="w-[60px] h-[80px] bg-black flex flex-col justify-center items-center border border-black cursor-pointer flex-shrink-0 rounded-[4px]"
                   onClick={(e) => {
                     e.stopPropagation();
                     fileInputRef.current?.click();
