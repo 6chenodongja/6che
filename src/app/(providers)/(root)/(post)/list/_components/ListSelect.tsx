@@ -2,14 +2,24 @@ import React, { useState } from 'react';
 
 interface ListSelectsProps {
   handleSortChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  selectedOptions: string[];
+  setSelectedOptions: React.Dispatch<React.SetStateAction<string[]>>;
+  handleOptionClick: (option: string) => void;
+  selectedTab: string;
+  setSelectedTab: React.Dispatch<React.SetStateAction<string>>;
 }
 
-function ListSelects({ handleSortChange }: ListSelectsProps) {
+function ListSelects({
+  handleSortChange,
+  selectedOptions,
+  setSelectedOptions,
+  handleOptionClick,
+  selectedTab,
+  setSelectedTab,
+}: ListSelectsProps) {
   const [isFilterOn, setIsFilterOn] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
-  const [selectedTab, setSelectedTab] = useState('유형');
   const [showSearchDropdown, setShowSearchDropdown] = useState(false);
-  const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
 
   const handleFilterClick = () => {
     setIsFilterOn((prev) => !prev);
@@ -27,14 +37,6 @@ function ListSelects({ handleSortChange }: ListSelectsProps) {
     setShowSearchDropdown((prev) => !prev);
     if (showDropdown) {
       setShowDropdown(false);
-    }
-  };
-
-  const handleOptionClick = (option: string) => {
-    if (selectedOptions.includes(option)) {
-      setSelectedOptions(selectedOptions.filter((item) => item !== option));
-    } else {
-      setSelectedOptions([...selectedOptions, option]);
     }
   };
 

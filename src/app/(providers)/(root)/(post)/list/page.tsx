@@ -1,9 +1,8 @@
 'use client';
-
+import React, { useEffect, useState } from 'react';
 import { createClient } from '@/supabase/client';
 import Image from 'next/image';
 import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
 import { Tables } from '../../../../../../types/supabase';
 import ListHeader from './_components/ListHeader';
 import ListSelects from './_components/ListSelect';
@@ -14,32 +13,18 @@ function PostList() {
   const [post, setPost] = useState<Tables<'posts'>[]>([]);
   const [users, setUsers] = useState<Tables<'users'>[]>([]);
   const [latest, setLatest] = useState('latest');
+  const [filteredPosts, setFilteredPosts] = useState<Tables<'posts'>[]>([]);
+  const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
+  const [selectedTab, setSelectedTab] = useState<string>('유형');
 
   const User = 'a184313d-fac7-4c5d-8ee3-89e367cfb86f';
   const supabase = createClient();
 
-  const whiteLike = (
-    <path
-      d="M11.0449 21.807C10.8637 21.7072 10.6191 21.5687 10.3316 21.3963C9.76866 21.0587 8.98349 20.5566 8.16667 19.9268C7.38362 19.323 6.37347 18.4516 5.50743 17.3387C4.70629 16.3091 3.5 14.3976 3.5 11.8306C3.5 8.51841 6.11167 5.83337 9.33333 5.83337C11.2415 5.83337 12.9357 6.77534 14 8.23166C15.0643 6.77534 16.7585 5.83337 18.6667 5.83337C21.8883 5.83337 24.5 8.51841 24.5 11.8306C24.5 14.3976 23.2937 16.3091 22.4926 17.3387C21.6265 18.4516 20.6164 19.323 19.8333 19.9268C19.0165 20.5566 18.2313 21.0587 17.6684 21.3963C17.3809 21.5687 17.1363 21.7072 16.9551 21.807L15.8357 22.3852C14.6842 22.98 13.3158 22.98 12.1643 22.3852L11.0449 21.807Z"
-      stroke="#121212"
-      strokeWidth={2}
-      strokeLinecap="round"
-    />
-  );
-  const redLike = (
-    <path
-      d="M11.0449 21.807C10.8637 21.7072 10.6191 21.5687 10.3316 21.3963C9.76866 21.0587 8.98349 20.5566 8.16667 19.9268C7.38362 19.323 6.37347 18.4516 5.50743 17.3387C4.70629 16.3091 3.5 14.3976 3.5 11.8306C3.5 8.51841 6.11167 5.83337 9.33333 5.83337C11.2415 5.83337 12.9357 6.77534 14 8.23166C15.0643 6.77534 16.7585 5.83337 18.6667 5.83337C21.8883 5.83337 24.5 8.51841 24.5 11.8306C24.5 14.3976 23.2937 16.3091 22.4926 17.3387C21.6265 18.4516 20.6164 19.323 19.8333 19.9268C19.0165 20.5566 18.2313 21.0587 17.6684 21.3963C17.3809 21.5687 17.1363 21.7072 16.9551 21.807L15.8357 22.3852C14.6842 22.98 13.3158 22.98 12.1643 22.3852L11.0449 21.807Z"
-      stroke="#F44336"
-      strokeWidth={2}
-      strokeLinecap="round"
-    />
-  );
   const handleLike = async (postId: string, userId: string) => {
     try {
       const isLiked = liked[postId];
 
       if (isLiked) {
-        // 좋아요 취소
         await supabase
           .from('post_likes')
           .delete()
@@ -55,7 +40,6 @@ function PostList() {
         if (postFetchError) {
           console.log('해당 포스트의 좋아요 수 가져오기 오류', postFetchError);
         }
-        //좋아요 마이너스
         const newLikeCount = (postData?.like || 0) - 1;
         await supabase
           .from('posts')
@@ -68,7 +52,6 @@ function PostList() {
           ),
         );
       } else {
-        // 좋아요 추가
         await supabase
           .from('post_likes')
           .insert({ post_id: postId, user_id: User });
@@ -85,7 +68,6 @@ function PostList() {
             postFetchError,
           );
         }
-        //좋아요 플러스
         const newLikeCount = (postData?.like || 0) + 1;
         await supabase
           .from('posts')
@@ -108,7 +90,6 @@ function PostList() {
     }
   };
 
-  // 유저 닉네임 가져오기
   const fetchUsers = async () => {
     const { data } = await supabase.from('users').select('*').eq('id', User);
 
@@ -126,7 +107,6 @@ function PostList() {
     return user ? user.nick_name : 'Unknown';
   };
 
-  // 포스트 리스트와 최신순과 좋아요순으로 정렬
   const fetchPosts = async (order: string) => {
     const orderColumn = order === 'latest' ? 'created_at' : 'like';
     const { data, error } = await supabase
@@ -139,6 +119,7 @@ function PostList() {
       console.error(error);
     } else {
       setPost(data);
+      setFilteredPosts(data);
     }
   };
 
@@ -146,21 +127,58 @@ function PostList() {
     fetchPosts(latest);
   }, [latest]);
 
-  console.log(latest);
-
   const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setLatest(e.target.value);
   };
 
+  const filterPosts = () => {
+    let filtered = [...post];
+
+    selectedOptions.forEach((option) => {
+      if (selectedTab === '유형') {
+        filtered = filtered.filter((p) => p.gender === option);
+      } else if (selectedTab === '날씨') {
+        filtered = filtered.filter((p) => p.weather.includes(option));
+      } else if (selectedTab === '계절') {
+        filtered = filtered.filter((p) => p.seasons.includes(option));
+      } else if (selectedTab === '스타일') {
+        filtered = filtered.filter((p) => p.style.includes(option));
+      } else if (selectedTab === '장소') {
+        filtered = filtered.filter((p) => p.locations.includes(option));
+      }
+    });
+
+    setFilteredPosts(filtered);
+  };
+
+  useEffect(() => {
+    filterPosts();
+  }, [selectedOptions, selectedTab]);
+
+  const handleOptionClick = (option: string) => {
+    if (selectedOptions.includes(option)) {
+      setSelectedOptions(selectedOptions.filter((item) => item !== option));
+    } else {
+      setSelectedOptions([...selectedOptions, option]);
+    }
+  };
+  console.log(post);
   return (
     <div className="max-w-sm mx-auto h-auto m-10">
       <ListHeader />
       <div className="mt-6">
-        <ListSelects handleSortChange={handleSortChange} />
+        <ListSelects
+          handleSortChange={handleSortChange}
+          selectedOptions={selectedOptions}
+          setSelectedOptions={setSelectedOptions}
+          handleOptionClick={handleOptionClick}
+          selectedTab={selectedTab}
+          setSelectedTab={setSelectedTab}
+        />
       </div>
 
       <div className="grid grid-cols-2 mt-4 gap-4">
-        {post.map((post) => (
+        {filteredPosts.map((post) => (
           <div key={post.id} className="relative">
             <Link href={`/detail/${post.id}`} className="block">
               {post.image_url && (
