@@ -52,40 +52,15 @@ const PostFormPage = () => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
-    let seasonTimer: NodeJS.Timeout;
-    if (seasonError) {
-      seasonTimer = setTimeout(() => {
-        setSeasonError(false);
-      }, 1000);
-    }
+    let timers: NodeJS.Timeout[] = [];
 
-    let styleTimer: NodeJS.Timeout;
-    if (styleError) {
-      styleTimer = setTimeout(() => {
-        setStyleError(false);
-      }, 1000);
-    }
+    if (seasonError) timers.push(setTimeout(() => setSeasonError(false), 1000));
+    if (styleError) timers.push(setTimeout(() => setStyleError(false), 1000));
+    if (locationError)
+      timers.push(setTimeout(() => setLocationError(false), 1000));
+    if (imageError) timers.push(setTimeout(() => setImageError(false), 1000));
 
-    let locationTimer: NodeJS.Timeout;
-    if (locationError) {
-      locationTimer = setTimeout(() => {
-        setLocationError(false);
-      }, 1000);
-    }
-
-    let imageTimer: NodeJS.Timeout;
-    if (imageError) {
-      imageTimer = setTimeout(() => {
-        setImageError(false);
-      }, 1000);
-    }
-
-    return () => {
-      clearTimeout(seasonTimer);
-      clearTimeout(styleTimer);
-      clearTimeout(locationTimer);
-      clearTimeout(imageTimer);
-    };
+    return () => timers.forEach(clearTimeout);
   }, [seasonError, styleError, locationError, imageError]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -102,10 +77,6 @@ const PostFormPage = () => {
   const handleRemoveImage = (index: number) => {
     setImages((prevImages) => prevImages.filter((_, i) => i !== index));
   };
-
-  useEffect(() => {
-    console.log(images);
-  }, [images]);
 
   const handleDescriptionChange = (
     e: React.ChangeEvent<HTMLTextAreaElement>,
@@ -302,16 +273,13 @@ const PostFormPage = () => {
         <div className="mb-4 flex flex-col items-start">
           <div className="flex gap-2 overflow-x-auto flex-row-reverse">
             {images.map((image, index) => (
-              <div
-                key={index}
-                className="relative w-24 h-32 p-1.5 flex-shrink-0"
-              >
+              <div key={index} className="relative w-24 h-32 flex-shrink-0">
                 <Image
                   src={URL.createObjectURL(image)}
                   alt={`Uploaded ${index}`}
-                  width={68}
-                  height={80}
-                  className="w-full h-full object-cover border border-gray-300"
+                  width={96}
+                  height={128}
+                  className="w-full h-full object-cover border border-gray-300 rounded-md"
                 />
                 <button
                   type="button"
@@ -449,10 +417,6 @@ const PostFormPage = () => {
               >
                 <Image src="/plus.svg" alt="+" width={20} height={20} />
               </button>
-              <button
-                type="button"
-                className="text-xl leading-none bg-transparent border-none cursor-pointer"
-              ></button>
             </div>
           </div>
           <div className="flex flex-wrap gap-2 mt-1">
@@ -505,10 +469,6 @@ const PostFormPage = () => {
               >
                 <Image src="/plus.svg" alt="+" width={20} height={20} />
               </button>
-              <button
-                type="button"
-                className="text-xl leading-none bg-transparent border-none cursor-pointer"
-              ></button>
             </div>
           </div>
           <div className="flex flex-wrap gap-2 mt-1">
