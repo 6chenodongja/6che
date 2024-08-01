@@ -28,8 +28,8 @@ const convertFahrenheitToCelsius = (fahrenheit: number) => {
 
 // 강수확률에 따른 이미지를 반환하는 함수
 const getPrecipitationImage = (probability: number) => {
-  const range = Math.floor(probability / 10) * 10;
-  return `/images/Precipitation-probability/${range}.svg`;
+  const precipitationValue = Math.min(Math.floor(probability / 10) * 10, 100);
+  return `/images/Precipitation-probability/${precipitationValue}.svg`;
 };
 
 // 미세먼지 상태에 따른 이미지를 반환하는 함수
@@ -43,6 +43,11 @@ const getAirQualityImage = (phrase: string) => {
 const getHumidityImage = (humidity: number | null) => {
   const range = humidity !== null ? Math.floor(humidity / 10) * 10 : 0;
   return `/images/Humidity/${range}.svg`;
+};
+
+// 함수에서 이미지 경로가 정의되어 있는지 확인하고 기본값 설정
+const getImageSrc = (imagePath: string | undefined): string => {
+  return imagePath ? imagePath : '/default-image.svg'; // 기본 이미지 경로 설정
 };
 
 // WeatherIcon에 따라 적절한 이미지 경로를 반환하는 함수 추가
@@ -119,7 +124,9 @@ const MainPage = () => {
               label: '강수확률',
               value: `${weatherData.current?.PrecipitationProbability || '0'}%`,
               image: getPrecipitationImage(
-                weatherData.current?.PrecipitationProbability || 0,
+                parseFloat(
+                  weatherData.current?.PrecipitationProbability || '0',
+                ),
               ),
             },
             {
@@ -168,7 +175,7 @@ const MainPage = () => {
   return (
     <div className="bg-neutral-50 flex flex-col justify-center items-center w-full">
       <header className="w-80 bg-white shadow-md py-4 flex justify-between items-center px-4">
-        <img src="/images/menu.png" alt="메뉴" className="w-6 h-6" />
+        <Image src="/images/menu.png" alt="메뉴" width={24} height={24} />
         <LogoText className="w-24 h-8" />
         <IconLogin className="w-6 h-6" />
       </header>
@@ -200,30 +207,36 @@ const MainPage = () => {
               <div className="absolute top-2 left-0 right-0 text-center text-black font-medium">
                 반팔티
               </div>
-              <img
+              <Image
                 src="/images/tshirt.png"
                 alt="반팔티"
-                className="relative w-[54px] h-14 mx-auto mt-8 object-contain"
+                className="relative mx-auto mt-8 object-contain"
+                width={54}
+                height={56}
               />
             </div>
             <div className="relative w-[88px] h-[100px] bg-white bg-opacity-30 rounded-2xl overflow-hidden border border-solid border-gray-300 shadow-md backdrop-blur-lg">
               <div className="absolute top-2 left-0 right-0 text-center text-black font-medium">
                 반바지
               </div>
-              <img
+              <Image
                 src="/images/shorts.png"
                 alt="반바지"
-                className="relative w-[54px] h-14 mx-auto mt-8 object-contain"
+                className="relative mx-auto mt-8 object-contain"
+                width={54}
+                height={56}
               />
             </div>
             <div className="relative w-[88px] h-[100px] bg-white bg-opacity-30 rounded-2xl overflow-hidden border border-solid border-gray-300 shadow-md backdrop-blur-lg">
               <div className="absolute top-2 left-0 right-0 text-center text-black font-medium">
                 셔츠
               </div>
-              <img
+              <Image
                 src="/images/shirt.png"
                 alt="셔츠"
-                className="relative w-[54px] h-14 mx-auto mt-8 object-contain"
+                className="relative mx-auto mt-8 object-contain"
+                width={54}
+                height={56}
               />
             </div>
           </div>
@@ -237,22 +250,26 @@ const MainPage = () => {
                   추천 코디
                 </div>
               </div>
-              <div className="inline-flex items-center justify-center gap-1 p-1.5 relative flex-[0_0_auto] rounded-md overflow-hidden items-center">
-                <div className="font-caption font-medium text-black text-sm tracking-normal leading-normal relative w-fit mt-[-1.00px] whitespace-nowrap">
+              <div className="flex items-center justify-center gap-1 p-1.5 relative rounded-md overflow-hidden">
+                <div className="font-caption font-medium text-black text-sm">
                   더보기
                 </div>
-                <img
+                <Image
                   src="/images/arrow_right.png"
                   alt="더보기"
                   className="w-4 h-4"
+                  width={16} // w-4 = 1rem = 16px
+                  height={16} // h-4 = 1rem = 16px
                 />
               </div>
             </div>
             <div className="flex items-start gap-2 relative self-stretch w-full flex-[0_0_auto] rounded-lg overflow-hidden">
-              <img
-                className="w-28 object-cover relative h-40"
-                alt="추천 코디 1"
+              <Image
                 src="/images/recommend-1.png"
+                alt="추천 코디 1"
+                className="object-cover relative"
+                width={112} // w-28 = 7rem = 112px
+                height={160} // h-40 = 10rem = 160px
               />
               <div className="w-[114px] rounded-lg overflow-hidden bg-[url(/images/recommend-2.png)] bg-cover bg-[50%_50%] relative h-40">
                 <div className="absolute w-6 h-6 top-[50%] left-[84px] transform -translate-y-1/2 overflow-hidden">
@@ -287,10 +304,14 @@ const MainPage = () => {
           <div className="grid grid-cols-3 gap-4">
             <div className="flex flex-col items-center bg-white rounded-[16px] shadow-md w-[88px] h-[100px] overflow-hidden">
               <span className="text-lg text-black mt-[10px]">강수확률</span>
-              <img
-                src={`/images/Precipitation-probability/${Math.min(Math.floor((parseFloat(extraWeatherInfo[0]?.value || '0%') / 10) * 10, 100))}.svg`}
+              <Image
+                src={getImageSrc(
+                  `/images/Precipitation-probability/${Math.min(Math.floor((parseFloat(extraWeatherInfo[0]?.value || '0%') / 10) * 10), 100)}.svg`,
+                )}
                 alt="강수확률"
                 className="w-[20px] h-[32px]"
+                width={20}
+                height={32}
               />
               <span className="text-xl text-black mt-[4px]">
                 {extraWeatherInfo[0]?.value || '0%'}
@@ -298,10 +319,12 @@ const MainPage = () => {
             </div>
             <div className="flex flex-col items-center bg-white rounded-[16px] shadow-md w-[88px] h-[100px] overflow-hidden">
               <span className="text-lg text-black mt-[10px]">미세먼지</span>
-              <img
-                src={`${extraWeatherInfo[2]?.image}`}
+              <Image
+                src={getImageSrc(extraWeatherInfo[2]?.image)}
                 alt="미세먼지"
                 className="w-[20px] h-[32px]"
+                width={20}
+                height={32}
               />
               <span className="text-xl text-black mt-[4px]">
                 {extraWeatherInfo[2]?.value || 'N/A'}
@@ -309,10 +332,12 @@ const MainPage = () => {
             </div>
             <div className="flex flex-col items-center bg-white rounded-[16px] shadow-md w-[88px] h-[100px] overflow-hidden">
               <span className="text-lg text-black mt-[10px]">습도</span>
-              <img
-                src={`${extraWeatherInfo[1]?.image}`}
+              <Image
+                src={getImageSrc(extraWeatherInfo[1]?.image)}
                 alt="습도"
                 className="w-[32px] h-[32px]"
+                width={32}
+                height={32}
               />
               <span className="text-xl text-black mt-[4px]">
                 {extraWeatherInfo[1]?.value || 'N/A'}
@@ -419,10 +444,12 @@ const MainPage = () => {
                       {formatTime(weather.DateTime)}
                     </span>
                   </div>
-                  <img
+                  <Image
                     src={getWeatherIconSrc(weather.WeatherIcon)}
                     alt="날씨 아이콘"
                     className="w-12 h-12"
+                    width={48} // w-12 = 3rem = 48px
+                    height={48} // h-12 = 3rem = 48px
                   />
                   <span className="text-lg font-medium mt-1">
                     {Math.round(fahrenheitToCelsius(weather.Temperature.Value))}
@@ -448,10 +475,12 @@ const MainPage = () => {
               {weeklyWeather.map((weather, index) => (
                 <div key={index} className="flex flex-col items-center">
                   <span>{weather.day}</span>
-                  <img
+                  <Image
                     src="/images/weather-icon.png"
                     alt="날씨 아이콘"
                     className="w-12 h-12"
+                    width={48} // Specify the width
+                    height={48} // Specify the height
                   />
                   <span>
                     {weather.temperatureMin}° - {weather.temperatureMax}°
@@ -471,7 +500,7 @@ const MainPage = () => {
             <Link href="/mypage">마이페이지</Link>
           </nav>
           <div className="text-left text-gray-500">
-            <p>개발: 주현우 | 전은겸 | 김성구 | 석재영 | 김성구</p>
+            <p>개발: 주현우 | 전은겸 | 김성구 | 석재영 | 한소영</p>
             <p>디자인: 김윤하</p>
             <p>© 2024 김윤하 all rights reserved.</p>
           </div>
