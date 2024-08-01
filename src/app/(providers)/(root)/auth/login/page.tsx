@@ -26,15 +26,6 @@ function LoginPage() {
       password,
     });
     console.log(res);
-    // const { error } = await supabase.auth.signInWithPassword({
-    //   email: email,
-    //   password: password,
-    // });
-
-    // if (error) {
-    //   alert(error.message);
-    //   return;
-    // }
 
     alert('로그인 성공');
 
