@@ -3,7 +3,7 @@ import React from 'react';
 
 function MyPage() {
   return (
-    <div className="w-80 h-[1591px] relative overflow-hidden bg-white">
+    <div className="w-80 h-[1591px] relative overflow-hidden bg-white m-auto">
       <div className="flex flex-col justify-start items-start w-72 absolute left-4 top-14 gap-[17px] py-5 border-t-0 border-r-0 border-b border-l-0 border-black">
         <div className="flex justify-start items-center flex-grow-0 flex-shrink-0 relative gap-1">
           <div className="flex-grow-0 flex-shrink-0 w-[30px] h-[30px] bg-[#d9d9d9]" />

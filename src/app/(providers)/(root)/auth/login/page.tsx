@@ -1,6 +1,7 @@
 'use client';
 
 import { createClient } from '@/supabase/client';
+import axios from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useRef } from 'react';
@@ -20,16 +21,20 @@ function LoginPage() {
       alert('모든 항목을 입력해 주세요.');
       return;
     }
-
-    const { error } = await supabase.auth.signInWithPassword({
-      email: email,
-      password: password,
+    const res = await axios.post('/api/auth/login', {
+      email,
+      password,
     });
+    console.log(res);
+    // const { error } = await supabase.auth.signInWithPassword({
+    //   email: email,
+    //   password: password,
+    // });
 
-    if (error) {
-      alert(error.message);
-      return;
-    }
+    // if (error) {
+    //   alert(error.message);
+    //   return;
+    // }
 
     alert('로그인 성공');
 

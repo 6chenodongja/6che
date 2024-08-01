@@ -15,5 +15,5 @@ export async function POST(request: NextRequest) {
   if (error) {
     return NextResponse.json({ error: error.message });
   }
-  return NextRequest.json(data.user);
+  return NextResponse.json(data.user);
 }
