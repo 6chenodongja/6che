@@ -1,10 +1,35 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  MouseEvent,
+  TouchEvent,
+} from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 
-const outfits = {
+// Outfit type definitions
+interface OutfitImages {
+  hot: string[];
+  warm: string[];
+  mild: string[];
+  cool: string[];
+  chilly: string[];
+  cold: string[];
+  coldest: string[];
+}
+
+// Temperature range type definitions
+interface TemperatureRange {
+  min: number;
+  label: keyof OutfitImages;
+  display: string;
+}
+
+// Outfit images
+const outfits: OutfitImages = {
   hot: ['/반팔티.svg', '/반바지.svg', '/셔츠.svg', '/면바지.svg'],
   warm: ['/반팔티.svg', '/반바지.svg', '/셔츠.svg', '/면바지.svg'],
   mild: ['/반팔티.svg', '/반바지.svg', '/셔츠.svg', '/면바지.svg'],
@@ -14,16 +39,19 @@ const outfits = {
   coldest: ['/반팔티.svg', '/반바지.svg', '/셔츠.svg', '/면바지.svg'],
 };
 
-const defaultImages = [
+// Default images
+const defaultImages: string[] = [
   '/default-b.svg',
   '/default-y.svg',
   '/default-y.svg',
   '/default-b.svg',
 ];
 
-const outfitLabels = ['반팔티', '반바지', '얇은 셔츠', '면바지'];
+// Outfit labels
+const outfitLabels: string[] = ['반팔티', '반바지', '얇은 셔츠', '면바지'];
 
-const temperatureRanges = [
+// Temperature ranges
+const temperatureRanges: TemperatureRange[] = [
   { min: 28, label: 'hot', display: '28°C 이상' },
   { min: 23, label: 'warm', display: '23°C - 27°C' },
   { min: 20, label: 'mild', display: '20°C - 22°C' },
@@ -34,28 +62,31 @@ const temperatureRanges = [
   { min: -Infinity, label: 'coldest', display: '4°C 이하' },
 ];
 
-const ThermometerStyle = () => {
-  const [temperatureIndex, setTemperatureIndex] = useState(
+// Component definition
+const ThermometerStyle: React.FC = () => {
+  const [temperatureIndex, setTemperatureIndex] = useState<number>(
     Math.floor(temperatureRanges.length / 2),
   );
-  const sliderRef = useRef(null);
-  const [isDragging, setIsDragging] = useState(false);
-  const [initialView, setInitialView] = useState(true);
+  const sliderRef = useRef<HTMLDivElement | null>(null);
+  const [isDragging, setIsDragging] = useState<boolean>(false);
+  const [initialView, setInitialView] = useState<boolean>(true);
 
   const router = useRouter();
 
-  const handleTemperatureChange = (newIndex) => {
+  const handleTemperatureChange = (newIndex: number) => {
     if (newIndex >= 0 && newIndex < temperatureRanges.length) {
       setTemperatureIndex(newIndex);
       setInitialView(false);
     }
   };
 
-  const handleDrag = (e) => {
+  const handleDrag = (e: MouseEvent | TouchEvent) => {
     if (!sliderRef.current || !isDragging) return;
 
     const sliderRect = sliderRef.current.getBoundingClientRect();
-    const x = 'clientX' in e ? e.clientX : e.touches[0].clientX;
+    const x = 'clientX' in e ? e.clientX : e.touches[0]?.clientX;
+    if (x == null) return;
+
     const sliderWidth = sliderRect.width;
     const relativeX = x - sliderRect.left;
     const percentage = relativeX / sliderWidth;
@@ -64,27 +95,11 @@ const ThermometerStyle = () => {
     handleTemperatureChange(newIndex);
   };
 
-  const handleMouseDown = () => {
-    setIsDragging(true);
-  };
-
-  const handleMouseUp = () => {
-    setIsDragging(false);
-  };
-
-  const handleMouseMove = (e) => {
-    e.preventDefault();
-    handleDrag(e);
-  };
-
-  const handleTouchMove = (e) => {
-    handleDrag(e);
-  };
+  const handleMouseDown = () => setIsDragging(true);
+  const handleMouseUp = () => setIsDragging(false);
 
   useEffect(() => {
-    const handleMouseUpGlobal = () => {
-      setIsDragging(false);
-    };
+    const handleMouseUpGlobal = () => setIsDragging(false);
 
     window.addEventListener('mouseup', handleMouseUpGlobal);
     window.addEventListener('touchend', handleMouseUpGlobal);
@@ -95,9 +110,9 @@ const ThermometerStyle = () => {
     };
   }, []);
 
-  const getOutfitsForTemperature = (tempIndex) => {
+  const getOutfitsForTemperature = (tempIndex: number): string[] => {
     const range = temperatureRanges[tempIndex];
-    return range ? outfits[range.label] : defaultImages;
+    return outfits[range.label] || defaultImages;
   };
 
   const currentOutfits =
@@ -110,8 +125,7 @@ const ThermometerStyle = () => {
   };
 
   return (
-    <div className="w-full max-w-md mx-auto flex flex-col items-center justify-between h-screen bg-white">
-      {/* Main Content */}
+    <div className="w-full max-w-md mx-auto flex flex-col items-center justify-center min-h-screen bg-white">
       <div className="flex flex-col items-center mt-4 mb-8">
         <h1 className="text-2xl font-bold mb-4">기온 별 옷차림</h1>
         <div className="relative">
@@ -122,22 +136,22 @@ const ThermometerStyle = () => {
                 alt="Sun Icon"
                 width={46}
                 height={46}
-                className="absolute top-[-20px] left-[-20px]"
+                className="absolute -top-8 -left-8"
               />
               <Image
                 src="/weather-piece-leaf.svg"
                 alt="Leaf Icon"
                 width={46}
                 height={46}
-                className="absolute top-[calc(100%_-_46px)] right-[-20px]"
+                className="absolute -top-8 -right-8"
               />
             </>
           )}
           <div className="grid grid-cols-2 gap-4 mb-6">
-            {currentOutfits.map((src, index) => (
+            {currentOutfits.map((src: string, index: number) => (
               <div
                 key={index}
-                className="flex flex-col items-center justify-center gap-2 p-4 w-24 h-32 bg-white shadow rounded-lg bg-white/40 backdrop-blur-lg border border-white relative"
+                className="flex flex-col items-center justify-center gap-2 p-4 w-24 h-32 bg-white shadow rounded-lg bg-opacity-40 backdrop-blur-lg border border-white relative"
               >
                 {!initialView && (
                   <span className="text-center mb-2">
@@ -173,9 +187,9 @@ const ThermometerStyle = () => {
         </div>
         <div
           ref={sliderRef}
-          className="relative w-72 h-10 flex-shrink-0 flex items-center justify-center mb-8"
-          onMouseMove={handleMouseMove}
-          onTouchMove={handleTouchMove}
+          className="relative w-72 h-10 flex items-center justify-center mb-8"
+          onMouseMove={handleDrag}
+          onTouchMove={handleDrag}
           onMouseDown={handleMouseDown}
           onTouchStart={handleMouseDown}
         >
@@ -184,6 +198,7 @@ const ThermometerStyle = () => {
             alt="Thermometer Body"
             width={274}
             height={42}
+            priority
           />
           <div
             className="absolute cursor-pointer"
@@ -200,10 +215,11 @@ const ThermometerStyle = () => {
               alt="Thermometer Controller"
               width={42}
               height={24.36}
+              className="object-contain"
             />
           </div>
           <button
-            className="absolute left-[10px] top-1/2 transform -translate-y-1/2"
+            className="absolute left-2 top-1/2 -translate-y-1/2"
             onClick={() => handleTemperatureChange(temperatureIndex - 1)}
           >
             <Image
@@ -214,7 +230,7 @@ const ThermometerStyle = () => {
             />
           </button>
           <button
-            className="absolute right-[10px] top-1/2 transform -translate-y-1/2"
+            className="absolute right-2 top-1/2 -translate-y-1/2"
             onClick={() => handleTemperatureChange(temperatureIndex + 1)}
           >
             <Image
