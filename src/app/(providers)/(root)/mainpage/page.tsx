@@ -104,6 +104,11 @@ const MainPage = () => {
   const [extraWeatherInfo, setExtraWeatherInfo] = useState<any[]>([]);
   const [isWeeklyWeatherVisible, setIsWeeklyWeatherVisible] = useState(false);
   const router = useRouter();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const handleMenuToggle = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
 
   const handleCodiClick = () => {
     router.push('/surveypage');
@@ -180,27 +185,57 @@ const MainPage = () => {
   return (
     <div className="bg-neutral-50 flex flex-col justify-center items-center w-full">
       <header className="w-80 bg-white shadow-md py-4 flex justify-between items-center px-4">
-        <Image src="/images/menu.png" alt="메뉴" width={24} height={24} />
+        <button onClick={handleMenuToggle}>
+          <Image src="/images/menu.png" alt="메뉴" width={24} height={24} />
+        </button>
         <LogoText className="w-24 h-8" />
         <IconLogin className="w-6 h-6" />
       </header>
 
+      {/* 네비게이션 바 */}
+      <nav className={`navbar ${isMenuOpen ? 'open' : ''}`}>
+        <div className="navbar-close" onClick={handleMenuToggle}>
+          &times;
+        </div>
+        <ul>
+          <li>
+            <Link href="/">홈</Link>
+          </li>
+          <li>
+            <Link href="/style">스타일</Link>
+          </li>
+          <li>
+            <Link href="/outfit">옷차림</Link>
+          </li>
+          <li>
+            <Link href="/surveypage">취향 코디</Link>
+          </li>
+        </ul>
+      </nav>
+
       <main className="flex flex-col items-center w-80 bg-gradient-to-b from-blue-200 to-blue-400 text-white py-8 px-4">
-        <div className="flex items-center space-x-2 rounded-full bg-white bg-opacity-30 py-1 px-4 backdrop-blur-lg mt-6">
+        <div className="mt-[40px] flex items-center space-x-2 rounded-full bg-white bg-opacity-30 py-1 px-4 backdrop-blur-lg">
           <span className="text-black">서울시 동작구</span>
           <IconLocation className="w-4 h-4" />
         </div>
-
-        <div className="text-6xl font-bold mt-6 text-black">
-          {weather ? `${Math.round(weather.Temperature.Metric.Value)}°` : 'N/A'}
+        <div className="mt-[24px] flex items-end flex-col">
+          <div className="relative w-[75px] h-16">
+            <div className="absolute top-0 left-0 font-temperature-60 font-[number:var(--temperature-60-font-weight)] text-black text-[length:var(--temperature-60-font-size)] tracking-[var(--temperature-60-letter-spacing)] leading-[var(--temperature-60-line-height)] whitespace-nowrap [font-style:var(--temperature-60-font-style)]">
+              {weather
+                ? `${Math.round(weather.Temperature.Metric.Value)}°`
+                : 'N/A'}
+            </div>
+          </div>
         </div>
-        <div className="text-lg text-black">
-          어제 기온보다{' '}
-          {difference !== null
-            ? Math.abs(difference) <= 0.9
-              ? '비슷해요'
-              : `${Math.round(Math.abs(difference))}° ${difference > 0 ? '높아요' : '낮아요'}`
-            : '정보 없음'}
+        <div className="mt-[23px] flex justify-center items-center">
+          <span className="text-lg text-black">
+            어제 기온보다{' '}
+            {difference !== null
+              ? Math.abs(difference) <= 0.9
+                ? '비슷해요'
+                : `${Math.round(Math.abs(difference))}° ${difference > 0 ? '높아요' : '낮아요'}`
+              : '정보 없음'}
+          </span>
         </div>
 
         <section className="w-full mt-8">
@@ -218,7 +253,6 @@ const MainPage = () => {
                 className="relative mx-auto mt-8 object-contain"
                 width={54}
                 height={56}
-                style={{ width: 'auto', height: 'auto' }}
               />
             </div>
             <div className="relative w-[88px] h-[100px] bg-white bg-opacity-30 rounded-2xl overflow-hidden border border-solid border-gray-300 shadow-md backdrop-blur-lg">
@@ -231,7 +265,6 @@ const MainPage = () => {
                 className="relative mx-auto mt-8 object-contain"
                 width={54}
                 height={56}
-                style={{ width: 'auto', height: 'auto' }}
               />
             </div>
             <div className="relative w-[88px] h-[100px] bg-white bg-opacity-30 rounded-2xl overflow-hidden border border-solid border-gray-300 shadow-md backdrop-blur-lg">
@@ -244,7 +277,6 @@ const MainPage = () => {
                 className="relative mx-auto mt-8 object-contain"
                 width={54}
                 height={56}
-                style={{ width: 'auto', height: 'auto' }}
               />
             </div>
           </div>
@@ -266,8 +298,8 @@ const MainPage = () => {
                   src="/images/arrow_right.png"
                   alt="더보기"
                   className="w-4 h-4"
-                  width={16} // w-4 = 1rem = 16px
-                  height={16} // h-4 = 1rem = 16px
+                  width={16}
+                  height={16}
                 />
               </div>
             </div>
@@ -276,8 +308,8 @@ const MainPage = () => {
                 src="/images/recommend-1.png"
                 alt="추천 코디 1"
                 className="object-cover relative"
-                width={112} // w-28 = 7rem = 112px
-                height={160} // h-40 = 10rem = 160px
+                width={112}
+                height={160}
               />
               <div className="w-[114px] rounded-lg overflow-hidden bg-[url(/images/recommend-2.png)] bg-cover bg-[50%_50%] relative h-40">
                 <div className="absolute w-6 h-6 top-[50%] left-[84px] transform -translate-y-1/2 overflow-hidden">
@@ -286,7 +318,7 @@ const MainPage = () => {
                 <div className="inline-flex items-center gap-0.5 px-1 py-px absolute top-[9px] left-[9px] bg-semantic-text-box rounded border border-solid border-semantic-bg-icon">
                   <div className="bg-white rounded-sm overflow-hidden backdrop-blur-[20px] backdrop-brightness-[100%] [-webkit-backdrop-filter:blur(20px)_brightness(100%)] relative w-4 h-4"></div>
                   <div className="font-temperature-14 font-medium text-black text-sm tracking-normal leading-normal relative w-fit whitespace-nowrap">
-                    26°
+                    {/* 26° */}
                   </div>
                 </div>
               </div>
@@ -445,9 +477,8 @@ const MainPage = () => {
                   <Image
                     src={getWeatherIconSrc(weather.WeatherIcon)}
                     alt="날씨 아이콘"
-                    className="w-12 h-12"
-                    width={48} // w-12 = 3rem = 48px
-                    height={48} // h-12 = 3rem = 48px
+                    width={48}
+                    height={48}
                   />
                   <span className="text-lg font-medium mt-1">
                     {Math.round(fahrenheitToCelsius(weather.Temperature.Value))}
@@ -491,8 +522,8 @@ const MainPage = () => {
                       <Image
                         src="/images/Weather/sunset.svg" // 최저기온 이미지
                         alt="sunset"
-                        width={20}
-                        height={20}
+                        width={48}
+                        height={48}
                       />
                       <span className="ml-2">
                         {Math.round(
@@ -507,8 +538,8 @@ const MainPage = () => {
                       <Image
                         src="/images/Weather/sunrise.svg" // 최고기온 이미지
                         alt="sunrise"
-                        width={20}
-                        height={20}
+                        width={48}
+                        height={48}
                       />
                       <span className="ml-2">
                         {Math.round(
