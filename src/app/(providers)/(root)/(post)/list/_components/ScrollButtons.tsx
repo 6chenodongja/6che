@@ -10,7 +10,7 @@ const ScrollButtons = () => {
   };
 
   return (
-    <div className="fixed bottom-1 right-[580px] flex">
+    <div className="fixed bottom-4 right-[630px] flex">
       <button
         className="p-2 rounded-full hover:animate-up bg-white"
         onClick={scrollToTop}

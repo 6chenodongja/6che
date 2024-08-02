@@ -9,30 +9,6 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      custom_tags: {
-        Row: {
-          created_at: string
-          id: string
-          tag_name: string | null
-          tag_type: string | null
-          user_id: string | null
-        }
-        Insert: {
-          created_at?: string
-          id?: string
-          tag_name?: string | null
-          tag_type?: string | null
-          user_id?: string | null
-        }
-        Update: {
-          created_at?: string
-          id?: string
-          tag_name?: string | null
-          tag_type?: string | null
-          user_id?: string | null
-        }
-        Relationships: []
-      }
       post_likes: {
         Row: {
           id: string
@@ -72,7 +48,7 @@ export type Database = {
           created_at: string | null
           gender: string | null
           id: string
-          image_url: string
+          image_url: string | null
           like: number | null
           locations: string | null
           seasons: string | null
@@ -85,7 +61,7 @@ export type Database = {
           created_at?: string | null
           gender?: string | null
           id?: string
-          image_url?: string
+          image_url?: string | null
           like?: number | null
           locations?: string | null
           seasons?: string | null
@@ -118,22 +94,25 @@ export type Database = {
       }
       users: {
         Row: {
+          avatar: string | null
+          created_at: string | null
           email: string
           id: string
           nick_name: string | null
-          password: string | null
         }
         Insert: {
+          avatar?: string | null
+          created_at?: string | null
           email: string
           id: string
           nick_name?: string | null
-          password?: string | null
         }
         Update: {
+          avatar?: string | null
+          created_at?: string | null
           email?: string
           id?: string
           nick_name?: string | null
-          password?: string | null
         }
         Relationships: [
           {

@@ -4,10 +4,10 @@ import React from 'react';
 function ListHeader() {
   return (
     <div
-      className="flex justify-between items-center w-full px-1 py-1.5 rounded-lg bg-white/50 border border-white/60 backdrop-blur-[20px]"
+      className="flex justify-between items-center w-auto px-1 py-1.5 rounded-lg bg-white/50 border border-white/60 backdrop-blur-[20px]"
       style={{
         boxShadow:
-          '0px 0px 2px 0 rgba(0,0,0,0.05), 0px 2px 8px 0 rgba(0,0,0,0.05)',
+          '0px 0px 2px 0px rgba(0, 0, 0, 0.05), 0px 2px var(--Blur-8, 8px) 0px rgba(0, 0, 0, 0.05);',
       }}
     >
       <div className="flex justify-start items-center flex-grow-0 flex-shrink-0 relative gap-0.5 px-1.5">
@@ -187,7 +187,7 @@ function ListHeader() {
             </defs>
           </svg>
           <p className="flex-grow-0 flex-shrink-0 text-base text-left text-[#121212]">
-            26°
+            26
           </p>
         </div>
       </div>
