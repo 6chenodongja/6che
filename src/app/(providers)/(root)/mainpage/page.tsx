@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import { getWeather, getWeeklyWeather } from '../../../api/weather/route';
 import '../../../../app/globals.css';
-import { Navigation, Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
@@ -12,14 +12,18 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { LogoText } from '@/icons/LogoText';
 import { IconLogin } from '@/icons/IconLogin';
-import { WeatherPieceSun } from '@/components/WeatherPieceSun';
 import { IconLocation } from '@/icons/IconLocation';
 import { IconHeart } from '@/icons/IconHeart';
-import { IconWeatherThunderstorm } from '@/icons/IconWeatherThunderstorm';
-import { Component3533 } from '@/components/Component3533';
-import { IconFrame } from '@/components/IconFrame';
-import { IconArrowDown2 } from '@/icons/IconArrowDown2';
-// import 'swiper/swiper-bundle.min.css';
+import { motion, AnimatePresence } from 'framer-motion';
+
+// 날짜와 요일을 포맷팅하는 함수 추가
+const formatDate = (dateString: string): string => {
+  const date = new Date(dateString);
+  const dayNames = ['일', '월', '화', '수', '목', '금', '토'];
+  const day = dayNames[date.getDay()];
+  const formattedDate = `${day} ${date.getMonth() + 1}.${date.getDate()}`;
+  return formattedDate;
+};
 
 // 화씨 온도를 섭씨로 변환하는 함수
 const convertFahrenheitToCelsius = (fahrenheit: number) => {
@@ -39,15 +43,11 @@ const getAirQualityImage = (phrase: string) => {
     : 'Excellent';
   return `/images/AirQuality/${imageName}.svg`;
 };
+
 // 습도에 따른 이미지를 반환하는 함수 추가
 const getHumidityImage = (humidity: number | null) => {
   const range = humidity !== null ? Math.floor(humidity / 10) * 10 : 0;
   return `/images/Humidity/${range}.svg`;
-};
-
-// 함수에서 이미지 경로가 정의되어 있는지 확인하고 기본값 설정
-const getImageSrc = (imagePath: string | undefined): string => {
-  return imagePath ? imagePath : '/default-image.svg'; // 기본 이미지 경로 설정
 };
 
 // WeatherIcon에 따라 적절한 이미지 경로를 반환하는 함수 추가
@@ -93,16 +93,21 @@ const getWeatherIconImage = (iconNumber: number) => {
     39: '/images/Weather/drizzling_night.svg',
     40: '/images/Weather/drizzling_night.svg',
   };
-  return iconMap[iconNumber] || '/images/Weather/default.svg'; // 기본 이미지 경로 설정
+  return iconMap[iconNumber] || '/images/Weather/default.svg';
 };
 
 const MainPage = () => {
-  const [weather, setWeather] = useState<any>(null); // 현재 날씨 상태
-  const [difference, setDifference] = useState<number | null>(null); // 온도 차이
-  const [hourlyWeather, setHourlyWeather] = useState<any[]>([]); // 시간별 날씨 상태
-  const [weeklyWeather, setWeeklyWeather] = useState<any[]>([]); // 주간 날씨 상태
-  const [extraWeatherInfo, setExtraWeatherInfo] = useState<any[]>([]); // 추가 날씨 정보 상태
-  const [isWeeklyWeatherVisible, setIsWeeklyWeatherVisible] = useState(false); // 주간 날씨 표시 여부
+  const [weather, setWeather] = useState<any>(null);
+  const [difference, setDifference] = useState<number | null>(null);
+  const [hourlyWeather, setHourlyWeather] = useState<any[]>([]);
+  const [weeklyWeather, setWeeklyWeather] = useState<any[]>([]);
+  const [extraWeatherInfo, setExtraWeatherInfo] = useState<any[]>([]);
+  const [isWeeklyWeatherVisible, setIsWeeklyWeatherVisible] = useState(false);
+  const router = useRouter();
+
+  const handleCodiClick = () => {
+    router.push('/surveypage');
+  };
 
   // 날씨 데이터를 가져오는 useEffect
   useEffect(() => {
@@ -117,8 +122,8 @@ const MainPage = () => {
           const historicalTemp =
             weatherData.historical?.Temperature?.Metric?.Value; // 어제 온도
           setWeather(weatherData.current);
-          setDifference(parseFloat((currentTemp - historicalTemp).toFixed(1))); // 온도 차이 계산, 소수점 한 자리까지 표시
-          setHourlyWeather(weatherData.hourly || []); // 시간별 날씨 데이터 설정
+          setDifference(parseFloat((currentTemp - historicalTemp).toFixed(1)));
+          setHourlyWeather(weatherData.hourly || []);
           setExtraWeatherInfo([
             {
               label: '강수확률',
@@ -213,6 +218,7 @@ const MainPage = () => {
                 className="relative mx-auto mt-8 object-contain"
                 width={54}
                 height={56}
+                style={{ width: 'auto', height: 'auto' }}
               />
             </div>
             <div className="relative w-[88px] h-[100px] bg-white bg-opacity-30 rounded-2xl overflow-hidden border border-solid border-gray-300 shadow-md backdrop-blur-lg">
@@ -225,6 +231,7 @@ const MainPage = () => {
                 className="relative mx-auto mt-8 object-contain"
                 width={54}
                 height={56}
+                style={{ width: 'auto', height: 'auto' }}
               />
             </div>
             <div className="relative w-[88px] h-[100px] bg-white bg-opacity-30 rounded-2xl overflow-hidden border border-solid border-gray-300 shadow-md backdrop-blur-lg">
@@ -237,6 +244,7 @@ const MainPage = () => {
                 className="relative mx-auto mt-8 object-contain"
                 width={54}
                 height={56}
+                style={{ width: 'auto', height: 'auto' }}
               />
             </div>
           </div>
@@ -276,23 +284,21 @@ const MainPage = () => {
                   <IconHeart state="default" />
                 </div>
                 <div className="inline-flex items-center gap-0.5 px-1 py-px absolute top-[9px] left-[9px] bg-semantic-text-box rounded border border-solid border-semantic-bg-icon">
-                  <div className="bg-white rounded-sm overflow-hidden backdrop-blur-[20px] backdrop-brightness-[100%] [-webkit-backdrop-filter:blur(20px)_brightness(100%)] relative w-4 h-4">
-                    <Component3533
-                      property1="one"
-                      iconFrameIcon={
-                        <IconArrowDown2 className="!absolute !w-4 !h-4 !top-px !left-px" />
-                      }
-                      className="!w-2 !absolute !h-4 !top-0 !left-0"
-                    />
-                  </div>
+                  <div className="bg-white rounded-sm overflow-hidden backdrop-blur-[20px] backdrop-brightness-[100%] [-webkit-backdrop-filter:blur(20px)_brightness(100%)] relative w-4 h-4"></div>
                   <div className="font-temperature-14 font-medium text-black text-sm tracking-normal leading-normal relative w-fit whitespace-nowrap">
                     26°
                   </div>
                 </div>
               </div>
             </div>
-            <button className="all-[unset] box-border flex items-center justify-center gap-[var(--size-space-200)] pt-[var(--size-space-300)] pr-[var(--size-space-300)] pb-[var(--size-space-300)] pl-[var(--size-space-300)] relative self-stretch w-full flex-[0_0_auto] bg-palette-black rounded-md overflow-hidden">
-              <div className="font-button font-medium text-white text-sm tracking-normal leading-normal relative w-fit mt-[-1.00px] whitespace-nowrap">
+            <button
+              onClick={handleCodiClick} // 클릭 시 페이지 이동
+              className="all-[unset] box-border flex items-center justify-center gap-[var(--size-space-200)] pt-[var(--size-space-300)] pr-[var(--size-space-300)] pb-[var(--size-space-300)] pl-[var(--size-space-300)] relative self-stretch w-full flex-[0_0_auto] bg-palette-black rounded-md overflow-hidden"
+            >
+              <div
+                style={{ cursor: 'pointer' }}
+                className="font-button font-medium text-white text-sm tracking-normal leading-normal relative w-fit mt-[-1.00px] whitespace-nowrap"
+              >
                 취향 코디 찾기
               </div>
             </button>
@@ -305,9 +311,7 @@ const MainPage = () => {
             <div className="flex flex-col items-center bg-white rounded-[16px] shadow-md w-[88px] h-[100px] overflow-hidden">
               <span className="text-lg text-black mt-[10px]">강수확률</span>
               <Image
-                src={getImageSrc(
-                  `/images/Precipitation-probability/${Math.min(Math.floor((parseFloat(extraWeatherInfo[0]?.value || '0%') / 10) * 10), 100)}.svg`,
-                )}
+                src={`/images/Precipitation-probability/${Math.min(Math.floor((parseFloat(extraWeatherInfo[0]?.value || '0%') / 10) * 10), 100)}.svg`}
                 alt="강수확률"
                 className="w-[20px] h-[32px]"
                 width={20}
@@ -320,7 +324,7 @@ const MainPage = () => {
             <div className="flex flex-col items-center bg-white rounded-[16px] shadow-md w-[88px] h-[100px] overflow-hidden">
               <span className="text-lg text-black mt-[10px]">미세먼지</span>
               <Image
-                src={getImageSrc(extraWeatherInfo[2]?.image)}
+                src={extraWeatherInfo[2]?.image}
                 alt="미세먼지"
                 className="w-[20px] h-[32px]"
                 width={20}
@@ -333,7 +337,7 @@ const MainPage = () => {
             <div className="flex flex-col items-center bg-white rounded-[16px] shadow-md w-[88px] h-[100px] overflow-hidden">
               <span className="text-lg text-black mt-[10px]">습도</span>
               <Image
-                src={getImageSrc(extraWeatherInfo[1]?.image)}
+                src={extraWeatherInfo[1]?.image}
                 alt="습도"
                 className="w-[32px] h-[32px]"
                 width={32}
@@ -350,13 +354,7 @@ const MainPage = () => {
           <h2 className="text-xl font-semibold mb-4 text-black">
             시간대별 날씨
           </h2>
-          <Swiper
-            spaceBetween={10}
-            slidesPerView={6}
-            // navigation
-            // pagination={{ clickable: true }}
-            // className="w-full"
-          >
+          <Swiper spaceBetween={10} slidesPerView={6}>
             {hourlyWeather.map((weather, index) => {
               // WeatherIcon 숫자에 따른 이미지 파일 이름 결정
               const getWeatherIconSrc = (iconNumber: number) => {
@@ -468,28 +466,65 @@ const MainPage = () => {
           이번주 날씨 보기
         </button>
 
-        {isWeeklyWeatherVisible && (
-          <section className="w-full mt-8">
-            <h2 className="text-xl font-semibold mb-4">이번주 날씨</h2>
-            <div className="grid grid-cols-2 gap-4">
-              {weeklyWeather.map((weather, index) => (
-                <div key={index} className="flex flex-col items-center">
-                  <span>{weather.day}</span>
-                  <Image
-                    src="/images/weather-icon.png"
-                    alt="날씨 아이콘"
-                    className="w-12 h-12"
-                    width={48} // Specify the width
-                    height={48} // Specify the height
-                  />
-                  <span>
-                    {weather.temperatureMin}° - {weather.temperatureMax}°
-                  </span>
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
+        <AnimatePresence>
+          {isWeeklyWeatherVisible && (
+            <motion.section
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.5 }}
+              className="w-full mt-8"
+            >
+              <h2 className="text-xl font-semibold mb-4">이번주 날씨</h2>
+              <div className="grid grid-cols-1 gap-4">
+                {weeklyWeather.map((weather, index) => (
+                  <div
+                    key={index}
+                    className="flex justify-between items-center"
+                  >
+                    <div>
+                      <span className="font-semibold">
+                        {formatDate(weather.Date)}
+                      </span>
+                    </div>
+                    <div className="flex items-center">
+                      <Image
+                        src="/images/Weather/sunset.svg" // 최저기온 이미지
+                        alt="sunset"
+                        width={20}
+                        height={20}
+                      />
+                      <span className="ml-2">
+                        {Math.round(
+                          convertFahrenheitToCelsius(
+                            weather.Temperature.Minimum.Value,
+                          ),
+                        )}
+                        °C
+                      </span>
+                    </div>
+                    <div className="flex items-center">
+                      <Image
+                        src="/images/Weather/sunrise.svg" // 최고기온 이미지
+                        alt="sunrise"
+                        width={20}
+                        height={20}
+                      />
+                      <span className="ml-2">
+                        {Math.round(
+                          convertFahrenheitToCelsius(
+                            weather.Temperature.Maximum.Value,
+                          ),
+                        )}
+                        °C
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </motion.section>
+          )}
+        </AnimatePresence>
 
         <footer className="w-full bg-white py-4 flex flex-col items-center mt-8">
           <nav className="flex flex-col items-center space-y-2 mb-4">

@@ -1,1 +1,0 @@
-export { WeatherPieceSun } from "./WeatherPieceSun";
