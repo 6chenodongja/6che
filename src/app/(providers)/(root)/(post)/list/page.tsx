@@ -7,6 +7,7 @@ import { Tables } from '../../../../../../types/supabase';
 import ListHeader from './_components/ListHeader';
 import ListSelects from './_components/ListSelect';
 import ScrollButtons from './_components/ScrollButtons';
+import _ from 'lodash';
 
 function PostList() {
   const [liked, setLiked] = useState<{ [key: string]: boolean }>({});
@@ -44,6 +45,7 @@ function PostList() {
         if (postFetchError) {
           console.log('해당 포스트의 좋아요 수 가져오기 오류', postFetchError);
         }
+        // 좋아요 마이너스
         const newLikeCount = (postData?.like || 0) - 1;
         await supabase
           .from('posts')
@@ -58,7 +60,7 @@ function PostList() {
       } else {
         await supabase
           .from('post_likes')
-          .insert({ post_id: postId, user_id: User });
+          .insert({ post_id: postId, user_id: userId });
 
         const { data: postData, error: postFetchError } = await supabase
           .from('posts')
@@ -72,6 +74,7 @@ function PostList() {
             postFetchError,
           );
         }
+        // 좋아요 플러스
         const newLikeCount = (postData?.like || 0) + 1;
         await supabase
           .from('posts')
@@ -93,6 +96,9 @@ function PostList() {
       console.error(error);
     }
   };
+
+  const debouncedHandleLike = _.debounce(handleLike, 500);
+
 
   const fetchUsers = async () => {
     const { data } = await supabase.from('users').select('*').eq('id', User);
@@ -234,7 +240,7 @@ function PostList() {
   console.log(posts);
 
   return (
-    <div className="max-w-sm mx-auto h-auto m-10">
+    <div className="max-w-sm mx-auto h-auto">
       <ListHeader />
       <div className="mt-6">
         <ListSelects
@@ -267,7 +273,7 @@ function PostList() {
       <div className="grid grid-cols-2 mt-4 gap-4">
         {filteredPosts.map((post) => (
           <div key={post.id} className="relative">
-            <Link href={`/detail/${post.id}`} className="block">
+            <Link href={`/detail/${post.id}`}>
               {post.image_url && (
                 <Image
                   src={post.image_url.split(',')[0]}
@@ -282,11 +288,13 @@ function PostList() {
                 ☀️ 26℃
               </div>
             </Link>
+
+            {/* 좋아요 부분 */}
             <div
-              className={`absolute bottom-8 right-0  bg-opacity-50 p-1 m-1 text-sm rounded-lg cursor-pointer  ${
+              className={`absolute bottom-6 right-8  bg-opacity-50 p-1 m-1 text-sm rounded-lg cursor-pointer  ${
                 liked[post.id] ? 'text-red-500' : ''
               }`}
-              onClick={() => handleLike(post.id, post.user_id)}
+              onClick={() => debouncedHandleLike(post.id, post.user_id)}
             >
               {liked[post.id] ? (
                 <svg
@@ -295,7 +303,7 @@ function PostList() {
                   viewBox="0 0 24 24"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
-                  className="w-6 h-6 relative"
+                  className=" relative"
                   preserveAspectRatio="xMidYMid meet"
                 >
                   <g filter="url(#filter0_b_2350_1039)">

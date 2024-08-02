@@ -57,7 +57,7 @@ function ListSelects({
             </p>
           </div>
         </div>
-        <div className="flex justify-start items-center absolute left-[300px] top-[9px]">
+        <div className="flex justify-start items-center absolute left-[270px] top-[9px]">
           <div className="flex justify-start items-start flex-grow-0 flex-shrink-0 w-8 h-8">
             <button
               className="flex justify-center items-center flex-grow-0 flex-shrink-0 relative overflow-hidden gap-2 p-1 rounded-[1000px]"
