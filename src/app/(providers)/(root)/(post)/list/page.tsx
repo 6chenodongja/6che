@@ -14,7 +14,9 @@ function PostList() {
   const [users, setUsers] = useState<Tables<'users'>[]>([]);
   const [latest, setLatest] = useState('latest');
   const [filteredPosts, setFilteredPosts] = useState<Tables<'posts'>[]>([]);
-  const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
+  const [selectedOptions, setSelectedOptions] = useState<{
+    [key: string]: string[];
+  }>({});
   const [selectedTab, setSelectedTab] = useState<string>('유형');
 
   const User = 'a184313d-fac7-4c5d-8ee3-89e367cfb86f';
@@ -133,33 +135,55 @@ function PostList() {
   const filterPosts = () => {
     let filtered = [...posts];
 
-    selectedOptions.forEach((option) => {
-      if (selectedTab === '유형') {
-        filtered = filtered.filter((p) => p.gender === option);
-      } else if (selectedTab === '날씨') {
-        filtered = filtered.filter((p) => p.weather.includes(option));
-      } else if (selectedTab === '계절') {
-        filtered = filtered.filter((p) => p.seasons.includes(option));
-      } else if (selectedTab === '스타일') {
-        filtered = filtered.filter((p) => p.style.includes(option));
-      } else if (selectedTab === '장소') {
-        filtered = filtered.filter((p) => p.locations.includes(option));
+    Object.keys(selectedOptions).forEach((key) => {
+      if (selectedOptions[key].length > 0) {
+        if (key === '유형') {
+          filtered = filtered.filter((p) =>
+            selectedOptions[key].includes(p.gender),
+          );
+        } else if (key === '날씨') {
+          filtered = filtered.filter((p) =>
+            selectedOptions[key].some((option) => p.weather.includes(option)),
+          );
+        } else if (key === '계절') {
+          filtered = filtered.filter((p) =>
+            selectedOptions[key].some((option) => p.seasons.includes(option)),
+          );
+        } else if (key === '스타일') {
+          filtered = filtered.filter((p) =>
+            selectedOptions[key].some((option) => p.style.includes(option)),
+          );
+        } else if (key === '장소') {
+          filtered = filtered.filter((p) =>
+            selectedOptions[key].some((option) => p.locations.includes(option)),
+          );
+        }
       }
     });
 
-    setFilteredPosts(filtered);
+    setFilteredPosts(filtered.length > 0 ? filtered : posts);
   };
 
   useEffect(() => {
     filterPosts();
-  }, [selectedOptions]);
+  }, [selectedOptions, posts]);
 
   const handleOptionClick = (option: string) => {
-    if (selectedOptions.includes(option)) {
-      setSelectedOptions(selectedOptions.filter((item) => item !== option));
-    } else {
-      setSelectedOptions([...selectedOptions, option]);
-    }
+    setSelectedOptions((prevOptions) => {
+      const newOptions = { ...prevOptions };
+      if (!newOptions[selectedTab]) {
+        newOptions[selectedTab] = [];
+      }
+      if (newOptions[selectedTab].includes(option)) {
+        newOptions[selectedTab] = newOptions[selectedTab].filter(
+          (item) => item !== option,
+        );
+      } else {
+        newOptions[selectedTab].push(option);
+      }
+      console.log('Selected options:', newOptions);
+      return newOptions;
+    });
   };
   console.log(posts);
 
@@ -170,11 +194,23 @@ function PostList() {
         <ListSelects
           handleSortChange={handleSortChange}
           selectedOptions={selectedOptions}
-          setSelectedOptions={setSelectedOptions}
           handleOptionClick={handleOptionClick}
           selectedTab={selectedTab}
           setSelectedTab={setSelectedTab}
         />
+      </div>
+
+      <div className="flex justify-start items-center mb-4">
+        {Object.entries(selectedOptions).map(([key, options]) =>
+          options.map((option) => (
+            <div
+              key={`${key}-${option}`}
+              className="mr-2 mb-2 px-2 py-1 bg-black text-white rounded"
+            >
+              {option}
+            </div>
+          )),
+        )}
       </div>
 
       <div className="grid grid-cols-2 mt-4 gap-4">

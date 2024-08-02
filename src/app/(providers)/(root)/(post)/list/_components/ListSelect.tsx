@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 
 interface ListSelectsProps {
   handleSortChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-  selectedOptions: string[];
-  setSelectedOptions: React.Dispatch<React.SetStateAction<string[]>>;
+  selectedOptions: { [key: string]: string[] };
   handleOptionClick: (option: string) => void;
   selectedTab: string;
   setSelectedTab: React.Dispatch<React.SetStateAction<string>>;
@@ -12,7 +11,6 @@ interface ListSelectsProps {
 function ListSelects({
   handleSortChange,
   selectedOptions,
-  setSelectedOptions,
   handleOptionClick,
   selectedTab,
   setSelectedTab,
@@ -147,7 +145,7 @@ function ListSelects({
                       key={option}
                       onClick={() => handleOptionClick(option)}
                       className={`flex justify-center items-center rounded-lg ${
-                        selectedOptions.includes(option)
+                        selectedOptions['유형']?.includes(option)
                           ? 'bg-[#121212] text-white'
                           : 'bg-[#E6E6E699] text-[#121212]'
                       } ${
@@ -170,7 +168,7 @@ function ListSelects({
                       key={option}
                       onClick={() => handleOptionClick(option)}
                       className={`flex justify-center items-center rounded-lg ${
-                        selectedOptions.includes(option)
+                        selectedOptions['날씨']?.includes(option)
                           ? 'bg-[#121212] text-white'
                           : 'bg-[#E6E6E699] text-[#121212]'
                       } ${'w-[59px] h-[32px]'}`}
@@ -189,7 +187,7 @@ function ListSelects({
                       key={option}
                       onClick={() => handleOptionClick(option)}
                       className={`flex justify-center items-center rounded-lg ${
-                        selectedOptions.includes(option)
+                        selectedOptions['계절']?.includes(option)
                           ? 'bg-[#121212] text-white'
                           : 'bg-[#E6E6E699] text-[#121212]'
                       } ${'w-[59px] h-[32px]'}`}
@@ -216,7 +214,7 @@ function ListSelects({
                       key={option}
                       onClick={() => handleOptionClick(option)}
                       className={`flex justify-center items-center rounded-lg ${
-                        selectedOptions.includes(option)
+                        selectedOptions['스타일']?.includes(option)
                           ? 'bg-[#121212] text-white'
                           : 'bg-[#E6E6E699] text-[#121212]'
                       } ${
@@ -251,7 +249,7 @@ function ListSelects({
                       key={option}
                       onClick={() => handleOptionClick(option)}
                       className={`flex justify-center items-center rounded-lg ${
-                        selectedOptions.includes(option)
+                        selectedOptions['장소']?.includes(option)
                           ? 'bg-[#121212] text-white'
                           : 'bg-[#E6E6E699] text-[#121212]'
                       } ${'w-[59px] h-[32px]'}`}
@@ -305,3 +303,4 @@ function ListSelects({
 }
 
 export default ListSelects;
+
