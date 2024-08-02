@@ -186,7 +186,7 @@ const ThermometerStyle: React.FC = () => {
           onTouchStart={handleMouseDown}
         >
           <Image
-            src="/Thermometer-512h.png"
+            src="/Thermometer.png"
             alt="Thermometer Bar"
             width={411}
             height={63}
