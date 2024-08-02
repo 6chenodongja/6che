@@ -1,9 +1,8 @@
 'use client';
-
+import React, { useState, useEffect } from 'react';
 import { createClient } from '@/supabase/client';
 import Image from 'next/image';
 import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
 import { Tables } from '../../../../../../types/supabase';
 import ListHeader from './_components/ListHeader';
 import ListSelects from './_components/ListSelect';
@@ -12,9 +11,16 @@ import _ from 'lodash';
 
 function PostList() {
   const [liked, setLiked] = useState<{ [key: string]: boolean }>({});
-  const [post, setPost] = useState<Tables<'posts'>[]>([]);
+  const [posts, setPosts] = useState<Tables<'posts'>[]>([]);
   const [users, setUsers] = useState<Tables<'users'>[]>([]);
   const [latest, setLatest] = useState('latest');
+  const [filteredPosts, setFilteredPosts] = useState<Tables<'posts'>[]>([]);
+  const [selectedOptions, setSelectedOptions] = useState<{
+    [key: string]: string[];
+  }>({});
+  const [selectedTab, setSelectedTab] = useState<string>('유형');
+  const [searchTerm, setSearchTerm] = useState<string>('');
+  const [showSearchDropdown, setShowSearchDropdown] = useState<boolean>(false);
 
   const User = 'a184313d-fac7-4c5d-8ee3-89e367cfb86f';
   const supabase = createClient();
@@ -24,7 +30,6 @@ function PostList() {
       const isLiked = liked[postId];
 
       if (isLiked) {
-        // 좋아요 취소
         await supabase
           .from('post_likes')
           .delete()
@@ -47,13 +52,12 @@ function PostList() {
           .update({ like: newLikeCount })
           .eq('id', postId);
 
-        setPost((prevPosts) =>
+        setPosts((prevPosts) =>
           prevPosts.map((post) =>
             post.id === postId ? { ...post, like: newLikeCount } : post,
           ),
         );
       } else {
-        // 좋아요 추가
         await supabase
           .from('post_likes')
           .insert({ post_id: postId, user_id: userId });
@@ -77,7 +81,7 @@ function PostList() {
           .update({ like: newLikeCount })
           .eq('id', postId);
 
-        setPost((prevPosts) =>
+        setPosts((prevPosts) =>
           prevPosts.map((post) =>
             post.id === postId ? { ...post, like: newLikeCount } : post,
           ),
@@ -95,7 +99,7 @@ function PostList() {
 
   const debouncedHandleLike = _.debounce(handleLike, 500);
 
-  // 유저 닉네임 가져오기
+
   const fetchUsers = async () => {
     const { data } = await supabase.from('users').select('*').eq('id', User);
 
@@ -113,19 +117,18 @@ function PostList() {
     return user ? user.nick_name : 'Unknown';
   };
 
-  // 포스트 리스트와 최신순과 좋아요순으로 정렬
   const fetchPosts = async (order: string) => {
     const orderColumn = order === 'latest' ? 'created_at' : 'like';
     const { data, error } = await supabase
       .from('posts')
       .select('*')
-      .eq('user_id', User)
       .order(orderColumn, { ascending: false });
 
     if (error) {
       console.error(error);
     } else {
-      setPost(data);
+      setPosts(data);
+      setFilteredPosts(data);
     }
   };
 
@@ -133,21 +136,142 @@ function PostList() {
     fetchPosts(latest);
   }, [latest]);
 
-  console.log(latest);
-
   const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setLatest(e.target.value);
   };
+
+  const filterPosts = () => {
+    let filtered = [...posts];
+
+    Object.keys(selectedOptions).forEach((key) => {
+      if (selectedOptions[key].length > 0) {
+        if (key === '유형') {
+          filtered = filtered.filter((p) =>
+            selectedOptions[key].includes(p.gender),
+          );
+        } else if (key === '날씨') {
+          filtered = filtered.filter((p) =>
+            selectedOptions[key].some((option) => p.weather.includes(option)),
+          );
+        } else if (key === '계절') {
+          filtered = filtered.filter((p) =>
+            selectedOptions[key].some((option) => p.seasons.includes(option)),
+          );
+        } else if (key === '스타일') {
+          filtered = filtered.filter((p) =>
+            selectedOptions[key].some((option) => p.style.includes(option)),
+          );
+        } else if (key === '장소') {
+          const locations = Array.isArray(p.locations)
+            ? p.locations
+            : p.locations.split(',');
+          filtered = filtered.filter((p) =>
+            selectedOptions[key].some((option) =>
+              locations.includes(option),
+            ),
+          );
+        }
+      }
+    });
+
+    if (searchTerm) {
+      filtered = filtered.filter((post) => {
+        const lowerCaseSearchTerm = searchTerm.toLowerCase();
+        const locations = Array.isArray(post.locations)
+          ? post.locations
+          : post.locations.split(',');
+        const seasons = Array.isArray(post.seasons)
+          ? post.seasons
+          : post.seasons.split(',');
+        const style = Array.isArray(post.style)
+          ? post.style
+          : post.style.split(',');
+        return (
+          post.gender.toLowerCase().includes(lowerCaseSearchTerm) ||
+          locations.some((loc) =>
+            loc.toLowerCase().includes(lowerCaseSearchTerm),
+          ) ||
+          seasons.some((season) =>
+            season.toLowerCase().includes(lowerCaseSearchTerm),
+          ) ||
+          style.some((style) =>
+            style.toLowerCase().includes(lowerCaseSearchTerm),
+          )
+        );
+      });
+    }
+
+    setFilteredPosts(filtered.length > 0 ? filtered : posts);
+  };
+
+  useEffect(() => {
+    filterPosts();
+  }, [selectedOptions, posts]);
+
+  const handleOptionClick = (option: string) => {
+    setSelectedOptions((prevOptions) => {
+      const newOptions = { ...prevOptions };
+      if (!newOptions[selectedTab]) {
+        newOptions[selectedTab] = [];
+      }
+      if (newOptions[selectedTab].includes(option)) {
+        newOptions[selectedTab] = newOptions[selectedTab].filter(
+          (item) => item !== option,
+        );
+      } else {
+        newOptions[selectedTab].push(option);
+      }
+      console.log('Selected options:', newOptions);
+      return newOptions;
+    });
+  };
+
+  const handleSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      filterPosts();
+      setShowSearchDropdown(false); // 드롭다운 닫기
+    }
+  };
+
+  const handleSearchClick = () => {
+    setShowSearchDropdown((prev) => !prev);
+  };
+
+  console.log(posts);
 
   return (
     <div className="max-w-sm mx-auto h-auto">
       <ListHeader />
       <div className="mt-6">
-        <ListSelects handleSortChange={handleSortChange} />
+        <ListSelects
+          handleSortChange={handleSortChange}
+          selectedOptions={selectedOptions}
+          handleOptionClick={handleOptionClick}
+          selectedTab={selectedTab}
+          setSelectedTab={setSelectedTab}
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+          handleSearch={handleSearch}
+          showSearchDropdown={showSearchDropdown}
+          handleSearchClick={handleSearchClick}
+        />
       </div>
 
-      <div className="grid grid-cols-2 m-4 gap-2">
-        {post.map((post) => (
+      <div className="flex justify-start items-center mb-4">
+        {Object.entries(selectedOptions).map(([key, options]) =>
+          options.map((option) => (
+            <div
+              key={`${key}-${option}`}
+              className="mr-2 mb-2 px-2 py-1 bg-black text-white rounded"
+            >
+              {option}
+            </div>
+          )),
+        )}
+      </div>
+
+      <div className="grid grid-cols-2 mt-4 gap-4">
+        {filteredPosts.map((post) => (
           <div key={post.id} className="relative">
             <Link href={`/detail/${post.id}`}>
               {post.image_url && (
