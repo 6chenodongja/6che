@@ -6,14 +6,14 @@ import React from 'react';
 
 function LogoutButton() {
   const router = useRouter();
-  const { setUser } = useUserStore();
+  const { clearUser } = useUserStore();
 
   const handleLogout = async () => {
     const response = await fetch('/api/auth/logout', {
       method: 'POST',
     });
     if (response.ok) {
-      setUser();
+      clearUser();
       // 로그아웃 시 메인 홈페이지로 이동
       router.replace('/');
     } else {
