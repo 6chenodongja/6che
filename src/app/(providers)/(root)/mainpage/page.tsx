@@ -103,6 +103,7 @@ const MainPage = () => {
   const [weeklyWeather, setWeeklyWeather] = useState<any[]>([]);
   const [extraWeatherInfo, setExtraWeatherInfo] = useState<any[]>([]);
   const [isWeeklyWeatherVisible, setIsWeeklyWeatherVisible] = useState(false);
+  const [isOpen, setIsOpen] = useState(false); // 상태 추가
   const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -154,9 +155,14 @@ const MainPage = () => {
               ),
             },
           ]);
-
           console.log(
-            '강수확률:',
+            '오늘의 강수확률 (Probability of Precipitation):',
+            weatherData.current?.PrecipitationProbability !== undefined
+              ? `${weatherData.current.PrecipitationProbability}%`
+              : '데이터 없음',
+          );
+          console.log(
+            '강수확률 (Probability of Precipitation):',
             weatherData.current?.PrecipitationProbability || '0%',
           );
           console.log('습도:', weatherData.current?.RelativeHumidity || 'N/A');
@@ -180,6 +186,7 @@ const MainPage = () => {
       }
     }
     setIsWeeklyWeatherVisible(!isWeeklyWeatherVisible);
+    setIsOpen(!isOpen); // 상태 반전
   };
 
   return (
@@ -229,11 +236,10 @@ const MainPage = () => {
         </div>
         <div className="mt-[23px] flex justify-center items-center">
           <span className="text-lg text-black">
-            어제 기온보다{' '}
             {difference !== null
               ? Math.abs(difference) <= 0.9
-                ? '비슷해요'
-                : `${Math.round(Math.abs(difference))}° ${difference > 0 ? '높아요' : '낮아요'}`
+                ? '어제 기온과 비슷해요'
+                : `어제 기온보다 ${Math.round(Math.abs(difference))}° ${difference > 0 ? '높아요' : '낮아요'}`
               : '정보 없음'}
           </span>
         </div>
@@ -243,94 +249,134 @@ const MainPage = () => {
             오늘 옷차림
           </h2>
           <div className="flex justify-between items-center mb-4">
-            <div className="relative w-[88px] h-[100px] bg-white bg-opacity-30 rounded-2xl overflow-hidden border border-solid border-gray-300 shadow-md backdrop-blur-lg">
-              <div className="absolute top-2 left-0 right-0 text-center text-black font-medium">
+            <div className="w-[88px] h-[100px] px-[17px] py-2.5 bg-white/40 rounded-2xl shadow border border-white backdrop-blur-[20px] flex-col justify-center items-center gap-2 inline-flex">
+              <div className="text-center text-[#121212]/70 text-xs font-normal font-['Noto Sans KR'] leading-none">
                 반팔티
               </div>
-              <Image
-                src="/images/tshirt.png"
-                alt="반팔티"
-                className="relative mx-auto mt-8 object-contain"
-                width={54}
-                height={56}
-              />
+              <div className="w-[54px] h-14 relative flex-col justify-start items-start flex">
+                <div className="w-[53.04px] h-[55px] relative">
+                  <Image
+                    src="/images/tshirt.png"
+                    alt="반팔티"
+                    className="object-contain"
+                    width={53.04}
+                    height={55}
+                  />
+                </div>
+              </div>
             </div>
-            <div className="relative w-[88px] h-[100px] bg-white bg-opacity-30 rounded-2xl overflow-hidden border border-solid border-gray-300 shadow-md backdrop-blur-lg">
-              <div className="absolute top-2 left-0 right-0 text-center text-black font-medium">
+
+            <div className="w-[88px] h-[100px] px-[17px] py-2.5 bg-white/40 rounded-2xl shadow border border-white backdrop-blur-[20px] flex-col justify-center items-center gap-2 inline-flex">
+              <div className="text-center text-[#121212]/70 text-xs font-normal font-['Noto Sans KR'] leading-none">
                 반바지
               </div>
-              <Image
-                src="/images/shorts.png"
-                alt="반바지"
-                className="relative mx-auto mt-8 object-contain"
-                width={54}
-                height={56}
-              />
+              <div className="w-[54px] h-14 relative flex-col justify-start items-start flex">
+                <div className="w-[53.04px] h-[55px] relative">
+                  <Image
+                    src="/images/shorts.png"
+                    alt="반바지"
+                    className="object-contain"
+                    width={53.04}
+                    height={55}
+                  />
+                </div>
+              </div>
             </div>
-            <div className="relative w-[88px] h-[100px] bg-white bg-opacity-30 rounded-2xl overflow-hidden border border-solid border-gray-300 shadow-md backdrop-blur-lg">
-              <div className="absolute top-2 left-0 right-0 text-center text-black font-medium">
+
+            <div className="w-[88px] h-[100px] px-[17px] py-2.5 bg-white/40 rounded-2xl shadow border border-white backdrop-blur-[20px] flex-col justify-center items-center gap-2 inline-flex">
+              <div className="text-center text-[#121212]/70 text-xs font-normal font-['Noto Sans KR'] leading-none">
                 셔츠
               </div>
-              <Image
-                src="/images/shirt.png"
-                alt="셔츠"
-                className="relative mx-auto mt-8 object-contain"
-                width={54}
-                height={56}
-              />
+              <div className="w-[54px] h-14 relative flex-col justify-start items-start flex">
+                <div className="w-[53.04px] h-[55px] relative">
+                  <Image
+                    src="/images/shirt.png"
+                    alt="셔츠"
+                    className="object-contain"
+                    width={53.04}
+                    height={55}
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </section>
 
         <section className="w-full mt-8">
-          <div className="flex flex-col items-start gap-3.5 pt-4 pb-5 px-3 relative bg-white bg-opacity-30 rounded-2xl overflow-hidden border border-solid border-gray-300 shadow-md">
-            <div className="flex items-center justify-between relative self-stretch w-full flex-[0_0_auto]">
-              <div className="flex w-auto items-center justify-center gap-2 px-2 py-0 relative">
-                <div className="mt-[-1.00px] font-subtitle-KR-medium font-medium text-black text-center tracking-normal leading-normal relative w-fit whitespace-nowrap">
+          <div className="w-[288px] h-[297px] px-3 pt-4 pb-5 bg-white/40 rounded-2xl shadow border border-white backdrop-blur-[20px] flex-col justify-start items-start gap-3.5 inline-flex">
+            <div className="self-stretch justify-between items-center inline-flex">
+              <div className="h-[21px] px-2 justify-center items-center gap-2 flex">
+                <div className="text-center text-[#121212] text-base font-medium font-['Noto Sans KR'] leading-tight">
                   추천 코디
                 </div>
               </div>
-              <div className="flex items-center justify-center gap-1 p-1.5 relative rounded-md overflow-hidden">
-                <div className="font-caption font-medium text-black text-sm">
+              <div className="p-1.5 rounded-lg justify-center items-center gap-1 flex">
+                <div className="text-[#4d4d4d] text-xs font-normal font-['Noto Sans KR'] leading-none">
                   더보기
                 </div>
-                <Image
-                  src="/images/arrow_right.png"
-                  alt="더보기"
-                  className="w-4 h-4"
-                  width={16}
-                  height={16}
-                />
+                <div className="w-4 h-4 justify-center items-center flex">
+                  <Image
+                    src="/images/arrow_right.png"
+                    alt="더보기"
+                    className="w-4 h-4"
+                    width={16}
+                    height={16}
+                  />
+                </div>
               </div>
             </div>
-            <div className="flex items-start gap-2 relative self-stretch w-full flex-[0_0_auto] rounded-lg overflow-hidden">
-              <Image
-                src="/images/recommend-1.png"
-                alt="추천 코디 1"
-                className="object-cover relative"
-                width={112}
-                height={160}
-              />
-              <div className="w-[114px] rounded-lg overflow-hidden bg-[url(/images/recommend-2.png)] bg-cover bg-[50%_50%] relative h-40">
-                <div className="absolute w-6 h-6 top-[50%] left-[84px] transform -translate-y-1/2 overflow-hidden">
-                  <IconHeart state="default" />
+            <div className="self-stretch rounded-lg justify-start items-start gap-2 inline-flex">
+              <div className="w-28 h-40 relative rounded-lg">
+                <Image
+                  src="/images/test_look.svg"
+                  alt="추천 코디 1"
+                  className="w-[113.60px] h-40 left-0 top-0 absolute object-cover"
+                  width={113.6}
+                  height={160}
+                />
+                <div className="w-6 h-6 left-[84px] top-[132px] absolute justify-center items-center inline-flex">
+                  <div className="w-6 h-6 relative backdrop-blur-[20px] flex-col justify-start items-start flex" />
                 </div>
-                <div className="inline-flex items-center gap-0.5 px-1 py-px absolute top-[9px] left-[9px] bg-semantic-text-box rounded border border-solid border-semantic-bg-icon">
-                  <div className="bg-white rounded-sm overflow-hidden backdrop-blur-[20px] backdrop-brightness-[100%] [-webkit-backdrop-filter:blur(20px)_brightness(100%)] relative w-4 h-4"></div>
-                  <div className="font-temperature-14 font-medium text-black text-sm tracking-normal leading-normal relative w-fit whitespace-nowrap">
-                    {/* 26° */}
+                <div className="px-1 py-px left-[10px] top-[10px] absolute bg-white/50 rounded border border-white/60 justify-start items-center gap-0.5 inline-flex">
+                  <div className="w-4 h-4 bg-white rounded-sm backdrop-blur-[20px] justify-center items-center flex">
+                    <div className="w-4 h-4 p-0.5 bg-white/60 rounded justify-center items-center inline-flex">
+                      <div className="w-3 h-3 relative" />
+                    </div>
+                  </div>
+                  <div className="text-black text-sm font-normal font-['Varela'] leading-[18.20px]">
+                    26°
+                  </div>
+                </div>
+              </div>
+
+              <div className="w-[114px] h-40 relative rounded-lg">
+                <Image
+                  src="/images/test_look.svg"
+                  alt="추천 코디 2"
+                  className="w-[114px] h-40 left-0 top-0 absolute object-cover"
+                  width={114}
+                  height={160}
+                />
+                <div className="w-6 h-6 left-[84px] top-[132px] absolute justify-center items-center inline-flex">
+                  <div className="w-6 h-6 relative backdrop-blur-[20px] flex-col justify-start items-start flex" />
+                </div>
+                <div className="px-1 py-px left-[10px] top-[10px] absolute bg-white/50 rounded border border-white/60 justify-start items-center gap-0.5 inline-flex">
+                  <div className="w-4 h-4 bg-white rounded-sm backdrop-blur-[20px] justify-center items-center flex">
+                    <div className="w-4 h-4 p-0.5 bg-white/60 rounded justify-center items-center inline-flex">
+                      <div className="w-3 h-3 relative" />
+                    </div>
+                  </div>
+                  <div className="text-black text-sm font-normal font-['Varela'] leading-[18.20px]">
+                    26°
                   </div>
                 </div>
               </div>
             </div>
             <button
-              onClick={handleCodiClick} // 클릭 시 페이지 이동
-              className="all-[unset] box-border flex items-center justify-center gap-[var(--size-space-200)] pt-[var(--size-space-300)] pr-[var(--size-space-300)] pb-[var(--size-space-300)] pl-[var(--size-space-300)] relative self-stretch w-full flex-[0_0_auto] bg-palette-black rounded-md overflow-hidden"
+              onClick={handleCodiClick}
+              className="self-stretch p-3 bg-[#121212] rounded-lg justify-center items-center gap-2 inline-flex"
             >
-              <div
-                style={{ cursor: 'pointer' }}
-                className="font-button font-medium text-white text-sm tracking-normal leading-normal relative w-fit mt-[-1.00px] whitespace-nowrap"
-              >
+              <div className="text-white text-base font-medium font-['Noto Sans KR'] leading-tight">
                 취향 코디 찾기
               </div>
             </button>
@@ -340,42 +386,50 @@ const MainPage = () => {
         <section className="w-full mt-8">
           <h2 className="text-xl font-semibold mb-4 text-black">날씨</h2>
           <div className="grid grid-cols-3 gap-4">
-            <div className="flex flex-col items-center bg-white rounded-[16px] shadow-md w-[88px] h-[100px] overflow-hidden">
-              <span className="text-lg text-black mt-[10px]">강수확률</span>
+            <div className="w-[88px] h-[100px] relative bg-white/40 rounded-2xl shadow border border-white backdrop-blur-[20px] flex flex-col justify-center items-center">
+              <span className="text-center text-[#121212]/70 text-xs font-normal font-['Noto Sans KR'] leading-none">
+                강수확률
+              </span>
               <Image
                 src={`/images/Precipitation-probability/${Math.min(Math.floor((parseFloat(extraWeatherInfo[0]?.value || '0%') / 10) * 10), 100)}.svg`}
                 alt="강수확률"
-                className="w-[20px] h-[32px]"
+                className="w-5 h-8 mt-1"
                 width={20}
                 height={32}
               />
-              <span className="text-xl text-black mt-[4px]">
+              <span className="text-center text-[#121212] text-base font-normal font-['Varela'] leading-tight mt-2">
                 {extraWeatherInfo[0]?.value || '0%'}
               </span>
             </div>
-            <div className="flex flex-col items-center bg-white rounded-[16px] shadow-md w-[88px] h-[100px] overflow-hidden">
-              <span className="text-lg text-black mt-[10px]">미세먼지</span>
+
+            <div className="w-[88px] h-[100px] relative bg-white/40 rounded-2xl shadow border border-white backdrop-blur-[20px] flex flex-col justify-center items-center">
+              <span className="text-center text-[#121212]/70 text-xs font-normal font-['Noto Sans KR'] leading-none">
+                미세먼지
+              </span>
               <Image
                 src={extraWeatherInfo[2]?.image}
                 alt="미세먼지"
-                className="w-[20px] h-[32px]"
+                className="w-5 h-8 mt-1"
                 width={20}
                 height={32}
               />
-              <span className="text-xl text-black mt-[4px]">
+              <span className="text-center text-[#121212] text-base font-normal font-['Varela'] leading-tight mt-2">
                 {extraWeatherInfo[2]?.value || 'N/A'}
               </span>
             </div>
-            <div className="flex flex-col items-center bg-white rounded-[16px] shadow-md w-[88px] h-[100px] overflow-hidden">
-              <span className="text-lg text-black mt-[10px]">습도</span>
+
+            <div className="w-[88px] h-[100px] relative bg-white/40 rounded-2xl shadow border border-white backdrop-blur-[20px] flex flex-col justify-center items-center">
+              <span className="text-center text-[#121212]/70 text-xs font-normal font-['Noto Sans KR'] leading-none">
+                습도
+              </span>
               <Image
                 src={extraWeatherInfo[1]?.image}
                 alt="습도"
-                className="w-[32px] h-[32px]"
+                className="w-5 h-8 mt-1"
                 width={32}
                 height={32}
               />
-              <span className="text-xl text-black mt-[4px]">
+              <span className="text-center text-[#121212] text-base font-normal font-['Varela'] leading-tight mt-2">
                 {extraWeatherInfo[1]?.value || 'N/A'}
               </span>
             </div>
@@ -383,118 +437,156 @@ const MainPage = () => {
         </section>
 
         <section className="w-full mt-8">
-          <h2 className="text-xl font-semibold mb-4 text-black">
-            시간대별 날씨
-          </h2>
-          <Swiper spaceBetween={10} slidesPerView={6}>
-            {hourlyWeather.map((weather, index) => {
-              // WeatherIcon 숫자에 따른 이미지 파일 이름 결정
-              const getWeatherIconSrc = (iconNumber: number) => {
-                switch (iconNumber) {
-                  case 1:
-                  case 2:
-                  case 3:
-                  case 30:
-                    return '/images/Weather/sun.svg';
-                  case 4:
-                    return '/images/Weather/once_cloudy.svg';
-                  case 5:
-                  case 6:
-                    return '/images/Weather/thread_fog.svg';
-                  case 7:
-                  case 8:
-                    return '/images/Weather/blur.svg';
-                  case 11:
-                    return '/images/Weather/fog.svg';
-                  case 12:
-                  case 13:
-                  case 14:
-                  case 41:
-                  case 42:
-                    return '/images/Weather/drizzling.svg';
-                  case 15:
-                  case 16:
-                  case 17:
-                    return '/images/Weather/thunderstorm.svg';
-                  case 18:
-                    return '/images/Weather/rain.svg';
-                  case 19:
-                  case 20:
-                  case 21:
-                    return '/images/Weather/snow.svg';
-                  case 22:
-                  case 23:
-                  case 43:
-                  case 44:
-                    return '/images/Weather/heavy_snow.svg';
-                  case 24:
-                  case 25:
-                  case 26:
-                  case 29:
-                    return '/images/Weather/sleet.svg';
-                  case 31:
-                  case 32:
-                    return '/images/Weather/wind.svg';
-                  case 33:
-                  case 34:
-                    return '/images/Weather/night.svg';
-                  case 35:
-                  case 36:
-                    return '/images/Weather/once_cloudy_night.svg';
-                  case 37:
-                  case 38:
-                    return '/images/Weather/once_cloudy.svg';
-                  case 39:
-                  case 40:
-                    return '/images/Weather/drizzling_night.svg';
-                  default:
-                    return '/images/Weather/default.svg'; // 기본 이미지
-                }
-              };
+          <div className="w-72 h-[148px] px-2 pt-4 pb-5 bg-white/40 rounded-2xl shadow border border-white/50 backdrop-blur-[20px] flex-col justify-start items-start gap-2 inline-flex">
+            <div className="px-2 justify-center items-center gap-2 inline-flex">
+              <div className="text-center text-[#1a1a1a] text-xs font-normal font-['Noto Sans KR'] leading-none">
+                시간대별 날씨
+              </div>
+            </div>
+            <div className="self-stretch justify-start items-center inline-flex overflow-x-auto">
+              <Swiper spaceBetween={10} slidesPerView={6}>
+                {hourlyWeather.map((weather, index) => {
+                  // WeatherIcon 숫자에 따른 이미지 파일 이름 결정
+                  const getWeatherIconSrc = (iconNumber: number) => {
+                    switch (iconNumber) {
+                      case 1:
+                      case 2:
+                      case 3:
+                      case 30:
+                        return '/images/Weather/sun.svg';
+                      case 4:
+                        return '/images/Weather/once_cloudy.svg';
+                      case 5:
+                      case 6:
+                        return '/images/Weather/thread_fog.svg';
+                      case 7:
+                      case 8:
+                        return '/images/Weather/blur.svg';
+                      case 11:
+                        return '/images/Weather/fog.svg';
+                      case 12:
+                      case 13:
+                      case 14:
+                      case 41:
+                      case 42:
+                        return '/images/Weather/drizzling.svg';
+                      case 15:
+                      case 16:
+                      case 17:
+                        return '/images/Weather/thunderstorm.svg';
+                      case 18:
+                        return '/images/Weather/rain.svg';
+                      case 19:
+                      case 20:
+                      case 21:
+                        return '/images/Weather/snow.svg';
+                      case 22:
+                      case 23:
+                      case 43:
+                      case 44:
+                        return '/images/Weather/heavy_snow.svg';
+                      case 24:
+                      case 25:
+                      case 26:
+                      case 29:
+                        return '/images/Weather/sleet.svg';
+                      case 31:
+                      case 32:
+                        return '/images/Weather/wind.svg';
+                      case 33:
+                      case 34:
+                        return '/images/Weather/night.svg';
+                      case 35:
+                      case 36:
+                        return '/images/Weather/once_cloudy_night.svg';
+                      case 37:
+                      case 38:
+                        return '/images/Weather/once_cloudy.svg';
+                      case 39:
+                      case 40:
+                        return '/images/Weather/drizzling_night.svg';
+                      default:
+                        return '/images/Weather/default.svg'; // 기본 이미지
+                    }
+                  };
 
-              // ISO8601 날짜 형식에서 시간만 추출
-              const formatTime = (dateTime: string) => {
-                const date = new Date(dateTime);
-                const hours = date.getHours();
-                return `${hours}시`; // 시간과 "시"를 같은 문자열로 반환
-              };
+                  // ISO8601 날짜 형식에서 시간만 추출
+                  const formatTime = (dateTime: string) => {
+                    const date = new Date(dateTime);
+                    const hours = date.getHours();
+                    return `${hours}시`; // 시간과 "시"를 같은 문자열로 반환
+                  };
 
-              // 섭씨로 변환하는 함수
-              const fahrenheitToCelsius = (fahrenheit: number) => {
-                return ((fahrenheit - 32) * 5) / 9;
-              };
+                  // 섭씨로 변환하는 함수
+                  const fahrenheitToCelsius = (fahrenheit: number) => {
+                    return ((fahrenheit - 32) * 5) / 9;
+                  };
 
-              return (
-                <SwiperSlide
-                  key={index}
-                  className="flex flex-col items-center mx-2"
-                >
-                  <div className="flex flex-col items-center justify-center h-full">
-                    <span className="text-lg font-medium mt-2">
-                      {formatTime(weather.DateTime)}
-                    </span>
-                  </div>
-                  <Image
-                    src={getWeatherIconSrc(weather.WeatherIcon)}
-                    alt="날씨 아이콘"
-                    width={48}
-                    height={48}
-                  />
-                  <span className="text-lg font-medium mt-1">
-                    {Math.round(fahrenheitToCelsius(weather.Temperature.Value))}
-                    °C
-                  </span>
-                </SwiperSlide>
-              );
-            })}
-          </Swiper>
+                  return (
+                    <SwiperSlide
+                      key={index}
+                      className="flex flex-col items-center justify-center mx-2"
+                    >
+                      <div className="flex flex-col items-center justify-center h-full">
+                        <div className="justify-start items-end inline-flex">
+                          <span className="text-center text-[#121212] text-sm font-normal font-['Varela'] leading-[18.20px]">
+                            {formatTime(weather.DateTime)}
+                          </span>
+                        </div>
+                        <div className="w-[42px] h-[42px] p-1 justify-center items-center inline-flex">
+                          <div className="w-[34px] h-[34px] px-[2.83px] py-[7.08px] bg-white/60 rounded justify-center items-center inline-flex">
+                            <div className="relative w-[28.33px] h-[19.83px]">
+                              <Image
+                                src={getWeatherIconSrc(weather.WeatherIcon)}
+                                alt="날씨 아이콘"
+                                layout="fill"
+                                objectFit="cover"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                        <span className="self-stretch text-center text-[#121212] text-base font-normal font-['Varela'] leading-tight">
+                          {Math.round(
+                            fahrenheitToCelsius(weather.Temperature.Value),
+                          )}
+                          °
+                        </span>
+                      </div>
+                    </SwiperSlide>
+                  );
+                })}
+              </Swiper>
+            </div>
+          </div>
         </section>
 
         <button
           onClick={handleWeeklyWeatherClick}
-          className="bg-black text-white py-2 px-4 rounded-lg mt-4"
+          className="px-3 py-2 bg-white/40 rounded-full shadow border border-white backdrop-blur-[20px] flex justify-center items-center gap-2 mt-4"
         >
-          이번주 날씨 보기
+          <div className="text-[#4d4d4d] text-sm font-normal font-['Noto Sans KR'] leading-[18.20px]">
+            이번주 날씨
+          </div>
+          <div className="w-[18px] h-[18px] p-px justify-center items-center flex">
+            <div className="w-4 h-4 relative flex-col justify-start items-start flex">
+              <svg
+                className={`w-4 h-4 transform transition-transform duration-300 ${
+                  isOpen ? 'rotate-180' : 'rotate-0'
+                }`}
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M19 9l-7 7-7-7"
+                ></path>
+              </svg>
+            </div>
+          </div>
         </button>
 
         <AnimatePresence>
@@ -506,49 +598,71 @@ const MainPage = () => {
               transition={{ duration: 0.5 }}
               className="w-full mt-8"
             >
-              <h2 className="text-xl font-semibold mb-4">이번주 날씨</h2>
-              <div className="grid grid-cols-1 gap-4">
-                {weeklyWeather.map((weather, index) => (
+              <div className="w-full h-[348px] px-2.5 py-5 bg-white/40 rounded-2xl shadow border border-white backdrop-blur-[20px] flex-col justify-start items-start inline-flex">
+                {weeklyWeather.slice(1, 7).map((weather, index) => (
                   <div
                     key={index}
-                    className="flex justify-between items-center"
+                    className="self-stretch px-2 py-1.5 justify-between items-center inline-flex"
                   >
-                    <div>
-                      <span className="font-semibold">
-                        {formatDate(weather.Date)}
-                      </span>
+                    <div className="justify-start items-center gap-1 flex">
+                      <div
+                        className="w-[26px] text-center text-black text-sm font-medium font-['Noto Sans KR'] leading-[21px]"
+                        style={{ whiteSpace: 'nowrap' }}
+                      >
+                        {index === 0
+                          ? '내일'
+                          : formatDate(weather.Date).split(' ')[0]}
+                      </div>
+                      <div className="text-center text-[#7f7f7f] text-sm font-normal font-['Noto Sans KR'] leading-[21px]">
+                        {formatDate(weather.Date).split(' ')[1]}
+                      </div>
                     </div>
-                    <div className="flex items-center">
-                      <Image
-                        src="/images/Weather/sunset.svg" // 최저기온 이미지
-                        alt="sunset"
-                        width={48}
-                        height={48}
-                      />
-                      <span className="ml-2">
-                        {Math.round(
-                          convertFahrenheitToCelsius(
-                            weather.Temperature.Minimum.Value,
-                          ),
-                        )}
-                        °C
-                      </span>
-                    </div>
-                    <div className="flex items-center">
-                      <Image
-                        src="/images/Weather/sunrise.svg" // 최고기온 이미지
-                        alt="sunrise"
-                        width={48}
-                        height={48}
-                      />
-                      <span className="ml-2">
-                        {Math.round(
-                          convertFahrenheitToCelsius(
-                            weather.Temperature.Maximum.Value,
-                          ),
-                        )}
-                        °C
-                      </span>
+                    <div className="justify-center items-center gap-[11px] flex">
+                      <div className="justify-start items-center gap-1 flex">
+                        <div className="w-8 h-8 p-0.5 justify-center items-center flex">
+                          <div className="w-7 h-7 px-[2.33px] py-[5.83px] bg-white/60 rounded justify-center items-center inline-flex">
+                            <div className="relative w-[23.33px] h-[16.33px]">
+                              <Image
+                                src="/images/Weather/sunset.svg"
+                                alt="sunset"
+                                layout="fill"
+                                objectFit="cover"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                        <div className="text-center text-black text-base font-normal font-['Varela'] leading-tight">
+                          {Math.round(
+                            convertFahrenheitToCelsius(
+                              weather.Temperature.Minimum.Value,
+                            ),
+                          )}
+                          °
+                        </div>
+                      </div>
+                      <div className="w-0.5 h-6 bg-[#e6e6e6]/60 rounded-sm" />
+                      <div className="justify-start items-center gap-1.5 flex">
+                        <div className="w-8 h-8 p-0.5 justify-center items-center flex">
+                          <div className="w-7 h-7 px-[3.50px] pt-[3.50px] pb-[3.28px] bg-white/60 rounded justify-center items-center inline-flex">
+                            <div className="relative w-[21px] h-[21.22px]">
+                              <Image
+                                src="/images/Weather/sunrise.svg"
+                                alt="sunrise"
+                                layout="fill"
+                                objectFit="cover"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                        <div className="text-center text-black text-base font-normal font-['Varela'] leading-tight">
+                          {Math.round(
+                            convertFahrenheitToCelsius(
+                              weather.Temperature.Maximum.Value,
+                            ),
+                          )}
+                          °
+                        </div>
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -557,18 +671,103 @@ const MainPage = () => {
           )}
         </AnimatePresence>
 
-        <footer className="w-full bg-white py-4 flex flex-col items-center mt-8">
-          <nav className="flex flex-col items-center space-y-2 mb-4">
-            <Link href="/weather">날씨</Link>
-            <Link href="/style">스타일</Link>
-            <Link href="/outfit">기온 별 옷차림</Link>
-            <Link href="/recommendations">취향 코디</Link>
-            <Link href="/mypage">마이페이지</Link>
+        <footer className="w-full bg-white py-4 flex flex-col items-start mt-8">
+          <nav className="flex flex-col items-start space-y-2 mb-4">
+            <LogoText className="w-24 h-8 mb-4" />
+            <Link
+              href="/"
+              className="text-[#4d4d4d] text-sm font-medium leading-[21px] font-['Noto Sans KR']"
+            >
+              날씨
+            </Link>
+            <Link
+              href="/style"
+              className="text-[#4d4d4d] text-sm font-medium leading-[21px] font-['Noto Sans KR']"
+            >
+              스타일
+            </Link>
+            <Link
+              href="/outfit"
+              className="text-[#4d4d4d] text-sm font-medium leading-[21px] font-['Noto Sans KR']"
+            >
+              기온 별 옷차림
+            </Link>
+            <Link
+              href="/surveypage"
+              className="text-[#4d4d4d] text-sm font-medium leading-[21px] font-['Noto Sans KR']"
+            >
+              취향 코디
+            </Link>
+            <Link
+              href="/mypage"
+              className="text-[#4d4d4d] text-sm font-medium leading-[21px] font-['Noto Sans KR']"
+            >
+              마이페이지
+            </Link>
+            <Link
+              href="/liked"
+              className="text-[#4d4d4d] text-xs font-normal leading-none font-['Noto Sans KR']"
+            >
+              좋아요한 게시글
+            </Link>
+            <Link
+              href="/myposts"
+              className="text-[#4d4d4d] text-xs font-normal leading-none font-['Noto Sans KR']"
+            >
+              내가 쓴 게시글
+            </Link>
+            <Link
+              href="/settings"
+              className="text-[#4d4d4d] text-xs font-normal leading-none font-['Noto Sans KR']"
+            >
+              설정
+            </Link>
           </nav>
-          <div className="text-left text-gray-500">
-            <p>개발: 주현우 | 전은겸 | 김성구 | 석재영 | 한소영</p>
-            <p>디자인: 김윤하</p>
-            <p>© 2024 김윤하 all rights reserved.</p>
+          <hr className="w-full border-t border-[#e6e6e6] mb-4" />{' '}
+          {/* 가로 일자 바 반영 */}
+          <div className="flex flex-col items-start text-gray-500">
+            <div className="flex items-center mb-2">
+              <Image
+                src="/images/github.svg"
+                alt="GitHub"
+                width={24}
+                height={24}
+                className="mr-2"
+              />
+              <span className="text-base font-medium text-[#4d4d4d] leading-tight font-['Noto Sans KR']">
+                6체노동자
+              </span>
+            </div>
+            <p className="text-left flex flex-wrap">
+              <span className="text-sm font-normal text-[#4d4d4d] leading-[14px] font-['Noto Sans KR']">
+                개발:
+              </span>
+              <span className="ml-2 text-sm font-normal text-[#4d4d4d] leading-[14px] font-['Noto Sans KR']">
+                주현우
+              </span>
+              <span className="ml-2 text-sm font-normal text-[#4d4d4d] leading-[14px] font-['Noto Sans KR']">
+                전은겸
+              </span>
+              <span className="ml-2 text-sm font-normal text-[#4d4d4d] leading-[14px] font-['Noto Sans KR']">
+                김성구
+              </span>
+              <span className="ml-2 text-sm font-normal text-[#4d4d4d] leading-[14px] font-['Noto Sans KR']">
+                석재영
+              </span>
+              <span className="ml-2 text-sm font-normal text-[#4d4d4d] leading-[14px] font-['Noto Sans KR']">
+                한소영
+              </span>
+              <br />
+              <span className="text-sm font-normal text-[#4d4d4d] leading-[14px] font-['Noto Sans KR']">
+                디자인:
+              </span>
+              <span className="ml-2 text-sm font-normal text-[#4d4d4d] leading-[14px] font-['Noto Sans KR']">
+                김윤하
+              </span>
+            </p>
+            <p className="text-left mt-2 text-sm font-normal text-[#4d4d4d] leading-[14px] font-['Noto Sans KR']">
+              © 2024. 김윤하 all rights reserved.
+            </p>
           </div>
         </footer>
       </main>
