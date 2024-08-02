@@ -6,6 +6,9 @@ interface ListSelectsProps {
   handleOptionClick: (option: string) => void;
   selectedTab: string;
   setSelectedTab: React.Dispatch<React.SetStateAction<string>>;
+  searchTerm: string;
+  setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
+  handleSearch: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
 function ListSelects({
@@ -14,6 +17,9 @@ function ListSelects({
   handleOptionClick,
   selectedTab,
   setSelectedTab,
+  searchTerm,
+  setSearchTerm,
+  handleSearch,
 }: ListSelectsProps) {
   const [isFilterOn, setIsFilterOn] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -285,6 +291,9 @@ function ListSelects({
                 type="text"
                 placeholder="원하는 스타일을 검색해보세요"
                 className="ml-2 text-[#121212] outline-none w-full"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                onKeyDown={handleSearch}
               />
             </div>
             <div className="border-b border-black mb-2"></div>
@@ -303,4 +312,3 @@ function ListSelects({
 }
 
 export default ListSelects;
-

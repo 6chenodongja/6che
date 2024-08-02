@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { createClient } from '@/supabase/client';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -18,6 +18,8 @@ function PostList() {
     [key: string]: string[];
   }>({});
   const [selectedTab, setSelectedTab] = useState<string>('유형');
+  const [searchTerm, setSearchTerm] = useState<string>('');
+  const [showSearchDropdown, setShowSearchDropdown] = useState<boolean>(false);
 
   const User = 'a184313d-fac7-4c5d-8ee3-89e367cfb86f';
   const supabase = createClient();
@@ -154,12 +156,44 @@ function PostList() {
             selectedOptions[key].some((option) => p.style.includes(option)),
           );
         } else if (key === '장소') {
+          const locations = Array.isArray(p.locations)
+            ? p.locations
+            : p.locations.split(',');
           filtered = filtered.filter((p) =>
-            selectedOptions[key].some((option) => p.locations.includes(option)),
+            selectedOptions[key].some((option) =>
+              locations.includes(option),
+            ),
           );
         }
       }
     });
+
+    if (searchTerm) {
+      filtered = filtered.filter((post) => {
+        const lowerCaseSearchTerm = searchTerm.toLowerCase();
+        const locations = Array.isArray(post.locations)
+          ? post.locations
+          : post.locations.split(',');
+        const seasons = Array.isArray(post.seasons)
+          ? post.seasons
+          : post.seasons.split(',');
+        const style = Array.isArray(post.style)
+          ? post.style
+          : post.style.split(',');
+        return (
+          post.gender.toLowerCase().includes(lowerCaseSearchTerm) ||
+          locations.some((loc) =>
+            loc.toLowerCase().includes(lowerCaseSearchTerm),
+          ) ||
+          seasons.some((season) =>
+            season.toLowerCase().includes(lowerCaseSearchTerm),
+          ) ||
+          style.some((style) =>
+            style.toLowerCase().includes(lowerCaseSearchTerm),
+          )
+        );
+      });
+    }
 
     setFilteredPosts(filtered.length > 0 ? filtered : posts);
   };
@@ -185,6 +219,18 @@ function PostList() {
       return newOptions;
     });
   };
+
+  const handleSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      filterPosts();
+      setShowSearchDropdown(false); // 드롭다운 닫기
+    }
+  };
+
+  const handleSearchClick = () => {
+    setShowSearchDropdown((prev) => !prev);
+  };
+
   console.log(posts);
 
   return (
@@ -197,6 +243,11 @@ function PostList() {
           handleOptionClick={handleOptionClick}
           selectedTab={selectedTab}
           setSelectedTab={setSelectedTab}
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+          handleSearch={handleSearch}
+          showSearchDropdown={showSearchDropdown}
+          handleSearchClick={handleSearchClick}
         />
       </div>
 
