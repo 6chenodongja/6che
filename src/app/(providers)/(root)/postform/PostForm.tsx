@@ -124,7 +124,6 @@ const PostFormPage = () => {
       uploadedImageUrls.push(imageUrl);
     }
 
-    // 날씨 데이터 가져오기
     let weatherInfo = `${weatherIcon || ''} ${temperature || ''}`;
     if (!weatherIcon || !temperature) {
       const weatherData = await fetchWeatherData();
@@ -133,9 +132,8 @@ const PostFormPage = () => {
       }
     }
 
-    // 데이터 삽입
     const postData: ExtendedPostInsert = {
-      user_id: 'a184313d-fac7-4c5d-8ee3-89e367cfb86f', // 실제 UUID 값 사용
+      user_id: 'a184313d-fac7-4c5d-8ee3-89e367cfb86f',
       image_url: uploadedImageUrls.join(','),
       comment: description,
       created_at: new Date().toISOString(),
@@ -156,28 +154,6 @@ const PostFormPage = () => {
     } else {
       console.log('Data inserted successfully');
       router.push('/list');
-    }
-
-    // 사용자 정의 태그 저장
-    const user_id = 'a184313d-fac7-4c5d-8ee3-89e367cfb86f'; // 실제 UUID 값 사용
-    const customTags = [
-      ...styles
-        .filter((styleItem) => !initialStyles.includes(styleItem))
-        .map((tag) => ({ user_id, tag_type: 'style', tag_name: tag })),
-      ...locations
-        .filter((locationItem) => !initialLocations.includes(locationItem))
-        .map((tag) => ({ user_id, tag_type: 'location', tag_name: tag })),
-    ];
-
-    if (customTags.length > 0) {
-      const { error: customTagError } = await supabase
-        .from('custom_tags')
-        .insert(customTags);
-      if (customTagError) {
-        console.error('Error inserting custom tags:', customTagError);
-      } else {
-        console.log('Custom tags inserted successfully');
-      }
     }
 
     setImages([]);
