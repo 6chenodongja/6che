@@ -1,13 +1,19 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
-
-const inter = Inter({ subsets: ["latin"] });
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
+import './globals.css';
+import KakaoScript from './(providers)/(root)/common/KakaoScript';
+const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: "온코디",
-  description: "날씨에 맞는 옷을 추천해주는 앱",
+  title: '온코디',
+  description: '날씨에 맞는 옷을 추천해주는 앱',
 };
+
+declare global {
+  interface Window {
+    Kakao: any;
+  }
+}
 
 export default function RootLayout({
   children,
@@ -17,6 +23,7 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body className={inter.className}>{children}</body>
+      <KakaoScript />
     </html>
   );
 }

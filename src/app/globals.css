@@ -369,3 +369,62 @@
   border: none;
   outline: none;
 }
+
+/* 이미지 스와이퍼 부분 */
+.swiper-pagination-bullet {
+  background-color: white !important;
+}
+
+.swiper-pagination-bullet-active {
+  background-color: black !important;
+  width: 18px !important;
+  border-radius: 100px !important;
+}
+
+.swiper-pagination {
+  margin-bottom: 10px;
+}
+/* listPage-Header 스타일 */
+/* .body {
+  display: flex;
+  width: 320px;
+  padding: 6px 16px 6px 6px;
+  justify-content: space-between;
+  align-items: center;
+} */
+
+/* 모달 글자 부분 */
+.text {
+  color: var(--text, #4d4d4d);
+  text-align: center;
+
+  /* Caption */
+  font-family: 'Noto Sans KR';
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 130%; /* 15.6px */
+  letter-spacing: -0.24px;
+}
+
+/* 모달 배경 부분 */
+.box-shadow {
+  box-shadow:
+    0px 0px 2px 0px rgba(0, 0, 0, 0.05),
+    4px 4px var(--Blur-20, 20px) 0px rgba(0, 0, 0, 0.05);
+}
+.backdrop-filter {
+  backdrop-filter: blur(calc(var(--Blur-20, 20px) / 2));
+}
+
+.background {
+  background: var(--Bg_Header, rgba(255, 255, 255, 0.8));
+}
+
+/* 모달 이미지 부분 */
+.middle-box-shadow {
+  box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.08);
+}
+.middle-backdrop-filter {
+  backdrop-filter: blur(5px);
+}

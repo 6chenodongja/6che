@@ -1,31 +1,31 @@
-import React from "react";
-import Select from "react-select";
-import Image from "next/image";
+import React from 'react';
+import Select from 'react-select';
+import Image from 'next/image';
 
 const weatherIcons = [
   {
-    value: "/Sunny.png",
+    value: '/Sunny.png',
     label: <Image src="/Sunny.png" alt="Sunny" width={20} height={20} />,
   },
   {
-    value: "/Cloudy.png",
+    value: '/Cloudy.png',
     label: <Image src="/Cloudy.png" alt="Cloudy" width={20} height={20} />,
   },
   {
-    value: "/Ice.png",
+    value: '/Ice.png',
     label: <Image src="/Ice.png" alt="Ice" width={20} height={20} />,
   },
 ];
 
 const temperatures = [
-  { value: "0°C", label: "0°C" },
-  { value: "5°C", label: "5°C" },
-  { value: "10°C", label: "10°C" },
-  { value: "15°C", label: "15°C" },
-  { value: "20°C", label: "20°C" },
-  { value: "25°C", label: "25°C" },
-  { value: "30°C", label: "30°C" },
-  { value: "35°C", label: "35°C" },
+  { value: '0°C', label: '0°C' },
+  { value: '5°C', label: '5°C' },
+  { value: '10°C', label: '10°C' },
+  { value: '15°C', label: '15°C' },
+  { value: '20°C', label: '20°C' },
+  { value: '25°C', label: '25°C' },
+  { value: '30°C', label: '30°C' },
+  { value: '35°C', label: '35°C' },
 ];
 
 const WeatherDropdown = ({
