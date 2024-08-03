@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
-function SingUpPage() {
+function SignUpPage() {
   const [nickname, setNickname] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -90,7 +90,7 @@ function SingUpPage() {
       password,
       options: {
         data: {
-          nickname,
+          first_name: nickname,  // Change this line
         },
       },
     });
@@ -136,13 +136,6 @@ function SingUpPage() {
               placeholder="아이디"
               className="opacity-40 rounded-lg bg-[#d9d9d9]"
             />
-            {/* <input
-              type="text"
-              onChange={onChangeEmail}
-              value={email}
-              placeholder="이메일"
-              className="opacity-40 rounded-lg bg-[#d9d9d9]"
-            /> */}
           </div>
         </div>
         <div className="flex flex-col justify-start items-start w-72 absolute left-4 top-[450px] pb-3">
@@ -179,7 +172,6 @@ function SingUpPage() {
         <button className="absolute left-[126px] top-[689px] text-lg font-medium text-left text-black ">
           회원가입
         </button>
-        {/* 아래 코드는 지울 예정입니다. */}
         <div className="w-72 h-[46px] absolute left-[14px] top-[740px] rounded-lg bg-[#d9d9d9]" />
         <Link
           href={'/login'}
@@ -192,4 +184,4 @@ function SingUpPage() {
   );
 }
 
-export default SingUpPage;
+export default SignUpPage;
