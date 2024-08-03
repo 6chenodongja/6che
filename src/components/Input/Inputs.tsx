@@ -1,17 +1,23 @@
 import { ComponentProps, useId } from 'react';
 
-interface InputProps {
-  labal?: string;
+interface InputProps extends ComponentProps<'input'> {
+  label?: string;
   required?: boolean;
-} & ComponentProps<'input'>;
+}
 
-function Inputs({ labal, required, id, ...props }: InputProps) {
+function Inputs({ label, required, id, ...props }: InputProps) {
   const inputUId = useId();
   const inputId = id || inputUId;
 
   return (
     <div>
-      <label htmlFor=""></label>
+      {label && (
+        <label htmlFor={inputId}>
+          {label}
+          {required && ' *'}
+        </label>
+      )}
+      <input id={inputId} required={required} {...props} />
     </div>
   );
 }
