@@ -118,7 +118,7 @@ const ThermometerStyle: React.FC = () => {
       : getOutfitsForTemperature(temperatureRanges[temperatureIndex].display);
 
   const handleSurveyPage = () => {
-    router.push('/surveypage');
+    router.push('/survey');
   };
 
   const noLabelImages = [

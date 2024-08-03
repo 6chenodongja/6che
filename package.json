@@ -10,6 +10,8 @@
     "gen": "npx supabase gen types typescript --project-id \"qnowgdysxtsldlsczdcs\" --schema public > types/supabase.ts"
   },
   "dependencies": {
+    "@supabase/auth-ui-react": "^0.4.7",
+    "@supabase/auth-ui-shared": "^0.1.8",
     "@supabase/ssr": "^0.4.0",
     "@supabase/supabase-js": "^2.44.4",
     "@tanstack/react-query": "^5.51.11",
@@ -18,6 +20,7 @@
     "framer-motion": "^11.3.21",
     "http-proxy-middleware": "^2.0.6",
     "next": "^14.2.5",
+    "nodemailer": "^6.9.14",
     "react": "^18",
     "react-dom": "^18",
     "react-select": "^5.8.0",
