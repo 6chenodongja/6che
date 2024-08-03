@@ -135,7 +135,7 @@ const QuestionPage: React.FC = () => {
 
     setTagsInStore({ gender, style, seasons, locations });
 
-    router.push(`/surveypage/result`);
+    router.push(`/survey/result`);
   };
 
   return (
