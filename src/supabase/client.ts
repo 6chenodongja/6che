@@ -30,3 +30,4 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
 // 싱글톤 패턴으로 supabase 클라이언트 인스턴스를 생성
 export const supabase = createSupabaseClient<Database>(supabaseUrl, supabaseAnonKey);
+export const createClient = () => createSupabaseClient<Database>(supabaseUrl, supabaseAnonKey);
