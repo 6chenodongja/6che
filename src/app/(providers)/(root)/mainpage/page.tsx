@@ -199,14 +199,16 @@ const MainPage = () => {
         <IconLogin className="w-6 h-6" />
       </header>
 
-      {/* 네비게이션 바 */}
+      {/* 네비게이션 바 메뉴 버튼 */}
       <nav className={`navbar ${isMenuOpen ? 'open' : ''}`}>
         <div className="navbar-close" onClick={handleMenuToggle}>
           &times;
         </div>
         <ul>
           <li>
-            <Link href="/">홈</Link>
+            <Link href="/" onClick={handleMenuToggle}>
+              홈
+            </Link>
           </li>
           <li>
             <Link href="/style">스타일</Link>
