@@ -2,7 +2,7 @@ import React from 'react';
 
 function MyPage() {
   return (
-    <div className="w-80 h-[1381px] relative overflow-hidden bg-neutral-50">
+    <div className="w-80 h-[1381px] relative overflow-hidden bg-neutral-50 m-auto">
       <div className="flex flex-col justify-start items-start w-80 absolute left-0 top-[786px] gap-3 px-6 pt-[60px] pb-20 bg-white">
         <div className="flex justify-start items-center flex-grow-0 flex-shrink-0 relative gap-2 pr-9 pt-5">
           <svg
