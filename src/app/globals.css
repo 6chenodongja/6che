@@ -428,3 +428,23 @@
 .middle-backdrop-filter {
   backdrop-filter: blur(5px);
 }
+
+.section-box {
+  padding: 0 16px; /* 좌우에 일정한 패딩을 추가 */
+  box-sizing: border-box;
+}
+
+.container {
+  width: 320px;
+  min-width: 320px;
+  max-width: 393px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+/* 반응형 조정 */
+@media (min-width: 320px) and (max-width: 393px) {
+  .container {
+    width: 100%;
+  }
+}
