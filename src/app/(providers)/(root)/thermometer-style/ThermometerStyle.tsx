@@ -37,10 +37,10 @@ const outfits: OutfitImages = {
 };
 
 const defaultImages: string[] = [
-  '/default-blue.png',
-  '/default-yellow.png',
-  '/default-yellow.png',
-  '/default-blue.png',
+  '/default-b.png',
+  '/default-y.png',
+  '/default-y.png',
+  '/default-b.png',
 ];
 
 const temperatureRanges: TemperatureRange[] = [
