@@ -3,11 +3,9 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { useUserStore } from '@/zustand/store/useUserStore';
 
 const Header = () => {
   const router = useRouter();
-
   return (
     <div className="w-full bg-gray-300 p-4 flex justify-between items-center">
       <div>
