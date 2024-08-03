@@ -1,5 +1,11 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import React, {
+  useState,
+  useEffect,
+  ChangeEvent,
+  KeyboardEvent,
+  useCallback,
+} from 'react';
 import { createClient } from '@/supabase/client';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -20,153 +26,172 @@ function PostList() {
   }>({});
   const [selectedTab, setSelectedTab] = useState<string>('유형');
   const [searchTerm, setSearchTerm] = useState<string>('');
+  const [searchInput, setSearchInput] = useState<string>('');
   const [showSearchDropdown, setShowSearchDropdown] = useState<boolean>(false);
 
   const User = 'a184313d-fac7-4c5d-8ee3-89e367cfb86f';
   const supabase = createClient();
 
-  const handleLike = async (postId: string, userId: string) => {
-    try {
-      const isLiked = liked[postId];
+  const handleLike = useCallback(
+    async (postId: string, userId: string) => {
+      try {
+        const isLiked = liked[postId];
 
-      if (isLiked) {
-        await supabase
-          .from('post_likes')
-          .delete()
-          .eq('post_id', postId)
-          .eq('user_id', userId);
+        if (isLiked) {
+          await supabase
+            .from('post_likes')
+            .delete()
+            .eq('post_id', postId)
+            .eq('user_id', userId);
 
-        const { data: postData, error: postFetchError } = await supabase
-          .from('posts')
-          .select('like')
-          .eq('id', postId)
-          .single();
+          const { data: postData, error: postFetchError } = await supabase
+            .from('posts')
+            .select('like')
+            .eq('id', postId)
+            .single();
 
-        if (postFetchError) {
-          console.log('해당 포스트의 좋아요 수 가져오기 오류', postFetchError);
-        }
-        // 좋아요 마이너스
-        const newLikeCount = (postData?.like || 0) - 1;
-        await supabase
-          .from('posts')
-          .update({ like: newLikeCount })
-          .eq('id', postId);
+          if (postFetchError) {
+            console.log(
+              '해당 포스트의 좋아요 수 가져오기 오류',
+              postFetchError,
+            );
+          }
+          const newLikeCount = (postData?.like || 0) - 1;
+          await supabase
+            .from('posts')
+            .update({ like: newLikeCount })
+            .eq('id', postId);
 
-        setPosts((prevPosts) =>
-          prevPosts.map((post) =>
-            post.id === postId ? { ...post, like: newLikeCount } : post,
-          ),
-        );
-      } else {
-        await supabase
-          .from('post_likes')
-          .insert({ post_id: postId, user_id: userId });
+          setPosts((prevPosts) =>
+            prevPosts.map((post) =>
+              post.id === postId ? { ...post, like: newLikeCount } : post,
+            ),
+          );
+        } else {
+          await supabase
+            .from('post_likes')
+            .insert({ post_id: postId, user_id: userId });
 
-        const { data: postData, error: postFetchError } = await supabase
-          .from('posts')
-          .select('like')
-          .eq('id', postId)
-          .single();
+          const { data: postData, error: postFetchError } = await supabase
+            .from('posts')
+            .select('like')
+            .eq('id', postId)
+            .single();
 
-        if (postFetchError) {
-          console.log(
-            '해당 포스트의 좋아요 수 가져오기 실패..',
-            postFetchError,
+          if (postFetchError) {
+            console.log(
+              '해당 포스트의 좋아요 수 가져오기 실패..',
+              postFetchError,
+            );
+          }
+          const newLikeCount = (postData?.like || 0) + 1;
+          await supabase
+            .from('posts')
+            .update({ like: newLikeCount })
+            .eq('id', postId);
+
+          setPosts((prevPosts) =>
+            prevPosts.map((post) =>
+              post.id === postId ? { ...post, like: newLikeCount } : post,
+            ),
           );
         }
-        // 좋아요 플러스
-        const newLikeCount = (postData?.like || 0) + 1;
-        await supabase
-          .from('posts')
-          .update({ like: newLikeCount })
-          .eq('id', postId);
 
-        setPosts((prevPosts) =>
-          prevPosts.map((post) =>
-            post.id === postId ? { ...post, like: newLikeCount } : post,
-          ),
-        );
+        setLiked((prevLiked) => ({
+          ...prevLiked,
+          [postId]: !isLiked,
+        }));
+      } catch (error) {
+        console.error(error);
       }
-
-      setLiked((prevLiked) => ({
-        ...prevLiked,
-        [postId]: !isLiked,
-      }));
-    } catch (error) {
-      console.error(error);
-    }
-  };
+    },
+    [liked, supabase],
+  );
 
   const debouncedHandleLike = _.debounce(handleLike, 500);
 
-  const fetchUsers = async () => {
+  const fetchUsers = useCallback(async () => {
     const { data } = await supabase.from('users').select('*').eq('id', User);
 
     if (data) {
       setUsers(data);
     }
-  };
+  }, [supabase, User]);
 
   useEffect(() => {
     fetchUsers();
-  }, []);
+  }, [fetchUsers]);
 
-  const getNickName = (userId: string) => {
-    const user = users.find((user) => user.id === userId);
-    return user ? user.nick_name : 'Unknown';
-  };
+  const getNickName = useCallback(
+    (userId: string) => {
+      const user = users.find((user) => user.id === userId);
+      return user ? user.nick_name : 'Unknown';
+    },
+    [users],
+  );
 
-  const fetchPosts = async (order: string) => {
-    const orderColumn = order === 'latest' ? 'created_at' : 'like';
-    const { data, error } = await supabase
-      .from('posts')
-      .select('*')
-      .order(orderColumn, { ascending: false });
+  const fetchPosts = useCallback(
+    async (order: string) => {
+      const orderColumn = order === 'latest' ? 'created_at' : 'like';
+      const { data, error } = await supabase
+        .from('posts')
+        .select('*')
+        .order(orderColumn, { ascending: false });
 
-    if (error) {
-      console.error(error);
-    } else {
-      setPosts(data);
-      setFilteredPosts(data);
-    }
-  };
+      if (error) {
+        console.error(error);
+      } else {
+        setPosts(data);
+        setFilteredPosts(data);
+      }
+    },
+    [supabase],
+  );
 
   useEffect(() => {
     fetchPosts(latest);
-  }, [latest]);
+  }, [latest, fetchPosts]);
 
-  const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleSortChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setLatest(e.target.value);
   };
 
-  const filterPosts = () => {
-    let filtered = [...posts];
+  const filterPosts = useCallback(() => {
+    let filtered: Tables<'posts'>[] = [...posts];
 
     Object.keys(selectedOptions).forEach((key) => {
       if (selectedOptions[key].length > 0) {
         if (key === '유형') {
-          filtered = filtered.filter((p) =>
-            selectedOptions[key].includes(p.gender),
+          filtered = filtered.filter((post) =>
+            selectedOptions[key].includes(post.gender ?? ''),
           );
         } else if (key === '날씨') {
-          filtered = filtered.filter((p) =>
-            selectedOptions[key].some((option) => p.weather.includes(option)),
+          filtered = filtered.filter((post) =>
+            selectedOptions[key].some((option) =>
+              (post.weather ?? '').includes(option),
+            ),
           );
         } else if (key === '계절') {
-          filtered = filtered.filter((p) =>
-            selectedOptions[key].some((option) => p.seasons.includes(option)),
+          filtered = filtered.filter((post) =>
+            selectedOptions[key].some((option) =>
+              (post.seasons ?? '').includes(option),
+            ),
           );
         } else if (key === '스타일') {
-          filtered = filtered.filter((p) =>
-            selectedOptions[key].some((option) => p.style.includes(option)),
+          filtered = filtered.filter((post) =>
+            selectedOptions[key].some((option) =>
+              (post.style ?? '').includes(option),
+            ),
           );
         } else if (key === '장소') {
-          const locations = Array.isArray(p.locations)
-            ? p.locations
-            : p.locations.split(',');
-          filtered = filtered.filter((p) =>
-            selectedOptions[key].some((option) => locations.includes(option)),
-          );
+          filtered = filtered.filter((post) => {
+            const locations = Array.isArray(post.locations)
+              ? post.locations
+              : (post.locations ?? '').split(',');
+            return selectedOptions[key].some((option) =>
+              locations.includes(option),
+            );
+          });
         }
       }
     });
@@ -176,15 +201,15 @@ function PostList() {
         const lowerCaseSearchTerm = searchTerm.toLowerCase();
         const locations = Array.isArray(post.locations)
           ? post.locations
-          : post.locations.split(',');
+          : (post.locations ?? '').split(',');
         const seasons = Array.isArray(post.seasons)
           ? post.seasons
-          : post.seasons.split(',');
+          : (post.seasons ?? '').split(',');
         const style = Array.isArray(post.style)
           ? post.style
-          : post.style.split(',');
+          : (post.style ?? '').split(',');
         return (
-          post.gender.toLowerCase().includes(lowerCaseSearchTerm) ||
+          (post.gender ?? '').toLowerCase().includes(lowerCaseSearchTerm) ||
           locations.some((loc) =>
             loc.toLowerCase().includes(lowerCaseSearchTerm),
           ) ||
@@ -199,11 +224,11 @@ function PostList() {
     }
 
     setFilteredPosts(filtered.length > 0 ? filtered : posts);
-  };
+  }, [selectedOptions, searchTerm, posts]);
 
   useEffect(() => {
     filterPosts();
-  }, [selectedOptions, posts]);
+  }, [selectedOptions, posts, filterPosts]);
 
   const handleOptionClick = (option: string) => {
     setSelectedOptions((prevOptions) => {
@@ -223,8 +248,9 @@ function PostList() {
     });
   };
 
-  const handleSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleSearch = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
+      setSearchTerm(searchInput); // Update the searchTerm only on Enter key press
       filterPosts();
       setShowSearchDropdown(false); // 드롭다운 닫기
     }
@@ -232,6 +258,10 @@ function PostList() {
 
   const handleSearchClick = () => {
     setShowSearchDropdown((prev) => !prev);
+  };
+
+  const handleSearchInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearchInput(e.target.value); // Update the search input value
   };
 
   console.log(posts);
@@ -246,8 +276,8 @@ function PostList() {
           handleOptionClick={handleOptionClick}
           selectedTab={selectedTab}
           setSelectedTab={setSelectedTab}
-          searchTerm={searchTerm}
-          setSearchTerm={setSearchTerm}
+          searchTerm={searchInput} // Pass the search input value
+          setSearchTerm={handleSearchInputChange} // Pass the input change handler
           handleSearch={handleSearch}
           showSearchDropdown={showSearchDropdown}
           handleSearchClick={handleSearchClick}
