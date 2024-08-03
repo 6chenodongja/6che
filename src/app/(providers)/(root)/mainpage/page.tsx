@@ -112,7 +112,7 @@ const MainPage = () => {
   };
 
   const handleCodiClick = () => {
-    router.push('/surveypage');
+    router.push('/survey');
   };
 
   // 날씨 데이터를 가져오는 useEffect
@@ -217,7 +217,7 @@ const MainPage = () => {
             <Link href="/outfit">옷차림</Link>
           </li>
           <li>
-            <Link href="/surveypage">취향 코디</Link>
+            <Link href="/survey">취향 코디</Link>
           </li>
         </ul>
       </nav>
@@ -695,7 +695,7 @@ const MainPage = () => {
               기온 별 옷차림
             </Link>
             <Link
-              href="/surveypage"
+              href="/survey"
               className="text-[#4d4d4d] text-sm font-medium leading-[21px] font-['Noto Sans KR']"
             >
               취향 코디
@@ -726,9 +726,16 @@ const MainPage = () => {
             </Link>
           </nav>
           <hr className="w-full border-t border-[#e6e6e6] mb-4" />{' '}
-          {/* 가로 일자 바 반영 */}
           <div className="flex flex-col items-start text-gray-500">
-            <div className="flex items-center mb-2">
+            <div
+              className="flex items-center mb-2 cursor-pointer"
+              onClick={() =>
+                window.open(
+                  'https://github.com/6chenodongja/6che/tree/main',
+                  '_blank',
+                )
+              }
+            >
               <Image
                 src="/images/github.svg"
                 alt="GitHub"
