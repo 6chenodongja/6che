@@ -1,0 +1,1 @@
+export { Ten } from "./Ten";
