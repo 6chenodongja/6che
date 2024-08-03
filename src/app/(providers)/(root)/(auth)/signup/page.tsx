@@ -6,7 +6,6 @@ import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
 function SingUpPage() {
-  const [name, setName] = useState('');
   const [nickname, setNickname] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -22,21 +21,6 @@ function SingUpPage() {
 
   const supabase = createClient();
   const router = useRouter();
-
-  const onChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setName(e.target.value);
-    if (e.target.value.length > 8) {
-      setError({
-        ...error,
-        name: '이름은 최소 8글자 이하입니다.',
-      });
-    } else {
-      setError({
-        ...error,
-        name: '',
-      });
-    }
-  };
 
   const onChangeNickname = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNickname(e.target.value);
@@ -106,7 +90,6 @@ function SingUpPage() {
       password,
       options: {
         data: {
-          name,
           nickname,
         },
       },
@@ -119,7 +102,7 @@ function SingUpPage() {
     alert('회원가입이 완료 됐습니다.');
 
     // 프로필 선택 완료 페이지로 이동
-    router.replace('/auth/signUpDone');
+    router.replace('/signUpDone');
   };
 
   return (
@@ -128,19 +111,6 @@ function SingUpPage() {
         <h1 className="absolute left-4 top-36 text-2xl font-bold text-center text-black">
           회원가입
         </h1>
-        <div className="flex flex-col justify-start items-start w-72 absolute left-4 top-[207px] pb-3">
-          <label className="self-stretch flex-grow-0 flex-shrink-0 w-72 text-lg text-left text-black">
-            이름
-          </label>
-          <input
-            type="text"
-            onChange={onChangeName}
-            value={name}
-            placeholder="이름을 입력 해 주세요."
-            className="self-stretch flex-grow-0 flex-shrink-0 h-[42px] opacity-50 rounded-lg bg-[#d9d9d9]"
-          />
-        </div>
-        {error.name && <p className="text-red-500">{error.name}</p>}
         <div className="flex flex-col justify-start items-start w-72 absolute left-4 top-72 pb-3">
           <label className="self-stretch flex-grow-0 flex-shrink-0 w-72 text-lg text-left text-black">
             닉네임
@@ -212,7 +182,7 @@ function SingUpPage() {
         {/* 아래 코드는 지울 예정입니다. */}
         <div className="w-72 h-[46px] absolute left-[14px] top-[740px] rounded-lg bg-[#d9d9d9]" />
         <Link
-          href={'/auth/login'}
+          href={'/login'}
           className="absolute left-[100px] top-[750px] text-lg font-medium text-left text-black "
         >
           로그인하러 가기

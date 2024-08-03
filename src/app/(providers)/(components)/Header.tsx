@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import { useUserStore } from '@/zustand/store/useUserStore';
 
 const Header = () => {
   const router = useRouter();

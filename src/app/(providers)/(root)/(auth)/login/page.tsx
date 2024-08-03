@@ -33,19 +33,16 @@ function LoginPage() {
   };
 
   return (
-    <main className="bg-neutral-50 flex flex-row justify-center w-full">
-      <div className="bg-semantic-bg w-80 h-[1443px] relative">
-        <form
-          onSubmit={onSubmit}
-          className="bg-neutral-50 flex flex-row justify-center w-full"
-        >
-          <h1 className="absolute left-4 top-[138px] text-2xl font-medium text-center text-black">
+    <main className="flex flex-row justify-center w-full">
+      <div className="bg-[#FAFAFA] w-80 h-[1443px] ">
+        <form onSubmit={onSubmit} className="w-full h-full justify-center">
+          <h1 className="mt-[119px] text-[24px] font-bold text-center text-[#121212]">
             로그인
           </h1>
-          <div className="flex items-center gap-2 pl-0.5 pr-0 py-0 relative self-stretch w-full flex-[0_0_auto]">
+          <div className="bg-slate-50 flex flex-col">
             <label
               htmlFor="email"
-              className="font-subtitle-KR-small font-[number:var(--subtitle-KR-small-font-weight)] text-semantic-text text-[length:var(--subtitle-KR-small-font-size)] tracking-[var(--subtitle-KR-small-letter-spacing)] leading-[var(--subtitle-KR-small-line-height)] relative w-fit mt-[-1.00px] whitespace-nowrap [font-style:var(--subtitle-KR-small-font-style)]"
+              className="text-[16px] font-bold text-left text-[#4d4d4d] mb-1 ml-1 flex"
             >
               이메일
             </label>
@@ -54,11 +51,11 @@ function LoginPage() {
               id="email"
               placeholder="이메일을 입력해 주세요."
               ref={emailRef}
-              className="px-4 py-3 grow bg-semantic-text-box rounded-lg border border-solid border-[color:var(--palette-black-500)] relative mt-[-1.00px] font-body-EN-medium font-[number:var(--body-EN-medium-font-weight)] text-[color:var(--palette-black-300)] text-[length:var(--body-EN-medium-font-size)] tracking-[var(--body-EN-medium-letter-spacing)] leading-[var(--body-EN-medium-line-height)] flex-1 [font-style:var(--body-EN-medium-font-style)]"
+              className="flex justify-start items-center flex-grow relative gap-2 px-4 py-3 rounded-xl border-2 border-[#808080]"
             />
           </div>
-          <div className="flex flex-col justify-start items-start w-72 absolute left-4 top-72 pb-2.5">
-            <label className="self-stretch flex-grow-0 flex-shrink-0 w-72 text-lg text-left text-black">
+          <div className="mt-2">
+            <label className="text-[16px] font-bold text-left text-[#4d4d4d] mb-1 ml-1 flex">
               비밀번호
             </label>
             <input
@@ -66,49 +63,48 @@ function LoginPage() {
               ref={passwordRef}
               id="password"
               placeholder="비밀번호를 입력해 주세요."
-              className="self-stretch flex-grow-0 flex-shrink-0 h-[42px] opacity-50 rounded-lg bg-[#d9d9d9]"
+              className="flex justify-start items-center flex-grow relative gap-2 px-4 py-3 rounded-xl border-[1px] border-[#808080]"
             />
           </div>
-          <div className="w-72 h-[46px] absolute left-[15px] top-[425px] rounded-lg bg-[#d9d9d9] text-center">
-            <button className="text-lg font-medium text-black">로그인</button>
+          <div className="flex flex-col gap-2">
+            <div className="flex flex-row w-full mt-16">
+              <button className="bg-black text-[#fff] rounded-xl px-4 py-3 w-full font-bold">
+                로그인
+              </button>
+            </div>
+            <Link href={'/signup'} passHref>
+              <button className="bg-white border-2 border-[#808080] text-[#4d4d4d] rounded-xl px-4 py-3 w-full font-bold">
+                회원가입
+              </button>
+            </Link>
           </div>
-          <div className="flex justify-start items-center absolute left-[50px] top-[493px] gap-2">
-            <Link
-              href={''}
-              className="flex-grow-0 flex-shrink-0 text-base text-left text-black"
-            >
+
+          <div className="flex-grow-0 flex-shrink-0 text-sm text-left text-[#4d4d4d]">
+            <Link href={''} className="">
               아이디/비밀번호 찾기
             </Link>
-            <div className="flex-grow-0 flex-shrink-0 w-px h-[22px] bg-[#d9d9d9]" />
-            <Link
-              href={'/auth/signup'}
-              className="flex-grow-0 flex-shrink-0 text-base text-left text-black"
-            >
-              회원가입
-            </Link>
           </div>
-          <div className="w-72 h-12 absolute left-[15px] top-[600px] rounded-3xl bg-[#d9d9d9]" />
-          <div className="w-72 h-12 absolute left-[15px] top-[658px] rounded-3xl bg-[#d9d9d9]" />
-          <button className="absolute left-[145px] top-[613px] text-base text-left text-black">
-            구글
-          </button>
-          <button className="absolute left-[130px] top-[671px] text-base text-left text-black">
-            카카오톡
-          </button>
-          <div className="w-72 h-px absolute left-[15px] top-[557px] bg-[#d9d9d9]" />
-          <div>
-            <label className="absolute left-[43px] top-[395px] text-sm text-left text-black">
-              자동로그인
-            </label>
+          <div className="flex justify-start items-center w-72 relative gap-3">
+            <div className="flex-grow h-px bg-[#d9d9d9]" />
+            <p className="flex-grow-0 flex-shrink-0 text-base text-left text-black">
+              or
+            </p>
+            <div className="flex-grow h-px bg-[#d9d9d9]" />
+          </div>
+          <div className="flex flex-col gap-2">
+            <button className="">구글</button>
+            <button className="">카카오톡</button>
+          </div>
+          <div className="">
             <input
               type="checkbox"
               placeholder="체크 박스입니다"
-              className="w-5 h-5 absolute left-[15px] top-[395px] bg-[#d9d9d9]"
+              className="w-[18px] h-[18px] rounded bg-[#ccc]/70"
             />
+            <label className="flex-grow-0 flex-shrink-0 text-sm text-left text-[#808080]">
+              로그인 유지
+            </label>
           </div>
-          <p className="absolute left-[130px] top-[569px] text-sm text-left text-black">
-            소셜 로그인
-          </p>
         </form>
       </div>
     </main>
