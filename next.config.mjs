@@ -7,10 +7,6 @@ const nextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'developer.accuweather.com',
-      },
-      {
-        protocol: 'https',
         hostname: 'qnowgdysxtsldlsczdcs.supabase.co',
       },
     ],
