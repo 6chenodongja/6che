@@ -1,10 +1,10 @@
-"use client";
+// "use client";
 
-import React from "react";
-import { useRouter } from "next/navigation";
-import Image from "next/image";
-import { useAuthStore } from "@/zustand/store/useTagStore";
-import { createClient } from "@/supabase/client";
+import React from 'react';
+import { useRouter } from 'next/navigation';
+import Image from 'next/image';
+import { useAuthStore } from '@/zustand/store/useTagStore';
+import { createClient } from '@/supabase/client';
 
 const Header = () => {
   const router = useRouter();
@@ -14,20 +14,20 @@ const Header = () => {
     const supabase = createClient();
     await supabase.auth.signOut();
     logout();
-    router.push("/");
+    router.push('/');
   };
 
   return (
     <div className="w-full bg-gray-300 p-4 flex justify-between items-center">
       <div>
-        <button className="px-2 py-1" onClick={() => router.push("/mainpage")}>
+        <button className="px-2 py-1" onClick={() => router.push('/mainpage')}>
           <Image src="/back.png" alt="뒤로가기" width={24} height={24} />
         </button>
       </div>
       <div className="flex items-center">
         <button
           className="px-4 py-2 bg-gray-300"
-          onClick={() => router.push("/mainpage")}
+          onClick={() => router.push('/mainpage')}
         >
           날씨
         </button>
@@ -40,7 +40,10 @@ const Header = () => {
             로그아웃
           </button>
         ) : (
-          <button className="px-2 py-1" onClick={() => router.push("/auth/login")}>
+          <button
+            className="px-2 py-1"
+            onClick={() => router.push('/auth/login')}
+          >
             로그인
           </button>
         )}
@@ -52,4 +55,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+// export default Header;
