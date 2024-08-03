@@ -1,17 +1,7 @@
-<<<<<<< HEAD
-// import { createBrowserClient } from "@supabase/ssr";
-// import { Database } from "../../types/supabase";
-
-// export function createClient() {
-//   return createBrowserClient<Database>(
-//     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-//     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-//   );
-// }
 
 
 
-// 7/28 18:46
+
 import { createClient as createSupabaseClient } from '@supabase/supabase-js';
 import { Database } from '../../types/supabase';
 
@@ -20,14 +10,12 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
 export const supabase = createSupabaseClient<Database>(supabaseUrl, supabaseAnonKey);
 export const createClient = () => createSupabaseClient<Database>(supabaseUrl, supabaseAnonKey);
-=======
-import { createBrowserClient } from '@supabase/ssr';
-import { Database } from '../../types/supabase';
+// import { createBrowserClient } from '@supabase/ssr';
+// import { Database } from '../../types/supabase';
 
-export function createClient() {
-  return createBrowserClient<Database>(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-  );
-}
->>>>>>> e71ba796064a09833874ab0487db39d2b369375f
+// export function createClient() {
+//   return createBrowserClient<Database>(
+//     process.env.NEXT_PUBLIC_SUPABASE_URL!,
+//     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+//   );
+// }
