@@ -1,5 +1,5 @@
-import { createServerClient } from "@supabase/ssr";
-import { NextResponse, type NextRequest } from "next/server";
+import { createServerClient } from '@supabase/ssr';
+import { NextResponse, type NextRequest } from 'next/server';
 
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
@@ -35,11 +35,12 @@ export async function updateSession(request: NextRequest) {
 
   if (
     !user &&
-    !request.nextUrl.pathname.startsWith("/") &&
-    !request.nextUrl.pathname.startsWith("/")
+    !request.nextUrl.pathname.startsWith('/') &&
+    !request.nextUrl.pathname.startsWith('/')
   ) {
     const url = request.nextUrl.clone();
-    url.pathname = "/login";
+    url.pathname = '/auth/login';
+
     return NextResponse.redirect(url);
   }
 
