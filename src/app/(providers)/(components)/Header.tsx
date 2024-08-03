@@ -6,6 +6,7 @@ import Image from 'next/image';
 
 const Header = () => {
   const router = useRouter();
+
   return (
     <div className="w-full bg-gray-300 p-4 flex justify-between items-center">
       <div>
