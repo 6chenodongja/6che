@@ -1,0 +1,1 @@
+export { IconWeatherThunderstorm } from "./IconWeatherThunderstorm";
