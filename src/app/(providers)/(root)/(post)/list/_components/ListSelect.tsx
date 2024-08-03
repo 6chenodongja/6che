@@ -300,8 +300,7 @@ function ListSelects({
                 </span>
               ))}
             </div>
-            <div className="flex justify-end mt-2">
-            </div>
+            <div className="flex justify-end mt-2"></div>
           </div>
         )}
       </div>
