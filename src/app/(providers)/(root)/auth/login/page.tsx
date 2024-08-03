@@ -51,7 +51,10 @@ function LoginPage() {
         window.location.href = data.url;
       }
     } catch (error) {
-      console.error(`ERROR ${provider.toUpperCase()}`, error.message);
+      console.error(
+        `ERROR ${provider.toUpperCase()}`,
+        (error as Error).message,
+      );
     }
   };
 

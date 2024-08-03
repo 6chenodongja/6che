@@ -140,8 +140,8 @@ const PostFormPage = () => {
       like: 0,
       gender: gender,
       style: style.join(','),
-      seasons: seasons.join(','),
-      locations: locations.join(','),
+      // seasons: seasons.join(','),
+      // locations: locations.join(','),
       weather: weatherInfo,
     };
 
