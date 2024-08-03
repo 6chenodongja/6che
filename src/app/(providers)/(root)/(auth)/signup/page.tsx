@@ -6,9 +6,7 @@ import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
 function SingUpPage() {
-  const [name, setName] = useState('');
   const [nickname, setNickname] = useState('');
-  // const [id, setId] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
@@ -18,22 +16,31 @@ function SingUpPage() {
     password: '',
     passwordConfirm: '',
   });
+  const regexPw =
+    /^[a-z0-9#?!@$%^&*-](?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-])[a-z0-9#?!@$%^&*-]{1,10}$/;
 
   const supabase = createClient();
   const router = useRouter();
 
-  const onChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setName(e.target.value);
-  };
   const onChangeNickname = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNickname(e.target.value);
+    if (e.target.value.length > 10) {
+      setError({
+        ...error,
+        nickname: '닉네임은 최소 10글자 이하입니다.',
+      });
+    } else {
+      setError({
+        ...error,
+        nickname: '',
+      });
+    }
   };
-  // const onChangeId = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   setId(e.target.value);
-  // };
+
   const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
   };
+
   const onChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
     if (e.target.value.length < 8) {
@@ -48,6 +55,7 @@ function SingUpPage() {
       });
     }
   };
+
   const onChangePasswordConfirm = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPasswordConfirm(e.target.value);
     if (e.target.value.length < 8) {
@@ -82,7 +90,6 @@ function SingUpPage() {
       password,
       options: {
         data: {
-          name,
           nickname,
         },
       },
@@ -94,8 +101,8 @@ function SingUpPage() {
     // 확인용 알럿입니다. (추후에 페이지로 회원가입 완료 되었다 라고 보이게 변경 될 것 같습니다.)
     alert('회원가입이 완료 됐습니다.');
 
-    // 메인 페이지로 이동
-    router.replace('/auth/login');
+    // 프로필 선택 완료 페이지로 이동
+    router.replace('/signUpDone');
   };
 
   return (
@@ -104,18 +111,6 @@ function SingUpPage() {
         <h1 className="absolute left-4 top-36 text-2xl font-bold text-center text-black">
           회원가입
         </h1>
-        <div className="flex flex-col justify-start items-start w-72 absolute left-4 top-[207px] pb-3">
-          <label className="self-stretch flex-grow-0 flex-shrink-0 w-72 text-lg text-left text-black">
-            이름
-          </label>
-          <input
-            type="text"
-            onChange={onChangeName}
-            value={name}
-            placeholder="이름을 입력 해 주세요."
-            className="self-stretch flex-grow-0 flex-shrink-0 h-[42px] opacity-50 rounded-lg bg-[#d9d9d9]"
-          />
-        </div>
         <div className="flex flex-col justify-start items-start w-72 absolute left-4 top-72 pb-3">
           <label className="self-stretch flex-grow-0 flex-shrink-0 w-72 text-lg text-left text-black">
             닉네임
@@ -128,6 +123,7 @@ function SingUpPage() {
             className="self-stretch flex-grow-0 flex-shrink-0 h-[42px] opacity-50 rounded-lg bg-[#d9d9d9]"
           />
         </div>
+        {error.nickname && <p className="text-red-500">{error.nickname}</p>}
         <div className="flex flex-col justify-start items-start w-72 absolute left-4 top-[369px] pb-3">
           <label className="self-stretch flex-grow-0 flex-shrink-0 w-72 text-lg text-left text-black">
             이메일
@@ -186,7 +182,7 @@ function SingUpPage() {
         {/* 아래 코드는 지울 예정입니다. */}
         <div className="w-72 h-[46px] absolute left-[14px] top-[740px] rounded-lg bg-[#d9d9d9]" />
         <Link
-          href={'/auth/login'}
+          href={'/login'}
           className="absolute left-[100px] top-[750px] text-lg font-medium text-left text-black "
         >
           로그인하러 가기

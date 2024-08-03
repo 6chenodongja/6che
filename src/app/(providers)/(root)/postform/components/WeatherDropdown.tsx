@@ -109,7 +109,7 @@ const WeatherDropdown = ({
               {option.value === '/location.svg' ? (
                 <>
                   <Image
-                    src={option.src}
+                    src={option.src ?? '/default-image.svg'}
                     alt={option.label}
                     width={20}
                     height={20}
