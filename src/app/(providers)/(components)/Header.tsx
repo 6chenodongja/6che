@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 
@@ -25,7 +25,7 @@ const Header = () => {
         <button className="px-4 py-2 bg-gray-300">기온별 옷차림</button>
       </div>
       <div>
-        <button className="px-2 py-1 ">
+        <button className="px-2 py-1">
           <Image src="/search.png" alt="검색" width={24} height={24} />
         </button>
       </div>
@@ -33,4 +33,4 @@ const Header = () => {
   );
 };
 
-// export default Header;
+export default Header;

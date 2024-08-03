@@ -112,7 +112,6 @@ function PostList() {
 
   const fetchUsers = useCallback(async () => {
     const { data } = await supabase.from('users').select('*').eq('id', User);
-
     if (data) {
       setUsers(data);
     }

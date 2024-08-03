@@ -3,9 +3,9 @@ import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { createClient } from '@/supabase/client';
 import Image from 'next/image';
-import leftbutton from '@/assets/arrow_Left.png';
-import whiteheart from '@/assets/whiteheart.png';
-import redheart from '@/assets/redheart.png';
+import leftbutton from '../../../../../../assets/arrow_Left.png';
+import whiteheart from '../../../../../../assets/whiteheart.png';
+import redheart from '../../../../../../assets/redheart.png';
 import { useRouter } from 'next/navigation';
 import { useTagStore } from '@/zustand/store/useTagStore';
 

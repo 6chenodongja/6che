@@ -1,6 +1,6 @@
 'use client';
 import { createClient } from '@/supabase/client';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Image from 'next/image';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from 'swiper/modules';
@@ -28,7 +28,7 @@ function PostDetail({
   const supabase = createClient();
 
   // 유저 닉네임 가져오기
-  const fetchUsers = async () => {
+  const fetchUsers = useCallback(async () => {
     const { data, error } = await supabase
       .from('users')
       .select('email, id, nick_name, avatar, created_at')
@@ -40,10 +40,10 @@ function PostDetail({
     } else {
       setUserList(data ? [data] : []);
     }
-  };
+  }, [User, supabase]);
 
   // 유저 이미지 가져오기
-  const fetchUserImage = async () => {
+  const fetchUserImage = useCallback(async () => {
     const { data, error } = await supabase
       .from('posts')
       .select('*')
@@ -57,10 +57,10 @@ function PostDetail({
     } else {
       setUserImages([]);
     }
-  };
+  }, [params.id, supabase]);
 
   // 유저 코멘트 가져오기
-  const fetchUserLocations = async () => {
+  const fetchUserLocations = useCallback(async () => {
     const { data, error } = await supabase
       .from('posts')
       .select('comment')
@@ -72,9 +72,10 @@ function PostDetail({
     } else {
       setUserComment(data.comment ? [data.comment] : []);
     }
-  };
+  }, [params.id, supabase]);
+
   // 유저 카테고리 가져오기
-  const fetchUserComment = async () => {
+  const fetchUserComment = useCallback(async () => {
     const { data, error } = await supabase
       .from('posts')
       .select('locations')
@@ -86,14 +87,14 @@ function PostDetail({
     } else {
       setUserLocations(
         data.locations
-          ? data.locations.split(',').map((location) => ` #${location}`)
+          ? data.locations.split(',').map((location: string) => ` #${location}`)
           : [],
       );
     }
-  };
+  }, [params.id, supabase]);
 
   //유저 좋아요 수 가져오기
-  const fetchUserLiked = async () => {
+  const fetchUserLiked = useCallback(async () => {
     const { data, error } = await supabase
       .from('posts')
       .select('like')
@@ -105,7 +106,7 @@ function PostDetail({
     } else {
       setUserLiked([data.like ?? 0]);
     }
-  };
+  }, [params.id, supabase]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -117,7 +118,13 @@ function PostDetail({
     };
 
     fetchData();
-  }, [params.id]);
+  }, [
+    fetchUsers,
+    fetchUserImage,
+    fetchUserComment,
+    fetchUserLocations,
+    fetchUserLiked,
+  ]);
 
   //공유 팝업 모달
   const clickModal = () => setModalOpen(!modalOpen);
