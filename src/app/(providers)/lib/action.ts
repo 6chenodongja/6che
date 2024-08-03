@@ -19,7 +19,7 @@ export const sendEmail = async (prevState: any, formData: FormData) => {
     await transporter.sendMail({
       from: process.env.GMAIL_USER, // 보내는 이메일
       to: `${email}`, // 받는 이메일
-      subject: `온코디: ${name}님 온코디에서 게시물 공유가 되었습니다!)`,
+      subject: `온코디: ${name}님 온코디에서 게시물 공유가 되었습니다!`,
       html: `<p>${subject}</p>`,
     });
   } catch (error) {

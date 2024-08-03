@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import { sendEmail } from '@/app/(providers)/lib/action';
 import { useFormState } from 'react-dom';
+import Link from 'next/link';
 
 const Form = () => {
   const [actionState, formAction] = useFormState(sendEmail, null);
@@ -28,7 +29,9 @@ const Form = () => {
           <label htmlFor="subject">보낼 내용: </label>
           <textarea placeholder="보낼 내용" id="subject" name="subject" />
         </div>
-        <button type="submit">전송</button>
+        <Link href={'/list'}>
+          <button type="submit">전송</button>
+        </Link>
       </div>
     </form>
   );

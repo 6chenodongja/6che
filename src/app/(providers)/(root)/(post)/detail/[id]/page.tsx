@@ -155,7 +155,7 @@ function PostDetail({
     <div>
       <div className="w-80 h-[747px] relative overflow-hidden bg-[#FAFAFA] max-w-sw mx-auto">
         <div>
-          <header>
+          <header className="mt-2 ml-3">
             <Link href={'/list'}>
               <Image width={20} height={20} src="/back.png" alt="뒤로가기" />
             </Link>
@@ -175,7 +175,7 @@ function PostDetail({
                   height={100}
                   className="w-[288px] h-[412px] object-cover rounded-xl m-4 "
                 />
-                <div className="absolute top-1 bg-white bg-opacity-50 p-1 m-1 text-sm rounded-lg font-bold">
+                <div className="absolute top-6 left-6 bg-white bg-opacity-50 p-1 m-1 text-sm rounded-lg font-bold">
                   ☀️ 26℃
                 </div>
               </SwiperSlide>
@@ -438,6 +438,9 @@ function PostDetail({
                       height={100}
                       className="h-[286px] object-cover rounded-lg"
                     />
+                    <div className="absolute top-2 left-2 bg-white bg-opacity-50 p-1 m-1 text-sm rounded-lg font-bold">
+                      ☀️ 26℃
+                    </div>
                   </SwiperSlide>
                 ))}
               </Swiper>
