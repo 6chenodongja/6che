@@ -1,12 +1,8 @@
-// "use client"
-// import React from 'react'
+'use client';
+import React from 'react';
 
-// function page() {
-//   return (
-//     <div>
+function MyPage() {
+  return <div>마이페이지 입니다</div>;
+}
 
-//     </div>
-//   )
-// }
-
-// export default page
+export default MyPage;

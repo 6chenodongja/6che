@@ -1,16 +1,17 @@
 'use client';
+'use client';
 
 import { createClient } from '@/supabase/client';
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
-import { Tables } from '../../../../../../types/supabase';
+import { Tables } from '../../../../../types/supabase';
 
 function PostList() {
   const [liked, setLiked] = useState<{ [key: string]: boolean }>({});
   const [post, setPost] = useState<Tables<'posts'>[]>([]);
-  const [users, setUsers] = useState<Tables<'users'>[]>([]);
 
+  const User = 'a184313d-fac7-4c5d-8ee3-89e367cfb86f';
   const User = 'a184313d-fac7-4c5d-8ee3-89e367cfb86f';
   const supabase = createClient();
 
