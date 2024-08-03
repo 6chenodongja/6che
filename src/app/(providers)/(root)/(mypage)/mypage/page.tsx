@@ -4,6 +4,9 @@ import React, { useState } from 'react';
 function MyPage() {
   //const [nickName, setNickName] = useState('');
   return (
+    // <>
+    //   <h1>마이페이지 홈페이지</h1>
+    // </>
     <div className="w-80 h-[1381px] relative overflow-hidden bg-neutral-50 m-auto">
       <div
         className="flex flex-col justify-start items-start w-72 absolute left-4 top-[68px] gap-3 drop-shadow-xl"
@@ -65,17 +68,16 @@ function MyPage() {
               </div>
             </div>
             <div className="flex justify-center items-center flex-grow-0 flex-shrink-0 relative overflow-hidden gap-1 px-3 py-1.5 rounded-lg bg-[#121212]">
-              <Link
-                href={'/mypage/profile'}
-                className="flex-grow-0 flex-shrink-0 text-xs text-left text-white"
-              >
-                수정
+              <Link href={'/profile'} passHref>
+                <button className="flex-grow-0 flex-shrink-0 text-xs text-left text-white">
+                  수정
+                </button>
               </Link>
             </div>
           </div>
           <div className="flex flex-col justify-start items-start self-stretch flex-grow-0 flex-shrink-0 gap-1">
             <Link
-              href={'/list'}
+              href={'/postLiked'}
               className="flex justify-between items-center self-stretch flex-grow-0 flex-shrink-0 relative overflow-hidden px-1.5 py-2.5 rounded-lg"
             >
               <p className="flex-grow-0 flex-shrink-0 text-sm text-left text-[#4d4d4d]">
@@ -99,25 +101,27 @@ function MyPage() {
               </svg>
             </Link>
             <div className="flex justify-between items-center self-stretch flex-grow-0 flex-shrink-0 relative overflow-hidden px-1.5 py-2.5 rounded-lg">
-              <p className="flex-grow-0 flex-shrink-0 text-sm text-left text-[#4d4d4d]">
-                내 스타일
-              </p>
-              <svg
-                width={18}
-                height={18}
-                viewBox="0 0 18 18"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                className="flex-grow-0 flex-shrink-0 w-[18px] h-[18px] relative"
-                preserveAspectRatio="xMidYMid meet"
-              >
-                <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                  d="M7.19526 4.52876C7.45561 4.26841 7.87772 4.26841 8.13807 4.52876L12.1381 8.52876C12.3984 8.78911 12.3984 9.21122 12.1381 9.47157L8.13807 13.4716C7.87772 13.7319 7.45561 13.7319 7.19526 13.4716C6.93491 13.2112 6.93491 12.7891 7.19526 12.5288L10.7239 9.00016L7.19526 5.47157C6.93491 5.21122 6.93491 4.78911 7.19526 4.52876Z"
-                  fill="#4D4D4D"
-                />
-              </svg>
+              <Link href={'/myStyles'}>
+                <p className="flex-grow-0 flex-shrink-0 text-sm text-left text-[#4d4d4d]">
+                  내 스타일
+                </p>
+                <svg
+                  width={18}
+                  height={18}
+                  viewBox="0 0 18 18"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="flex-grow-0 flex-shrink-0 w-[18px] h-[18px] relative"
+                  preserveAspectRatio="xMidYMid meet"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                    d="M7.19526 4.52876C7.45561 4.26841 7.87772 4.26841 8.13807 4.52876L12.1381 8.52876C12.3984 8.78911 12.3984 9.21122 12.1381 9.47157L8.13807 13.4716C7.87772 13.7319 7.45561 13.7319 7.19526 13.4716C6.93491 13.2112 6.93491 12.7891 7.19526 12.5288L10.7239 9.00016L7.19526 5.47157C6.93491 5.21122 6.93491 4.78911 7.19526 4.52876Z"
+                    fill="#4D4D4D"
+                  />
+                </svg>
+              </Link>
             </div>
           </div>
         </div>
