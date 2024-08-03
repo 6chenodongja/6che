@@ -1,8 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
-import { getWeather, getWeeklyWeather } from '../../../api/weather/route';
+import { useRouter } from 'next/navigation'; // next/router 대신 next/navigation 사용
 import '../../../../app/globals.css';
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -10,13 +9,32 @@ import 'swiper/css/pagination';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { LogoText } from '@/icons/LogoText';
-import { IconLogin } from '@/icons/IconLogin';
-import { IconLocation } from '@/icons/IconLocation';
-import { IconHeart } from '@/icons/IconHeart';
+import { LogoText } from '../../../../icons/LogoText';
+import { IconLogin } from '../../../../icons/IconLogin';
+import { IconLocation } from '../../../../icons/IconLocation';
 import { motion, AnimatePresence } from 'framer-motion';
 
-// 날짜와 요일을 포맷팅하는 함수 추가
+// 강수확률에 따른 이미지를 반환하는 함수
+const getPrecipitationImage = (probability: number) => {
+  const precipitationValue = Math.min(Math.floor(probability / 10) * 10, 100);
+  return `/images/Precipitation-probability/${precipitationValue}.svg`;
+};
+
+// 습도에 따른 이미지를 반환하는 함수
+const getHumidityImage = (humidity: number | null) => {
+  const range = humidity !== null ? Math.floor(humidity / 10) * 10 : 0;
+  return `/images/Humidity/${range}.svg`;
+};
+
+// 미세먼지 상태에 따른 이미지를 반환하는 함수
+const getAirQualityImage = (phrase: string) => {
+  const imageName = ['Excellent', 'Fair', 'Poor'].includes(phrase)
+    ? phrase
+    : 'Excellent';
+  return `/images/AirQuality/${imageName}.svg`;
+};
+
+// 날짜 포맷 함수
 const formatDate = (dateString: string): string => {
   const date = new Date(dateString);
   const dayNames = ['일', '월', '화', '수', '목', '금', '토'];
@@ -30,72 +48,6 @@ const convertFahrenheitToCelsius = (fahrenheit: number) => {
   return ((fahrenheit - 32) * 5) / 9;
 };
 
-// 강수확률에 따른 이미지를 반환하는 함수
-const getPrecipitationImage = (probability: number) => {
-  const precipitationValue = Math.min(Math.floor(probability / 10) * 10, 100);
-  return `/images/Precipitation-probability/${precipitationValue}.svg`;
-};
-
-// 미세먼지 상태에 따른 이미지를 반환하는 함수
-const getAirQualityImage = (phrase: string) => {
-  const imageName = ['Excellent', 'Fair', 'Poor'].includes(phrase)
-    ? phrase
-    : 'Excellent';
-  return `/images/AirQuality/${imageName}.svg`;
-};
-
-// 습도에 따른 이미지를 반환하는 함수 추가
-const getHumidityImage = (humidity: number | null) => {
-  const range = humidity !== null ? Math.floor(humidity / 10) * 10 : 0;
-  return `/images/Humidity/${range}.svg`;
-};
-
-// WeatherIcon에 따라 적절한 이미지 경로를 반환하는 함수 추가
-const getWeatherIconImage = (iconNumber: number) => {
-  const iconMap: { [key: number]: string } = {
-    1: '/images/Weather/sun.svg',
-    2: '/images/Weather/sun.svg',
-    3: '/images/Weather/sun.svg',
-    4: '/images/Weather/once_cloudy.svg',
-    5: '/images/Weather/thread_fog.svg',
-    6: '/images/Weather/thread_fog.svg',
-    7: '/images/Weather/blur.svg',
-    8: '/images/Weather/blur.svg',
-    11: '/images/Weather/fog.svg',
-    12: '/images/Weather/drizzling.svg',
-    13: '/images/Weather/drizzling.svg',
-    14: '/images/Weather/drizzling.svg',
-    41: '/images/Weather/drizzling.svg',
-    42: '/images/Weather/drizzling.svg',
-    15: '/images/Weather/thunderstorm.svg',
-    16: '/images/Weather/thunderstorm.svg',
-    17: '/images/Weather/thunderstorm.svg',
-    18: '/images/Weather/rain.svg',
-    19: '/images/Weather/snow.svg',
-    20: '/images/Weather/snow.svg',
-    21: '/images/Weather/snow.svg',
-    22: '/images/Weather/heavy_snow.svg',
-    23: '/images/Weather/heavy_snow.svg',
-    43: '/images/Weather/heavy_snow.svg',
-    44: '/images/Weather/heavy_snow.svg',
-    24: '/images/Weather/sleet.svg',
-    25: '/images/Weather/sleet.svg',
-    26: '/images/Weather/sleet.svg',
-    29: '/images/Weather/sleet.svg',
-    31: '/images/Weather/wind.svg',
-    32: '/images/Weather/wind.svg',
-    33: '/images/Weather/night.svg',
-    34: '/images/Weather/night.svg',
-    35: '/images/Weather/once_cloudy_night.svg',
-    36: '/images/Weather/once_cloudy_night.svg',
-    37: '/images/Weather/once_cloudy.svg',
-    38: '/images/Weather/once_cloudy.svg',
-    39: '/images/Weather/drizzling_night.svg',
-    40: '/images/Weather/drizzling_night.svg',
-  };
-  return iconMap[iconNumber] || '/images/Weather/default.svg';
-};
-
 const MainPage = () => {
   const [weather, setWeather] = useState<any>(null);
   const [difference, setDifference] = useState<number | null>(null);
@@ -103,7 +55,8 @@ const MainPage = () => {
   const [weeklyWeather, setWeeklyWeather] = useState<any[]>([]);
   const [extraWeatherInfo, setExtraWeatherInfo] = useState<any[]>([]);
   const [isWeeklyWeatherVisible, setIsWeeklyWeatherVisible] = useState(false);
-  const [isOpen, setIsOpen] = useState(false); // 상태 추가
+  const [isOpen, setIsOpen] = useState(false);
+
   const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -115,78 +68,68 @@ const MainPage = () => {
     router.push('/survey');
   };
 
-  // 날씨 데이터를 가져오는 useEffect
+  const fetchWeatherData = async () => {
+    try {
+      const response = await fetch('/api/weather?locationKey=226081');
+      const weatherData = await response.json();
+      setWeather(weatherData.current);
+      setDifference(
+        parseFloat(
+          (
+            weatherData.current.Temperature.Metric.Value -
+            weatherData.historical.Temperature.Metric.Value
+          ).toFixed(1),
+        ),
+      );
+      setHourlyWeather(weatherData.hourly || []);
+      setExtraWeatherInfo([
+        {
+          label: '강수확률',
+          value: `${weatherData.current.PrecipitationProbability || '0'}%`,
+          image: getPrecipitationImage(
+            weatherData.current.PrecipitationProbability || 0,
+          ),
+        },
+        {
+          label: '습도',
+          value: `${weatherData.current.RelativeHumidity || 'N/A'}%`,
+          image: getHumidityImage(weatherData.current.RelativeHumidity || null),
+        },
+        {
+          label: '미세먼지',
+          value: `${weatherData.airQuality?.Category || 'N/A'}`,
+          image: getAirQualityImage(
+            weatherData.airQuality?.Category || 'Unhealthy',
+          ),
+        },
+      ]);
+    } catch (error) {
+      console.error('Failed to fetch weather data', error);
+    }
+  };
+
+  const fetchWeeklyWeatherData = async () => {
+    try {
+      const response = await fetch(
+        '/api/weather?locationKey=226081&type=weekly',
+      );
+      const weeklyWeatherData = await response.json();
+      setWeeklyWeather(weeklyWeatherData);
+    } catch (error) {
+      console.error('Failed to fetch weekly weather data', error);
+    }
+  };
+
   useEffect(() => {
-    const fetchWeather = async () => {
-      try {
-        const weatherData = await getWeather('226081'); // 서울의 위치 키 예시
-
-        console.log('Weather Data:', weatherData);
-
-        if (weatherData.current && weatherData.historical) {
-          const currentTemp = weatherData.current?.Temperature?.Metric?.Value; // 현재 온도
-          const historicalTemp =
-            weatherData.historical?.Temperature?.Metric?.Value; // 어제 온도
-          setWeather(weatherData.current);
-          setDifference(parseFloat((currentTemp - historicalTemp).toFixed(1)));
-          setHourlyWeather(weatherData.hourly || []);
-          setExtraWeatherInfo([
-            {
-              label: '강수확률',
-              value: `${weatherData.current?.PrecipitationProbability || '0'}%`,
-              image: getPrecipitationImage(
-                parseFloat(
-                  weatherData.current?.PrecipitationProbability || '0',
-                ),
-              ),
-            },
-            {
-              label: '습도',
-              value: `${weatherData.current?.RelativeHumidity || 'N/A'}%`,
-              image: getHumidityImage(
-                weatherData.current?.RelativeHumidity || null,
-              ),
-            },
-            {
-              label: '미세먼지',
-              value: `${weatherData.airQuality?.Category || 'N/A'}`,
-              image: getAirQualityImage(
-                weatherData.airQuality?.Category || 'Unhealthy',
-              ),
-            },
-          ]);
-          console.log(
-            '오늘의 강수확률 (Probability of Precipitation):',
-            weatherData.current?.PrecipitationProbability !== undefined
-              ? `${weatherData.current.PrecipitationProbability}%`
-              : '데이터 없음',
-          );
-          console.log(
-            '강수확률 (Probability of Precipitation):',
-            weatherData.current?.PrecipitationProbability || '0%',
-          );
-          console.log('습도:', weatherData.current?.RelativeHumidity || 'N/A');
-          console.log('미세먼지:', weatherData.airQuality?.Category || 'N/A');
-        }
-      } catch (error) {
-        console.error('날씨 데이터 요청 오류:', error);
-      }
-    };
-
-    fetchWeather();
+    fetchWeatherData();
   }, []);
 
   const handleWeeklyWeatherClick = async () => {
     if (!isWeeklyWeatherVisible) {
-      try {
-        const weeklyWeatherData = await getWeeklyWeather('226081'); //서울 위치 키
-        setWeeklyWeather(weeklyWeatherData);
-      } catch (error) {
-        console.error('주간 날씨 데이터 요청 오류:', error);
-      }
+      await fetchWeeklyWeatherData();
     }
     setIsWeeklyWeatherVisible(!isWeeklyWeatherVisible);
-    setIsOpen(!isOpen); // 상태 반전
+    setIsOpen(!isOpen);
   };
 
   return (
@@ -199,7 +142,6 @@ const MainPage = () => {
         <IconLogin className="w-6 h-6" />
       </header>
 
-      {/* 네비게이션 바 메뉴 버튼 */}
       <nav className={`navbar ${isMenuOpen ? 'open' : ''}`}>
         <div className="navbar-close" onClick={handleMenuToggle}>
           &times;
@@ -393,7 +335,12 @@ const MainPage = () => {
                 강수확률
               </span>
               <Image
-                src={`/images/Precipitation-probability/${Math.min(Math.floor((parseFloat(extraWeatherInfo[0]?.value || '0%') / 10) * 10), 100)}.svg`}
+                src={`/images/Precipitation-probability/${Math.min(
+                  Math.floor(
+                    (parseFloat(extraWeatherInfo[0]?.value || '0%') / 10) * 10,
+                  ),
+                  100,
+                )}.svg`}
                 alt="강수확률"
                 className="w-5 h-8 mt-1"
                 width={20}

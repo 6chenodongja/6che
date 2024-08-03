@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
-import { sendEmail } from '@/app/(providers)/lib/action';
+import { sendEmail } from '../../../../../app/(providers)/lib/action';
 import { useFormState } from 'react-dom';
 
 const Form = () => {
