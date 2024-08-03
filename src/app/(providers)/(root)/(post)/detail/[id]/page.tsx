@@ -175,9 +175,9 @@ function PostDetail({
                   height={100}
                   className="w-[288px] h-[412px] object-cover rounded-xl m-4 "
                 />
-                 <div className="absolute top-1 bg-white bg-opacity-50 p-1 m-1 text-sm rounded-lg font-bold">
-          ☀️ 26℃
-        </div>
+                <div className="absolute top-1 bg-white bg-opacity-50 p-1 m-1 text-sm rounded-lg font-bold">
+                  ☀️ 26℃
+                </div>
               </SwiperSlide>
             ))}
           </Swiper>

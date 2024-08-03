@@ -10,9 +10,9 @@ const ScrollButtons = () => {
   };
 
   return (
-    <div className="fixed bottom-4 right-[630px] flex">
+    <div className="fixed bottom-[22px]">
       <button
-        className="p-2 rounded-full hover:animate-up bg-white"
+        className="flex justify-end items-end p-2 rounded-full hover:animate-up bg-white ml-[295px]"
         onClick={scrollToTop}
       >
         <Image width={20} height={20} src="/back.png" alt="스크롤 업" />

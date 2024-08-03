@@ -99,7 +99,6 @@ function PostList() {
 
   const debouncedHandleLike = _.debounce(handleLike, 500);
 
-
   const fetchUsers = async () => {
     const { data } = await supabase.from('users').select('*').eq('id', User);
 
@@ -166,9 +165,7 @@ function PostList() {
             ? p.locations
             : p.locations.split(',');
           filtered = filtered.filter((p) =>
-            selectedOptions[key].some((option) =>
-              locations.includes(option),
-            ),
+            selectedOptions[key].some((option) => locations.includes(option)),
           );
         }
       }
@@ -284,7 +281,7 @@ function PostList() {
                   priority
                 />
               )}
-              <div className="absolute top-4 bg-white bg-opacity-50 p-1 m-1 text-sm rounded-lg font-bold">
+              <div className="absolute top-0 left-0 bg-white bg-opacity-50 p-1 m-1 text-sm rounded-lg font-bold">
                 ☀️ 26℃
               </div>
             </Link>
