@@ -1,6 +1,7 @@
 'use client';
 
 import { createClient } from '@/supabase/client';
+import { useAuthStore } from '@/zustand/store/useTagStore';
 import axios from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -11,6 +12,7 @@ function LoginPage() {
   const passwordRef = useRef<HTMLInputElement>(null);
   const supabase = createClient();
   const router = useRouter();
+  const setIsLoggedIn = useAuthStore((state) => state.setIsLoggedIn);
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -25,11 +27,31 @@ function LoginPage() {
       email,
       password,
     });
+
     console.log(res);
 
     alert('로그인 성공');
 
     router.replace('/');
+  };
+
+  const handleSocialLogin = async (provider: 'google' | 'kakao') => {
+    try {
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider,
+        options: {
+          redirectTo: `${process.env.NEXT_PUBLIC_BASE_URL}/auth/callback`,
+        },
+      });
+      if (error) throw error;
+
+      if (data) {
+        setIsLoggedIn(true);
+        window.location.href = data.url;
+      }
+    } catch (error) {
+      console.error(`ERROR ${provider.toUpperCase()}`, error.message);
+    }
   };
 
   return (
@@ -92,8 +114,20 @@ function LoginPage() {
             <div className="flex-grow h-px bg-[#d9d9d9]" />
           </div>
           <div className="flex flex-col gap-2">
-            <button className="">구글</button>
-            <button className="">카카오톡</button>
+            <button
+              type="button"
+              onClick={() => handleSocialLogin('google')}
+              className=""
+            >
+              구글
+            </button>
+            <button
+              type="button"
+              onClick={() => handleSocialLogin('kakao')}
+              className=""
+            >
+              카카오톡
+            </button>
           </div>
           <div className="">
             <input

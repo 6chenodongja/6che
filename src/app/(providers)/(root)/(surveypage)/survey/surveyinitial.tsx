@@ -3,9 +3,9 @@
 import React, { useState } from 'react';
 import QuestionPage from './question';
 import Image from 'next/image';
-import top from '@/assets/top.png';
-import middle from '@/assets/middle.png';
-import under from '@/assets/under.png';
+import top from '../../../../../assets/top.png';
+import middle from '../../../../../assets/middle.png';
+import under from '../../../../../assets/under.png';
 
 const SurveyLayout: React.FC = () => {
   const [showQuestionPage, setShowQuestionPage] = useState(false);

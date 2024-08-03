@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
-function SingUpPage() {
+function SignUpPage() {
   const [nickname, setNickname] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -16,12 +16,10 @@ function SingUpPage() {
     password: '',
     passwordConfirm: '',
   });
-  const regexPw =
-    /^[a-z0-9#?!@$%^&*-](?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-])[a-z0-9#?!@$%^&*-]{1,10}$/;
-
   const supabase = createClient();
   const router = useRouter();
 
+  // 닉네임 같은 경우 띄어쓰기, 공백, 최대 10글자 이하만 가능하게
   const onChangeNickname = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNickname(e.target.value);
     if (e.target.value.length > 10) {
@@ -35,161 +33,159 @@ function SingUpPage() {
         nickname: '',
       });
     }
-  };
 
-  const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
-  };
+    const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
+      setEmail(e.target.value);
+    };
 
-  const onChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value);
-    if (e.target.value.length < 8) {
-      setError({
-        ...error,
-        password: '비밀번호는 최소 8자 이상입니다.',
-      });
-    } else {
-      setError({
-        ...error,
-        password: '',
-      });
-    }
-  };
+    // 비밀번호
+    // 8글자 이상, 특수문자, 영어 대문자만 가능하게
+    const onChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
+      setPassword(e.target.value);
+      if (e.target.value.length < 8) {
+        setError({
+          ...error,
+          password: '비밀번호는 최소 8자 이상입니다.',
+        });
+      } else {
+        setError({
+          ...error,
+          password: '',
+        });
+      }
+    };
 
-  const onChangePasswordConfirm = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPasswordConfirm(e.target.value);
-    if (e.target.value.length < 8) {
-      setError({
-        ...error,
-        passwordConfirm: '비밀번호는 최소 8자 이상입니다.',
-      });
-    } else {
-      setError({
-        ...error,
-        passwordConfirm: '',
-      });
-    }
-  };
+    // 비밀번호 확인
+    // 8글자 이상, 특수문자, 영어 대문자만 가능하게
+    const onChangePasswordConfirm = (
+      e: React.ChangeEvent<HTMLInputElement>,
+    ) => {
+      setPasswordConfirm(e.target.value);
+      if (e.target.value.length < 8) {
+        setError({
+          ...error,
+          passwordConfirm: '비밀번호는 최소 8자 이상입니다.',
+        });
+      } else {
+        setError({
+          ...error,
+          passwordConfirm: '',
+        });
+      }
+    };
 
-  // 새로고침 안 하게 하는 로직
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (email === '' || password === '' || passwordConfirm === '') {
-      alert('모든 항목을 입력 해 주세요.');
-      return;
-    }
+    // 새로고침 안 하게 하는 로직
+    const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      if (email === '' || password === '' || passwordConfirm === '') {
+        alert('모든 항목을 입력 해 주세요.');
+        return;
+      }
 
-    if (password !== passwordConfirm) {
-      alert('비밀번호와 비밀번호 확인이 일치하지 않습니다.');
-      return;
-    }
+      if (password !== passwordConfirm) {
+        alert('비밀번호와 비밀번호 확인이 일치하지 않습니다.');
+        return;
+      }
 
-    // supabase 연결
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: {
-          nickname,
+      // supabase 연결
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            first_name: nickname, // Change this line
+          },
         },
-      },
-    });
+      });
 
-    if (error) {
-      return alert(error.message);
-    }
-    // 확인용 알럿입니다. (추후에 페이지로 회원가입 완료 되었다 라고 보이게 변경 될 것 같습니다.)
-    alert('회원가입이 완료 됐습니다.');
+      if (error) {
+        return alert(error.message);
+      }
+      // 확인용 알럿입니다. (추후에 페이지로 회원가입 완료 되었다 라고 보이게 변경 될 것 같습니다.)
+      alert('회원가입이 완료 됐습니다.');
 
-    // 프로필 선택 완료 페이지로 이동
-    router.replace('/signUpDone');
-  };
+      // 프로필 선택 완료 페이지로 이동
+      router.replace('/signUpDone');
+    };
 
-  return (
-    <main className="w-[1600px] h-[1407px] relative overflow-hidden bg-white m-auto">
-      <form onSubmit={onSubmit}>
-        <h1 className="absolute left-4 top-36 text-2xl font-bold text-center text-black">
-          회원가입
-        </h1>
-        <div className="flex flex-col justify-start items-start w-72 absolute left-4 top-72 pb-3">
-          <label className="self-stretch flex-grow-0 flex-shrink-0 w-72 text-lg text-left text-black">
-            닉네임
-          </label>
-          <input
-            type="text"
-            onChange={onChangeNickname}
-            value={nickname}
-            placeholder="닉네임을 입력해 주세요"
-            className="self-stretch flex-grow-0 flex-shrink-0 h-[42px] opacity-50 rounded-lg bg-[#d9d9d9]"
-          />
-        </div>
-        {error.nickname && <p className="text-red-500">{error.nickname}</p>}
-        <div className="flex flex-col justify-start items-start w-72 absolute left-4 top-[369px] pb-3">
-          <label className="self-stretch flex-grow-0 flex-shrink-0 w-72 text-lg text-left text-black">
-            이메일
-          </label>
-          <div className="flex gap-2 h-[42px]">
+    return (
+      <main className="w-[1600px] h-[1407px] relative overflow-hidden bg-white m-auto">
+        <form onSubmit={onSubmit}>
+          <h1 className="absolute left-4 top-36 text-2xl font-bold text-center text-black">
+            회원가입
+          </h1>
+          <div className="flex flex-col justify-start items-start w-72 absolute left-4 top-72 pb-3">
+            <label className="self-stretch flex-grow-0 flex-shrink-0 w-72 text-lg text-left text-black">
+              닉네임
+            </label>
             <input
               type="text"
-              onChange={onChangeEmail}
-              value={email}
-              placeholder="아이디"
-              className="opacity-40 rounded-lg bg-[#d9d9d9]"
+              onChange={onChangeNickname}
+              value={nickname}
+              placeholder="닉네임을 입력해 주세요"
+              className="self-stretch flex-grow-0 flex-shrink-0 h-[42px] opacity-50 rounded-lg bg-[#d9d9d9]"
             />
-            {/* <input
-              type="text"
-              onChange={onChangeEmail}
-              value={email}
-              placeholder="이메일"
-              className="opacity-40 rounded-lg bg-[#d9d9d9]"
-            /> */}
           </div>
-        </div>
-        <div className="flex flex-col justify-start items-start w-72 absolute left-4 top-[450px] pb-3">
-          <label className="self-stretch flex-grow-0 flex-shrink-0 w-72 text-lg text-left text-black">
-            비밀번호
-          </label>
-          <input
-            type="password"
-            onChange={onChangePassword}
-            value={password}
-            placeholder="비밀번호"
-            className="self-stretch flex-grow-0 flex-shrink-0 h-[42px] opacity-50 rounded-lg bg-[#d9d9d9]"
-          />
-        </div>
-        {error.passwordConfirm && (
-          <p className="text-red-500">{error.passwordConfirm}</p>
-        )}
-        <div className="flex flex-col justify-start items-start w-72 absolute left-4 top-[531px] pb-3">
-          <label className="self-stretch flex-grow-0 flex-shrink-0 w-72 text-lg text-left text-black">
-            비밀번호 확인
-          </label>
-          <input
-            type="password"
-            value={passwordConfirm}
-            onChange={onChangePasswordConfirm}
-            placeholder="비밀번호 확인"
-            className="self-stretch flex-grow-0 flex-shrink-0 h-[42px] opacity-50 rounded-lg bg-[#d9d9d9]"
-          />
-        </div>
-        {error.passwordConfirm && (
-          <p className="text-red-500">{error.passwordConfirm}</p>
-        )}
-        <div className="w-72 h-[46px] absolute left-[15px] top-[679px] rounded-lg bg-[#d9d9d9]" />
-        <button className="absolute left-[126px] top-[689px] text-lg font-medium text-left text-black ">
-          회원가입
-        </button>
-        {/* 아래 코드는 지울 예정입니다. */}
-        <div className="w-72 h-[46px] absolute left-[14px] top-[740px] rounded-lg bg-[#d9d9d9]" />
-        <Link
-          href={'/login'}
-          className="absolute left-[100px] top-[750px] text-lg font-medium text-left text-black "
-        >
-          로그인하러 가기
-        </Link>
-      </form>
-    </main>
-  );
+          {error.nickname && <p className="text-red-500">{error.nickname}</p>}
+          <div className="flex flex-col justify-start items-start w-72 absolute left-4 top-[369px] pb-3">
+            <label className="self-stretch flex-grow-0 flex-shrink-0 w-72 text-lg text-left text-black">
+              이메일
+            </label>
+            <div className="flex gap-2 h-[42px]">
+              <input
+                type="text"
+                onChange={onChangeEmail}
+                value={email}
+                placeholder="아이디"
+                className="opacity-40 rounded-lg bg-[#d9d9d9]"
+              />
+            </div>
+          </div>
+          <div className="flex flex-col justify-start items-start w-72 absolute left-4 top-[450px] pb-3">
+            <label className="self-stretch flex-grow-0 flex-shrink-0 w-72 text-lg text-left text-black">
+              비밀번호
+            </label>
+            <input
+              type="password"
+              onChange={onChangePassword}
+              value={password}
+              placeholder="비밀번호"
+              className="self-stretch flex-grow-0 flex-shrink-0 h-[42px] opacity-50 rounded-lg bg-[#d9d9d9]"
+            />
+          </div>
+          {error.passwordConfirm && (
+            <p className="text-red-500">{error.passwordConfirm}</p>
+          )}
+          <div className="flex flex-col justify-start items-start w-72 absolute left-4 top-[531px] pb-3">
+            <label className="self-stretch flex-grow-0 flex-shrink-0 w-72 text-lg text-left text-black">
+              비밀번호 확인
+            </label>
+            <input
+              type="password"
+              value={passwordConfirm}
+              onChange={onChangePasswordConfirm}
+              placeholder="비밀번호 확인"
+              className="self-stretch flex-grow-0 flex-shrink-0 h-[42px] opacity-50 rounded-lg bg-[#d9d9d9]"
+            />
+          </div>
+          {error.passwordConfirm && (
+            <p className="text-red-500">{error.passwordConfirm}</p>
+          )}
+          <div className="w-72 h-[46px] absolute left-[15px] top-[679px] rounded-lg bg-[#d9d9d9]" />
+          <button className="absolute left-[126px] top-[689px] text-lg font-medium text-left text-black ">
+            회원가입
+          </button>
+          <div className="w-72 h-[46px] absolute left-[14px] top-[740px] rounded-lg bg-[#d9d9d9]" />
+          <Link
+            href={'/login'}
+            className="absolute left-[100px] top-[750px] text-lg font-medium text-left text-black "
+          >
+            로그인하러 가기
+          </Link>
+        </form>
+      </main>
+    );
+  };
 }
 
-export default SingUpPage;
+export default SignUpPage;

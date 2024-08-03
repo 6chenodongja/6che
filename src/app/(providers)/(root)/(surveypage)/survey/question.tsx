@@ -5,11 +5,11 @@ import { questions, optionTags } from '@/utils/questions';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { Modak } from 'next/font/google';
-import springImage from '@/assets/spring.jpg';
-import summerImage from '@/assets/summer.jpg';
-import autumnImage from '@/assets/autumn.jpg';
-import winterImage from '@/assets/winter.jpg';
-import leftbutton from '@/assets/arrow_Left.png';
+import springImage from '../../../../../assets/spring.jpg';
+import summerImage from '../../../../../assets/summer.jpg';
+import autumnImage from '../../../../../assets/autumn.jpg';
+import winterImage from '../../../../../assets/winter.jpg';
+import leftbutton from '../../../../../assets/arrow_Left.png';
 import { useTagStore } from '@/zustand/store/useTagStore';
 
 const modak = Modak({ weight: '400', subsets: ['latin'] });
@@ -71,7 +71,6 @@ const QuestionPage: React.FC = () => {
       const newTags = [...new Set([...prevTags, ...optionTagArray])];
       return newTags;
     });
-    
   };
 
   const getOptionImage = (option: string) => {
@@ -335,7 +334,9 @@ const QuestionPage: React.FC = () => {
         ) : (
           <div
             className={`flex ${
-              currentQuestionIndex === 3 ? 'flex-wrap justify-between' : 'flex-col'
+              currentQuestionIndex === 3
+                ? 'flex-wrap justify-between'
+                : 'flex-col'
             } w-full gap-2`}
           >
             {questions[currentQuestionIndex].options.map((option, index) => (
