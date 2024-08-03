@@ -6,7 +6,7 @@ import React, {
   KeyboardEvent,
   useCallback,
 } from 'react';
-import { createClient } from '@/supabase/client';
+import { supabase } from '@/supabase/client';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Tables } from '../../../../../../types/supabase';
@@ -30,7 +30,6 @@ function PostList() {
   const [showSearchDropdown, setShowSearchDropdown] = useState<boolean>(false);
 
   const User = 'a184313d-fac7-4c5d-8ee3-89e367cfb86f';
-  const supabase = createClient();
 
   const handleLike = useCallback(
     async (postId: string, userId: string) => {
@@ -105,7 +104,7 @@ function PostList() {
         console.error(error);
       }
     },
-    [liked, supabase],
+    [liked],
   );
 
   const debouncedHandleLike = _.debounce(handleLike, 500);
@@ -116,11 +115,11 @@ function PostList() {
     if (data) {
       setUsers(data);
     }
-  }, [supabase, User]);
+  }, [User]);
 
   useEffect(() => {
     fetchUsers();
-  }, []);
+  }, [fetchUsers]);
 
   const getNickName = useCallback(
     (userId: string) => {
@@ -130,27 +129,24 @@ function PostList() {
     [users],
   );
 
-  const fetchPosts = useCallback(
-    async (order: string) => {
-      const orderColumn = order === 'latest' ? 'created_at' : 'like';
-      const { data, error } = await supabase
-        .from('posts')
-        .select('*')
-        .order(orderColumn, { ascending: false });
+  const fetchPosts = useCallback(async (order: string) => {
+    const orderColumn = order === 'latest' ? 'created_at' : 'like';
+    const { data, error } = await supabase
+      .from('posts')
+      .select('*')
+      .order(orderColumn, { ascending: false });
 
-      if (error) {
-        console.error(error);
-      } else {
-        setPosts(data);
-        setFilteredPosts(data);
-      }
-    },
-    [supabase],
-  );
+    if (error) {
+      console.error(error);
+    } else {
+      setPosts(data);
+      setFilteredPosts(data);
+    }
+  }, []);
 
   useEffect(() => {
     fetchPosts(latest);
-  }, [latest]);
+  }, [latest, fetchPosts]);
 
   const handleSortChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setLatest(e.target.value);
@@ -250,7 +246,7 @@ function PostList() {
 
   const handleSearch = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
-      setSearchTerm(searchInput); // Update the searchTerm only on Enter key press
+      setSearchTerm(searchInput);
       filterPosts();
       setShowSearchDropdown(false); // 드롭다운 닫기
     }
@@ -261,7 +257,7 @@ function PostList() {
   };
 
   const handleSearchInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setSearchInput(e.target.value); // Update the search input value
+    setSearchInput(e.target.value);
   };
 
   console.log(posts);
@@ -276,8 +272,8 @@ function PostList() {
           handleOptionClick={handleOptionClick}
           selectedTab={selectedTab}
           setSelectedTab={setSelectedTab}
-          searchTerm={searchInput} // Pass the search input value
-          setSearchTerm={handleSearchInputChange} // Pass the input change handler
+          searchTerm={searchInput}
+          setSearchTerm={handleSearchInputChange}
           handleSearch={handleSearch}
           showSearchDropdown={showSearchDropdown}
           handleSearchClick={handleSearchClick}
