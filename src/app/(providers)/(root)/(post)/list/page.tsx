@@ -120,7 +120,7 @@ function PostList() {
 
   useEffect(() => {
     fetchUsers();
-  }, [fetchUsers]);
+  }, []);
 
   const getNickName = useCallback(
     (userId: string) => {
@@ -150,7 +150,7 @@ function PostList() {
 
   useEffect(() => {
     fetchPosts(latest);
-  }, [latest, fetchPosts]);
+  }, [latest]);
 
   const handleSortChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setLatest(e.target.value);
