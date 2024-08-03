@@ -3,13 +3,16 @@
 import { useEffect } from 'react';
 import { sendEmail } from '@/app/(providers)/lib/action';
 import { useFormState } from 'react-dom';
+import { useRouter } from 'next/navigation';
 
 const Form = () => {
   const [actionState, formAction] = useFormState(sendEmail, null);
+  const router = useRouter();
 
   useEffect(() => {
     if (actionState !== null) {
       alert('메일이 발송되었습니다');
+      router.push('/list');
     }
   }, [actionState]);
 

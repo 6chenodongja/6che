@@ -78,12 +78,14 @@ const WeatherDropdown = ({
           onChange={handleWeatherIconChange}
           renderOption={(props, option) => (
             <li {...props} className="flex items-center gap-1 pl-3 mb-3">
-              <Image
-                src={option.src}
-                alt={option.label}
-                width={20}
-                height={20}
-              />
+              {option.src && (
+                <Image
+                  src={option.src}
+                  alt={option.label}
+                  width={20}
+                  height={20}
+                />
+              )}
               <span className="ml-2">{option.label}</span>
             </li>
           )}
@@ -106,7 +108,7 @@ const WeatherDropdown = ({
           onChange={handleTemperatureChange}
           renderOption={(props, option) => (
             <li {...props} className="flex items-center gap-1 pl-3 mb-3">
-              {option.value === '/location.svg' ? (
+              {option.value === '/location.svg' && option.src ? (
                 <>
                   <Image
                     src={option.src}

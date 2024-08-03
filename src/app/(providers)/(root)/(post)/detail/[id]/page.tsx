@@ -2,7 +2,6 @@
 import { createClient } from '@/supabase/client';
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { Tables } from '../../../../../../../types/supabase';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from 'swiper/modules';
 import 'swiper/css';
@@ -10,6 +9,8 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import Link from 'next/link';
 import 'swiper/swiper-bundle.css';
+import { useUserStore } from '@/zustand/store/useUserStore';
+import { Tables } from '../../../../../../../types/supabase';
 
 function PostDetail({
   params,
@@ -23,7 +24,7 @@ function PostDetail({
   const [userLiked, setUserLiked] = useState<number[]>([]);
   const [modalOpen, setModalOpen] = useState<boolean>(false);
 
-  const User = 'a184313d-fac7-4c5d-8ee3-89e367cfb86f';
+  const User = useUserStore();
   const supabase = createClient();
 
   // 유저 닉네임 가져오기
@@ -37,7 +38,7 @@ function PostDetail({
     if (error) {
       console.error(error);
     } else {
-      setUserList(data.nick_name ? [data] : []);
+      setUserList(data ? [data] : []);
     }
   };
 
@@ -151,14 +152,55 @@ function PostDetail({
     });
   };
 
+  //유저 게시물 삭제
+  const deletePost = async () => {
+    try {
+      await supabase
+        .from('posts')
+        .delete()
+        .eq('id', params.id)
+        .eq('user_id', User);
+    } catch {
+      alert('게시물이 삭제되었습니다.');
+    }
+  };
+  console.log(userList);
+
   return (
     <div>
       <div className="w-80 h-[747px] relative overflow-hidden bg-[#FAFAFA] max-w-sw mx-auto">
         <div>
-          <header className="mt-2 ml-3">
-            <Link href={'/list'}>
-              <Image width={20} height={20} src="/back.png" alt="뒤로가기" />
+          <header className="mt-2 ml-3 flex">
+            <Link
+              href={'/list'}
+              className="w-[42px] flex justify-center items-center"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="34"
+                height="34"
+                viewBox="0 0 34 34"
+                fill="none"
+              >
+                <path
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                  d="M20.8351 7.49831C21.3884 8.05155 21.3884 8.94853 20.8351 9.50178L13.3369 17L20.8351 24.4983C21.3884 25.0515 21.3884 25.9485 20.8351 26.5018C20.2819 27.055 19.3849 27.055 18.8317 26.5018L10.3317 18.0018C9.77844 17.4485 9.77844 16.5515 10.3317 15.9983L18.8317 7.49831C19.3849 6.94506 20.2819 6.94506 20.8351 7.49831Z"
+                  fill="#121212"
+                />
+              </svg>
             </Link>
+            <div className="flex flex-row ml-auto gap-1">
+              <button
+                onClick={deletePost}
+                className="flex justify-center items-center bg-[#FF4732]/85 text-white rounded-xl px-[10px] py-[8px]"
+              >
+                삭제
+              </button>
+              <button className="flex  justify-center items-center bg-[#121212] text-white mr-4 rounded-xl px-[10px] py-[8px]">
+                수정
+              </button>
+            </div>
           </header>
           <Swiper
             slidesPerView={1}

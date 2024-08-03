@@ -428,3 +428,11 @@
 .middle-backdrop-filter {
   backdrop-filter: blur(5px);
 }
+
+/* detail header 부분 */
+.deleteButton {
+  padding: var(--sds-size-space-200) var(--Blur-10, 10px);
+}
+.editButton {
+  padding: var(--sds-size-space-200) var(--Blur-10, 10px);
+}

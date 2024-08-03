@@ -9,11 +9,12 @@ import React, {
 import { supabase } from '@/supabase/client';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Tables } from '../../../../../../types/supabase';
 import ListHeader from './_components/ListHeader';
 import ListSelects from './_components/ListSelect';
 import ScrollButtons from './_components/ScrollButtons';
 import _ from 'lodash';
+import { useUserStore } from '@/zustand/store/useUserStore';
+import { Tables } from '../../../../../../types/supabase';
 
 function PostList() {
   const [liked, setLiked] = useState<{ [key: string]: boolean }>({});
@@ -29,7 +30,7 @@ function PostList() {
   const [searchInput, setSearchInput] = useState<string>('');
   const [showSearchDropdown, setShowSearchDropdown] = useState<boolean>(false);
 
-  const User = 'a184313d-fac7-4c5d-8ee3-89e367cfb86f';
+  const User = useUserStore();
 
   const handleLike = useCallback(
     async (postId: string, userId: string) => {
@@ -260,7 +261,7 @@ function PostList() {
     setSearchInput(e.target.value);
   };
 
-  console.log(posts);
+  console.log(User);
 
   return (
     <div className="max-w-sm mx-auto h-auto">

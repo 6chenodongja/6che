@@ -25,7 +25,7 @@ function LoginPage() {
       email,
       password,
     });
-    console.log(res);
+    console.log(res.data.id);
 
     alert('로그인 성공');
 
