@@ -14,7 +14,7 @@ const Form = () => {
       alert('메일이 발송되었습니다');
       router.push('/list');
     }
-  }, [actionState]);
+  }, [actionState, router]);
 
   return (
     <form action={formAction}>
