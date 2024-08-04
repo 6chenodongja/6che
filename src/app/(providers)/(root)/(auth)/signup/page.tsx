@@ -77,7 +77,7 @@ const SignUpPage: React.FC = () => {
   };
 
   return (
-    <main className="w-full h-full flex flex-col items-center justify-center bg-white">
+    <main className="container h-full flex flex-col items-center justify-center bg-white">
       <form
         onSubmit={onSubmit}
         className="w-full max-w-sm mx-auto bg-white p-6 rounded-lg shadow-md"

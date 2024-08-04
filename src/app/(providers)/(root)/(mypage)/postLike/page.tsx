@@ -1,6 +1,6 @@
 function PostLike() {
   return (
-    <div className="w-80 h-[2125px] relative overflow-hidden bg-neutral-50 m-auto">
+    <div className="container h-[2125px] relative overflow-hidden bg-neutral-50 m-auto">
       <div className="flex flex-col justify-start items-start w-80 h-[595px] absolute left-0 top-[1530px] gap-3 px-6 pt-[60px] pb-20 bg-white">
         <div className="flex justify-start items-center flex-grow-0 flex-shrink-0 relative gap-2 pr-9 pt-5"></div>
         <div className="flex flex-col justify-start items-start flex-grow-0 flex-shrink-0 w-40 relative gap-2.5 py-4">

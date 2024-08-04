@@ -7,7 +7,7 @@ function MyPage() {
     // <>
     //   <h1>마이페이지 홈페이지</h1>
     // </>
-    <div className="w-80 h-[1381px] relative overflow-hidden bg-neutral-50 m-auto">
+    <div className="container h-[1381px] relative overflow-hidden bg-neutral-50 m-auto">
       <div
         className="flex flex-col justify-start items-start w-72 absolute left-4 top-[68px] gap-3 drop-shadow-xl"
         // style={{ filter: 'drop-shadow(0px 2px 10px rgba(0,0,0,0.05))' }}

@@ -7,32 +7,33 @@ import { createClient } from '@/supabase/client';
 
 const ProfileForm: React.FC = () => {
   const [nickname, setNickname] = useState('');
-  const [currentNickname, setCurrentNickname] = useState('닉네임');
+  const [currentNickname, setCurrentNickname] = useState('');
   const [profileIcon, setProfileIcon] = useState<string>('');
   const [nicknameAvailable, setNicknameAvailable] = useState(true);
   const supabase = createClient();
   const profileIcons = [
-    '/images/Weather/blur.svg',
-    '/images/Weather/downpour.svg',
-    '/images/Weather/drizzling.svg',
-    '/images/Weather/drizzling_night.svg',
-    '/images/Weather/fog.svg',
-    '/images/Weather/heavy_snow.svg',
-    '/images/Weather/night.svg',
-    '/images/Weather/once_cloudy.svg',
-    '/images/Weather/once_cloudy_night.svg',
-    '/images/Weather/rain.svg',
-    '/images/Weather/sleet.svg',
+    '/images/Weather/sun.svg', // 해 아이콘
+    '/images/Weather/night.svg', // 달 아이콘
+    '/images/Weather/once_cloudy.svg', // 구름해 아이콘
+    '/images/Weather/once_cloudy_night.svg', //
     '/images/Weather/snow.svg',
-    '/images/Weather/sun.svg',
+    '/images/Weather/drizzling.svg',
+    '/images/Weather/downpour.svg',
+    '/images/Weather/sleet.svg',
     '/images/Weather/sunrise.svg',
     '/images/Weather/sunset.svg',
-    '/images/Weather/thread_fog.svg',
+    '/images/Weather/blur.svg',
+    '/images/Weather/heavy_snow.svg',
     '/images/Weather/thunderstorm.svg',
     '/images/Weather/wind.svg',
+    '/images/Weather/thread_fog.svg',
+    '/images/Weather/drizzling_night.svg',
+    '/images/Weather/fog.svg',
+    '/images/Weather/rain.svg',
   ];
 
   const checkNicknameAvailability = async () => {
+    const supabase = createClient();
     const { data, error } = await supabase
       .from('users')
       .select('nick_name')
@@ -56,10 +57,10 @@ const ProfileForm: React.FC = () => {
   };
 
   return (
-    <main className="w-80 h-[633px] relative overflow-hidden bg-neutral-50 m-auto">
+    <main className="container h-[633px] relative overflow-hidden bg-neutral-50 m-auto">
       <div className="flex flex-col justify-start items-start w-72 absolute left-4 top-[82px] gap-1.5 py-1.5">
         <div className="flex justify-start items-center self-stretch flex-grow-0 flex-shrink-0 relative gap-2 pl-0.5">
-          <p className="flex-grow-0 flex-shrink-0 text-sm font-medium text-left text-[#4d4d4d]">
+          <p className="flex-grow-0 flex-shrink-0 text-sm font-medium text-left text-[#4d4d4d] ">
             닉네임
           </p>
         </div>
@@ -94,7 +95,7 @@ const ProfileForm: React.FC = () => {
             프로필
           </p>
         </div>
-        <div className="grid grid-cols-6 gap-2.5 w-72 h-56 relative pl-[19px] pr-[19px] pt-[16px] pb-[16px] rounded-2xl bg-white">
+        <div className="grid grid-cols-5 gap-2.5 w-72 h-56 relative pl-[19px] pr-[19px] pt-[16px] pb-[16px] rounded-2xl bg-white">
           {profileIcons.map((icon, index) => (
             <Image
               key={index}
@@ -102,7 +103,7 @@ const ProfileForm: React.FC = () => {
               alt={`profile-icon-${index}`}
               width={34}
               height={34}
-              className={`border rounded-sm ${profileIcon === icon ? 'border-blue-500' : ''}`}
+              className={`border-2 rounded-sm ${profileIcon === icon ? 'border-blue-500' : ''}`}
               onClick={() => handleProfileIconSelect(icon)}
             />
           ))}
@@ -118,14 +119,7 @@ const ProfileForm: React.FC = () => {
         <div className="flex justify-start items-start flex-grow-0 flex-shrink-0 w-10 h-10">
           <div className="flex justify-center items-center flex-grow-0 flex-shrink-0 relative overflow-hidden gap-2 p-2 rounded-[1000px]">
             <Link href={'/mypage'}>
-              <a>
-                <Image
-                  src="/images/icons/close.svg"
-                  alt="close"
-                  width={24}
-                  height={24}
-                />
-              </a>
+              <Image src="/x.svg" alt="close" width={24} height={24} />
             </Link>
           </div>
         </div>
