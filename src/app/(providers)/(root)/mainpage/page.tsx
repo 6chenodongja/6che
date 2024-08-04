@@ -14,6 +14,9 @@ import { IconLogin } from '../../../../icons/IconLogin';
 import { IconLocation } from '../../../../icons/IconLocation';
 import { motion, AnimatePresence } from 'framer-motion';
 
+import Header from '../../(components)/Header';
+import Footer from '../../(components)/Footer';
+
 // 강수확률에 따른 이미지를 반환하는 함수
 const getPrecipitationImage = (probability: number) => {
   const precipitationValue = Math.min(Math.floor(probability / 10) * 10, 100);
@@ -133,14 +136,8 @@ const MainPage = () => {
   };
 
   return (
-    <div className="bg-neutral-50 flex flex-col justify-center items-center w-full">
-      <header className="w-80 bg-white shadow-md py-4 flex justify-between items-center px-4">
-        <button onClick={handleMenuToggle}>
-          <Image src="/images/menu.png" alt="메뉴" width={24} height={24} />
-        </button>
-        <LogoText className="w-24 h-8" />
-        <IconLogin className="w-6 h-6" />
-      </header>
+    <div className="container bg-neutral-50 flex flex-col justify-center items-center w-full">
+      <Header />
 
       <nav className={`navbar ${isMenuOpen ? 'open' : ''}`}>
         <div className="navbar-close" onClick={handleMenuToggle}>
@@ -153,10 +150,14 @@ const MainPage = () => {
             </Link>
           </li>
           <li>
-            <Link href="/style">스타일</Link>
+            <Link href="/list" onClick={handleMenuToggle}>
+              스타일
+            </Link>
           </li>
           <li>
-            <Link href="/outfit">옷차림</Link>
+            <Link href="/list" onClick={handleMenuToggle}>
+              옷차림
+            </Link>
           </li>
           <li>
             <Link href="/survey">취향 코디</Link>
@@ -164,7 +165,7 @@ const MainPage = () => {
         </ul>
       </nav>
 
-      <main className="flex flex-col items-center w-80 bg-gradient-to-b from-blue-200 to-blue-400 text-white py-8 px-4">
+      <main className="flex flex-col items-center w-full bg-gradient-to-b from-blue-200 to-blue-400 text-white py-8 px-4">
         <div className="mt-[40px] flex items-center space-x-2 rounded-full bg-white bg-opacity-30 py-1 px-4 backdrop-blur-lg">
           <span className="text-black">서울시 동작구</span>
           <IconLocation className="w-4 h-4" />
@@ -183,7 +184,9 @@ const MainPage = () => {
             {difference !== null
               ? Math.abs(difference) <= 0.9
                 ? '어제 기온과 비슷해요'
-                : `어제 기온보다 ${Math.round(Math.abs(difference))}° ${difference > 0 ? '높아요' : '낮아요'}`
+                : `어제 기온보다 ${Math.round(Math.abs(difference))}° ${
+                    difference > 0 ? '높아요' : '낮아요'
+                  }`
               : '정보 없음'}
           </span>
         </div>
@@ -247,10 +250,10 @@ const MainPage = () => {
         </section>
 
         <section className="w-full mt-8">
-          <div className="w-[288px] h-[297px] px-3 pt-4 pb-5 bg-white/40 rounded-2xl shadow border border-white backdrop-blur-[20px] flex-col justify-start items-start gap-3.5 inline-flex">
+          <div className="w-full max-w-[320px] h-[297px] px-4 pt-4 pb-5 bg-white/40 rounded-2xl shadow border border-white backdrop-blur-[20px] flex-col justify-start items-start gap-3.5 inline-flex">
             <div className="self-stretch justify-between items-center inline-flex">
               <div className="h-[21px] px-2 justify-center items-center gap-2 flex">
-                <div className="text-center text-[#121212] text-base font-medium font-['Noto Sans KR'] leading-tight">
+                <div className=" section-box text-center text-[#121212] text-base font-medium font-['Noto Sans KR'] leading-tight">
                   추천 코디
                 </div>
               </div>
@@ -386,9 +389,9 @@ const MainPage = () => {
         </section>
 
         <section className="w-full mt-8">
-          <div className="w-72 h-[148px] px-2 pt-4 pb-5 bg-white/40 rounded-2xl shadow border border-white/50 backdrop-blur-[20px] flex-col justify-start items-start gap-2 inline-flex">
+          <div className="w-full max-w-[320px] h-[148px] px-4 pt-4 pb-5 bg-white/40 rounded-2xl shadow border border-white/50 backdrop-blur-[20px] flex-col justify-start items-start gap-2 inline-flex">
             <div className="px-2 justify-center items-center gap-2 inline-flex">
-              <div className="text-center text-[#1a1a1a] text-xs font-normal font-['Noto Sans KR'] leading-none">
+              <div className=" section-box text-center text-[#1a1a1a] text-xs font-normal font-['Noto Sans KR'] leading-none">
                 시간대별 날씨
               </div>
             </div>
@@ -620,112 +623,7 @@ const MainPage = () => {
           )}
         </AnimatePresence>
 
-        <footer className="w-full bg-white py-4 flex flex-col items-start mt-8">
-          <nav className="flex flex-col items-start space-y-2 mb-4">
-            <LogoText className="w-24 h-8 mb-4" />
-            <Link
-              href="/"
-              className="text-[#4d4d4d] text-sm font-medium leading-[21px] font-['Noto Sans KR']"
-            >
-              날씨
-            </Link>
-            <Link
-              href="/style"
-              className="text-[#4d4d4d] text-sm font-medium leading-[21px] font-['Noto Sans KR']"
-            >
-              스타일
-            </Link>
-            <Link
-              href="/outfit"
-              className="text-[#4d4d4d] text-sm font-medium leading-[21px] font-['Noto Sans KR']"
-            >
-              기온 별 옷차림
-            </Link>
-            <Link
-              href="/survey"
-              className="text-[#4d4d4d] text-sm font-medium leading-[21px] font-['Noto Sans KR']"
-            >
-              취향 코디
-            </Link>
-            <Link
-              href="/mypage"
-              className="text-[#4d4d4d] text-sm font-medium leading-[21px] font-['Noto Sans KR']"
-            >
-              마이페이지
-            </Link>
-            <Link
-              href="/liked"
-              className="text-[#4d4d4d] text-xs font-normal leading-none font-['Noto Sans KR']"
-            >
-              좋아요한 게시글
-            </Link>
-            <Link
-              href="/myposts"
-              className="text-[#4d4d4d] text-xs font-normal leading-none font-['Noto Sans KR']"
-            >
-              내가 쓴 게시글
-            </Link>
-            <Link
-              href="/settings"
-              className="text-[#4d4d4d] text-xs font-normal leading-none font-['Noto Sans KR']"
-            >
-              설정
-            </Link>
-          </nav>
-          <hr className="w-full border-t border-[#e6e6e6] mb-4" />{' '}
-          <div className="flex flex-col items-start text-gray-500">
-            <div
-              className="flex items-center mb-2 cursor-pointer"
-              onClick={() =>
-                window.open(
-                  'https://github.com/6chenodongja/6che/tree/main',
-                  '_blank',
-                )
-              }
-            >
-              <Image
-                src="/images/github.svg"
-                alt="GitHub"
-                width={24}
-                height={24}
-                className="mr-2"
-              />
-              <span className="text-base font-medium text-[#4d4d4d] leading-tight font-['Noto Sans KR']">
-                6체노동자
-              </span>
-            </div>
-            <p className="text-left flex flex-wrap">
-              <span className="text-sm font-normal text-[#4d4d4d] leading-[14px] font-['Noto Sans KR']">
-                개발:
-              </span>
-              <span className="ml-2 text-sm font-normal text-[#4d4d4d] leading-[14px] font-['Noto Sans KR']">
-                주현우
-              </span>
-              <span className="ml-2 text-sm font-normal text-[#4d4d4d] leading-[14px] font-['Noto Sans KR']">
-                전은겸
-              </span>
-              <span className="ml-2 text-sm font-normal text-[#4d4d4d] leading-[14px] font-['Noto Sans KR']">
-                김성구
-              </span>
-              <span className="ml-2 text-sm font-normal text-[#4d4d4d] leading-[14px] font-['Noto Sans KR']">
-                석재영
-              </span>
-              <span className="ml-2 text-sm font-normal text-[#4d4d4d] leading-[14px] font-['Noto Sans KR']">
-                한소영
-              </span>
-              <br />
-              <span className="text-sm font-normal text-[#4d4d4d] leading-[14px] font-['Noto Sans KR']">
-                디자인:
-              </span>
-              <span className="ml-2 text-sm font-normal text-[#4d4d4d] leading-[14px] font-['Noto Sans KR']">
-                김윤하
-              </span>
-            </p>
-            <p className="text-left mt-2 text-sm font-normal text-[#4d4d4d] leading-[14px] font-['Noto Sans KR']">
-              © 2024. 김윤하 all rights reserved.
-            </p>
-          </div>
-        </footer>
+        <Footer />
       </main>
     </div>
   );
