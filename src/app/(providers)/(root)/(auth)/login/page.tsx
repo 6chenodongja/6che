@@ -100,7 +100,6 @@ function LoginPage() {
               </button>
             </Link>
           </div>
-
           <div className="flex-grow-0 flex-shrink-0 text-sm text-left text-[#4d4d4d]">
             <Link href={''} className="">
               아이디/비밀번호 찾기
