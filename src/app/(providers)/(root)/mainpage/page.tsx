@@ -36,7 +36,7 @@ const getAirQualityImage = (phrase: string) => {
     : 'Excellent';
   return `/images/AirQuality/${imageName}.svg`;
 };
-//d
+// ddd
 // 날짜 포맷 함수
 const formatDate = (dateString: string): string => {
   const date = new Date(dateString);
