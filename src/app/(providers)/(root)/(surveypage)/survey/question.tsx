@@ -139,7 +139,7 @@ const QuestionPage: React.FC = () => {
 
   return (    
       <div className="flex-grow flex flex-col items-center justify-between w-full max-w-md mx-auto">
-        <div className="w-80 mx-auto flex flex-col items-center justify-start  p-4 relative gap-4" style={{ height: '667px' }} >
+        <div className="w-80 mx-auto flex flex-col items-center justify-start p-4 relative gap-4" style={{ height: '667px' }}>
           <div
             className="flex flex-col items-start absolute top-0 left-4"
             style={{ marginTop: '20px' }}
@@ -395,7 +395,7 @@ const QuestionPage: React.FC = () => {
             selectedFourthQuestionOptions.length > 0 && (
               <button
                 onClick={handleNextClick}
-                className="w-72 h-[46px] bg-[#77ee87] text-white rounded-lg mt-4"
+                className="w-72 h-[46px] bg-[#5EB0FFCC] text-white rounded-lg mt-4"
               >
                 다음 질문
               </button>
