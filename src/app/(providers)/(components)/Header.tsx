@@ -20,7 +20,9 @@ const Header = () => {
       <button onClick={handleMenuToggle}>
         <Image src="/images/menu.png" alt="메뉴" width={24} height={24} />
       </button>
-      <LogoText className="w-24 h-8" />
+      <Link href="/">
+        <LogoText className="w-24 h-8" />
+      </Link>
       <Link href="/login">
         <IconLogin className="w-6 h-6" />
       </Link>
