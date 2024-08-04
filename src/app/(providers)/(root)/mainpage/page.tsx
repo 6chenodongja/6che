@@ -135,6 +135,25 @@ const MainPage = () => {
     setIsOpen(!isOpen);
   };
 
+  const getBackgroundByTime = (hours: number) => {
+    if (hours >= 7 && hours < 9) {
+      return 'linear-gradient(180deg, rgba(41,140,255,1) 0%, rgba(95,163,243,0.6) 34%, rgba(255,149,24,0.3) 69%, rgba(255,205,30,0.1) 100%)';
+    } else if (hours >= 9 && hours < 13) {
+      return 'linear-gradient(180deg, rgba(41,140,255,0.8) 0%, rgba(95,163,243,0.5) 34%, rgba(156,190,229,0.2) 69%, rgba(255,255,255,0) 100%)';
+    } else if (hours >= 13 && hours < 16) {
+      return 'linear-gradient(180deg, rgba(41,140,255,1) 0%, rgba(81,158,248,0.7) 34%, rgba(95,163,243,0.3) 69%, rgba(95,163,243,0) 100%)';
+    } else if (hours >= 16 && hours < 18) {
+      return 'linear-gradient(180deg, rgba(41,140,255,1) 0%, rgba(81,108,248,0.6) 34%, rgba(255,149,24,0.3) 69%, rgba(255,205,30,0.1) 100%)';
+    } else if (hours >= 18 && hours < 20) {
+      return 'linear-gradient(180deg, rgba(7,39,122,1) 0%, rgba(20,80,183,0.6) 47%, rgba(183,25,34,0.3) 87%, rgba(255,178,30,0.1) 100%)';
+    } else {
+      return 'linear-gradient(180deg, rgba(17,25,47,1) 0%, rgba(26,35,66,0.6) 60%, rgba(34,45,92,0) 100%)';
+    }
+  };
+
+  const currentHours = new Date().getHours();
+  const backgroundStyle = { background: getBackgroundByTime(currentHours) };
+
   return (
     <div className="container bg-neutral-50 flex flex-col justify-center items-center w-full">
       <Header />
@@ -165,7 +184,10 @@ const MainPage = () => {
         </ul>
       </nav>
 
-      <main className="flex flex-col items-center w-full bg-gradient-to-b from-blue-200 to-blue-400 text-white py-8 px-4">
+      <main
+        className="container flex flex-col items-center w-full text-white py-8 px-4"
+        style={backgroundStyle}
+      >
         <div className="mt-[40px] flex items-center space-x-2 rounded-full bg-white bg-opacity-30 py-1 px-4 backdrop-blur-lg">
           <span className="text-black">서울시 동작구</span>
           <IconLocation className="w-4 h-4" />
@@ -523,7 +545,7 @@ const MainPage = () => {
             <div className="w-4 h-4 relative flex-col justify-start items-start flex">
               <svg
                 className={`w-4 h-4 transform transition-transform duration-300 ${
-                  isOpen ? 'rotate-180' : 'rotate-0'
+                  isOpen ? 'rotate-[180deg]' : 'rotate-[-360deg]'
                 }`}
                 fill="none"
                 stroke="currentColor"
@@ -622,9 +644,8 @@ const MainPage = () => {
             </motion.section>
           )}
         </AnimatePresence>
-
-        <Footer />
       </main>
+      <Footer />
     </div>
   );
 };
