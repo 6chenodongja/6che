@@ -165,10 +165,6 @@ const ThermometerStyle: React.FC = () => {
       ? defaultImages
       : getOutfitsForTemperature(temperatureRanges[temperatureIndex].display);
 
-  // const handleSurveyPage = () => {
-  //   router.push('/survey');
-  // };
-
   const noLabelImages = [
     '/images/Thermometer/default-blue.png',
     '/images/Thermometer/default-yellow.png',
@@ -219,7 +215,7 @@ const ThermometerStyle: React.FC = () => {
           <div className="flex justify-between w-full">
             {currentOutfitIndex > 0 && (
               <button
-                className="absolute left-[-35px] top-[150px] transform -translate-y-1/2"
+                className="absolute left-[-25px] top-[150px] transform -translate-y-1/2"
                 onClick={handlePrev}
               >
                 <Image
@@ -233,7 +229,7 @@ const ThermometerStyle: React.FC = () => {
             )}
             {currentOutfitIndex + 4 < currentOutfits.length && (
               <button
-                className="absolute right-[-35px] top-[150px] transform -translate-y-1/2"
+                className="absolute right-[-25px] top-[150px] transform -translate-y-1/2"
                 onClick={handleNext}
               >
                 <Image
