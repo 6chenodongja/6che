@@ -283,12 +283,12 @@ function PostList() {
         />
       </div>
 
-      <div className="flex justify-start items-center">
+      <div className="flex justify-start items-center gap-[6px] ml-4">
         {Object.entries(selectedOptions).map(([key, options]) =>
           options.map((option) => (
             <div
               key={`${key}-${option}`}
-              className="mr-2 mb-2 px-2 py-1 bg-black text-white rounded"
+              className=" mb-4 px-[10px] pt-[4px] pb-[6px] bg-black text-white rounded"
             >
               {option}
             </div>
