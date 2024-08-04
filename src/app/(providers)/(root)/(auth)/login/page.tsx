@@ -5,12 +5,14 @@ import axios from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useRef } from 'react';
+import { useUserStore } from '@/zustand/store/useUserStore';
 
 function LoginPage() {
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const supabase = createClient();
   const router = useRouter();
+  const setUser = useUserStore((state) => state.setUser);
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -25,7 +27,17 @@ function LoginPage() {
       email,
       password,
     });
-    console.log(res);
+    if (res.status == 200) {
+      setUser({
+        nickname: res.data.nickname,
+        email: res.data.email,
+        id: res.data.id,
+      });
+      console.log('email =>', res.data);
+      console.log('id =>', res.data);
+      console.log(res.data.nickname);
+      // nickname 언디파인드
+    }
 
     alert('로그인 성공');
 
