@@ -4,6 +4,6 @@ export type ExtendedPostInsert =
   Database["public"]["Tables"]["posts"]["Insert"] & {
     gender?: string;
     style?: string;
-    seasons?: string[];
-    locations?: string[];
+    seasons?: string;
+    locations?: string;
   };
