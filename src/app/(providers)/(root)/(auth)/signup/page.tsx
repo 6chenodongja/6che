@@ -85,7 +85,6 @@ const SignUpPage: React.FC = () => {
         <h1 className="text-2xl font-bold text-center text-black mb-6">
           회원가입
         </h1>
-
         <div className="mb-4">
           <label className="block text-lg text-black mb-2">닉네임</label>
           <div className="flex">
@@ -116,7 +115,6 @@ const SignUpPage: React.FC = () => {
             <p className="text-gray-500 mt-2">최대 10글자</p>
           )}
         </div>
-
         <div className="mb-4">
           <label className="block text-lg text-black mb-2">이메일</label>
           <div className="flex">
@@ -159,7 +157,6 @@ const SignUpPage: React.FC = () => {
           </div>
           {error.email && <p className="text-red-500 mt-2">{error.email}</p>}
         </div>
-
         <div className="mb-4">
           <label className="block text-lg text-black mb-2">비밀번호</label>
           <input
@@ -173,7 +170,6 @@ const SignUpPage: React.FC = () => {
             <p className="text-red-500 mt-2">{error.password}</p>
           )}
         </div>
-
         <div className="mb-4">
           <label className="block text-lg text-black mb-2">비밀번호 확인</label>
           <input
@@ -187,7 +183,6 @@ const SignUpPage: React.FC = () => {
             <p className="text-red-500 mt-2">{error.passwordConfirm}</p>
           )}
         </div>
-
         <div className="flex items-center mb-4">
           <input
             type="checkbox"
@@ -200,7 +195,6 @@ const SignUpPage: React.FC = () => {
             [필수] 만 14세 이상입니다.
           </label>
         </div>
-
         <button
           type="submit"
           className={`w-full h-10 rounded-lg text-white ${isFormValid ? 'bg-black' : 'bg-gray-200'}`}
@@ -208,7 +202,6 @@ const SignUpPage: React.FC = () => {
         >
           회원가입
         </button>
-
         <div className="mt-4 text-center">
           <Link href={'/login'} className="text-black">
             로그인하러 가기

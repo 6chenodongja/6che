@@ -77,7 +77,7 @@ function MyPage() {
           </div>
           <div className="flex flex-col justify-start items-start self-stretch flex-grow-0 flex-shrink-0 gap-1">
             <Link
-              href={'/postLiked'}
+              href={'/postLike'}
               className="flex justify-between items-center self-stretch flex-grow-0 flex-shrink-0 relative overflow-hidden px-1.5 py-2.5 rounded-lg"
             >
               <p className="flex-grow-0 flex-shrink-0 text-sm text-left text-[#4d4d4d]">
@@ -101,7 +101,7 @@ function MyPage() {
               </svg>
             </Link>
             <div className="flex justify-between items-center self-stretch flex-grow-0 flex-shrink-0 relative overflow-hidden px-1.5 py-2.5 rounded-lg">
-              <Link href={'/myStyles'}>
+              <Link href={'/myStyle'}>
                 <p className="flex-grow-0 flex-shrink-0 text-sm text-left text-[#4d4d4d]">
                   내 스타일
                 </p>
