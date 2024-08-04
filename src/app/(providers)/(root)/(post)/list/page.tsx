@@ -15,6 +15,8 @@ import ScrollButtons from './_components/ScrollButtons';
 import _ from 'lodash';
 import { useUserStore } from '@/zustand/store/useUserStore';
 import { Tables } from '../../../../../../types/supabase';
+import Header from 'app/(providers)/(components)/Header';
+import Footer from 'app/(providers)/(components)/Footer';
 
 function PostList() {
   const [liked, setLiked] = useState<{ [key: string]: boolean }>({});
@@ -263,7 +265,8 @@ function PostList() {
   console.log(User);
 
   return (
-    <div className="max-w-sm mx-auto h-auto bg-[#FAFAFA]">
+    <div className="container mx-auto h-auto bg-[#FAFAFA]">
+      <Header />
       <ListHeader />
       <div className="mt-6">
         <ListSelects
@@ -293,22 +296,25 @@ function PostList() {
         )}
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-2 gap-y-2 gap-x-2 w-[288px] mx-auto">
         {filteredPosts.map((post) => (
-          <div key={post.id} className="relative">
-            <Link href={`/detail/${post.id}`}>
+          <div key={post.id} className="relative w-[140px] object-cover">
+            <Link
+              href={`/detail/${post.id}`}
+              className="w-[140px] h-[200px] block"
+            >
               {post.image_url && (
                 <Image
                   src={post.image_url.split(',')[0]}
                   alt="alt"
-                  width={200}
+                  width={100}
                   height={100}
-                  className="w-[140px] h-[200px] object-cover rounded-lg ml-5"
+                  className="w-[140px] h-[200px] object-cover rounded-lg"
                   priority
                 />
               )}
-              <div className="absolute top-2 left-7 icon-box p-[4px] text-[#4D4D4D] flex flex-row justify-center items-center gap-2">
-                <div className="icon">
+              <div className="absolute top-2 left-2 icon-box p-[4px] text-[#4D4D4D] flex flex-row justify-center items-center gap-2">
+                <div className="list-icon">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="15"
@@ -453,7 +459,7 @@ function PostList() {
 
             {/* 좋아요 부분 */}
             <div
-              className={`absolute bottom-6 right-4  bg-opacity-50 p-1 m-1 text-sm rounded-lg cursor-pointer  ${
+              className={`absolute bottom-6 right-0  bg-opacity-50 p-1 m-1 text-sm rounded-lg cursor-pointer  ${
                 liked[post.id] ? 'text-red-500' : ''
               }`}
               onClick={() => debouncedHandleLike(post.id, post.user_id)}
@@ -511,7 +517,7 @@ function PostList() {
                   viewBox="0 0 24 24"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
-                  className="w-10 h-6 relative"
+                  className="w-6 h-6 relative"
                   preserveAspectRatio="xMidYMid meet"
                 >
                   <g filter="url(#filter0_b_2350_1040)">
@@ -554,9 +560,9 @@ function PostList() {
             </div>
             <div className="mt-2">
               <div className="text-sm">
-                <span className="flex justify-start">
+                <span className="flex justify-between">
                   {/* 날짜이모지와 닉네임  */}
-                  <span className="font-bold text-[14px] flex flex-row ml-4 gap-[4px]">
+                  <span className="font-bold text-[14px] flex flex-row gap-[4px]">
                     <div className="w-[20px] h-[20px] p-[1px] flex justify-center items-center icon">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -630,7 +636,7 @@ function PostList() {
                     </div>
                     {getNickName(post.user_id)}
                   </span>
-                  <span className="flex flex-row text-[12px] ml-[30px] justify-center items-center">
+                  <span className="flex flex-row text-[12px]  justify-center items-center">
                     <svg
                       width={16}
                       height={17}
@@ -687,6 +693,7 @@ function PostList() {
         ))}
         <ScrollButtons />
       </div>
+      <Footer />
     </div>
   );
 }

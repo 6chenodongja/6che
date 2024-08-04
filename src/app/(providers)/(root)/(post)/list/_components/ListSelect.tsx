@@ -42,9 +42,9 @@ function ListSelects({
 
   return (
     <div className="relative z-10">
-      <div className="w-full h-[50px] relative">
+      <div className="w-[320px] h-[50px] relative pt-[8px] pb-[9px] px-[14px]">
         <div className="flex justify-center items-start w-[75px] absolute left-3.5 top-2">
-          <div className="flex justify-center items-center flex-grow-0 flex-shrink-0 relative overflow-hidden px-1 py-1.5 rounded-lg ml-2">
+          <div className="flex justify-center items-center flex-grow-0 flex-shrink-0 relative overflow-hidden px-1 py-1.5 rounded-lg]">
             <p className="flex-grow-0 flex-shrink-0 text-sm text-left text-[#121212]">
               <select onChange={handleSortChange} className="bg-[#FAFAFA]">
                 <option value="latest">최신순</option>
@@ -53,7 +53,7 @@ function ListSelects({
             </p>
           </div>
         </div>
-        <div className="flex justify-start items-center absolute left-[300px] top-[9px]">
+        <div className="flex justify-start items-center absolute left-[250px] top-[9px]">
           <div className="flex justify-start items-start flex-grow-0 flex-shrink-0 w-8 h-8">
             <button
               className="flex justify-center items-center flex-grow-0 flex-shrink-0 relative overflow-hidden gap-2 p-1 rounded-[1000px]"

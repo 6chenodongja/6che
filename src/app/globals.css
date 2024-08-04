@@ -387,7 +387,7 @@
 }
 /* listPage 스타일 */
 
-.icon {
+.list-icon {
   border-radius: 4px;
   background: var(--Bg_icon, rgba(255, 255, 255, 0.6));
   padding: 2.667px 2px 3.733px 2px;
@@ -462,4 +462,15 @@
 }
 .editButton {
   padding: var(--sds-size-space-200) var(--Blur-10, 10px);
+}
+.detail-icon {
+  border-radius: 8px;
+  background: #fff;
+  backdrop-filter: blur(10px);
+  width: 28px;
+  height: 28px;
+  padding: 2px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
