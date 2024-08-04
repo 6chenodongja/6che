@@ -1,17 +1,17 @@
 'use client';
 
-import { createClient } from '@/supabase/client';
+import { createClient } from '@/supabase/client'; //////
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useRef } from 'react';
-import { useAuthStore } from '@/zustand/store/useTagStore';
+import { useUserStore } from '@/zustand/store/useUserStore';
 
 function LoginPage() {
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const supabase = createClient();
   const router = useRouter();
-  const setIsLoggedIn = useAuthStore((state) => state.setIsLoggedIn);
+  const setIsLoggedIn = useUserStore((state) => state.setIsLoggedIn);
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
