@@ -232,9 +232,9 @@ const PostFormPage = () => {
     }`;
 
   return (
-    <div className="max-w-sm mx-auto h-auto m-10">
-      <div className="flex flex-col w-full sm:w-96 p-5   relative">
-        <div className="flex justify-between items-center mb-4 pb-2 shadow-sm -mx-5 px-5">
+    <div className="w-full flex justify-center py-10">
+      <div className="flex flex-col w-full max-w-md p-5 bg-white shadow-lg rounded-lg">
+        <div className="flex justify-between items-center mb-4 pb-2 border-b">
           <h2 className="text-xl font-bold">스타일 등록</h2>
           <button
             type="button"
