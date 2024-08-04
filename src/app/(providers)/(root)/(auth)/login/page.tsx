@@ -2,6 +2,9 @@
 
 import { createClient } from '@/supabase/client';
 import { useAuthStore } from '@/zustand/store/useTagStore';
+import { useUserStore } from '@/zustand/store/useUserStore';
+import Footer from 'app/(providers)/(components)/Footer';
+import Header from 'app/(providers)/(components)/Header';
 import axios from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -12,7 +15,7 @@ function LoginPage() {
   const passwordRef = useRef<HTMLInputElement>(null);
   const supabase = createClient();
   const router = useRouter();
-  const setIsLoggedIn = useAuthStore((state) => state.setIsLoggedIn);
+  const setIsLoggedIn = useUserStore((state) => state.setIsLoggedIn);
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -56,8 +59,9 @@ function LoginPage() {
 
   return (
     <main className="flex flex-row justify-center w-full">
-      <div className="bg-[#FAFAFA] w-80 h-[1443px] ">
+      <div className="bg-[#FAFAFA] w-80 h-auto ">
         <form onSubmit={onSubmit} className="w-full h-full justify-center">
+          <Header />
           <h1 className="mt-[119px] text-[24px] font-bold text-center text-[#121212]">
             로그인
           </h1>
@@ -138,6 +142,7 @@ function LoginPage() {
               로그인 유지
             </label>
           </div>
+          <Footer />
         </form>
       </div>
     </main>

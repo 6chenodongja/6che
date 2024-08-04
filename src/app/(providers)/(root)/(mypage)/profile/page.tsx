@@ -1,5 +1,5 @@
-import ProfileForm from '@/components/ProfileForm/ProfileForm';
 import React from 'react';
+import ProfileForm from './_components/ProfileForm';
 
 const Profile: React.FC = () => {
   return <ProfileForm />;

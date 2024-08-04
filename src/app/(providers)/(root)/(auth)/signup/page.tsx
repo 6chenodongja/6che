@@ -6,6 +6,8 @@ import { useRouter } from 'next/navigation';
 import React from 'react';
 import { useSignUpForm } from '@/utils/useSignUpForm';
 import { emailDomains } from '@/utils/emailDomains';
+import Footer from 'app/(providers)/(components)/Footer';
+import Header from 'app/(providers)/(components)/Header';
 
 const SignUpPage: React.FC = () => {
   const {
@@ -82,6 +84,7 @@ const SignUpPage: React.FC = () => {
         onSubmit={onSubmit}
         className="w-full max-w-sm mx-auto bg-white p-6 rounded-lg shadow-md"
       >
+        <Header />
         <h1 className="text-2xl font-bold text-center text-black mb-6">
           회원가입
         </h1>
@@ -207,6 +210,7 @@ const SignUpPage: React.FC = () => {
             로그인하러 가기
           </Link>
         </div>
+        <Footer />
       </form>
     </main>
   );

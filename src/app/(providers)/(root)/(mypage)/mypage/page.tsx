@@ -1,17 +1,13 @@
+import Header from 'app/(providers)/(components)/Header';
 import Link from 'next/link';
 import React, { useState } from 'react';
 
 function MyPage() {
   //const [nickName, setNickName] = useState('');
   return (
-    // <>
-    //   <h1>마이페이지 홈페이지</h1>
-    // </>
     <div className="container h-[1381px] relative overflow-hidden bg-neutral-50 m-auto">
-      <div
-        className="flex flex-col justify-start items-start w-72 absolute left-4 top-[68px] gap-3 drop-shadow-xl"
-        // style={{ filter: 'drop-shadow(0px 2px 10px rgba(0,0,0,0.05))' }}
-      >
+      <Header />
+      <div className="flex flex-col justify-start items-start w-72 absolute left-4 top-[68px] gap-3 drop-shadow-xl">
         <div className="flex flex-col justify-start items-start self-stretch flex-grow-0 flex-shrink-0 gap-3 px-4 py-5 rounded-[14px] bg-white">
           <div className="flex justify-between items-center self-stretch flex-grow-0 flex-shrink-0 pb-1.5">
             <div className="flex justify-start items-center flex-grow-0 flex-shrink-0 w-[108px] relative gap-2">
