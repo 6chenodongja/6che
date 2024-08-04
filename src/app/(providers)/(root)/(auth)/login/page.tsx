@@ -58,8 +58,8 @@ function LoginPage() {
   };
 
   return (
-    <main className="flex flex-row justify-center w-full">
-      <div className="bg-[#FAFAFA] w-80 h-auto ">
+    <main className="flex flex-row justify-center container">
+      <div className="bg-[#FAFAFA] w-full h-auto ">
         <form onSubmit={onSubmit} className="w-full h-full justify-center">
           <Header />
           <h1 className="mt-[119px] text-[24px] font-bold text-center text-[#121212]">

@@ -12,24 +12,24 @@ const ProfileForm: React.FC = () => {
   const [nicknameAvailable, setNicknameAvailable] = useState(true);
 
   const profileIcons = [
-    '/images/Weather/blur.svg',
-    '/images/Weather/downpour.svg',
-    '/images/Weather/drizzling.svg',
-    '/images/Weather/drizzling_night.svg',
-    '/images/Weather/fog.svg',
-    '/images/Weather/heavy_snow.svg',
-    '/images/Weather/night.svg',
-    '/images/Weather/once_cloudy.svg',
-    '/images/Weather/once_cloudy_night.svg',
-    '/images/Weather/rain.svg',
-    '/images/Weather/sleet.svg',
-    '/images/Weather/snow.svg',
-    '/images/Weather/sun.svg',
-    '/images/Weather/sunrise.svg',
-    '/images/Weather/sunset.svg',
-    '/images/Weather/thread_fog.svg',
-    '/images/Weather/thunderstorm.svg',
-    '/images/Weather/wind.svg',
+    '/images/Weather/sun.svg', // 1
+    '/images/Weather/night.svg', // 2
+    '/images/Weather/once_cloudy.svg', // 3
+    '/images/Weather/once_cloudy_night.svg', // 4
+    '/images/Weather/snow.svg', // 5
+    '/images/Weather/drizzling.svg', // 6
+    '/images/Weather/downpour.svg', // 7
+    '/images/Weather/sleet.svg', // 8
+    '/images/Weather/sunrise.svg', // 9
+    '/images/Weather/sunset.svg', // 10
+    '/images/Weather/blur.svg', // 11
+    '/images/Weather/heavy_snow.svg', // 12
+    '/images/Weather/thunderstorm.svg', // 13
+    '/images/Weather/wind.svg', // 14
+    '/images/Weather/thread_fog.svg', // 15
+    '/images/Weather/drizzling_night.svg', // 16
+    '/images/Weather/fog.svg', // 17
+    '/images/Weather/rain.svg', // 18
   ];
 
   const checkNicknameAvailability = async () => {
@@ -95,7 +95,7 @@ const ProfileForm: React.FC = () => {
             프로필
           </p>
         </div>
-        <div className="grid grid-cols-6 gap-2.5 w-72 h-56 relative pl-[19px] pr-[19px] pt-[16px] pb-[16px] rounded-2xl bg-white">
+        <div className="grid grid-cols-5 gap-2.5 w-72 h-56 relative pl-[19px] pr-[19px] pt-[16px] pb-[16px] rounded-2xl bg-white">
           {profileIcons.map((icon, index) => (
             <Image
               key={index}
@@ -103,7 +103,7 @@ const ProfileForm: React.FC = () => {
               alt={`profile-icon-${index}`}
               width={34}
               height={34}
-              className={`border rounded-sm ${profileIcon === icon ? 'border-blue-500' : ''}`}
+              className={`border-2 rounded-md ${profileIcon === icon ? 'border-blue-200' : ''}`}
               onClick={() => handleProfileIconSelect(icon)}
             />
           ))}
@@ -113,7 +113,7 @@ const ProfileForm: React.FC = () => {
         </button>
       </div>
       <div className="flex justify-between items-center w-80 h-14 absolute left-0 top-0 px-4 py-1.5 bg-white/50 border border-white/60 backdrop-blur-[10px]">
-        <p className="flex-grow-0 flex-shrink-0 text-base font-medium text-left text-black">
+        <p className="flex-grow-0 flex-shrink-0 text-base font-black text-left text-black">
           닉네임 / 프로필 수정
         </p>
         <div className="flex justify-start items-start flex-grow-0 flex-shrink-0 w-10 h-10">
