@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import React, {
   useState,
   useRef,
@@ -221,9 +222,11 @@ const ThermometerStyle: React.FC = () => {
         </div>
       </div>
       <div className="w-full px-4 mb-8">
-        <button className="w-full px-4 py-2 mb-4 font-medium bg-black text-white rounded">
-          온도에 맞는 스타일 보러가기
-        </button>
+        <Link href="/list">
+          <button className="w-full px-4 py-2 mb-4 font-medium bg-black text-white rounded">
+            온도에 맞는 스타일 보러가기
+          </button>
+        </Link>
         <button
           className="w-full px-4 py-2 border border-black bg-white rounded"
           onClick={handleSurveyPage}
