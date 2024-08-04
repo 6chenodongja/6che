@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import React, {
   useState,
   useRef,
@@ -21,32 +22,77 @@ interface TemperatureRange {
 }
 
 const outfits: OutfitImages = {
-  '28°C 이상': ['/민소매.png', '/반팔티.png', '/반바지.png', '/짧은치마.png'],
-  '23°C - 27°C': [
-    '/반팔티.png',
-    '/얇은 셔츠.png',
-    '/반바지.png',
-    '/면바지.png',
+  '28°C 이상': [
+    '/images/Weather2/T-sleeveless.png',
+    '/images/Weather2/ss-t-shirt.png',
+    '/images/Weather2/linen.png',
+    '/images/Weather2/short-skirt.png',
+    '/images/Weather2/shorts.png',
   ],
-  '20°C - 22°C': ['/블라우스.png', '/긴팔티.png', '/면바지.png', '/슬랙스.png'],
-  '17°C - 19°C': ['/가디건.png', '/맨투맨.png', '/후드.png', '/긴바지.png'],
-  '12°C - 16°C': ['/블라우스.png', '/긴팔티.png', '/면바지.png', '/슬랙스.png'],
-  '9°C - 11°C': ['/블라우스.png', '/긴팔티.png', '/면바지.png', '/슬랙스.png'],
-  '4°C - 8°C': ['/블라우스.png', '/긴팔티.png', '/면바지.png', '/슬랙스.png'],
-  '4°C 이하': ['/블라우스.png', '/긴팔티.png', '/면바지.png', '/슬랙스.png'],
+  '23°C - 27°C': [
+    '/images/Weather2/ss-t-shirt.png',
+    '/images/Weather2/thin-shirt.png',
+    '/images/Weather2/shorts.png',
+    '/images/Weather2/cotton-pants.png',
+  ],
+  '20°C - 22°C': [
+    '/images/Weather2/blouse.png',
+    '/images/Weather2/long sleeve.png',
+    '/images/Weather2/cotton-pants.png',
+    '/images/Weather2/slacks.png',
+  ],
+  '17°C - 19°C': [
+    '/images/Weather2/Cardigan.png',
+    '/images/Weather2/neat.png',
+    '/images/Weather2/sweatshirt.png',
+    '/images/Weather2/hood.png',
+    '/images/Weather2/long-pants.png',
+  ],
+  '12°C - 16°C': [
+    '/images/Weather2/jacket.png',
+    '/images/Weather2/Cardigan.png',
+    '/images/Weather2/denim-jacket.png',
+    '/images/Weather2/neat.png',
+    '/images/Weather2/jeans.png',
+  ],
+  '9°C - 11°C': [
+    '/images/Weather2/trench-coat.png',
+    '/images/Weather2/field-jacket.png',
+    '/images/Weather2/jumper.png',
+    '/images/Weather2/brushed-pants.png',
+    // '/images/Weather2/스타킹.png', 아이콘 미완성
+  ],
+  '5°C - 8°C': [
+    '/images/Weather2/wool-coat.png',
+    '/images/Weather2/heattech.png',
+    '/images/Weather2/leather-jacket.png',
+    // '/images/Weather2/기모.png', 아이콘 미완성
+  ],
+  '4°C 이하': [
+    '/images/Weather2/neat.png',
+    '/images/Weather2/neat.png',
+    '/images/Weather2/neat.png',
+    '/images/Weather2/neat.png',
+    // 아이콘 미완성
+    // '/images/Weather2/패딩.png',
+    // '/images/Weather2/두꺼운 코트.png',
+    // '/images/Weather2/누빔 옷.png',
+    // '/images/Weather2/기모.png',
+    // '/images/Weather2/목도리.png',
+  ],
 };
 
 const defaultImages: string[] = [
-  '/default-b.png',
-  '/default-y.png',
-  '/default-y.png',
-  '/default-b.png',
+  '/images/Thermometer/default-blue.png',
+  '/images/Thermometer/default-yellow.png',
+  '/images/Thermometer/default-yellow.png',
+  '/images/Thermometer/default-blue.png',
 ];
 
 const temperatureRanges: TemperatureRange[] = [
   { min: -Infinity, label: 'coldest', display: '4°C 이하' },
   { min: -Infinity, label: 'coldest', display: '4°C 이하' },
-  { min: 4, label: 'coldest', display: '4°C - 8°C' },
+  { min: 4, label: 'coldest', display: '5°C - 8°C' },
   { min: 9, label: 'cold', display: '9°C - 11°C' },
   { min: 12, label: 'chilly', display: '12°C - 16°C' },
   { min: 17, label: 'cool', display: '17°C - 19°C' },
@@ -60,6 +106,7 @@ const ThermometerStyle: React.FC = () => {
   const [temperatureIndex, setTemperatureIndex] = useState<number>(
     Math.floor(temperatureRanges.length / 2),
   );
+  const [currentOutfitIndex, setCurrentOutfitIndex] = useState<number>(0);
   const sliderRef = useRef<HTMLDivElement | null>(null);
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [initialView, setInitialView] = useState<boolean>(true);
@@ -69,6 +116,7 @@ const ThermometerStyle: React.FC = () => {
     if (newIndex >= 0 && newIndex < temperatureRanges.length) {
       setTemperatureIndex(newIndex);
       setInitialView(false);
+      setCurrentOutfitIndex(0); // 온도가 변경될 때마다 초기화
     }
   };
 
@@ -117,13 +165,9 @@ const ThermometerStyle: React.FC = () => {
       ? defaultImages
       : getOutfitsForTemperature(temperatureRanges[temperatureIndex].display);
 
-  const handleSurveyPage = () => {
-    router.push('/survey');
-  };
-
   const noLabelImages = [
-    '/default-blue.png',
-    '/default-yellow.png',
+    '/images/Thermometer/default-blue.png',
+    '/images/Thermometer/default-yellow.png',
     '/민소매.png',
     '/반팔티.png',
     '/반바지.png',
@@ -133,34 +177,74 @@ const ThermometerStyle: React.FC = () => {
     '/블라우스.png',
     '/긴팔티.png',
     '/슬랙스.png',
+    '/Weather2/린넨옷.png',
   ];
+
+  const handleNext = () => {
+    setCurrentOutfitIndex((prevIndex) => prevIndex + 4);
+  };
+
+  const handlePrev = () => {
+    setCurrentOutfitIndex((prevIndex) => prevIndex - 4);
+  };
 
   return (
     <div className="w-full max-w-md mx-auto flex flex-col items-center justify-center min-h-screen bg-[#f5f5f5]">
       <div className="flex flex-col items-center mt-4 mb-8">
         <h1 className="text-2xl font-bold mb-4">기온 별 옷차림</h1>
         <div className="relative">
-          <div className="grid grid-cols-2 mb-6" style={{ gap: '0.1667rem' }}>
-            {currentOutfits.map((src: string, index: number) => (
-              <div key={index} className="relative">
-                {!initialView && !noLabelImages.includes(src) && (
-                  <span className="text-sm text-center mb-2"></span>
-                )}
+          <div className="grid grid-cols-2 mb-6 gap-2">
+            {currentOutfits
+              .slice(currentOutfitIndex, currentOutfitIndex + 4)
+              .map((src: string, index: number) => (
+                <div key={index} className="relative">
+                  {!initialView && !noLabelImages.includes(src) && (
+                    <span className="text-sm text-center mb-2"></span>
+                  )}
+                  <Image
+                    src={src}
+                    alt={`Outfit ${index + 1}`}
+                    width={106}
+                    height={118}
+                    style={{ width: 'auto', height: 'auto' }}
+                    priority
+                  />
+                </div>
+              ))}
+          </div>
+          <div className="flex justify-between w-full">
+            {currentOutfitIndex > 0 && (
+              <button
+                className="absolute left-[-25px] top-[150px] transform -translate-y-1/2"
+                onClick={handlePrev}
+              >
                 <Image
-                  src={src}
-                  alt={`Outfit ${index + 1}`}
-                  width={198}
-                  height={225}
-                  style={{ width: 'auto', height: 'auto' }}
-                  priority
+                  src="/images/Thermometer/skip(512h-png).png"
+                  alt="Prev"
+                  width={32}
+                  height={32}
+                  className="transform rotate-180"
                 />
-              </div>
-            ))}
+              </button>
+            )}
+            {currentOutfitIndex + 4 < currentOutfits.length && (
+              <button
+                className="absolute right-[-25px] top-[150px] transform -translate-y-1/2"
+                onClick={handleNext}
+              >
+                <Image
+                  src="/images/Thermometer/skip(512h-png).png"
+                  alt="Next"
+                  width={32}
+                  height={32}
+                />
+              </button>
+            )}
           </div>
         </div>
         <div className="relative mb-4">
           <Image
-            src="/temperature-box.svg"
+            src="/images/Thermometer/temperature-box.svg"
             alt="Temperature Box"
             width={258}
             height={94.5}
@@ -186,7 +270,7 @@ const ThermometerStyle: React.FC = () => {
           onTouchStart={handleMouseDown}
         >
           <Image
-            src="/Thermometer.png"
+            src="/images/Thermometer/Thermometer.png"
             alt="Thermometer Bar"
             width={411}
             height={63}
@@ -221,15 +305,16 @@ const ThermometerStyle: React.FC = () => {
         </div>
       </div>
       <div className="w-full px-4 mb-8">
-        <button className="w-full px-4 py-2 mb-4 font-medium bg-black text-white rounded">
-          온도에 맞는 스타일 보러가기
-        </button>
-        <button
-          className="w-full px-4 py-2 border border-black bg-white rounded"
-          onClick={handleSurveyPage}
-        >
-          취향 코디 추천받기
-        </button>
+        <Link href="/list">
+          <button className="w-full px-4 py-2 mb-4 text-base bg-black text-white rounded-lg">
+            온도에 맞는 스타일 보러가기
+          </button>
+        </Link>
+        <Link href="/survey">
+          <button className="w-full px-4 py-2 border-2 border-black bg-white rounded-lg text-base">
+            취향 코디 추천받기
+          </button>
+        </Link>
       </div>
     </div>
   );
