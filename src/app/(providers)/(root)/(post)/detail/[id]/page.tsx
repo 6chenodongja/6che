@@ -23,22 +23,23 @@ function PostDetail({
   const [userLocations, setUserLocations] = useState<string[]>([]);
   const [userLiked, setUserLiked] = useState<number[]>([]);
   const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [userNickName, setUserNickName] = useState<Tables<'posts'>[]>([]);
 
   const User = useUserStore();
   const supabase = createClient();
 
   // 유저 닉네임 가져오기
-  const fetchUsers = async () => {
+  const fetchUserNickname = async () => {
     const { data, error } = await supabase
-      .from('users')
-      .select('email, id, nick_name, avatar, created_at')
-      .eq('id', User)
-      .single();
+      .from('posts')
+      .select('*')
+      .eq('id', params.id)
+      .eq('nick_name', User.user?.nickname);
 
     if (error) {
       console.error(error);
     } else {
-      setUserList(data ? [data] : []);
+      setUserNickName(data);
     }
   };
 
@@ -109,7 +110,7 @@ function PostDetail({
 
   useEffect(() => {
     const fetchData = async () => {
-      await fetchUsers();
+      await fetchUserNickname();
       await fetchUserImage();
       await fetchUserComment();
       await fetchUserLocations();
@@ -164,7 +165,7 @@ function PostDetail({
       alert('게시물이 삭제되었습니다.');
     }
   };
-  console.log(userList);
+  console.log(User.user?.nickname);
 
   return (
     <div>
@@ -305,11 +306,12 @@ function PostDetail({
                   </defs>
                 </svg>
                 <div>
+                  {/* 유저 닉네임 */}
                   {userList.map((user) => {
                     return (
                       <div key={user.id}>
                         <p className="flex-grow-0 flex-shrink-0 text-lg font-medium text-left text-black">
-                          {user.nick_name}
+                          gkgk
                         </p>
                       </div>
                     );

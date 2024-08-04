@@ -7,13 +7,31 @@ export async function POST(request: NextRequest) {
   const password = reqData.password as string;
 
   const supabase = createClient();
-  const { error, data } = await supabase.auth.signInWithPassword({
+  
+  // 사용자 로그인
+  const { error: signInError, data: signInData } = await supabase.auth.signInWithPassword({
     email,
     password,
   });
 
-  if (error) {
-    return NextResponse.json({ error: error.message });
+  if (signInError) {
+    return NextResponse.json({ error: signInError.message });
   }
-  return NextResponse.json(data.user);
+
+  // 로그인 성공 후 사용자 닉네임 가져오기
+  const userId = signInData.user.id;
+  const { data: nickNameData, error: nickNameError } = await supabase
+    .from('users')
+    .select('nick_name')
+    .eq('id', userId)
+    .single();
+
+  if (nickNameError) {
+    return NextResponse.json({ error: nickNameError.message });
+  }
+
+  return NextResponse.json({
+    user: signInData.user,
+    nickname: nickNameData.nick_name,
+  });
 }
