@@ -7,12 +7,14 @@ type User = {
   id: string | null
 };
 
-type UserState = {
+interface UserState {
   user: User | null;
-  isLogin: boolean;
+  isLoggedIn: boolean;
   setUser: (user: User) => void;
   clearUser: () => void;
-};
+  setIsLoggedIn: (isLoggedIn: boolean) => void;
+  logout: () => void;
+}
 
 export const useUserStore = create<UserState>()(
   devtools(
@@ -20,8 +22,11 @@ export const useUserStore = create<UserState>()(
       (set) => ({
         isLogin: false,
         user: null,
-        setUser: (user) => set({ user, isLogin: true }),
-        clearUser: () => set({ user: null, isLogin: false }),
+        isLoggedIn: false,
+        setUser: (user) => set({ user, isLoggedIn: true }),
+        clearUser: () => set({ user: null, isLoggedIn: false }),
+        setIsLoggedIn: (isLoggedIn) => set({ isLoggedIn }),
+        logout: () => set({ user: null, isLoggedIn: false }),
       }),
       { name: 'user-storage' },
     ),

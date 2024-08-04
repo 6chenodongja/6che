@@ -6,6 +6,8 @@ import { useRouter } from 'next/navigation';
 import { supabase } from '../../../../supabase/client';
 import { ExtendedPostInsert } from '../../../../../types/extended';
 import WeatherDropdown from './components/WeatherDropdown';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/swiper-bundle.css';
 
 const PostFormPage = () => {
   const [images, setImages] = useState<File[]>([]);
@@ -140,8 +142,8 @@ const PostFormPage = () => {
       like: 0,
       gender: gender,
       style: style.join(','),
-      // seasons: seasons.join(','),
-      // locations: locations.join(','),
+      seasons: seasons.join(','),
+      locations: locations.join(','),
       weather: weatherInfo,
     };
 
@@ -232,9 +234,9 @@ const PostFormPage = () => {
     }`;
 
   return (
-    <div className="max-w-sm mx-auto h-auto m-10">
-      <div className="flex flex-col w-full sm:w-96 p-5   relative">
-        <div className="flex justify-between items-center mb-4 pb-2 shadow-sm -mx-5 px-5">
+    <div className="w-full flex justify-center py-10">
+      <div className="flex flex-col w-full max-w-md p-5 bg-white shadow-lg rounded-lg">
+        <div className="flex justify-between items-center mb-4 pb-2 border-b">
           <h2 className="text-xl font-bold">스타일 등록</h2>
           <button
             type="button"
@@ -247,62 +249,73 @@ const PostFormPage = () => {
 
         {/* 사진 업로드 섹션 */}
         <div className="mb-4 flex flex-col items-start">
-          <div className="flex gap-4 overflow-x-auto flex-row-reverse">
-            {images.map((image, index) => (
-              <div key={index} className="relative w-24 h-32 flex-shrink-0">
-                <Image
-                  src={URL.createObjectURL(image)}
-                  alt={`Uploaded ${index}`}
-                  width={96}
-                  height={128}
-                  className="w-full h-full object-cover border border-gray-300 rounded-md"
-                />
-                <button
-                  type="button"
-                  className="absolute top-1 right-1 bg-black rounded-full w-6 h-6 flex items-center justify-center"
+          <Swiper
+            spaceBetween={5} // 슬라이드 간의 간격을 5px로 설정
+            slidesPerView={'auto'}
+            freeMode={true}
+            className="w-full"
+          >
+            {images.length < 3 && (
+              <SwiperSlide className="!w-auto">
+                <div
+                  className="w-24 h-32 bg-black flex flex-col justify-center items-center border border-gray-300 cursor-pointer flex-shrink-0 rounded-md"
                   onClick={(e) => {
                     e.stopPropagation();
-                    handleRemoveImage(index);
+                    fileInputRef.current?.click();
                   }}
                 >
+                  {/* 숨겨진 파일 입력 요소 */}
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    className="hidden"
+                    multiple
+                    ref={fileInputRef}
+                  />
                   <Image
-                    src="/x.svg"
-                    alt="Delete Icon"
+                    src="/photo.svg"
+                    alt="Upload Icon"
                     width={24}
                     height={24}
-                    className="filter invert"
+                    className="text-white filter invert"
                   />
-                </button>
-              </div>
-            ))}
-            {images.length < 3 && (
-              <div
-                className="w-24 h-32 bg-black flex flex-col justify-center items-center border border-gray-300 cursor-pointer flex-shrink-0 rounded-md"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  fileInputRef.current?.click();
-                }}
-              >
-                {/* 숨겨진 파일 입력 요소 */}
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageChange}
-                  className="hidden"
-                  multiple
-                  ref={fileInputRef}
-                />
-                <Image
-                  src="/photo.svg"
-                  alt="Upload Icon"
-                  width={24}
-                  height={24}
-                  className="text-white filter invert"
-                />
-                <div className="text-sm text-white mt-1">{images.length}/3</div>
-              </div>
+                  <div className="text-sm text-white mt-1">
+                    {images.length}/3
+                  </div>
+                </div>
+              </SwiperSlide>
             )}
-          </div>
+            {images.map((image, index) => (
+              <SwiperSlide key={index} className="!w-auto">
+                <div className="relative w-24 h-32">
+                  <Image
+                    src={URL.createObjectURL(image)}
+                    alt={`Uploaded ${index}`}
+                    width={96}
+                    height={128}
+                    className="w-full h-full object-cover border border-gray-300 rounded-md"
+                  />
+                  <button
+                    type="button"
+                    className="absolute top-1 right-1 bg-black rounded-full w-6 h-6 flex items-center justify-center"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleRemoveImage(index);
+                    }}
+                  >
+                    <Image
+                      src="/x.svg"
+                      alt="Delete Icon"
+                      width={24}
+                      height={24}
+                      className="filter invert"
+                    />
+                  </button>
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
         </div>
         {imageError && (
           <div className="text-sm absolute bottom-5 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white py-2 px-4 w-80 rounded">

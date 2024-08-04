@@ -17,14 +17,14 @@ const weatherIcons = [
 
 const temperatures = [
   { value: '/location.svg', label: '현재 기온', src: '/location.svg' },
-  { value: '0°C', label: '0°C' },
-  { value: '5°C', label: '5°C' },
-  { value: '10°C', label: '10°C' },
-  { value: '15°C', label: '15°C' },
-  { value: '20°C', label: '20°C' },
-  { value: '25°C', label: '25°C' },
-  { value: '30°C', label: '30°C' },
-  { value: '35°C', label: '35°C' },
+  { value: '4°C 이하', label: '4°C 이하' },
+  { value: '8 - 5°C', label: '8 - 5°C' },
+  { value: '9 - 11°C', label: '9 - 11°C' },
+  { value: '12 - 16°C', label: '12 - 16°C' },
+  { value: '17 - 19°C', label: '17 - 19°C' },
+  { value: '20 - 22°C', label: '20 - 22°C' },
+  { value: '23 - 27°C', label: '23 - 27°C' },
+  { value: '28°C 이상', label: '28°C 이상' },
 ];
 
 const CustomTextField = styled(TextField)({
