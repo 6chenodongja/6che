@@ -31,15 +31,12 @@ function PostDetail({
   // 유저 닉네임 가져오기
   const fetchUserNickname = async () => {
     const { data, error } = await supabase
-      .from('posts')
+      .from('users')
       .select('*')
-      .eq('id', params.id)
-      .eq('nick_name', User.user?.nickname);
+      .eq('id', params.id);
 
     if (error) {
       console.error(error);
-    } else {
-      setUserNickName(data);
     }
   };
 

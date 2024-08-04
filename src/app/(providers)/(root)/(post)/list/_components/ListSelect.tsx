@@ -44,9 +44,9 @@ function ListSelects({
     <div className="relative z-10">
       <div className="w-full h-[50px] relative">
         <div className="flex justify-center items-start w-[75px] absolute left-3.5 top-2">
-          <div className="flex justify-center items-center flex-grow-0 flex-shrink-0 relative overflow-hidden px-1 py-1.5 rounded-lg">
+          <div className="flex justify-center items-center flex-grow-0 flex-shrink-0 relative overflow-hidden px-1 py-1.5 rounded-lg ml-2">
             <p className="flex-grow-0 flex-shrink-0 text-sm text-left text-[#121212]">
-              <select onChange={handleSortChange}>
+              <select onChange={handleSortChange} className="bg-[#FAFAFA]">
                 <option value="latest">최신순</option>
                 <option value="likes">좋아요순</option>
               </select>
@@ -96,7 +96,7 @@ function ListSelects({
               )}
             </button>
           </div>
-          <div className="flex justify-start items-start flex-grow-0 flex-shrink-0 w-8 h-8 ml-2">
+          <div className="flex justify-start items-start flex-grow-0 flex-shrink-0 w-8 h-8">
             <button
               className="flex justify-center items-center flex-grow-0 flex-shrink-0 relative overflow-hidden gap-2 p-1 rounded-[1000px]"
               style={{ filter: 'drop-shadow(0px 0px 4px rgba(0,0,0,0.08))' }}

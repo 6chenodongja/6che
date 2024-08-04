@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
   const { data: nickNameData, error: nickNameError } = await supabase
     .from('users')
     .select('nick_name')
-    .eq('id', userId)
+    .eq('id', userId) 
     .single();
 
   if (nickNameError) {
