@@ -17,7 +17,7 @@ const Header = () => {
 
   return (
     <header className="w-full bg-white shadow-md py-4 flex justify-between items-center px-4">
-      <button onClick={handleMenuToggle}>
+      <button title="button" onClick={handleMenuToggle}>
         <Image src="/images/menu.png" alt="메뉴" width={24} height={24} />
       </button>
       <Link href="/">
