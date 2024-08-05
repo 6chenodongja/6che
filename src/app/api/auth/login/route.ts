@@ -1,3 +1,5 @@
+// src/api/auth/login/route.ts
+
 import { createClient } from '@/supabase/server';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -7,25 +9,27 @@ export async function POST(request: NextRequest) {
   const password = reqData.password as string;
 
   const supabase = createClient();
-  const { error, data } = await supabase.auth.signInWithPassword({
+  
+  // 사용자 로그인
+  const { error: signInError, data: signInData } = await supabase.auth.signInWithPassword({
     email,
     password,
   });
 
-  if (error) {
-    return NextResponse.json({ error: error.message }, { status: 401 });
+  if (signInError) {
+    return NextResponse.json({ error: signInError.message });
   }
 
-  const user = data.user;
+  // 로그인 성공 후 사용자 닉네임 가져오기
+  const userId = signInData.user.id;
+  const { data: nickNameData, error: nickNameError } = await supabase
+    .from('users')
+    .select('nick_name')
+    .eq('id', userId) 
+    .single();
 
-  if (user) {
-    const { id, email, user_metadata } = user;
-    return NextResponse.json({
-      id,
-      email,
-      nickname: user_metadata.nickname,
-    });
+  if (nickNameError) {
+    return NextResponse.json({ error: nickNameError.message });
   }
-
-  return NextResponse.json({ error: '사용자를 찾을 수 없습니다.' }, { status: 404 });
+  return NextResponse.json(data.user);
 }

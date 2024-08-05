@@ -3,7 +3,7 @@ import { devtools, persist } from 'zustand/middleware';
 
 type User = {
   id: string;
-  nickname: string;
+  nick_name: string;
   email: string;
   profileImage: string;
 };

@@ -33,7 +33,7 @@ const LoginForm = () => {
       if (res.data && res.data.email) {
         setUser({
           id: res.data.id,
-          nickname: res.data.nickname,
+          nick_name: res.data.nick_name,
           email: res.data.email,
           profileImage: '',
         });
@@ -68,7 +68,7 @@ const LoginForm = () => {
   };
 
   return (
-    <form onSubmit={onSubmit} className="w-full h-full justify-center">
+    <form onSubmit={onSubmit} className="container h-auto justify-center">
       <h1 className="mt-[119px] text-[24px] font-bold text-center text-[#121212]">
         로그인
       </h1>
@@ -99,9 +99,9 @@ const LoginForm = () => {
           className="flex justify-start items-center flex-grow relative gap-2 px-4 py-3 rounded-xl border-[1px] border-[#808080]"
         />
       </div>
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2 bg-red-600">
         <div className="flex flex-row w-full mt-16">
-          <button className="bg-black text-[#fff] rounded-xl px-4 py-3 w-full font-bold">
+          <button className="bg-black text-[#fff] rounded-xl px-4 py-3 w-[288px] font-bold">
             로그인
           </button>
         </div>
@@ -111,12 +111,12 @@ const LoginForm = () => {
           </button>
         </Link>
       </div>
-      <div className="flex-grow-0 flex-shrink-0 text-sm text-left text-[#4d4d4d]">
+      {/* <div className="flex-grow-0 flex-shrink-0 text-sm text-left text-[#4d4d4d]">
         <Link href={''} className="">
           아이디/비밀번호 찾기
         </Link>
-      </div>
-      <div className="flex justify-start items-center w-72 relative gap-3">
+      </div> */}
+      <div className="flex justify-start items-center w-72 relative gap-3 m-auto">
         <div className="flex-grow h-px bg-[#d9d9d9]" />
         <p className="flex-grow-0 flex-shrink-0 text-base text-left text-black">
           or
@@ -139,7 +139,7 @@ const LoginForm = () => {
           카카오톡
         </button>
       </div>
-      <div className="">
+      {/* <div className="">
         <input
           type="checkbox"
           placeholder="체크 박스입니다"
@@ -148,7 +148,7 @@ const LoginForm = () => {
         <label className="flex-grow-0 flex-shrink-0 text-sm text-left text-[#808080]">
           로그인 유지
         </label>
-      </div>
+      </div> */}
     </form>
   );
 };
