@@ -165,21 +165,6 @@ const ThermometerStyle: React.FC = () => {
       ? defaultImages
       : getOutfitsForTemperature(temperatureRanges[temperatureIndex].display);
 
-  const noLabelImages = [
-    '/images/Thermometer/default-blue.png',
-    '/images/Thermometer/default-yellow.png',
-    '/민소매.png',
-    '/반팔티.png',
-    '/반바지.png',
-    '/짧은치마.png',
-    '/얇은셔츠.png',
-    '/면바지.png',
-    '/블라우스.png',
-    '/긴팔티.png',
-    '/슬랙스.png',
-    '/Weather2/린넨옷.png',
-  ];
-
   const handleNext = () => {
     setCurrentOutfitIndex((prevIndex) => prevIndex + 4);
   };
@@ -191,16 +176,31 @@ const ThermometerStyle: React.FC = () => {
   return (
     <div className="w-full max-w-md mx-auto flex flex-col items-center justify-center min-h-screen bg-[#f5f5f5]">
       <div className="flex flex-col items-center mt-4 mb-8">
-        <h1 className="text-2xl font-bold mb-4">기온 별 옷차림</h1>
+        <div className="relative mb-4">
+          <Image
+            src="/images/Thermometer/temperature-box.svg"
+            alt="Temperature Box"
+            width={258}
+            height={94.5}
+            style={{ width: 'auto', height: 'auto' }}
+            priority
+          />
+          {initialView ? (
+            <span className="absolute inset-0 flex items-center justify-center text-lg font-bold">
+              ?
+            </span>
+          ) : (
+            <span className="absolute inset-0 flex items-center justify-center text-lg font-bold">
+              {temperatureRanges[temperatureIndex].display}
+            </span>
+          )}
+        </div>
         <div className="relative">
           <div className="grid grid-cols-2 mb-6 gap-2">
             {currentOutfits
               .slice(currentOutfitIndex, currentOutfitIndex + 4)
               .map((src: string, index: number) => (
                 <div key={index} className="relative">
-                  {!initialView && !noLabelImages.includes(src) && (
-                    <span className="text-sm text-center mb-2"></span>
-                  )}
                   <Image
                     src={src}
                     alt={`Outfit ${index + 1}`}
@@ -241,25 +241,6 @@ const ThermometerStyle: React.FC = () => {
               </button>
             )}
           </div>
-        </div>
-        <div className="relative mb-4">
-          <Image
-            src="/images/Thermometer/temperature-box.svg"
-            alt="Temperature Box"
-            width={258}
-            height={94.5}
-            style={{ width: 'auto', height: 'auto' }}
-            priority
-          />
-          {initialView ? (
-            <span className="absolute inset-0 flex items-center justify-center text-lg font-bold">
-              ?
-            </span>
-          ) : (
-            <span className="absolute inset-0 flex items-center justify-center text-lg font-bold">
-              {temperatureRanges[temperatureIndex].display}
-            </span>
-          )}
         </div>
         <div
           ref={sliderRef}
