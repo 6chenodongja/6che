@@ -1,9 +1,8 @@
 'use client';
 
 import { createClient } from '@/supabase/client';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { Tables } from '../../../../../../../types/supabase';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from 'swiper/modules';
 import 'swiper/css';
@@ -11,6 +10,8 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import Link from 'next/link';
 import 'swiper/swiper-bundle.css';
+import { useUserStore } from '@/zustand/store/useUserStore';
+import { Tables } from '../../../../../../../types/supabase';
 
 function PostDetail({
   params,
@@ -23,94 +24,90 @@ function PostDetail({
   const [userLocations, setUserLocations] = useState<string[]>([]);
   const [userLiked, setUserLiked] = useState<number[]>([]);
   const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [userNickName, setUserNickName] = useState<Tables<'posts'>[]>([]);
 
-  const User = 'a184313d-fac7-4c5d-8ee3-89e367cfb86f';
+  const User = useUserStore();
   const supabase = createClient();
 
-  // 유저 닉네임 가져오기
-  const fetchUsers = useCallback(async () => {
-    const { data, error } = await supabase
-      .from('users')
-      .select('email, id, nick_name, avatar, created_at')
-      .eq('id', User)
-      .single();
-
-    if (error) {
-      console.error(error);
-    } else {
-      setUserList(data.nick_name ? [data] : []);
-    }
-  }, [User, supabase]);
-
-  // 유저 이미지 가져오기
-  const fetchUserImage = useCallback(async () => {
-    const { data, error } = await supabase
-      .from('posts')
-      .select('*')
-      .eq('id', params.id)
-      .single();
-
-    if (error) {
-      console.error(error);
-    } else if (data && data.image_url) {
-      setUserImages(data.image_url.split(','));
-    } else {
-      setUserImages([]);
-    }
-  }, [params.id, supabase]);
-
-  // 유저 코멘트 가져오기
-  const fetchUserLocations = useCallback(async () => {
-    const { data, error } = await supabase
-      .from('posts')
-      .select('comment')
-      .eq('id', params.id)
-      .single();
-
-    if (error) {
-      console.error(error);
-    } else {
-      setUserComment(data.comment ? [data.comment] : []);
-    }
-  }, [params.id, supabase]);
-
-  // 유저 카테고리 가져오기
-  const fetchUserComment = useCallback(async () => {
-    const { data, error } = await supabase
-      .from('posts')
-      .select('locations')
-      .eq('id', params.id)
-      .single();
-
-    if (error) {
-      console.error(error);
-    } else {
-      setUserLocations(
-        data.locations
-          ? data.locations.split(',').map((location: string) => ` #${location}`)
-          : [],
-      );
-    }
-  }, [params.id, supabase]);
-
-  //유저 좋아요 수 가져오기
-  const fetchUserLiked = useCallback(async () => {
-    const { data, error } = await supabase
-      .from('posts')
-      .select('like')
-      .eq('id', params.id)
-      .single();
-
-    if (error) {
-      console.error(error);
-    } else {
-      setUserLiked([data.like ?? 0]);
-    }
-  }, [params.id, supabase]);
-
   useEffect(() => {
+    // 유저 닉네임 가져오기
+    const fetchUserNickname = async () => {
+      const { data, error } = await supabase
+        .from('users')
+        .select('*')
+        .eq('id', params.id);
+
+      if (error) {
+        console.error(error);
+      }
+    };
+
+    // 유저 이미지 가져오기
+    const fetchUserImage = async () => {
+      const { data, error } = await supabase
+        .from('posts')
+        .select('*')
+        .eq('id', params.id)
+        .single();
+
+      if (error) {
+        console.error(error);
+      } else if (data && data.image_url) {
+        setUserImages(data.image_url.split(','));
+      } else {
+        setUserImages([]);
+      }
+    };
+
+    // 유저 코멘트 가져오기
+    const fetchUserLocations = async () => {
+      const { data, error } = await supabase
+        .from('posts')
+        .select('comment')
+        .eq('id', params.id)
+        .single();
+
+      if (error) {
+        console.error(error);
+      } else {
+        setUserComment(data.comment ? [data.comment] : []);
+      }
+    };
+    // 유저 카테고리 가져오기
+    const fetchUserComment = async () => {
+      const { data, error } = await supabase
+        .from('posts')
+        .select('locations')
+        .eq('id', params.id)
+        .single();
+
+      if (error) {
+        console.error(error);
+      } else {
+        setUserLocations(
+          data.locations
+            ? data.locations.split(',').map((location) => ` #${location}`)
+            : [],
+        );
+      }
+    };
+
+    //유저 좋아요 수 가져오기
+    const fetchUserLiked = async () => {
+      const { data, error } = await supabase
+        .from('posts')
+        .select('like')
+        .eq('id', params.id)
+        .single();
+
+      if (error) {
+        console.error(error);
+      } else {
+        setUserLiked([data.like ?? 0]);
+      }
+    };
     const fetchData = async () => {
-      await fetchUsers();
+      await fetchUserNickname();
       await fetchUserImage();
       await fetchUserComment();
       await fetchUserLocations();
@@ -118,13 +115,7 @@ function PostDetail({
     };
 
     fetchData();
-  }, [
-    fetchUsers,
-    fetchUserImage,
-    fetchUserComment,
-    fetchUserLocations,
-    fetchUserLiked,
-  ]);
+  }, [params.id]);
 
   //공유 팝업 모달
   const clickModal = () => setModalOpen(!modalOpen);
@@ -159,14 +150,55 @@ function PostDetail({
     });
   };
 
+  //유저 게시물 삭제
+  const deletePost = async () => {
+    try {
+      await supabase
+        .from('posts')
+        .delete()
+        .eq('id', params.id)
+        .eq('user_id', User);
+    } catch {
+      alert('게시물이 삭제되었습니다.');
+    }
+  };
+  console.log(User.user?.nickname);
+
   return (
     <div>
-      <div className="w-80 h-[747px] relative overflow-hidden bg-[#FAFAFA] max-w-sw mx-auto">
+      <div className="w-80 h-[747px] relative overflow-hidden bg-[#FAFAFA] container mx-auto">
         <div>
-          <header className="mt-2 ml-3">
-            <Link href={'/list'}>
-              <Image width={20} height={20} src="/back.png" alt="뒤로가기" />
+          <header className="mt-2 ml-3 flex pb-[6px]">
+            <Link
+              href={'/list'}
+              className="w-[42px] flex justify-center items-center object-cover"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="34"
+                height="34"
+                viewBox="0 0 34 34"
+                fill="none"
+              >
+                <path
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                  d="M20.8351 7.49831C21.3884 8.05155 21.3884 8.94853 20.8351 9.50178L13.3369 17L20.8351 24.4983C21.3884 25.0515 21.3884 25.9485 20.8351 26.5018C20.2819 27.055 19.3849 27.055 18.8317 26.5018L10.3317 18.0018C9.77844 17.4485 9.77844 16.5515 10.3317 15.9983L18.8317 7.49831C19.3849 6.94506 20.2819 6.94506 20.8351 7.49831Z"
+                  fill="#121212"
+                />
+              </svg>
             </Link>
+            <div className="flex flex-row ml-auto gap-1">
+              <button
+                onClick={deletePost}
+                className="flex justify-center items-center bg-[#FF4732]/85 text-white rounded-xl px-[10px] py-[8px]"
+              >
+                삭제
+              </button>
+              <button className="flex  justify-center items-center bg-[#121212] text-white mr-4 rounded-xl px-[10px] py-[8px]">
+                수정
+              </button>
+            </div>
           </header>
           <Swiper
             slidesPerView={1}
@@ -175,16 +207,167 @@ function PostDetail({
             loop={true}
           >
             {userImages.map((image, index) => (
-              <SwiperSlide key={index}>
+              <SwiperSlide
+                key={index}
+                className="w-[288px] h-[412px] object-cover"
+              >
                 <Image
                   src={image}
                   alt={`이미지 ${index}`}
                   width={200}
                   height={100}
-                  className="w-[288px] h-[412px] object-cover rounded-xl m-4 "
+                  className="w-[288px] h-[412px] rounded-xl flex justify-center items-center mx-auto"
                 />
-                <div className="absolute top-6 left-6 bg-white bg-opacity-50 p-1 m-1 text-sm rounded-lg font-bold">
-                  ☀️ 26℃
+                <div className="absolute top-3 left-6 bg-white bg-opacity-50 p-1 m-1 font-[18px] rounded-lg  flex flex-row gap-2 justify-center items-center">
+                  <div className="detail-icon">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="21"
+                      height="16"
+                      viewBox="0 0 21 16"
+                      fill="none"
+                    >
+                      <g filter="url(#filter0_f_4483_4767)">
+                        <path
+                          fillRule="evenodd"
+                          clipRule="evenodd"
+                          d="M18.9763 5.93364C19.0942 5.65876 18.7487 5.44099 18.4786 5.56956C18.0835 5.75772 17.6412 5.86303 17.1744 5.86303C15.4967 5.86303 14.1367 4.50298 14.1367 2.82528C14.1367 2.35859 14.2419 1.91648 14.43 1.52139C14.5585 1.25133 14.3407 0.905834 14.0658 1.02376C12.7334 1.59549 11.8 2.91936 11.8 4.46122C11.8 6.52609 13.4739 8.2 15.5387 8.2C17.0807 8.2 18.4047 7.26642 18.9763 5.93364Z"
+                          fill="#FFC329"
+                          fillOpacity="0.8"
+                        />
+                      </g>
+                      <g filter="url(#filter1_d_4483_4767)">
+                        <path
+                          fillRule="evenodd"
+                          clipRule="evenodd"
+                          d="M18.9763 5.93364C19.0942 5.65876 18.7487 5.44099 18.4786 5.56956C18.0835 5.75772 17.6412 5.86303 17.1744 5.86303C15.4967 5.86303 14.1367 4.50298 14.1367 2.82528C14.1367 2.35859 14.2419 1.91648 14.43 1.52139C14.5585 1.25133 14.3407 0.905834 14.0658 1.02376C12.7334 1.59549 11.8 2.91936 11.8 4.46122C11.8 6.52609 13.4739 8.2 15.5387 8.2C17.0807 8.2 18.4047 7.26642 18.9763 5.93364Z"
+                          fill="#FFC329"
+                          fillOpacity="0.8"
+                          shapeRendering="crispEdges"
+                        />
+                      </g>
+                      <g filter="url(#filter2_bd_4483_4767)">
+                        <path
+                          d="M14.2353 15.4001C16.8668 15.4001 19 13.5868 19 11.3501C19 9.23574 17.0939 7.49982 14.6626 7.31614C14.1794 5.25412 12.0385 3.70007 9.47059 3.70007C6.54673 3.70007 4.17647 5.71479 4.17647 8.20007C4.17647 8.23787 4.17702 8.27556 4.17811 8.31313C2.35057 8.71229 1 10.1221 1 11.8001C1 13.7883 2.89621 15.4001 5.23529 15.4001H14.2353Z"
+                          fill="#CCCCCC"
+                          fillOpacity="0.7"
+                          shapeRendering="crispEdges"
+                        />
+                      </g>
+                      <defs>
+                        <filter
+                          id="filter0_f_4483_4767"
+                          x="10.8"
+                          y="0"
+                          width="9.19995"
+                          height="9.19995"
+                          filterUnits="userSpaceOnUse"
+                          colorInterpolationFilters="sRGB"
+                        >
+                          <feFlood
+                            floodOpacity="0"
+                            result="BackgroundImageFix"
+                          />
+                          <feBlend
+                            mode="normal"
+                            in="SourceGraphic"
+                            in2="BackgroundImageFix"
+                            result="shape"
+                          />
+                          <feGaussianBlur
+                            stdDeviation="0.5"
+                            result="effect1_foregroundBlur_4483_4767"
+                          />
+                        </filter>
+                        <filter
+                          id="filter1_d_4483_4767"
+                          x="11.3"
+                          y="0.5"
+                          width="9.19995"
+                          height="9.19995"
+                          filterUnits="userSpaceOnUse"
+                          colorInterpolationFilters="sRGB"
+                        >
+                          <feFlood
+                            floodOpacity="0"
+                            result="BackgroundImageFix"
+                          />
+                          <feColorMatrix
+                            in="SourceAlpha"
+                            type="matrix"
+                            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                            result="hardAlpha"
+                          />
+                          <feOffset dx="0.5" dy="0.5" />
+                          <feGaussianBlur stdDeviation="0.5" />
+                          <feComposite in2="hardAlpha" operator="out" />
+                          <feColorMatrix
+                            type="matrix"
+                            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.06 0"
+                          />
+                          <feBlend
+                            mode="normal"
+                            in2="BackgroundImageFix"
+                            result="effect1_dropShadow_4483_4767"
+                          />
+                          <feBlend
+                            mode="normal"
+                            in="SourceGraphic"
+                            in2="effect1_dropShadow_4483_4767"
+                            result="shape"
+                          />
+                        </filter>
+                        <filter
+                          id="filter2_bd_4483_4767"
+                          x="-1"
+                          y="1.70007"
+                          width="22"
+                          height="15.7"
+                          filterUnits="userSpaceOnUse"
+                          colorInterpolationFilters="sRGB"
+                        >
+                          <feFlood
+                            floodOpacity="0"
+                            result="BackgroundImageFix"
+                          />
+                          <feGaussianBlur
+                            in="BackgroundImageFix"
+                            stdDeviation="1"
+                          />
+                          <feComposite
+                            in2="SourceAlpha"
+                            operator="in"
+                            result="effect1_backgroundBlur_4483_4767"
+                          />
+                          <feColorMatrix
+                            in="SourceAlpha"
+                            type="matrix"
+                            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                            result="hardAlpha"
+                          />
+                          <feOffset dx="0.5" dy="-0.5" />
+                          <feGaussianBlur stdDeviation="0.5" />
+                          <feComposite in2="hardAlpha" operator="out" />
+                          <feColorMatrix
+                            type="matrix"
+                            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.05 0"
+                          />
+                          <feBlend
+                            mode="normal"
+                            in2="effect1_backgroundBlur_4483_4767"
+                            result="effect2_dropShadow_4483_4767"
+                          />
+                          <feBlend
+                            mode="normal"
+                            in="SourceGraphic"
+                            in2="effect2_dropShadow_4483_4767"
+                            result="shape"
+                          />
+                        </filter>
+                      </defs>
+                    </svg>
+                  </div>
+                  26°
                 </div>
               </SwiperSlide>
             ))}
@@ -271,11 +454,12 @@ function PostDetail({
                   </defs>
                 </svg>
                 <div>
+                  {/* 유저 닉네임 */}
                   {userList.map((user) => {
                     return (
                       <div key={user.id}>
                         <p className="flex-grow-0 flex-shrink-0 text-lg font-medium text-left text-black">
-                          {user.nick_name}
+                          {/* 여기에 유저 닉네임 로직 넣기 */}
                         </p>
                       </div>
                     );
@@ -447,7 +631,7 @@ function PostDetail({
                       className="h-[286px] object-cover rounded-lg"
                     />
                     <div className="absolute top-2 left-2 bg-white bg-opacity-50 p-1 m-1 text-sm rounded-lg font-bold">
-                      ☀️ 26℃
+                      ☀️ 26°
                     </div>
                   </SwiperSlide>
                 ))}

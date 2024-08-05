@@ -29,7 +29,7 @@ export async function updateSession(request: NextRequest) {
     },
   );
 
-  const {
+    const {
     data: { user },
   } = await supabase.auth.getUser();
 

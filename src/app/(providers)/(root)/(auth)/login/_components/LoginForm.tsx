@@ -44,7 +44,7 @@ const LoginForm = () => {
       }
     } catch (error) {
       console.error('로그인 중 오류 발생:', error);
-      alert('로그인 중 오류 발생');
+      alert('아이디 또는 비밀번호는 다시 입력해주세요!');
     }
   };
 
