@@ -1,4 +1,4 @@
-export interface ButtonsProps {
-  type: '';
-  content: string;
-}
+// export interface ButtonsProps {
+//   type: '';
+//   content: string;
+// }

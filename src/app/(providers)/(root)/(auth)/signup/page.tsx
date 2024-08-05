@@ -3,78 +3,51 @@
 import { createClient } from '@/supabase/client';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import React from 'react';
+import { useSignUpForm } from '@/utils/useSignUpForm';
+import { emailDomains } from '@/utils/emailDomains';
+import Footer from 'app/(providers)/(components)/Footer';
+import Header from 'app/(providers)/(components)/Header';
 
-function SignUpPage() {
-  const [nickname, setNickname] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [passwordConfirm, setPasswordConfirm] = useState('');
-  const [error, setError] = useState({
-    name: '',
-    nickname: '',
-    password: '',
-    passwordConfirm: '',
-  });
-  const regexPw =
-    /^[a-z0-9#?!@$%^&*-](?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-])[a-z0-9#?!@$%^&*-]{1,10}$/;
+const SignUpPage: React.FC = () => {
+  const {
+    nickname,
+    emailId,
+    emailDomain,
+    customEmailDomain,
+    password,
+    passwordConfirm,
+    isOver14,
+    error,
+    isNicknameValid,
+    isNicknameChecked,
+    nicknameMessage,
+    isLoading,
+    setEmailId,
+    setEmailDomain,
+    setCustomEmailDomain,
+    setIsOver14,
+    handleChange,
+    handleEmailDomainChange,
+    checkNickname,
+    isFormValid,
+  } = useSignUpForm();
 
   const supabase = createClient();
   const router = useRouter();
 
-  const onChangeNickname = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNickname(e.target.value);
-    if (e.target.value.length > 10) {
-      setError({
-        ...error,
-        nickname: '닉네임은 최소 10글자 이하입니다.',
-      });
-    } else {
-      setError({
-        ...error,
-        nickname: '',
-      });
-    }
-  };
-
-  const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
-  };
-
-  const onChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value);
-    if (e.target.value.length < 8) {
-      setError({
-        ...error,
-        password: '비밀번호는 최소 8자 이상입니다.',
-      });
-    } else {
-      setError({
-        ...error,
-        password: '',
-      });
-    }
-  };
-
-  const onChangePasswordConfirm = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPasswordConfirm(e.target.value);
-    if (e.target.value.length < 8) {
-      setError({
-        ...error,
-        passwordConfirm: '비밀번호는 최소 8자 이상입니다.',
-      });
-    } else {
-      setError({
-        ...error,
-        passwordConfirm: '',
-      });
-    }
-  };
-
-  // 새로고침 안 하게 하는 로직
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (email === '' || password === '' || passwordConfirm === '') {
+    if (!isNicknameChecked) {
+      alert('닉네임 중복 확인을 해주세요.');
+      return;
+    }
+    if (
+      emailId === '' ||
+      (emailDomain === '직접 입력' && customEmailDomain === '') ||
+      password === '' ||
+      passwordConfirm === ''
+    ) {
       alert('모든 항목을 입력 해 주세요.');
       return;
     }
@@ -84,13 +57,14 @@ function SignUpPage() {
       return;
     }
 
-    // supabase 연결
+    const email = `${emailId}@${emailDomain === '직접 입력' ? customEmailDomain : emailDomain}`;
+
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
         data: {
-          first_name: nickname,  // Change this line
+          first_name: nickname,
         },
       },
     });
@@ -98,90 +72,144 @@ function SignUpPage() {
     if (error) {
       return alert(error.message);
     }
-    // 확인용 알럿입니다. (추후에 페이지로 회원가입 완료 되었다 라고 보이게 변경 될 것 같습니다.)
-    alert('회원가입이 완료 됐습니다.');
 
-    // 프로필 선택 완료 페이지로 이동
-    router.replace('/signUpDone');
+    alert('회원가입이 완료 되었습니다.');
+
+    router.replace('/login');
   };
 
   return (
-    <main className="w-[1600px] h-[1407px] relative overflow-hidden bg-white m-auto">
-      <form onSubmit={onSubmit}>
-        <h1 className="absolute left-4 top-36 text-2xl font-bold text-center text-black">
+    <main className="container h-full flex flex-col items-center justify-center bg-white">
+      <form
+        onSubmit={onSubmit}
+        className="w-full max-w-sm mx-auto bg-white p-6 rounded-lg shadow-md"
+      >
+        <Header />
+        <h1 className="text-2xl font-bold text-center text-black mb-6">
           회원가입
         </h1>
-        <div className="flex flex-col justify-start items-start w-72 absolute left-4 top-72 pb-3">
-          <label className="self-stretch flex-grow-0 flex-shrink-0 w-72 text-lg text-left text-black">
-            닉네임
-          </label>
-          <input
-            type="text"
-            onChange={onChangeNickname}
-            value={nickname}
-            placeholder="닉네임을 입력해 주세요"
-            className="self-stretch flex-grow-0 flex-shrink-0 h-[42px] opacity-50 rounded-lg bg-[#d9d9d9]"
-          />
-        </div>
-        {error.nickname && <p className="text-red-500">{error.nickname}</p>}
-        <div className="flex flex-col justify-start items-start w-72 absolute left-4 top-[369px] pb-3">
-          <label className="self-stretch flex-grow-0 flex-shrink-0 w-72 text-lg text-left text-black">
-            이메일
-          </label>
-          <div className="flex gap-2 h-[42px]">
+        <div className="mb-4">
+          <label className="block text-lg text-black mb-2">닉네임</label>
+          <div className="flex">
             <input
               type="text"
-              onChange={onChangeEmail}
-              value={email}
-              placeholder="아이디"
-              className="opacity-40 rounded-lg bg-[#d9d9d9]"
+              maxLength={10}
+              onChange={handleChange('nickname')}
+              value={nickname}
+              placeholder="닉네임을 입력해 주세요"
+              className={`flex-grow h-10 px-3 rounded-l-lg border ${error.nickname ? 'border-red-500' : 'border-gray-300'}`}
             />
+            <button
+              type="button"
+              onClick={() => checkNickname(nickname)}
+              disabled={!isNicknameValid || isLoading}
+              className={`w-24 h-10 rounded-r-lg text-white ${isNicknameValid && !isLoading ? 'bg-black' : 'bg-gray-200'}`}
+            >
+              {isLoading ? '확인 중...' : '중복확인'}
+            </button>
           </div>
+          {error.nickname && (
+            <p className="text-red-500 mt-2">{error.nickname}</p>
+          )}
+          {!error.nickname && isNicknameChecked && (
+            <p className="text-green-500 mt-2">{nicknameMessage}</p>
+          )}
+          {!error.nickname && !isNicknameChecked && (
+            <p className="text-gray-500 mt-2">최대 10글자</p>
+          )}
         </div>
-        <div className="flex flex-col justify-start items-start w-72 absolute left-4 top-[450px] pb-3">
-          <label className="self-stretch flex-grow-0 flex-shrink-0 w-72 text-lg text-left text-black">
-            비밀번호
-          </label>
+        <div className="mb-4">
+          <label className="block text-lg text-black mb-2">이메일</label>
+          <div className="flex">
+            <input
+              type="text"
+              onChange={(e) => {
+                setEmailId(e.target.value);
+                handleChange('email')(e);
+              }}
+              value={emailId}
+              placeholder="아이디"
+              className="flex-grow h-10 px-3 rounded-l-lg border border-gray-300"
+            />
+            <span className="self-center px-2">@</span>
+            {emailDomain === '직접 입력' ? (
+              <input
+                type="text"
+                onChange={(e) => {
+                  setCustomEmailDomain(e.target.value);
+                  handleChange('email')(e);
+                }}
+                value={customEmailDomain}
+                placeholder="도메인 입력"
+                className="w-40 h-10 px-3 rounded-r-lg border border-gray-300"
+              />
+            ) : (
+              <select
+                title="email select"
+                onChange={handleEmailDomainChange}
+                value={emailDomain}
+                className="w-40 h-10 px-3 rounded-r-lg border border-gray-300"
+              >
+                {emailDomains.map((domain) => (
+                  <option key={domain} value={domain}>
+                    {domain}
+                  </option>
+                ))}
+                <option value="직접 입력">직접 입력</option>
+              </select>
+            )}
+          </div>
+          {error.email && <p className="text-red-500 mt-2">{error.email}</p>}
+        </div>
+        <div className="mb-4">
+          <label className="block text-lg text-black mb-2">비밀번호</label>
           <input
             type="password"
-            onChange={onChangePassword}
+            onChange={handleChange('password')}
             value={password}
             placeholder="비밀번호"
-            className="self-stretch flex-grow-0 flex-shrink-0 h-[42px] opacity-50 rounded-lg bg-[#d9d9d9]"
+            className="w-full h-10 px-3 rounded-lg border border-gray-300"
           />
+          {error.password && (
+            <p className="text-red-500 mt-2">{error.password}</p>
+          )}
         </div>
-        {error.passwordConfirm && (
-          <p className="text-red-500">{error.passwordConfirm}</p>
-        )}
-        <div className="flex flex-col justify-start items-start w-72 absolute left-4 top-[531px] pb-3">
-          <label className="self-stretch flex-grow-0 flex-shrink-0 w-72 text-lg text-left text-black">
-            비밀번호 확인
-          </label>
+        <div className="mb-4">
+          <label className="block text-lg text-black mb-2">비밀번호 확인</label>
           <input
             type="password"
             value={passwordConfirm}
-            onChange={onChangePasswordConfirm}
+            onChange={handleChange('passwordConfirm')}
             placeholder="비밀번호 확인"
-            className="self-stretch flex-grow-0 flex-shrink-0 h-[42px] opacity-50 rounded-lg bg-[#d9d9d9]"
+            className="w-full h-10 px-3 rounded-lg border border-gray-300"
           />
+          {error.passwordConfirm && (
+            <p className="text-red-500 mt-2">{error.passwordConfirm}</p>
+          )}
         </div>
-        {error.passwordConfirm && (
-          <p className="text-red-500">{error.passwordConfirm}</p>
-        )}
-        <div className="w-72 h-[46px] absolute left-[15px] top-[679px] rounded-lg bg-[#d9d9d9]" />
-        <button className="absolute left-[126px] top-[689px] text-lg font-medium text-left text-black ">
+        <div className="flex items-center mb-4">
+          <input
+            type="checkbox"
+            id="over14"
+            checked={isOver14}
+            onChange={(e) => setIsOver14(e.target.checked)}
+            className="mr-2"
+          />
+          <label htmlFor="over14" className="text-gray-700">
+            [필수] 만 14세 이상입니다.
+          </label>
+        </div>
+        <button
+          type="submit"
+          className={`w-full h-10 rounded-lg text-white ${isFormValid ? 'bg-black' : 'bg-gray-200'}`}
+          disabled={!isFormValid}
+        >
           회원가입
         </button>
-        <div className="w-72 h-[46px] absolute left-[14px] top-[740px] rounded-lg bg-[#d9d9d9]" />
-        <Link
-          href={'/login'}
-          className="absolute left-[100px] top-[750px] text-lg font-medium text-left text-black "
-        >
-          로그인하러 가기
-        </Link>
+        <Footer />
       </form>
     </main>
   );
-}
+};
 
 export default SignUpPage;
