@@ -1,49 +1,46 @@
+// src/app/(providers)/(root)/(mypage)/profile/_components/ProfileForm.tsx
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { createClient } from '@/supabase/client';
+import {
+  updateUserProfile,
+  checkNicknameAvailability,
+} from '@/utils/userUtils';
+import { useUserStore } from '@/zustand/store/useUserStore';
 
 const ProfileForm: React.FC = () => {
   const [nickname, setNickname] = useState('');
   const [currentNickname, setCurrentNickname] = useState('');
   const [profileIcon, setProfileIcon] = useState<string>('');
   const [nicknameAvailable, setNicknameAvailable] = useState(true);
+  const { user, setUser } = useUserStore();
 
   const profileIcons = [
-    '/images/Weather/sun.svg', // 1
-    '/images/Weather/night.svg', // 2
-    '/images/Weather/once_cloudy.svg', // 3
-    '/images/Weather/once_cloudy_night.svg', // 4
-    '/images/Weather/snow.svg', // 5
-    '/images/Weather/drizzling.svg', // 6
-    '/images/Weather/downpour.svg', // 7
-    '/images/Weather/sleet.svg', // 8
-    '/images/Weather/sunrise.svg', // 9
-    '/images/Weather/sunset.svg', // 10
-    '/images/Weather/blur.svg', // 11
-    '/images/Weather/heavy_snow.svg', // 12
-    '/images/Weather/thunderstorm.svg', // 13
-    '/images/Weather/wind.svg', // 14
-    '/images/Weather/thread_fog.svg', // 15
-    '/images/Weather/drizzling_night.svg', // 16
-    '/images/Weather/fog.svg', // 17
-    '/images/Weather/rain.svg', // 18
+    '/images/Weather/sun.svg',
+    '/images/Weather/night.svg',
+    '/images/Weather/once_cloudy.svg',
+    '/images/Weather/once_cloudy_night.svg',
+    '/images/Weather/snow.svg',
+    '/images/Weather/drizzling.svg',
+    '/images/Weather/downpour.svg',
+    '/images/Weather/sleet.svg',
+    '/images/Weather/sunrise.svg',
+    '/images/Weather/sunset.svg',
+    '/images/Weather/blur.svg',
+    '/images/Weather/heavy_snow.svg',
+    '/images/Weather/thunderstorm.svg',
+    '/images/Weather/wind.svg',
+    '/images/Weather/thread_fog.svg',
+    '/images/Weather/drizzling_night.svg',
+    '/images/Weather/fog.svg',
+    '/images/Weather/rain.svg',
   ];
 
-  const checkNicknameAvailability = async () => {
-    const supabase = createClient();
-    const { data, error } = await supabase
-      .from('users')
-      .select('nick_name')
-      .eq('nick_name', nickname);
-
-    if (error) {
-      console.error('Error checking nickname:', error);
-    } else {
-      setNicknameAvailable(data.length === 0);
-    }
+  const handleCheckNickname = async () => {
+    const isAvailable = await checkNicknameAvailability(nickname);
+    setNicknameAvailable(isAvailable);
   };
 
   const handleNicknameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -56,14 +53,34 @@ const ProfileForm: React.FC = () => {
     setProfileIcon(icon);
   };
 
+  const handleSubmit = async () => {
+    const updates: Record<string, any> = {};
+    if (nickname && nickname !== currentNickname) {
+      updates['nick_name'] = nickname;
+    }
+    if (profileIcon) {
+      updates['avatar'] = profileIcon;
+    }
+    if (!user) return;
+    setUser({
+      ...user,
+      nickname: updates.nick_name || user.nickname,
+      profileImage: updates.avatar || user.profileImage,
+    });
+    const data = await updateUserProfile(updates, user.id);
+    if (data) {
+      alert('프로필이 성공적으로 업데이트되었습니다.');
+    }
+  };
+
   return (
     <main className="w-80 h-[633px] relative overflow-hidden bg-neutral-50 m-auto">
-      <div className="flex flex-col justify-start items-start w-72 absolute left-4 top-[82px] gap-1.5 py-1.5">
-        <div className="flex justify-start items-center self-stretch flex-grow-0 flex-shrink-0 relative gap-2 pl-0.5">
-          <p className="flex-grow-0 flex-shrink-0 text-sm font-medium text-left text-[#4d4d4d]">
+      <section className="flex flex-col justify-start items-start w-72 absolute left-4 top-[82px] gap-1.5 py-1.5">
+        <header className="flex justify-start items-center self-stretch flex-grow-0 flex-shrink-0 relative gap-2 pl-0.5">
+          <h1 className="flex-grow-0 flex-shrink-0 text-sm font-medium text-left text-[#4d4d4d]">
             닉네임
-          </p>
-        </div>
+          </h1>
+        </header>
         <div className="flex justify-start items-start self-stretch flex-grow-0 flex-shrink-0 gap-1">
           <div className="flex justify-start items-center flex-grow relative overflow-hidden gap-2 px-4 py-3 rounded-lg bg-white/50 border border-[#808080]">
             <input
@@ -76,7 +93,7 @@ const ProfileForm: React.FC = () => {
           </div>
           <div className="flex justify-center items-center self-stretch flex-grow-0 flex-shrink-0 w-14 relative overflow-hidden gap-1 p-1.5 rounded-lg bg-[#e6e6e6]/60">
             <button
-              onClick={checkNicknameAvailability}
+              onClick={handleCheckNickname}
               className="flex-grow-0 flex-shrink-0 text-xs text-left text-[#b3b3b3]"
             >
               중복확인
@@ -85,16 +102,16 @@ const ProfileForm: React.FC = () => {
         </div>
         <div className="flex justify-start items-start self-stretch flex-grow-0 flex-shrink-0 relative gap-0.5">
           <p className="flex-grow w-[268px] text-xs text-left text-[#4d4d4d]">
-            현재 닉네임 : {currentNickname}
+            현재 닉네임 : {user?.nickname}
           </p>
         </div>
-      </div>
-      <div className="flex flex-col justify-start items-start absolute left-4 top-[219px] gap-2 py-1.5">
-        <div className="flex justify-start items-center self-stretch flex-grow-0 flex-shrink-0 relative gap-2 pl-0.5">
-          <p className="flex-grow-0 flex-shrink-0 text-sm font-medium text-left text-[#4d4d4d]">
+      </section>
+      <section className="flex flex-col justify-start items-start absolute left-4 top-[219px] gap-2 py-1.5">
+        <header className="flex justify-start items-center self-stretch flex-grow-0 flex-shrink-0 relative gap-2 pl-0.5">
+          <h2 className="flex-grow-0 flex-shrink-0 text-sm font-medium text-left text-[#4d4d4d]">
             프로필
-          </p>
-        </div>
+          </h2>
+        </header>
         <div className="grid grid-cols-5 gap-2.5 w-72 h-56 relative pl-[19px] pr-[19px] pt-[16px] pb-[16px] rounded-2xl bg-white">
           {profileIcons.map((icon, index) => (
             <Image
@@ -103,19 +120,22 @@ const ProfileForm: React.FC = () => {
               alt={`profile-icon-${index}`}
               width={34}
               height={34}
-              className={`border-2 rounded-md ${profileIcon === icon ? 'border-blue-200' : ''}`}
+              className={`border-2 rounded-md ${profileIcon === icon ? 'border-blue-200' : 'border-transparent'}`}
               onClick={() => handleProfileIconSelect(icon)}
             />
           ))}
         </div>
-        <button className="bg-black text-white p-4 w-[288px] border rounded-xl">
+        <button
+          onClick={handleSubmit}
+          className="bg-black text-white p-4 w-[288px] border rounded-xl"
+        >
           완료
         </button>
-      </div>
-      <div className="flex justify-between items-center w-80 h-14 absolute left-0 top-0 px-4 py-1.5 bg-white/50 border border-white/60 backdrop-blur-[10px]">
-        <p className="flex-grow-0 flex-shrink-0 text-base font-black text-left text-black">
+      </section>
+      <header className="flex justify-between items-center w-80 h-14 absolute left-0 top-0 px-4 py-1.5 bg-white/50 border border-white/60 backdrop-blur-[10px]">
+        <h1 className="flex-grow-0 flex-shrink-0 text-base font-black text-left text-black">
           닉네임 / 프로필 수정
-        </p>
+        </h1>
         <div className="flex justify-start items-start flex-grow-0 flex-shrink-0 w-10 h-10">
           <div className="flex justify-center items-center flex-grow-0 flex-shrink-0 relative overflow-hidden gap-2 p-2 rounded-[1000px]">
             <Link href={'/mypage'} legacyBehavior>
@@ -125,7 +145,7 @@ const ProfileForm: React.FC = () => {
             </Link>
           </div>
         </div>
-      </div>
+      </header>
     </main>
   );
 };

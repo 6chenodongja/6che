@@ -2,9 +2,10 @@ import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
 
 type User = {
-  name: string | null;
-  nickname: string | null;
-  email: string | null;
+  id: string;
+  nickname: string;
+  email: string;
+  profileImage: string;
 };
 
 interface UserState {
@@ -26,7 +27,7 @@ export const useUserStore = create<UserState>()(
         clearUser: () => set({ user: null, isLoggedIn: false }),
         setIsLoggedIn: (isLoggedIn) => set({ isLoggedIn }),
         logout: () => set({ user: null, isLoggedIn: false }),
-      }),
+      }), 
       { name: 'user-storage' },
     ),
   ),

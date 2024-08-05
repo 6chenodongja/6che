@@ -8,6 +8,7 @@ import { ExtendedPostInsert } from '../../../../../types/extended';
 import WeatherDropdown from './components/WeatherDropdown';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/swiper-bundle.css';
+import { useUserStore } from '@/zustand/store/useUserStore';
 
 const PostFormPage = () => {
   const [images, setImages] = useState<File[]>([]);
@@ -26,6 +27,7 @@ const PostFormPage = () => {
   const [styleError, setStyleError] = useState(false);
   const [locationError, setLocationError] = useState(false);
   const [imageError, setImageError] = useState(false);
+  const { user } = useUserStore();
 
   const initialStyles = [
     '미니멀',
@@ -135,7 +137,7 @@ const PostFormPage = () => {
     }
 
     const postData: ExtendedPostInsert = {
-      user_id: 'a184313d-fac7-4c5d-8ee3-89e367cfb86f',
+      user_id: user?.id,
       image_url: uploadedImageUrls.join(','),
       comment: description,
       created_at: new Date().toISOString(),

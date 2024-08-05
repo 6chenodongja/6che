@@ -75,7 +75,7 @@ const SignUpPage: React.FC = () => {
 
     alert('회원가입이 완료 되었습니다.');
 
-    router.replace('/signUpDone');
+    router.replace('/login');
   };
 
   return (
@@ -145,6 +145,7 @@ const SignUpPage: React.FC = () => {
               />
             ) : (
               <select
+                title="email select"
                 onChange={handleEmailDomainChange}
                 value={emailDomain}
                 className="w-40 h-10 px-3 rounded-r-lg border border-gray-300"
@@ -205,11 +206,6 @@ const SignUpPage: React.FC = () => {
         >
           회원가입
         </button>
-        <div className="mt-4 text-center">
-          <Link href={'/login'} className="text-black">
-            로그인하러 가기
-          </Link>
-        </div>
         <Footer />
       </form>
     </main>
