@@ -51,6 +51,7 @@ export type Database = {
           image_url: string | null
           like: number | null
           locations: string | null
+          nick_name: string | null
           seasons: string | null
           style: string | null
           user_id: string
@@ -64,6 +65,7 @@ export type Database = {
           image_url?: string | null
           like?: number | null
           locations?: string | null
+          nick_name?: string | null
           seasons?: string | null
           style?: string | null
           user_id?: string
@@ -77,6 +79,7 @@ export type Database = {
           image_url?: string | null
           like?: number | null
           locations?: string | null
+          nick_name?: string | null
           seasons?: string | null
           style?: string | null
           user_id?: string
@@ -221,12 +224,3 @@ export type Enums<
   : PublicEnumNameOrOptions extends keyof PublicSchema["Enums"]
     ? PublicSchema["Enums"][PublicEnumNameOrOptions]
     : never
-
-
-
-
-
-
-
-
-
