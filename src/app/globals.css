@@ -379,19 +379,26 @@
   background-color: black !important;
   width: 18px !important;
   border-radius: 100px !important;
+  border: 1px solid white;
 }
 
 .swiper-pagination {
   margin-bottom: 10px;
 }
-/* listPage-Header 스타일 */
-/* .body {
-  display: flex;
-  width: 320px;
-  padding: 6px 16px 6px 6px;
-  justify-content: space-between;
-  align-items: center;
-} */
+/* listPage 스타일 */
+
+.list-icon {
+  border-radius: 4px;
+  background: var(--Bg_icon, rgba(255, 255, 255, 0.6));
+  padding: 2.667px 2px 3.733px 2px;
+}
+.icon-box {
+  border-radius: 4px;
+  border: var(--sds-size-stroke-border) solid
+    var(--Bg_icon, rgba(255, 255, 255, 0.6));
+  opacity: var(--sds-size-stroke-border);
+  background: var(--text-box, rgba(255, 255, 255, 0.5));
+}
 
 /* 모달 글자 부분 */
 .text {
@@ -447,4 +454,23 @@
   .container {
     width: 100%;
   }
+}
+
+/* detail 부분 */
+.deleteButton {
+  padding: var(--sds-size-space-200) var(--Blur-10, 10px);
+}
+.editButton {
+  padding: var(--sds-size-space-200) var(--Blur-10, 10px);
+}
+.detail-icon {
+  border-radius: 8px;
+  background: #fff;
+  backdrop-filter: blur(10px);
+  width: 28px;
+  height: 28px;
+  padding: 2px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

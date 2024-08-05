@@ -2,9 +2,9 @@ import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
 
 type User = {
-  name: string | null;
   nickname: string | null;
   email: string | null;
+  id: string | null
 };
 
 interface UserState {
@@ -20,6 +20,7 @@ export const useUserStore = create<UserState>()(
   devtools(
     persist(
       (set) => ({
+        isLogin: false,
         user: null,
         isLoggedIn: false,
         setUser: (user) => set({ user, isLoggedIn: true }),

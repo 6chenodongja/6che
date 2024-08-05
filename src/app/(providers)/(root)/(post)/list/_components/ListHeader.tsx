@@ -4,7 +4,7 @@ import React from 'react';
 function ListHeader() {
   return (
     <div
-      className="flex justify-between items-center w-auto px-1 py-1.5 rounded-lg bg-white/50 border border-white/60 backdrop-blur-[20px]"
+      className="flex justify-between items-center w-[288px] px-1 py-1.5 rounded-lg bg-white/50 border border-white/60 backdrop-blur-[20px] mx-auto mt-[16px]"
       style={{
         boxShadow:
           '0px 0px 2px 0px rgba(0, 0, 0, 0.05), 0px 2px var(--Blur-8, 8px) 0px rgba(0, 0, 0, 0.05)',
