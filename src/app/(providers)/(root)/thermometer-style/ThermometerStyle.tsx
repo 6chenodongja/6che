@@ -176,7 +176,7 @@ const ThermometerStyle: React.FC = () => {
   return (
     <div className="w-full max-w-md mx-auto flex flex-col items-center justify-center min-h-screen bg-[#f5f5f5]">
       <div className="flex flex-col items-center mt-4 mb-8">
-        <div className="relative mb-4">
+        <div className="relative mb-4" style={{ marginTop: '-10px' }}>
           <Image
             src="/images/Thermometer/temperature-box.svg"
             alt="Temperature Box"
@@ -195,7 +195,7 @@ const ThermometerStyle: React.FC = () => {
             </span>
           )}
         </div>
-        <div className="relative">
+        <div className="relative" style={{ minHeight: '323px' }}>
           <div className="grid grid-cols-2 mb-6 gap-2">
             {currentOutfits
               .slice(currentOutfitIndex, currentOutfitIndex + 4)
