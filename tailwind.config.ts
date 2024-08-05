@@ -132,6 +132,11 @@ const config: Config = {
         '': 'var(--)',
         'icon-button': 'var(--icon-button)',
       },
+      blur: {
+        2: '2px',
+        4: '4px',
+        20: '20px',
+      }
     },
   },
   plugins: [],

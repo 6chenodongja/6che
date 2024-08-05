@@ -175,13 +175,14 @@ const ThermometerStyle: React.FC = () => {
 
   return (
     <div className="w-full max-w-md mx-auto flex flex-col items-center justify-center min-h-screen bg-[#f5f5f5]">
-      <div className="flex flex-col items-center mt-4 mb-8">
-        <div className="relative mb-4" style={{ marginTop: '-10px' }}>
+      <div className="flex flex-col items-center mt-[42px] mb-8">
+        <div className="relative mb-4 mt-10" style={{ marginTop: '-10px' }}>
           <Image
             src="/images/Thermometer/temperature-box.svg"
             alt="Temperature Box"
             width={258}
             height={94.5}
+            sizes="100vw"
             style={{ width: 'auto', height: 'auto' }}
             priority
           />
@@ -206,6 +207,7 @@ const ThermometerStyle: React.FC = () => {
                     alt={`Outfit ${index + 1}`}
                     width={106}
                     height={118}
+                    // sizes="100vh"
                     style={{ width: 'auto', height: 'auto' }}
                     priority
                   />
@@ -223,7 +225,8 @@ const ThermometerStyle: React.FC = () => {
                   alt="Prev"
                   width={32}
                   height={32}
-                  className="transform rotate-180"
+                  sizes="100vw"
+                  className="transform rotate-180  drop-shadow-lg"
                 />
               </button>
             )}
@@ -237,6 +240,8 @@ const ThermometerStyle: React.FC = () => {
                   alt="Next"
                   width={32}
                   height={32}
+                  sizes="100vw"
+                  // className=" blur-2 "
                 />
               </button>
             )}
@@ -255,6 +260,7 @@ const ThermometerStyle: React.FC = () => {
             alt="Thermometer Bar"
             width={411}
             height={63}
+            sizes="100vw"
             style={{ width: 'auto', height: 'auto' }}
             priority
           />
