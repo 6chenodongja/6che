@@ -13,13 +13,12 @@ import { LogoText } from '../../../../icons/LogoText';
 import { IconLogin } from '../../../../icons/IconLogin';
 import { IconLocation } from '../../../../icons/IconLocation';
 import { motion, AnimatePresence } from 'framer-motion';
-
 import Header from '../../(components)/Header';
 import Footer from '../../(components)/Footer';
 
 // 강수확률에 따른 이미지를 반환하는 함수
 const getPrecipitationImage = (probability: number) => {
-  const precipitationValue = Math.min(Math.floor(probability / 10) * 10, 100);
+  const precipitationValue = Math.min(Math.floor(probability / 5) * 10, 50);
   return `/images/Precipitation-probability/${precipitationValue}.svg`;
 };
 
@@ -37,8 +36,7 @@ const getAirQualityImage = (phrase: string) => {
   return `/images/AirQuality/${imageName}.svg`;
 };
 
-// 날짜 포맷 함수!
-//함수
+// 날짜 포맷 함수
 const formatDate = (dateString: string): string => {
   const date = new Date(dateString);
   const dayNames = ['일', '월', '화', '수', '목', '금', '토'];
@@ -74,8 +72,11 @@ const MainPage = () => {
 
   const fetchWeatherData = async () => {
     try {
+      // 먼저 weatherData API를 호출
       const response = await fetch('/api/weather?locationKey=226081');
       const weatherData = await response.json();
+
+      // 기본 weather 데이터를 설정
       setWeather(weatherData.current);
       setDifference(
         parseFloat(
@@ -86,13 +87,21 @@ const MainPage = () => {
         ),
       );
       setHourlyWeather(weatherData.hourly || []);
+
+      // 강수확률 데이터를 별도의 API에서 가져오기
+      const precipitationResponse = await fetch(
+        'https://dataservice.accuweather.com/forecasts/v1/daily/5day/226081?apikey=U8AuE7Glix0G2AZ76oRKO1yPSW0gg5WR&language=ko-kr&details=true&metric=true',
+      );
+      const precipitationData = await precipitationResponse.json();
+      const precipitationProbability =
+        precipitationData.DailyForecasts[0].Day.PrecipitationProbability;
+
+      // extraWeatherInfo 상태 설정
       setExtraWeatherInfo([
         {
           label: '강수확률',
-          value: `${weatherData.current.PrecipitationProbability || '0'}%`,
-          image: getPrecipitationImage(
-            weatherData.current.PrecipitationProbability || 0,
-          ),
+          value: `${precipitationProbability || '0'}%`,
+          image: getPrecipitationImage(precipitationProbability || 0),
         },
         {
           label: '습도',
@@ -111,6 +120,10 @@ const MainPage = () => {
       console.error('Failed to fetch weather data', error);
     }
   };
+
+  useEffect(() => {
+    fetchWeatherData(); // 컴포넌트가 마운트될 때 데이터 가져오기
+  }, []);
 
   const fetchWeeklyWeatherData = async () => {
     try {
