@@ -92,7 +92,7 @@ const Footer = () => {
             석재영
           </span>
           <span className="ml-2 text-sm font-normal text-[#4d4d4d] leading-[14px] font-['Noto Sans KR']">
-            한소영
+            한소영.
           </span>
           <br />
           <span className="text-sm font-normal text-[#4d4d4d] leading-[14px] font-['Noto Sans KR']">

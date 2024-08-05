@@ -37,7 +37,8 @@ const getAirQualityImage = (phrase: string) => {
   return `/images/AirQuality/${imageName}.svg`;
 };
 
-// 날짜 포맷 함수
+// 날짜 포맷 함수!
+//함수
 const formatDate = (dateString: string): string => {
   const date = new Date(dateString);
   const dayNames = ['일', '월', '화', '수', '목', '금', '토'];
