@@ -28,84 +28,83 @@ function PostDetail({
   const User = useUserStore();
   const supabase = createClient();
 
-  // 유저 닉네임 가져오기
-  const fetchUserNickname = async () => {
-    const { data, error } = await supabase
-      .from('users')
-      .select('*')
-      .eq('id', params.id);
-
-    if (error) {
-      console.error(error);
-    }
-  };
-
-  // 유저 이미지 가져오기
-  const fetchUserImage = async () => {
-    const { data, error } = await supabase
-      .from('posts')
-      .select('*')
-      .eq('id', params.id)
-      .single();
-
-    if (error) {
-      console.error(error);
-    } else if (data && data.image_url) {
-      setUserImages(data.image_url.split(','));
-    } else {
-      setUserImages([]);
-    }
-  };
-
-  // 유저 코멘트 가져오기
-  const fetchUserLocations = async () => {
-    const { data, error } = await supabase
-      .from('posts')
-      .select('comment')
-      .eq('id', params.id)
-      .single();
-
-    if (error) {
-      console.error(error);
-    } else {
-      setUserComment(data.comment ? [data.comment] : []);
-    }
-  };
-  // 유저 카테고리 가져오기
-  const fetchUserComment = async () => {
-    const { data, error } = await supabase
-      .from('posts')
-      .select('locations')
-      .eq('id', params.id)
-      .single();
-
-    if (error) {
-      console.error(error);
-    } else {
-      setUserLocations(
-        data.locations
-          ? data.locations.split(',').map((location) => ` #${location}`)
-          : [],
-      );
-    }
-  };
-
-  //유저 좋아요 수 가져오기
-  const fetchUserLiked = async () => {
-    const { data, error } = await supabase
-      .from('posts')
-      .select('like')
-      .eq('id', params.id)
-      .single();
-
-    if (error) {
-      console.error(error);
-    } else {
-      setUserLiked([data.like ?? 0]);
-    }
-  };
-
   useEffect(() => {
+    // 유저 닉네임 가져오기
+    const fetchUserNickname = async () => {
+      const { data, error } = await supabase
+        .from('users')
+        .select('*')
+        .eq('id', params.id);
+
+      if (error) {
+        console.error(error);
+      }
+    };
+
+    // 유저 이미지 가져오기
+    const fetchUserImage = async () => {
+      const { data, error } = await supabase
+        .from('posts')
+        .select('*')
+        .eq('id', params.id)
+        .single();
+
+      if (error) {
+        console.error(error);
+      } else if (data && data.image_url) {
+        setUserImages(data.image_url.split(','));
+      } else {
+        setUserImages([]);
+      }
+    };
+
+    // 유저 코멘트 가져오기
+    const fetchUserLocations = async () => {
+      const { data, error } = await supabase
+        .from('posts')
+        .select('comment')
+        .eq('id', params.id)
+        .single();
+
+      if (error) {
+        console.error(error);
+      } else {
+        setUserComment(data.comment ? [data.comment] : []);
+      }
+    };
+    // 유저 카테고리 가져오기
+    const fetchUserComment = async () => {
+      const { data, error } = await supabase
+        .from('posts')
+        .select('locations')
+        .eq('id', params.id)
+        .single();
+
+      if (error) {
+        console.error(error);
+      } else {
+        setUserLocations(
+          data.locations
+            ? data.locations.split(',').map((location) => ` #${location}`)
+            : [],
+        );
+      }
+    };
+
+    //유저 좋아요 수 가져오기
+    const fetchUserLiked = async () => {
+      const { data, error } = await supabase
+        .from('posts')
+        .select('like')
+        .eq('id', params.id)
+        .single();
+
+      if (error) {
+        console.error(error);
+      } else {
+        setUserLiked([data.like ?? 0]);
+      }
+    };
     const fetchData = async () => {
       await fetchUserNickname();
       await fetchUserImage();
