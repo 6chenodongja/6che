@@ -2,26 +2,33 @@ import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
 
 type User = {
-  name: string | null;
-  nickname: string | null;
-  email: string | null;
+  id: string;
+  nickname: string;
+  email: string;
+  profileImage: string;
 };
 
-type UserState = {
+interface UserState {
   user: User | null;
+  isLoggedIn: boolean;
   setUser: (user: User) => void;
   clearUser: () => void;
-};
+  setIsLoggedIn: (isLoggedIn: boolean) => void;
+  logout: () => void;
+}
 
 export const useUserStore = create<UserState>()(
   devtools(
     persist(
       (set) => ({
+        isLogin: false,
         user: null,
-        setUser: (user) => set({ user }),
-        // 로그아웃 할 때, user가 null로 변경
-        clearUser: () => set({ user: null }),
-      }),
+        isLoggedIn: false,
+        setUser: (user) => set({ user, isLoggedIn: true }),
+        clearUser: () => set({ user: null, isLoggedIn: false }),
+        setIsLoggedIn: (isLoggedIn) => set({ isLoggedIn }),
+        logout: () => set({ user: null, isLoggedIn: false }),
+      }), 
       { name: 'user-storage' },
     ),
   ),
