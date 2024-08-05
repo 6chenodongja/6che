@@ -1,12 +1,12 @@
-import { ComponentProps } from 'react';
+// import { ComponentProps } from 'react';
 
-type ButtonProps = {
-  size?: '';
-  color?: '';
-} & ComponentProps<'button'>;
+// type ButtonProps = {
+//   size?: '';
+//   color?: '';
+// } & ComponentProps<'button'>;
 
 function Buttons() {
-  return <button></button>;
+  return <></>;
 }
 
 export default Buttons;
