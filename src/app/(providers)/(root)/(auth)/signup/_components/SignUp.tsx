@@ -76,11 +76,8 @@ function SingUp() {
   };
 
   return (
-    <main className="container h-full flex flex-col items-center justify-center bg-white">
-      <form
-        onSubmit={onSubmit}
-        className="w-full max-w-sm mx-auto bg-white p-6 rounded-lg shadow-md"
-      >
+    <main className="h-auto justify-center m-auto">
+      <form onSubmit={onSubmit} className="flex flex-col">
         <h1 className="text-2xl font-bold text-center text-black mb-6">
           회원가입
         </h1>
@@ -127,7 +124,6 @@ function SingUp() {
               placeholder="아이디"
               className="flex-grow h-10 px-3 rounded-l-lg border border-gray-300"
             />
-            <span className="self-center px-2">@</span>
             {emailDomain === '직접 입력' ? (
               <input
                 type="text"
@@ -137,7 +133,7 @@ function SingUp() {
                 }}
                 value={customEmailDomain}
                 placeholder="도메인 입력"
-                className="w-40 h-10 px-3 rounded-r-lg border border-gray-300"
+                className={`w-40 h-10 px-3 rounded-r-lg border border-gray-300 <span className="self-center px-2">@</span>`}
               />
             ) : (
               <select
@@ -151,7 +147,7 @@ function SingUp() {
                     {domain}
                   </option>
                 ))}
-                <option value="직접 입력">직접 입력</option>
+                {/* <option value="직접 입력">직접 입력</option> */}
               </select>
             )}
           </div>

@@ -89,7 +89,7 @@ const ProfileForm: React.FC = () => {
   };
 
   return (
-    <main className="w-80 h-[633px] relative overflow-hidden bg-neutral-50 m-auto">
+    <main className="w-80 h-[633px] overflow-hidden bg-neutral-50 m-auto">
       <section className="flex flex-col justify-start items-start w-72 absolute left-4 top-[82px] gap-1.5 py-1.5">
         <header className="flex justify-start items-center self-stretch flex-grow-0 flex-shrink-0 relative gap-2 pl-0.5">
           <h1 className="flex-grow-0 flex-shrink-0 text-sm font-medium text-left text-[#4d4d4d]">
@@ -135,7 +135,7 @@ const ProfileForm: React.FC = () => {
               alt={`profile-icon-${index}`}
               width={34}
               height={34}
-              className={`border-2 rounded-md ${profileIcon === icon ? 'border-blue-200' : 'border-transparent'}`}
+              className={`border-2 rounded-md  ${profileIcon === icon ? 'border-blue-200' : 'border-transparent'}`}
               onClick={() => handleProfileIconSelect(icon)}
             />
           ))}
