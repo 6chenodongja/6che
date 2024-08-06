@@ -224,7 +224,8 @@ const MainPage = () => {
     router.push('/survey');
   };
 
-  const updateWeatherData = (data: any) => {
+  const updateWeatherData = useCallback((data: any) => {
+    console.log(data);
     if (data && data.current) {
       setWeather(data.current);
 
@@ -238,9 +239,9 @@ const MainPage = () => {
       );
       setHourlyWeather(data.hourly || []);
 
-      // UVIndex를 current 또는 Day 객체에서만 가져옴
       const uvIndex =
-        data.current?.UVIndex || data.current.Day?.UVIndex || 'N/A';
+        data.current?.UVIndex ?? data.dailyForecasts?.[0]?.UVIndex ?? 'N/A';
+      console.log('UV Index:', uvIndex);
 
       setExtraWeatherInfo([
         {
@@ -267,46 +268,49 @@ const MainPage = () => {
         },
       ]);
     }
-  };
+  }, []);
 
-  const fetchWeatherData = async (locationKey = '226081') => {
-    try {
-      const response = await fetch(`/api/weather?locationKey=${locationKey}`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch weather data');
+  const fetchWeatherData = useCallback(
+    async (locationKey = '226081') => {
+      try {
+        const response = await fetch(`/api/weather?locationKey=${locationKey}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch weather data');
+        }
+        const weatherData = await response.json();
+
+        if (!weatherData || !weatherData.current) {
+          throw new Error('Invalid weather data received');
+        }
+
+        updateWeatherData(weatherData);
+
+        const currentTemp = Math.round(
+          weatherData.current.Temperature.Metric.Value,
+        );
+        const posts = await fetchAndFilterPosts(currentTemp);
+        setFilteredPosts(posts);
+      } catch (error) {
+        console.error('Error fetching weather data:', error);
+        setWeather(null);
+        setDifference(null);
+        setHourlyWeather([]);
+        setWeeklyWeather([]);
+        setExtraWeatherInfo([]);
+        setFilteredPosts([]);
       }
-      const weatherData = await response.json();
+    },
+    [updateWeatherData],
+  );
 
-      if (!weatherData || !weatherData.current) {
-        throw new Error('Invalid weather data received');
-      }
-
-      updateWeatherData(weatherData);
-
-      const currentTemp = Math.round(
-        weatherData.current.Temperature.Metric.Value,
-      );
-      const posts = await fetchAndFilterPosts(currentTemp);
-      setFilteredPosts(posts);
-    } catch (error) {
-      console.error('Error fetching weather data:', error);
-      setWeather(null);
-      setDifference(null);
-      setHourlyWeather([]);
-      setWeeklyWeather([]);
-      setExtraWeatherInfo([]);
-      setFilteredPosts([]);
-    }
-  };
+  useEffect(() => {
+    fetchWeatherData();
+  }, [fetchWeatherData]);
 
   const isValidImageUrl = (url: string | null) => {
     if (!url) return false;
     return url.startsWith('https://') && !url.includes('InvalidKey');
   };
-
-  useEffect(() => {
-    fetchWeatherData();
-  }, []);
 
   const fetchWeeklyWeatherData = async () => {
     try {
