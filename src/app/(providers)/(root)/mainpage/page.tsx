@@ -16,6 +16,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Header from '../../(components)/Header';
 import Footer from '../../(components)/Footer';
 import { supabase } from '@/supabase/client';
+import { useCallback } from 'react';
 
 // 강수확률에 따른 이미지를 반환하는 함수
 const getPrecipitationImage = (probability: number) => {
@@ -101,6 +102,106 @@ const fetchAndFilterPosts = async (currentTemp: number): Promise<Post[]> => {
     .slice(0, 2);
 };
 
+const LocationInput = ({
+  setWeather,
+}: {
+  setWeather: (weatherData: any) => void;
+}) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [location, setLocation] = useState('서울시 동작구');
+
+  const handleEditClick = () => {
+    setIsEditing(true);
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setLocation(e.target.value);
+  };
+
+  const handleBlur = () => {
+    setIsEditing(false);
+  };
+
+  const fetchLocationData = async (lat: number, lon: number) => {
+    try {
+      const response = await fetch(`/api/weather?lat=${lat}&lon=${lon}`);
+      const data = await response.json();
+      setWeather(data);
+
+      const locationName = data.locationName || '위치 정보 없음';
+
+      if (data.locationName && !locationName.includes('위치 정보 없음')) {
+        const geocodeResponse = await fetch(
+          `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lon}&language=ko&key=AIzaSyDVa-q7hV1cCNDYTKyhV5Mbef_ydoYOyzo`,
+        );
+        const geocodeData = await geocodeResponse.json();
+
+        if (geocodeData.results.length > 0) {
+          const locality = geocodeData.results[0].address_components.find(
+            (component: any) =>
+              component.types.includes('locality') ||
+              component.types.includes('sublocality'),
+          );
+
+          if (locality) {
+            setLocation(locality.long_name);
+          } else {
+            setLocation(locationName);
+          }
+        } else {
+          setLocation(locationName);
+        }
+      } else {
+        setLocation(locationName);
+      }
+
+      setIsEditing(false);
+    } catch (error) {
+      console.error('Failed to fetch location data', error);
+    }
+  };
+
+  const handleLocationClick = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          fetchLocationData(latitude, longitude);
+        },
+        (error) => {
+          console.error('Error getting location', error);
+          alert('위치를 가져올 수 없습니다. 위치 권한을 확인해주세요.');
+        },
+      );
+    } else {
+      alert('현재 브라우저에서 위치 정보를 사용할 수 없습니다.');
+    }
+  };
+
+  return (
+    <div className="mt-[40px] flex items-center space-x-2 rounded-full bg-white bg-opacity-30 py-1 px-4 backdrop-blur-lg">
+      {isEditing ? (
+        <input
+          type="text"
+          value={location}
+          onChange={handleInputChange}
+          onBlur={handleBlur}
+          autoFocus
+          className="text-black bg-transparent border-none outline-none"
+        />
+      ) : (
+        <span className="text-black" onClick={handleEditClick}>
+          {location}
+        </span>
+      )}
+      <IconLocation
+        className="w-4 h-4 cursor-pointer"
+        onClick={handleLocationClick}
+      />
+    </div>
+  );
+};
+
 const MainPage = () => {
   const [filteredPosts, setFilteredPosts] = useState<Post[]>([]);
   const [weather, setWeather] = useState<any>(null);
@@ -123,80 +224,88 @@ const MainPage = () => {
     router.push('/survey');
   };
 
-  const fetchWeatherData = async () => {
-    try {
-      // 먼저 weatherData API를 호출
-      const response = await fetch('/api/weather?locationKey=226081');
-      const weatherData = await response.json();
+  const updateWeatherData = (data: any) => {
+    if (data && data.current) {
+      setWeather(data.current);
 
-      // 기본 weather 데이터를 설정
-      setWeather(weatherData.current);
       setDifference(
         parseFloat(
           (
-            weatherData.current.Temperature.Metric.Value -
-            weatherData.historical.Temperature.Metric.Value
+            data.current.Temperature.Metric.Value -
+            data.historical.Temperature.Metric.Value
           ).toFixed(1),
         ),
       );
-      setHourlyWeather(weatherData.hourly || []);
+      setHourlyWeather(data.hourly || []);
 
-      // 강수확률 데이터를 별도의 API에서 가져오기
-      const precipitationResponse = await fetch(
-        'https://dataservice.accuweather.com/forecasts/v1/daily/5day/226081?apikey=U8AuE7Glix0G2AZ76oRKO1yPSW0gg5WR&language=ko-kr&details=true&metric=true',
-      );
-      const precipitationData = await precipitationResponse.json();
-      const precipitationProbability =
-        precipitationData.DailyForecasts[0].Day.PrecipitationProbability;
+      // UVIndex를 current 또는 Day 객체에서만 가져옴
+      const uvIndex =
+        data.current?.UVIndex || data.current.Day?.UVIndex || 'N/A';
 
-      // 자외선 지수 가져오기
-      const uvIndex = precipitationData.DailyForecasts[0].AirAndPollen[5].Value;
-
-      // extraWeatherInfo 상태 설정
       setExtraWeatherInfo([
         {
           label: '강수확률',
-          value: `${precipitationProbability || '0'}%`,
-          image: getPrecipitationImage(precipitationProbability || 0),
-        },
-        {
-          label: '습도',
-          value: `${weatherData.current.RelativeHumidity || 'N/A'}%`,
-          image: getHumidityImage(weatherData.current.RelativeHumidity || null),
-        },
-        {
-          label: '미세먼지',
-          value: `${weatherData.airQuality?.Category || 'N/A'}`,
-          image: getAirQualityImage(
-            weatherData.airQuality?.Category || 'Unhealthy',
+          value: `${data.current.Day?.PrecipitationProbability || '0'}%`,
+          image: getPrecipitationImage(
+            data.current.Day?.PrecipitationProbability || 0,
           ),
         },
         {
+          label: '습도',
+          value: `${data.current.RelativeHumidity || 'N/A'}%`,
+          image: getHumidityImage(data.current.RelativeHumidity || null),
+        },
+        {
+          label: '미세먼지',
+          value: `${data.airQuality?.Category || 'N/A'}`,
+          image: getAirQualityImage(data.airQuality?.Category || 'Unhealthy'),
+        },
+        {
           label: '자외선',
-          value: `${uvIndex || 'N/A'}`,
-          image: getUVIndexImage(uvIndex || 0),
+          value: `${uvIndex !== 'N/A' ? uvIndex : 'N/A'}`,
+          image: getUVIndexImage(uvIndex !== 'N/A' ? uvIndex : 0),
         },
       ]);
+    }
+  };
 
-      // 추천 코디 데이터 가져오기
+  const fetchWeatherData = async (locationKey = '226081') => {
+    try {
+      const response = await fetch(`/api/weather?locationKey=${locationKey}`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch weather data');
+      }
+      const weatherData = await response.json();
+
+      if (!weatherData || !weatherData.current) {
+        throw new Error('Invalid weather data received');
+      }
+
+      updateWeatherData(weatherData);
+
       const currentTemp = Math.round(
-        weatherData.current?.Temperature?.Metric?.Value,
+        weatherData.current.Temperature.Metric.Value,
       );
       const posts = await fetchAndFilterPosts(currentTemp);
       setFilteredPosts(posts);
     } catch (error) {
-      console.error('Failed to fetch weather data', error);
+      console.error('Error fetching weather data:', error);
+      setWeather(null);
+      setDifference(null);
+      setHourlyWeather([]);
+      setWeeklyWeather([]);
+      setExtraWeatherInfo([]);
+      setFilteredPosts([]);
     }
   };
 
-  // 이미지 URL이 유효한지 확인하는 함수
   const isValidImageUrl = (url: string | null) => {
     if (!url) return false;
     return url.startsWith('https://') && !url.includes('InvalidKey');
   };
 
   useEffect(() => {
-    fetchWeatherData(); // 컴포넌트가 마운트될 때 데이터 가져오기
+    fetchWeatherData();
   }, []);
 
   const fetchWeeklyWeatherData = async () => {
@@ -272,29 +381,33 @@ const MainPage = () => {
         className="container flex flex-col items-center w-full text-white py-8 px-4"
         style={backgroundStyle}
       >
-        <div className="mt-[40px] flex items-center space-x-2 rounded-full bg-white bg-opacity-30 py-1 px-4 backdrop-blur-lg">
-          <span className="text-black">서울시 동작구</span>
-          <IconLocation className="w-4 h-4" />
-        </div>
+        <LocationInput setWeather={updateWeatherData} />
+
         <div className="mt-[24px] flex items-end flex-col">
           <div className="relative w-[75px] h-16">
             <div className="absolute top-0 left-0 font-temperature-60 font-[number:var(--temperature-60-font-weight)] text-black text-[length:var(--temperature-60-font-size)] tracking-[var(--temperature-60-letter-spacing)] leading-[var(--temperature-60-line-height)] whitespace-nowrap [font-style:var(--temperature-60-font-style)]">
-              {weather
+              {weather && weather.Temperature && weather.Temperature.Metric
                 ? `${Math.round(weather.Temperature.Metric.Value)}°`
                 : 'N/A'}
             </div>
           </div>
         </div>
         <div className="mt-[23px] flex justify-center items-center">
-          <span className="text-lg text-black">
-            {difference !== null
-              ? Math.abs(difference) <= 0.9
-                ? '어제 기온과 비슷해요'
-                : `어제 기온보다 ${Math.round(Math.abs(difference))}° ${
-                    difference > 0 ? '높아요' : '낮아요'
-                  }`
-              : '정보 없음'}
-          </span>
+          {weather ? (
+            <span className="text-lg text-black">
+              {difference !== null
+                ? Math.abs(difference) <= 0.9
+                  ? '어제 기온과 비슷해요'
+                  : `어제 기온보다 ${Math.round(Math.abs(difference))}° ${
+                      difference > 0 ? '높아요' : '낮아요'
+                    }`
+                : '정보 없음'}
+            </span>
+          ) : (
+            <div className="text-center text-red-500">
+              날씨 정보를 불러오는데 실패했습니다. 나중에 다시 시도해주세요.
+            </div>
+          )}
         </div>
 
         <section className="w-full mt-8">
@@ -389,15 +502,12 @@ const MainPage = () => {
                 navigation={false} // 스와이퍼 네비게이션 화살표 제거
               >
                 {filteredPosts.map((post, index) => {
-                  // 이미지 URL이 유효한지 검사
                   const validImageUrl = isValidImageUrl(post.image_url);
 
-                  // 기본 이미지를 설정하거나, 유효한 이미지 URL을 사용
                   const imageUrl = validImageUrl
                     ? post.image_url
-                    : '/images/default_image.png'; // 기본 이미지 경로 설정
+                    : '/images/default_image.png';
 
-                  // 해당 게시물의 온도 추출
                   const postTempMatch = post.weather?.match(/(\d+)(?=°C)/);
                   const postTemperature = postTempMatch
                     ? parseInt(postTempMatch[1], 10)
@@ -407,7 +517,7 @@ const MainPage = () => {
                     <SwiperSlide key={index}>
                       <div
                         className="w-28 h-40 relative rounded-lg overflow-hidden cursor-pointer"
-                        onClick={() => router.push(`/detail/${post.id}`)} // 카드 클릭 시 해당 포스트 디테일 페이지로 이동
+                        onClick={() => router.push(`/detail/${post.id}`)}
                       >
                         <Image
                           src={imageUrl as string}
@@ -492,7 +602,6 @@ const MainPage = () => {
             <div className="self-stretch justify-start items-center inline-flex overflow-x-auto">
               <Swiper spaceBetween={10} slidesPerView={6}>
                 {hourlyWeather.map((weather, index) => {
-                  // WeatherIcon 숫자에 따른 이미지 파일 이름 결정
                   const getWeatherIconSrc = (iconNumber: number) => {
                     switch (iconNumber) {
                       case 1:
@@ -556,14 +665,12 @@ const MainPage = () => {
                     }
                   };
 
-                  // ISO8601 날짜 형식에서 시간만 추출
                   const formatTime = (dateTime: string) => {
                     const date = new Date(dateTime);
                     const hours = date.getHours();
                     return `${hours}시`; // 시간과 "시"를 같은 문자열로 반환
                   };
 
-                  // 섭씨로 변환하는 함수
                   const fahrenheitToCelsius = (fahrenheit: number) => {
                     return ((fahrenheit - 32) * 5) / 9;
                   };
@@ -719,23 +826,19 @@ const MainPage = () => {
       </main>
       <Footer />
 
-      {/* 요소 추가 모달 */}
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
           <div className="bg-white p-6 rounded-lg shadow-lg">
             <h2 className="text-lg font-semibold mb-4">날씨 요소 추가</h2>
             <div className="grid grid-cols-2 gap-4">
-              {/* 추가 가능한 요소 버튼 */}
               <button
                 onClick={() => {
-                  // 추가하고 싶은 요소에 따라 상태 업데이트
                   setShowModal(false);
                 }}
                 className="p-2 bg-gray-200 rounded-md"
               >
                 예: 자외선 지수
               </button>
-              {/* 다른 요소 버튼들도 추가 가능 */}
             </div>
             <button
               onClick={() => setShowModal(false)}
