@@ -17,11 +17,8 @@ function SingUpDone() {
           <p>닉네임님! 환영합니다.</p>
           <p>이메일로 발송된 이메일 주소 확인을 완료해주세요</p>
         </div>
-        <div className="w-full h-56 flex flex-col drop-shadow-lg ">
+        <div className="mb-5">
           <BottomSheet />
-          <button className="bg-black text-white rounded-lg w-[288px] h-[49px] hover:bg-blue-400">
-            선택 완료
-          </button>
         </div>
         <button className="bg-black text-white rounded-lg w-[288px] h-[49px] hover:bg-blue-400 mb-[77px]">
           <Link href={'/login'}>로그인 하기</Link>

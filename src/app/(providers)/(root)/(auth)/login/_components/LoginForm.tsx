@@ -109,7 +109,7 @@ function LoginForm() {
             placeholder="체크 박스입니다"
             className="w-[18px] h-[18px] bg-black-200"
           />
-          <label className="flex-grow-0 flex-shrink-0 text-sm text-left text-[#808080]">
+          <label className="flex-grow-0 flex-shrink-0 text-sm text-left hover: text-[#808080]">
             로그인 유지
           </label>
         </div>
@@ -125,7 +125,7 @@ function LoginForm() {
             </button>
           </Link>
         </div>
-        <div className="flex-grow-0 flex-shrink-0 text-sm text-left text-[#4d4d4d]">
+        <div className="flex-grow-0 flex-shrink-0 text-sm text-right text-[#4d4d4d]">
           <Link href={''} className="">
             아이디/비밀번호 찾기
           </Link>
@@ -140,13 +140,13 @@ function LoginForm() {
         <div className="flex flex-col gap-2">
           <button
             onClick={() => handleSocialLogin('google')}
-            className="bg-yellow-950 text-[#fff] w-[288px] rounded-xl"
+            className="bg-white border-2 hover:bg-[#ccc] hover:bg-opacity-70 border-[#121212] text-[#4D4D4D] font-bold w-[288px] h-[52px] rounded-xl"
           >
             구글
           </button>
           <button
             onClick={() => handleSocialLogin('kakao')}
-            className="bg-yellow-950 text-[#fff] w-[288px] rounded-xl"
+            className="bg-[#FFD65E] hover:bg-[#ccc] hover:bg-opacity-70 text-[#4D4D4D] font-bold w-[288px] h-[52px] rounded-xl"
           >
             카카오톡
           </button>

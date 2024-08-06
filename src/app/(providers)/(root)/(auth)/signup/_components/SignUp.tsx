@@ -14,7 +14,7 @@ function SingUp() {
     customEmailDomain,
     password,
     passwordConfirm,
-    isOver14,
+    isOver,
     error,
     isNicknameValid,
     isNicknameChecked,
@@ -23,7 +23,7 @@ function SingUp() {
     setEmailId,
     setEmailDomain,
     setCustomEmailDomain,
-    setIsOver14,
+    setIsOver,
     handleChange,
     handleEmailDomainChange,
     checkNickname,
@@ -187,8 +187,8 @@ function SingUp() {
           <input
             type="checkbox"
             id="over14"
-            checked={isOver14}
-            onChange={(e) => setIsOver14(e.target.checked)}
+            checked={isOver}
+            onChange={(e) => setIsOver(e.target.checked)}
             className="mr-2"
           />
           <label htmlFor="over14" className="text-gray-700">
