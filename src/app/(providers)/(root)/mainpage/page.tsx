@@ -363,7 +363,10 @@ const MainPage = () => {
                   추천 코디
                 </div>
               </div>
-              <div className="p-1.5 rounded-lg justify-center items-center gap-1 flex">
+              <div
+                className="p-1.5 rounded-lg justify-center items-center gap-1 flex cursor-pointer"
+                onClick={() => router.push('/list')}
+              >
                 <div className="text-[#4d4d4d] text-xs font-normal font-['Noto Sans KR'] leading-none">
                   더보기
                 </div>
@@ -379,45 +382,58 @@ const MainPage = () => {
               </div>
             </div>
             <div className="self-stretch rounded-lg justify-start items-start gap-2 inline-flex">
-              {filteredPosts.map((post, index) => {
-                // 이미지 URL이 유효한지 검사
-                const validImageUrl = isValidImageUrl(post.image_url);
+              <Swiper
+                spaceBetween={8}
+                slidesPerView={2}
+                pagination={{ clickable: true }}
+                navigation={false} // 스와이퍼 네비게이션 화살표 제거
+              >
+                {filteredPosts.map((post, index) => {
+                  // 이미지 URL이 유효한지 검사
+                  const validImageUrl = isValidImageUrl(post.image_url);
 
-                // 기본 이미지를 설정하거나, 유효한 이미지 URL을 사용
-                const imageUrl = validImageUrl
-                  ? post.image_url
-                  : '/images/default_image.png'; // 기본 이미지 경로 설정
+                  // 기본 이미지를 설정하거나, 유효한 이미지 URL을 사용
+                  const imageUrl = validImageUrl
+                    ? post.image_url
+                    : '/images/default_image.png'; // 기본 이미지 경로 설정
 
-                console.log('Image URL:', imageUrl); // 이미지 경로 확인용 로그
+                  // 해당 게시물의 온도 추출
+                  const postTempMatch = post.weather?.match(/(\d+)(?=°C)/);
+                  const postTemperature = postTempMatch
+                    ? parseInt(postTempMatch[1], 10)
+                    : 'N/A';
 
-                return (
-                  <div
-                    key={index}
-                    className="w-28 h-40 relative rounded-lg overflow-hidden"
-                  >
-                    <Image
-                      src={imageUrl as string} // imageUrl이 항상 string이 되도록 보장
-                      alt={`추천 코디 ${index + 1}`}
-                      className="w-[113.60px] h-40 left-0 top-0 absolute object-cover"
-                      width={113.6}
-                      height={160}
-                    />
-                    <div className="w-6 h-6 left-[84px] top-[132px] absolute justify-center items-center inline-flex">
-                      <div className="w-6 h-6 relative backdrop-blur-[20px] flex-col justify-start items-start flex" />
-                    </div>
-                    <div className="px-1 py-px left-[10px] top-[10px] absolute bg-white/50 rounded border border-white/60 justify-start items-center gap-0.5 inline-flex">
-                      <div className="w-4 h-4 bg-white rounded-sm backdrop-blur-[20px] justify-center items-center flex">
-                        <div className="w-4 h-4 p-0.5 bg-white/60 rounded justify-center items-center inline-flex">
-                          <div className="w-3 h-3 relative" />
+                  return (
+                    <SwiperSlide key={index}>
+                      <div
+                        className="w-28 h-40 relative rounded-lg overflow-hidden cursor-pointer"
+                        onClick={() => router.push(`/detail/${post.id}`)} // 카드 클릭 시 해당 포스트 디테일 페이지로 이동
+                      >
+                        <Image
+                          src={imageUrl as string}
+                          alt={`추천 코디 ${index + 1}`}
+                          className="w-[113.60px] h-40 left-0 top-0 absolute object-cover"
+                          width={113.6}
+                          height={160}
+                        />
+                        <div className="w-6 h-6 left-[84px] top-[132px] absolute justify-center items-center inline-flex">
+                          <div className="w-6 h-6 relative backdrop-blur-[20px] flex-col justify-start items-start flex" />
+                        </div>
+                        <div className="px-1 py-px left-[10px] top-[10px] absolute bg-white/50 rounded border border-white/60 justify-start items-center gap-0.5 inline-flex">
+                          <div className="w-4 h-4 bg-white rounded-sm backdrop-blur-[20px] justify-center items-center flex">
+                            <div className="w-4 h-4 p-0.5 bg-white/60 rounded justify-center items-center inline-flex">
+                              <div className="w-3 h-3 relative" />
+                            </div>
+                          </div>
+                          <div className="text-black text-sm font-normal font-['Varela'] leading-[18.20px]">
+                            {postTemperature}°
+                          </div>
                         </div>
                       </div>
-                      <div className="text-black text-sm font-normal font-['Varela'] leading-[18.20px]">
-                        {Math.round(weather?.Temperature?.Metric?.Value || 26)}°
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
+                    </SwiperSlide>
+                  );
+                })}
+              </Swiper>
             </div>
 
             <button
