@@ -21,15 +21,14 @@ export const useUserStore = create<UserState>()(
   devtools(
     persist(
       (set) => ({
-        isLogin: false,
         user: null,
         isLoggedIn: false,
         setUser: (user) => set({ user, isLoggedIn: true }),
         clearUser: () => set({ user: null, isLoggedIn: false }),
         setIsLoggedIn: (isLoggedIn) => set({ isLoggedIn }),
         logout: () => set({ user: null, isLoggedIn: false }),
-      }), 
-      { name: 'user-storage' },
-    ),
-  ),
+      }),
+      { name: 'user-storage' }
+    )
+  )
 );

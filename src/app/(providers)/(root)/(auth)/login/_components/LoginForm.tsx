@@ -2,10 +2,11 @@
 
 import { createClient } from '@/supabase/client';
 import { useUserStore } from '@/zustand/store/useUserStore';
-import axios from 'axios';
 import Link from 'next/link';
+import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import React, { useRef } from 'react';
+import SocialLogin from './SocialLogin';
 
 const LoginForm = () => {
   const emailRef = useRef<HTMLInputElement>(null);
@@ -48,26 +49,8 @@ const LoginForm = () => {
     }
   };
 
-  const handleSocialLogin = async (provider: 'google' | 'kakao') => {
-    try {
-      const { data, error } = await supabase.auth.signInWithOAuth({
-        provider,
-        options: {
-          redirectTo: `${process.env.NEXT_PUBLIC_BASE_URL}/auth/callback`,
-        },
-      });
-      if (error) throw error;
-
-      if (data) {
-        setIsLoggedIn(true);
-        window.location.href = data.url;
-      }
-    } catch (error) {
-      console.error(`ERROR ${provider.toUpperCase()}`, error);
-    }
-  };
-
   return (
+    <>
     <form onSubmit={onSubmit} className="w-full h-full justify-center">
       <h1 className="mt-[119px] text-[24px] font-bold text-center text-[#121212]">
         로그인
@@ -123,22 +106,7 @@ const LoginForm = () => {
         </p>
         <div className="flex-grow h-px bg-[#d9d9d9]" />
       </div>
-      <div className="flex flex-col gap-2">
-        <button
-          type="button"
-          onClick={() => handleSocialLogin('google')}
-          className=""
-        >
-          구글
-        </button>
-        <button
-          type="button"
-          onClick={() => handleSocialLogin('kakao')}
-          className=""
-        >
-          카카오톡
-        </button>
-      </div>
+      
       <div className="">
         <input
           type="checkbox"
@@ -149,7 +117,10 @@ const LoginForm = () => {
           로그인 유지
         </label>
       </div>
+      <SocialLogin />
     </form>
+    
+    </>
   );
 };
 
