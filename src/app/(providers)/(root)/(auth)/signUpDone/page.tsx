@@ -1,13 +1,16 @@
-import Link from 'next/link';
 import React from 'react';
+import SingUpDone from './_components/SingUpDone';
+import Header from 'app/(providers)/(components)/Header';
+import Footer from 'app/(providers)/(components)/Footer';
 
-function SingUpDone() {
+function SingUpDonePage() {
   return (
     <main>
-      <h1>회원가입 완료</h1>
-      <Link href={'/login'}>로그인 홈페이지로 이동</Link>
+      <Header />
+      <SingUpDone />
+      <Footer />
     </main>
   );
 }
 
-export default SingUpDone;
+export default SingUpDonePage;

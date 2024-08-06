@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useRef } from 'react';
 
-const LoginForm = () => {
+function LoginForm() {
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const supabase = createClient();
@@ -154,6 +154,6 @@ const LoginForm = () => {
       </form>
     </main>
   );
-};
+}
 
 export default LoginForm;
