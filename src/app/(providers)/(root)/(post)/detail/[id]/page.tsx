@@ -12,55 +12,56 @@ import Link from 'next/link';
 import 'swiper/swiper-bundle.css';
 import { useUserStore } from '@/zustand/store/useUserStore';
 import { Tables } from '../../../../../../../types/supabase';
+import { useRouter } from 'next/navigation';
+
+type PostDetailItem = Tables<'posts'> & { users: Tables<'users'> | null };
 
 function PostDetail({
   params,
 }: {
   params: { id: string; comment: string; locations: string; like: number };
 }) {
-  const [userList, setUserList] = useState<Tables<'users'>[]>([]);
   const [userComment, setUserComment] = useState<string[]>([]);
-  const [userImages, setUserImages] = useState<string[]>([]);
+  const [DetailList, setDetailList] = useState<PostDetailItem>();
+  const [userPostImages, setPostImages] = useState<string[]>([]);
   const [userLocations, setUserLocations] = useState<string[]>([]);
   const [userLiked, setUserLiked] = useState<number[]>([]);
   const [modalOpen, setModalOpen] = useState<boolean>(false);
-  const [userNickName, setUserNickName] = useState<Tables<'posts'>[]>([]);
 
-  const User = useUserStore();
+  const router = useRouter();
+
+  const { user } = useUserStore();
   const supabase = createClient();
 
+  // 수정 삭제 보여주기
+  // select로 가져온 id랑 UserStore랑 아이디 비교해서 수정삭제 버튼 보여주기
+
   useEffect(() => {
-    // 유저 닉네임 가져오기
-    const fetchUserNickname = async () => {
-      const { data, error } = await supabase
-        .from('users')
-        .select('*')
-        .eq('id', params.id);
-
-      if (error) {
-        console.error(error);
-      }
-    };
-
-    // 유저 이미지 가져오기
-    const fetchUserImage = async () => {
-      const { data, error } = await supabase
+    // 유저 포스트 1개의 정보를 가져오기
+    const fetchPostDetail = async () => {
+      const { data: postDetail, error } = await supabase
         .from('posts')
-        .select('*')
+        .select('*, users(*)')
         .eq('id', params.id)
         .single();
 
       if (error) {
         console.error(error);
-      } else if (data && data.image_url) {
-        setUserImages(data.image_url.split(','));
+      } else if (postDetail && postDetail.image_url) {
+        setPostImages(postDetail.image_url.split(','));
       } else {
-        setUserImages([]);
+        setPostImages([]);
+      }
+
+      if (error) {
+        console.error(error);
+      } else {
+        setDetailList(postDetail);
       }
     };
 
     // 유저 코멘트 가져오기
-    const fetchUserLocations = async () => {
+    const fetchPostComments = async () => {
       const { data, error } = await supabase
         .from('posts')
         .select('comment')
@@ -74,7 +75,7 @@ function PostDetail({
       }
     };
     // 유저 카테고리 가져오기
-    const fetchUserComment = async () => {
+    const fetchPostLocations = async () => {
       const { data, error } = await supabase
         .from('posts')
         .select('locations')
@@ -107,10 +108,9 @@ function PostDetail({
       }
     };
     const fetchData = async () => {
-      await fetchUserNickname();
-      await fetchUserImage();
-      await fetchUserComment();
-      await fetchUserLocations();
+      await fetchPostDetail();
+      await fetchPostComments();
+      await fetchPostLocations();
       await fetchUserLiked();
     };
 
@@ -151,18 +151,22 @@ function PostDetail({
   };
 
   //유저 게시물 삭제
-  const deletePost = async () => {
+  const deletePosts = async () => {
     try {
-      await supabase
+      const { error } = await supabase
         .from('posts')
         .delete()
-        .eq('id', params.id)
-        .eq('user_id', User);
-    } catch {
+        .eq('id', params.id);
+      if (error) {
+        throw error;
+      }
       alert('게시물이 삭제되었습니다.');
+      router.replace('/list');
+    } catch (error) {
+      console.error('게시물 삭제 중 오류가 발생했습니다:', error);
+      alert('게시물 삭제 중 오류가 발생했습니다.');
     }
   };
-  console.log(User.user?.nickname);
 
   return (
     <div>
@@ -188,17 +192,22 @@ function PostDetail({
                 />
               </svg>
             </Link>
-            <div className="flex flex-row ml-auto gap-1">
-              <button
-                onClick={deletePost}
-                className="flex justify-center items-center bg-[#FF4732]/85 text-white rounded-xl px-[10px] py-[8px]"
-              >
-                삭제
-              </button>
-              <button className="flex  justify-center items-center bg-[#121212] text-white mr-4 rounded-xl px-[10px] py-[8px]">
-                수정
-              </button>
-            </div>
+            {DetailList?.user_id === user?.id && (
+              <div className="flex flex-row ml-auto gap-1">
+                <button
+                  onClick={deletePosts}
+                  className="flex justify-center items-center bg-[#FF4732]/85 text-white rounded-xl px-[10px] py-[8px]"
+                >
+                  삭제
+                </button>
+                <button
+                  onClick={() => router.push(`/edit/${params.id}`)}
+                  className="flex justify-center items-center bg-[#121212] text-white mr-4 rounded-xl px-[10px] py-[8px]"
+                >
+                  수정
+                </button>
+              </div>
+            )}
           </header>
           <Swiper
             slidesPerView={1}
@@ -206,7 +215,7 @@ function PostDetail({
             modules={[Pagination]}
             loop={true}
           >
-            {userImages.map((image, index) => (
+            {userPostImages.map((image, index) => (
               <SwiperSlide
                 key={index}
                 className="w-[288px] h-[412px] object-cover"
@@ -216,6 +225,7 @@ function PostDetail({
                   alt={`이미지 ${index}`}
                   width={200}
                   height={100}
+                  sizes="100vw"
                   className="w-[288px] h-[412px] rounded-xl flex justify-center items-center mx-auto"
                 />
                 <div className="absolute top-3 left-6 bg-white bg-opacity-50 p-1 m-1 font-[18px] rounded-lg  flex flex-row gap-2 justify-center items-center">
@@ -455,15 +465,9 @@ function PostDetail({
                 </svg>
                 <div>
                   {/* 유저 닉네임 */}
-                  {userList.map((user) => {
-                    return (
-                      <div key={user.id}>
-                        <p className="flex-grow-0 flex-shrink-0 text-lg font-medium text-left text-black">
-                          {/* 여기에 유저 닉네임 로직 넣기 */}
-                        </p>
-                      </div>
-                    );
-                  })}
+                  <p className="flex-grow-0 flex-shrink-0 text-lg font-medium text-left text-black">
+                    {DetailList?.users?.nick_name}
+                  </p>
                 </div>
               </div>
               <div className="flex justify-start items-center flex-grow-0 flex-shrink-0 gap-2">
@@ -621,13 +625,14 @@ function PostDetail({
                 modules={[Pagination]}
                 loop={true}
               >
-                {userImages.map((image, index) => (
+                {userPostImages.map((image, index) => (
                   <SwiperSlide key={index}>
                     <Image
                       src={image}
                       alt={`이미지 ${index}`}
                       width={300}
                       height={100}
+                      sizes="100vw"
                       className="h-[286px] object-cover rounded-lg"
                     />
                     <div className="absolute top-2 left-2 bg-white bg-opacity-50 p-1 m-1 text-sm rounded-lg font-bold">

@@ -280,6 +280,7 @@ const PostFormPage = () => {
                     alt="Upload Icon"
                     width={24}
                     height={24}
+                    sizes="100vw"
                     className="text-white filter invert"
                   />
                   <div className="text-sm text-white mt-1">
