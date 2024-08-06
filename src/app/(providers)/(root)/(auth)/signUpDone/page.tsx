@@ -5,10 +5,12 @@ import Footer from 'app/(providers)/(components)/Footer';
 
 function SingUpDonePage() {
   return (
-    <main>
-      <Header />
-      <SingUpDone />
-      <Footer />
+    <main className="flex flex-row justify-center container">
+      <div className="bg-[#FAFAFA] w-full h-auto">
+        <Header />
+        <SingUpDone />
+        <Footer />
+      </div>
     </main>
   );
 }

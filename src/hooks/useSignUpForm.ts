@@ -10,7 +10,7 @@ export const useSignUpForm = () => {
   const [customEmailDomain, setCustomEmailDomain] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [passwordConfirm, setPasswordConfirm] = useState<string>('');
-  const [isOver14, setIsOver14] = useState<boolean>(false);
+  const [isOver, setIsOver] = useState<boolean>(false);
   const [error, setError] = useState<ErrorState>({
     nickname: '',
     email: '',
@@ -109,7 +109,7 @@ export const useSignUpForm = () => {
     setIsNicknameValid(nickname.length > 0 && error.nickname === '');
   }, [nickname, error.nickname]);
 
-  const isFormValid = isNicknameChecked && error.nickname === '' && emailId !== '' && (emailDomain !== '직접 입력' || customEmailDomain !== '') && password !== '' && passwordConfirm !== '' && password === passwordConfirm && isOver14;
+  const isFormValid = isNicknameChecked && error.nickname === '' && emailId !== '' && (emailDomain !== '직접 입력' || customEmailDomain !== '') && password !== '' && passwordConfirm !== '' && password === passwordConfirm && isOver;
 
   return {
     nickname,
@@ -118,7 +118,7 @@ export const useSignUpForm = () => {
     customEmailDomain,
     password,
     passwordConfirm,
-    isOver14,
+    isOver,
     error,
     isNicknameValid,
     isNicknameChecked,
@@ -127,7 +127,7 @@ export const useSignUpForm = () => {
     setEmailId,
     setEmailDomain,
     setCustomEmailDomain,
-    setIsOver14,
+    setIsOver,
     handleChange,
     handleEmailDomainChange,
     checkNickname: debounceCheckNickname,
