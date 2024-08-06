@@ -4,10 +4,10 @@ import { createClient } from '@/supabase/client';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React from 'react';
-import { useSignUpForm } from '@/utils/useSignUpForm';
 import { emailDomains } from '@/utils/emailDomains';
 import Footer from 'app/(providers)/(components)/Footer';
 import Header from 'app/(providers)/(components)/Header';
+import { useSignUpForm } from 'hooks/useSignUpForm';
 
 const SignUpPage: React.FC = () => {
   const {
@@ -64,7 +64,7 @@ const SignUpPage: React.FC = () => {
       password,
       options: {
         data: {
-          first_name: nickname,
+          nickname: nickname,
         },
       },
     });

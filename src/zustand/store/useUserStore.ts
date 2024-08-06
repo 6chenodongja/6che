@@ -12,7 +12,7 @@ interface UserState {
   user: User | null;
   isLoggedIn: boolean;
   setUser: (user: User) => void;
-  clearUser: () => void;
+  clearUser: () => void; // 상태 초기화
   setIsLoggedIn: (isLoggedIn: boolean) => void;
 }
 

@@ -12,8 +12,7 @@ const LoginForm = () => {
   const passwordRef = useRef<HTMLInputElement>(null);
   const supabase = createClient();
   const router = useRouter();
-  const { setUser } = useUserStore(); // 구조분해 할당으로 스토어 가져오기
-  const { setIsLoggedIn } = useUserStore(); // 구조분해 할당으로 스토어 가져오기
+  const { setUser, setIsLoggedIn } = useUserStore(); // 구조분해 할당으로 스토어 가져오기
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -25,16 +24,22 @@ const LoginForm = () => {
       return;
     }
     try {
+      const supabase = createClient();
+
+      // 사용자 로그인
+      const { error, data } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
       const res = await axios.post('/api/auth/login', {
         email,
         password,
       });
-
-      if (res.data && res.data.email) {
+      if (data?.user && data.user.email) {
         setUser({
-          id: res.data.id,
-          nickname: res.data.nick_name,
-          email: res.data.email,
+          id: data.user.id,
+          nickname: data.user.user_metadata.nickname, // 로그인 할 때 메타 데이터에 저장해야 값이 나오는 상태
+          email: data.user.email,
           profileImage: '',
         });
         setIsLoggedIn(true);
@@ -60,7 +65,7 @@ const LoginForm = () => {
 
       if (data) {
         setIsLoggedIn(true);
-        window.location.href = data.url;
+        // window.location.href = data.url;
       }
     } catch (error) {
       console.error(`ERROR ${provider.toUpperCase()}`, error);
@@ -69,7 +74,7 @@ const LoginForm = () => {
 
   return (
     <main>
-      <form onSubmit={onSubmit} className="container h-auto justify-center">
+      <form onSubmit={onSubmit} className="h-auto justify-center m-auto">
         <h1 className="mt-[119px] text-[24px] font-bold text-center text-[#121212]">
           로그인
         </h1>
@@ -85,7 +90,7 @@ const LoginForm = () => {
             id="email"
             placeholder="이메일을 입력해 주세요."
             ref={emailRef}
-            className="flex justify-start items-center flex-grow relative gap-2 px-4 py-3 rounded-xl border-[1px] w-[288px] border-[#808080]"
+            className="flex justify-start items-center flex-grow relative gap-2 px-4 py-3 rounded-xl border-[1px] w-[288px] border-[#4D4D4D]"
           />
         </div>
         <div className="mt-2">
@@ -100,11 +105,11 @@ const LoginForm = () => {
             className="flex justify-start items-center flex-grow relative gap-2 px-4 py-3 rounded-xl border-[1px] w-[288px] border-[#808080]"
           />
         </div>
-        <div className="">
+        <div className="bg-red-500">
           <input
             type="checkbox"
             placeholder="체크 박스입니다"
-            className="w-[18px] h-[18px] rounded bg-[#ccc]/70"
+            className="w-[18px] h-[18px] bg-black-200"
           />
           <label className="flex-grow-0 flex-shrink-0 text-sm text-left text-[#808080]">
             로그인 유지
