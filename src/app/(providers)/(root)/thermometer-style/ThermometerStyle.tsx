@@ -10,6 +10,8 @@ import React, {
 } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/swiper-bundle.css';
 
 interface OutfitImages {
   [key: string]: string[];
@@ -60,25 +62,18 @@ const outfits: OutfitImages = {
     '/images/Weather2/field-jacket.png',
     '/images/Weather2/jumper.png',
     '/images/Weather2/brushed-pants.png',
-    // '/images/Weather2/스타킹.png', 아이콘 미완성
   ],
   '5°C - 8°C': [
     '/images/Weather2/wool-coat.png',
     '/images/Weather2/heattech.png',
     '/images/Weather2/leather-jacket.png',
-    // '/images/Weather2/기모.png', 아이콘 미완성
+    // '/images/Weather2/기모.png', 삽입 예정
   ],
   '4°C 이하': [
-    '/images/Weather2/neat.png',
-    '/images/Weather2/neat.png',
-    '/images/Weather2/neat.png',
-    '/images/Weather2/neat.png',
-    // 아이콘 미완성
-    // '/images/Weather2/패딩.png',
-    // '/images/Weather2/두꺼운 코트.png',
-    // '/images/Weather2/누빔 옷.png',
-    // '/images/Weather2/기모.png',
-    // '/images/Weather2/목도리.png',
+    '/images/Weather2/padding.png',
+    '/images/Weather2/thick_coat.png',
+    '/images/Weather2/muffler.png',
+    '/images/Weather2/gloves.png',
   ],
 };
 
@@ -92,12 +87,16 @@ const defaultImages: string[] = [
 const temperatureRanges: TemperatureRange[] = [
   { min: -Infinity, label: 'coldest', display: '4°C 이하' },
   { min: -Infinity, label: 'coldest', display: '4°C 이하' },
+  { min: -Infinity, label: 'coldest', display: '4°C 이하' },
+  { min: -Infinity, label: 'coldest', display: '4°C 이하' },
   { min: 4, label: 'coldest', display: '5°C - 8°C' },
   { min: 9, label: 'cold', display: '9°C - 11°C' },
   { min: 12, label: 'chilly', display: '12°C - 16°C' },
   { min: 17, label: 'cool', display: '17°C - 19°C' },
   { min: 20, label: 'mild', display: '20°C - 22°C' },
   { min: 23, label: 'warm', display: '23°C - 27°C' },
+  { min: 28, label: 'hot', display: '28°C 이상' },
+  { min: 28, label: 'hot', display: '28°C 이상' },
   { min: 28, label: 'hot', display: '28°C 이상' },
   { min: 28, label: 'hot', display: '28°C 이상' },
 ];
@@ -129,7 +128,7 @@ const ThermometerStyle: React.FC = () => {
 
     const sliderWidth = sliderRect.width;
     const relativeX = x - sliderRect.left;
-    const percentage = Math.min(Math.max(relativeX / sliderWidth, 0.1), 0.9);
+    const percentage = Math.min(Math.max(relativeX / sliderWidth, 0.25), 0.75);
     const newIndex = Math.round((temperatureRanges.length - 1) * percentage);
 
     handleTemperatureChange(newIndex);
@@ -140,7 +139,7 @@ const ThermometerStyle: React.FC = () => {
     e.preventDefault();
   };
 
-  const handleMouseUp = () => setIsDragging(false);
+  // const handleMouseUp = () => setIsDragging(false);
 
   useEffect(() => {
     const handleMouseUpGlobal = () => setIsDragging(false);
@@ -176,7 +175,7 @@ const ThermometerStyle: React.FC = () => {
   return (
     <div className="w-full max-w-md mx-auto flex flex-col items-center justify-center min-h-screen bg-[#f5f5f5]">
       <div className="flex flex-col items-center mt-[42px] mb-8">
-        <div className="relative mb-4 mt-10" style={{ marginTop: '-10px' }}>
+        <div className="relative mb-4 mt-10" style={{ marginTop: '-8px' }}>
           <Image
             src="/images/Thermometer/temperature-box.svg"
             alt="Temperature Box"
@@ -264,6 +263,8 @@ const ThermometerStyle: React.FC = () => {
             style={{ width: 'auto', height: 'auto' }}
             priority
           />
+
+          {/* 온도계 위 controller 아이콘 */}
           <div
             className="absolute"
             style={{
