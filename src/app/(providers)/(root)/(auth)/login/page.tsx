@@ -10,7 +10,7 @@ function LoginPage() {
       <div className="bg-[#FAFAFA] w-full h-auto">
         <Header />
         <LoginForm />
-        <Footer />
+        {/* <Footer /> */}
       </div>
     </main>
   );

@@ -24,17 +24,15 @@ const LoginForm = () => {
       return;
     }
     try {
-      const supabase = createClient();
-
       // 사용자 로그인
       const { error, data } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
-      const res = await axios.post('/api/auth/login', {
-        email,
-        password,
-      });
+      // const res = await axios.post('/api/auth/login', {
+      //   email,
+      //   password,
+      // });
       if (data?.user && data.user.email) {
         setUser({
           id: data.user.id,
