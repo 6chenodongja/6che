@@ -12,8 +12,8 @@ const LoginForm = () => {
   const passwordRef = useRef<HTMLInputElement>(null);
   const supabase = createClient();
   const router = useRouter();
-  const setUser = useUserStore((state) => state.setUser);
-  const setIsLoggedIn = useUserStore((state) => state.setIsLoggedIn);
+  const { setUser } = useUserStore(); // 구조분해 할당으로 스토어 가져오기
+  const { setIsLoggedIn } = useUserStore(); // 구조분해 할당으로 스토어 가져오기
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -33,7 +33,7 @@ const LoginForm = () => {
       if (res.data && res.data.email) {
         setUser({
           id: res.data.id,
-          nick_name: res.data.nick_name,
+          nickname: res.data.nick_name,
           email: res.data.email,
           profileImage: '',
         });

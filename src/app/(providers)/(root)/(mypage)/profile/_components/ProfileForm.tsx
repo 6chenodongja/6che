@@ -1,14 +1,11 @@
-// src/app/(providers)/(root)/(mypage)/profile/_components/ProfileForm.tsx
 'use client';
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import {
-  updateUserProfile,
-  checkNicknameAvailability,
-} from '@/utils/userUtils';
 import { useUserStore } from '@/zustand/store/useUserStore';
+import { supabase } from '@/supabase/client';
+import { checkNicknameDuplication } from '@/utils/verification';
 
 const ProfileForm: React.FC = () => {
   const [nickname, setNickname] = useState('');
@@ -39,7 +36,7 @@ const ProfileForm: React.FC = () => {
   ];
 
   const handleCheckNickname = async () => {
-    const isAvailable = await checkNicknameAvailability(nickname);
+    const isAvailable = await checkNicknameDuplication(nickname);
     setNicknameAvailable(isAvailable);
   };
 
@@ -51,6 +48,24 @@ const ProfileForm: React.FC = () => {
 
   const handleProfileIconSelect = (icon: string) => {
     setProfileIcon(icon);
+  };
+
+  const updateUserProfile = async (
+    updates: Record<string, any>,
+    userId: string,
+  ) => {
+    const { data, error } = await supabase
+      .from('users')
+      .update(updates)
+      .eq('id', userId)
+      .single();
+
+    if (error) {
+      console.error('Error updating user profile:', error);
+      return null;
+    }
+
+    return data;
   };
 
   const handleSubmit = async () => {
