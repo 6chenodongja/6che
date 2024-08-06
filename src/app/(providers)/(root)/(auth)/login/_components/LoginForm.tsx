@@ -29,10 +29,10 @@ const LoginForm = () => {
         email,
         password,
       });
-      // const res = await axios.post('/api/auth/login', {
-      //   email,
-      //   password,
-      // });
+      const res = await axios.post('/api/auth/login', {
+        email,
+        password,
+      });
       if (data?.user && data.user.email) {
         setUser({
           id: data.user.id,
