@@ -122,42 +122,55 @@ const LocationInput = ({
     setIsEditing(false);
   };
 
+  type GeocodeAddressComponent = {
+    long_name: string;
+    short_name: string;
+    types: string[];
+  };
+
   const fetchLocationData = async (lat: number, lon: number) => {
     try {
-      const response = await fetch(`/api/weather?lat=${lat}&lon=${lon}`);
-      const data = await response.json();
-      setWeather(data);
+      // 날씨 데이터를 먼저 가져옵니다.
+      const weatherResponse = await fetch(`/api/weather?lat=${lat}&lon=${lon}`);
+      const weatherData = await weatherResponse.json();
+      setWeather(weatherData);
 
-      const locationName = data.locationName || '위치 정보 없음';
+      // 위치 이름을 가져옵니다.
+      const geocodeResponse = await fetch(
+        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lon}&language=ko&key=AIzaSyDVa-q7hV1cCNDYTKyhV5Mbef_ydoYOyzo`,
+      );
+      const geocodeData = await geocodeResponse.json();
 
-      if (data.locationName && !locationName.includes('위치 정보 없음')) {
-        const geocodeResponse = await fetch(
-          `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lon}&language=ko&key=AIzaSyDVa-q7hV1cCNDYTKyhV5Mbef_ydoYOyzo`,
+      if (geocodeData.status === 'OK' && geocodeData.results.length > 0) {
+        const result = geocodeData.results[0];
+        const addressComponents = result.address_components;
+
+        const locality = addressComponents.find(
+          (component: GeocodeAddressComponent) =>
+            component.types.includes('locality'),
         );
-        const geocodeData = await geocodeResponse.json();
 
-        if (geocodeData.results.length > 0) {
-          const locality = geocodeData.results[0].address_components.find(
-            (component: any) =>
-              component.types.includes('locality') ||
-              component.types.includes('sublocality'),
-          );
+        const sublocality = addressComponents.find(
+          (component: GeocodeAddressComponent) =>
+            component.types.includes('sublocality_level_1'),
+        );
 
-          if (locality) {
-            setLocation(locality.long_name);
-          } else {
-            setLocation(locationName);
-          }
-        } else {
+        const locationName =
+          `${locality?.long_name || ''} ${sublocality?.long_name || ''}`.trim();
+
+        if (locationName) {
           setLocation(locationName);
+        } else {
+          setLocation('위치 정보 없음');
         }
       } else {
-        setLocation(locationName);
+        setLocation('위치 정보 없음');
       }
 
       setIsEditing(false);
     } catch (error) {
       console.error('Failed to fetch location data', error);
+      setLocation('위치 정보 없음');
     }
   };
 
