@@ -459,6 +459,7 @@
   min-width: 320px;
   max-width: 500px;
   margin: 0 auto;
+  padding-top: 60px;
   box-sizing: border-box;
 }
 

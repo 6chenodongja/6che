@@ -192,26 +192,59 @@ const LocationInput = ({
   };
 
   return (
-    <div className="mt-[40px] flex items-center space-x-2 rounded-full bg-white bg-opacity-30 py-1 px-4 backdrop-blur-lg">
-      {isEditing ? (
-        <input
-          type="text"
-          value={location}
-          onChange={handleInputChange}
-          onBlur={handleBlur}
-          autoFocus
-          className="text-black bg-transparent border-none outline-none"
+    <>
+      <div
+        className="absolute"
+        style={{
+          top: '-86px',
+          right: '-44px',
+          width: '94px',
+          height: '94px',
+          zIndex: 0, // Sun.svg의 z-index를 0으로 설정하여 뒤로 보냄
+        }}
+      >
+        <Image
+          src="/images/Sun.svg"
+          alt="Sun"
+          className="object-contain"
+          width={94}
+          height={94}
         />
-      ) : (
-        <span className="text-black" onClick={handleEditClick}>
-          {location}
-        </span>
-      )}
-      <IconLocation
-        className="w-4 h-4 cursor-pointer"
-        onClick={handleLocationClick}
-      />
-    </div>
+      </div>
+
+      <div
+        className="h-[26px] px-2 py-1 bg-white/40 rounded-full shadow border border-white/50 backdrop-blur-[20px] justify-center items-center inline-flex"
+        style={{ zIndex: 1 }} // 서울시 동작구 박스의 z-index를 1로 설정하여 앞으로 보냄
+      >
+        <div className="justify-start items-center gap-0.5 flex">
+          {isEditing ? (
+            <input
+              type="text"
+              value={location}
+              onChange={handleInputChange}
+              onBlur={handleBlur}
+              autoFocus
+              className="text-[#121212] text-xs font-normal font-['Noto Sans KR'] leading-none bg-transparent border-none outline-none"
+              style={{ whiteSpace: 'nowrap', lineHeight: '1' }}
+            />
+          ) : (
+            <span
+              className="text-[#121212] text-xs font-normal font-['Noto Sans KR'] leading-none"
+              onClick={handleEditClick}
+              style={{ whiteSpace: 'nowrap', lineHeight: '1' }}
+            >
+              {location}
+            </span>
+          )}
+        </div>
+        <div className="w-[18px] h-[18px] p-px justify-center items-center flex">
+          <IconLocation
+            className="w-4 h-4 cursor-pointer"
+            onClick={handleLocationClick}
+          />
+        </div>
+      </div>
+    </>
   );
 };
 
@@ -396,19 +429,79 @@ const MainPage = () => {
 
       <main
         className="container flex flex-col items-center w-full text-white py-8 px-4"
-        style={backgroundStyle}
+        style={{
+          ...backgroundStyle, // 기존 배경 스타일을 유지하고
+          paddingTop: '64px', // 헤더 높이만큼 패딩을 추가
+        }}
       >
         <LocationInput setWeather={updateWeatherData} />
 
-        <div className="mt-[24px] flex items-end flex-col">
-          <div className="relative w-[75px] h-16">
-            <div className="absolute top-0 left-0 font-temperature-60 font-[number:var(--temperature-60-font-weight)] text-black text-[length:var(--temperature-60-font-size)] tracking-[var(--temperature-60-letter-spacing)] leading-[var(--temperature-60-line-height)] whitespace-nowrap [font-style:var(--temperature-60-font-style)]">
+        <div className="mt-[24px] flex items-end flex-col relative">
+          <div
+            className="absolute"
+            style={{
+              top: '-78px',
+              right: '-84px',
+              width: '94px',
+              height: '94px',
+            }}
+          >
+            <Image
+              src="/images/Sun.svg"
+              alt="Sun"
+              className="object-contain"
+              width={94}
+              height={94}
+            />
+          </div>
+
+          <div
+            className="absolute"
+            style={{
+              top: '-27px', // 구름 이미지의 위치 조정
+              right: '-128px', // 구름 이미지의 위치 조정
+              width: '120px',
+              height: '120px',
+              zIndex: 1, // 구름 이미지의 z-index를 1로 설정하여 Sun.svg보다 앞에 위치
+            }}
+          >
+            <Image
+              src="/images/up_cloud.svg"
+              alt="Cloud"
+              className="object-contain"
+              width={146}
+              height={86}
+            />
+          </div>
+
+          <div
+            className="absolute"
+            style={{
+              top: '35px', // 새로운 구름 이미지의 위치 조정
+              right: '9px', // 새로운 구름 이미지의 위치 조정
+              width: '189px',
+              height: '115px',
+              zIndex: 1, // 뒤쪽에 배치
+            }}
+          >
+            <Image
+              src="/images/down_cloud.svg"
+              alt="Down Cloud"
+              className="object-contain"
+              width={143}
+              height={83}
+            />
+          </div>
+
+          <div className="relative w-[75px] h-16" style={{ marginTop: '-5px' }}>
+            <div className="absolute top-0 left-0 font-temperature-60 font-[number:var(--temperature-60-font-weight)] text-black text-[length:var(--temperature-60-font-size)] tracking-[var(--temperature-60-letter-spacing)] leading-[var(--temperature-60-line-height)] whitespace-nowrap [font-style:var(--temperature-60-font-style)] z-10">
               {weather && weather.Temperature && weather.Temperature.Metric
                 ? `${Math.round(weather.Temperature.Metric.Value)}°`
                 : 'N/A'}
             </div>
           </div>
         </div>
+
         <div className="mt-[23px] flex justify-center items-center">
           {weather ? (
             <span className="text-lg text-black">
@@ -439,7 +532,7 @@ const MainPage = () => {
               <div className="w-[54px] h-14 relative flex-col justify-start items-start flex">
                 <div className="w-[53.04px] h-[55px] relative">
                   <Image
-                    src="/images/tshirt.png"
+                    src="/images/tshirt.svg"
                     alt="반팔티"
                     className="object-contain"
                     width={53.04}
@@ -456,7 +549,7 @@ const MainPage = () => {
               <div className="w-[54px] h-14 relative flex-col justify-start items-start flex">
                 <div className="w-[53.04px] h-[55px] relative">
                   <Image
-                    src="/images/shorts.png"
+                    src="/images/shorts.svg"
                     alt="반바지"
                     className="object-contain"
                     width={53.04}
@@ -473,7 +566,7 @@ const MainPage = () => {
               <div className="w-[54px] h-14 relative flex-col justify-start items-start flex">
                 <div className="w-[53.04px] h-[55px] relative">
                   <Image
-                    src="/images/shirt.png"
+                    src="/images/shirt.svg"
                     alt="셔츠"
                     className="object-contain"
                     width={53.04}
