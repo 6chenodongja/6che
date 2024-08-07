@@ -145,7 +145,7 @@ const ProfileForm: React.FC = () => {
           onClick={handleSubmit}
           className="bg-black text-white p-4 w-[288px] border rounded-xl"
         >
-          완료
+          <Link href={'/mypage'}>완료</Link>
         </button>
       </section>
       <header className="flex justify-between items-center w-80 h-14 absolute left-0 top-0 px-4 py-1.5 bg-white/50 border border-white/60 backdrop-blur-[10px]">

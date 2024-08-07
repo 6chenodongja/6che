@@ -3,7 +3,7 @@ import ProfileForm from './_components/ProfileForm';
 
 function ProfileFormPage() {
   return (
-    <main>
+    <main className="">
       <ProfileForm />
     </main>
   );
