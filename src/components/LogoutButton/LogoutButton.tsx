@@ -28,9 +28,9 @@ function LogoutButton() {
     <button
       title="로그아웃 버튼"
       onClick={handleLogout}
-      className="bg-white rounded-xl drop-shadow-md"
+      className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
     >
-      <IconWeatherThunderstorm className="w-34 h-34" />
+      로그아웃
     </button>
   );
 }
