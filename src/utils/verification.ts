@@ -70,7 +70,7 @@ export const checkNicknameDuplication = async (nickname: string): Promise<boolea
     .eq('nick_name', nickname);
 
   if (error) {
-    console.error('Error checking nickname duplication:', error);
+    console.error('먼에러이묘:', error);
     return false;
   }
 

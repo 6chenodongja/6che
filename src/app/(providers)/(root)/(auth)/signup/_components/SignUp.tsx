@@ -97,7 +97,7 @@ function SingUp() {
               type="button"
               onClick={() => checkNickname(nickname)}
               disabled={!isNicknameValid || isLoading}
-              className={`w-24 h-10 rounded-r-lg text-white ${isNicknameValid && !isLoading ? 'bg-black' : 'bg-gray-200'}`}
+              className={`w-24 h-10 rounded-r-lg text-white ${isNicknameValid && !isLoading ? 'bg-black-300' : 'bg-black hover:bg-blue-400'}`}
             >
               {isLoading ? '확인 중...' : '중복확인'}
             </button>

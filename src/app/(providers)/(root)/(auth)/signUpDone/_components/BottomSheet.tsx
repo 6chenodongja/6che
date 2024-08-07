@@ -19,13 +19,39 @@ const BottomSheet = () => {
     setSelectedImage(url);
   };
 
-  const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
-    e.preventDefault();
-    // 여기서 바로 이미지 url 제출!
-    // 백앤드 함수 호출하고 인자로 url 정보
-    const randomIndex = Math.floor(Math.random() * profileIcons.length);
-    const imageToSave = selectedImage || profileIcons[randomIndex];
-    setSelectedImage(imageToSave);
+  const updateUserProfile = async (
+    updates: Record<string, any>,
+    userId: string,
+  ) => {
+    const { data, error } = await supabase
+      .from('users')
+      .update(updates)
+      .eq('id', userId)
+      .single();
+
+    if (error) {
+      console.error('Error updating user profile:', error);
+      return null;
+    }
+
+    return data;
+  };
+
+  const handleSubmit = async () => {
+    if (!user) return;
+
+    const updates: Record<string, any> = {};
+    updates['avatar'] = selectedImage;
+
+    setUser({
+      ...user,
+      profileImage: updates.avatar,
+    });
+
+    const data = await updateUserProfile(updates, user.id);
+    if (data) {
+      alert('프로필이 성공적으로 업데이트되었습니다.');
+    }
   };
   return (
     <motion.div
