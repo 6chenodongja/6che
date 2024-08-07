@@ -24,20 +24,16 @@ function LoginForm() {
       return;
     }
     try {
-      // 사용자 로그인
-      const { error, data } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
       const res = await axios.post('/api/auth/login', {
         email,
         password,
       });
-      if (data?.user && data.user.email) {
+
+      if (res.data) {
         setUser({
-          id: data.user.id,
-          nickname: data.user.user_metadata.nickname, // 로그인 할 때 메타 데이터에 저장해야 값이 나오는 상태
-          email: data.user.email,
+          id: res.data.id,
+          nickname: res.data.nickname,
+          email: res.data.email,
           profileImage: '',
         });
         setIsLoggedIn(true);
@@ -49,6 +45,7 @@ function LoginForm() {
       console.error('로그인 중 오류 발생:', error);
       alert('아이디 또는 비밀번호는 다시 입력해주세요!');
     }
+    // alert(`환영합니다 ${res.data.nickname}님!`);
   };
 
   const handleSocialLogin = async (provider: 'google' | 'kakao') => {
@@ -121,7 +118,7 @@ function LoginForm() {
           </div>
           <Link href={'/signup'} passHref>
             <button className="bg-white border-2 border-[#808080] text-[#4d4d4d] rounded-xl px-4 py-3 w-[288px] font-bold">
-              회원가입
+              이메일로 회원가입
             </button>
           </Link>
         </div>

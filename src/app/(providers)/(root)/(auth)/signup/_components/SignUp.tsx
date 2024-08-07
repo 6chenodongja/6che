@@ -61,7 +61,7 @@ function SingUp() {
       password,
       options: {
         data: {
-          nickname: nickname,
+          name: nickname,
         },
       },
     });
@@ -79,7 +79,7 @@ function SingUp() {
     <main className="h-auto justify-center m-auto">
       <form onSubmit={onSubmit} className="flex flex-col">
         <h1 className="text-2xl font-bold text-center text-black mb-6">
-          회원가입
+          이메일로 회원가입
         </h1>
         <div className="mb-4">
           <label className="block text-lg text-black mb-2">닉네임</label>
