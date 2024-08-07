@@ -40,33 +40,28 @@ const SocialLogin = () => {
 
       const user = data?.user;
       if (user) {
-        // 사용자 메타데이터 로그 추가
         console.log('User metadata:', user.user_metadata);
 
-        // 사용자 메타데이터에서 이름 가져오기
         const displayName =
           user.user_metadata?.full_name ||
           user.user_metadata?.name ||
           user.user_metadata?.nickname ||
           '';
 
-        console.log('Display Name:', displayName); // Display Name이 올바르게 추출되는지 확인
+        console.log('Display Name:', displayName);
 
-        // 필수 필드들을 포함한 사용자 정보 설정
         const userData = {
           id: user.id,
           email: user.email!,
           nick_name: displayName,
-          
         };
 
-        console.log('User Data:', userData); // User Data가 올바르게 구성되었는지 확인
+        console.log('User Data:', userData);
 
-        // users 테이블에 사용자 정보 업데이트
         const { error: updateError } = await supabase
           .from('users')
           .upsert(userData, {
-            onConflict: 'id', // 중복 시 업데이트할 기준 필드
+            onConflict: 'id',
           });
 
         if (updateError) {

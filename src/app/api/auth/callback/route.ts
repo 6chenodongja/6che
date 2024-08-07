@@ -21,16 +21,22 @@ export async function GET(request: Request) {
       cookieStore.set('supabase-access-token', access_token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
-        maxAge: 3600, // 1 hour
+        maxAge: 600, // 10분
         path: '/',
       });
 
       cookieStore.set('supabase-refresh-token', refresh_token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
-        maxAge: 3600 * 24 * 30, // 30 days
+        maxAge: 600,
         path: '/',
       });
+
+      // 토큰과 만료 시간을 콘솔에 출력
+      console.log('Access Token:', access_token);
+      console.log('Refresh Token:', refresh_token);
+      console.log('Access Token Expiry:', new Date(Date.now() + 600 * 1000)); // 현재 시간 + 10분
+      console.log('Refresh Token Expiry:', new Date(Date.now() + 600 * 1000)); // 현재 시간 + 10분
 
       let redirectUrl;
       if (isLocalEnv) {
