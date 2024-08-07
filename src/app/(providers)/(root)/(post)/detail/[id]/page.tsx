@@ -1,6 +1,5 @@
 'use client';
 
-import { createClient } from '@/supabase/client';
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -9,32 +8,36 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import Link from 'next/link';
-import 'swiper/swiper-bundle.css';
 import { useUserStore } from '@/zustand/store/useUserStore';
 import { Tables } from '../../../../../../../types/supabase';
 import { useRouter } from 'next/navigation';
+import { createClient } from '@supabase/supabase-js';
 
 type PostDetailItem = Tables<'posts'> & { users: Tables<'users'> | null };
 
-function PostDetail({
-  params,
-}: {
-  params: { id: string; comment: string; locations: string; like: number };
-}) {
+function PostDetail({ params }: { params: { id: string } }) {
   const [userComment, setUserComment] = useState<string[]>([]);
   const [DetailList, setDetailList] = useState<PostDetailItem>();
   const [userPostImages, setPostImages] = useState<string[]>([]);
   const [userLocations, setUserLocations] = useState<string[]>([]);
   const [userLiked, setUserLiked] = useState<number[]>([]);
+  const [temperature, setTemperature] = useState<string | null>(null);
   const [modalOpen, setModalOpen] = useState<boolean>(false);
 
   const router = useRouter();
 
   const { user } = useUserStore();
-  const supabase = createClient();
 
-  // 수정 삭제 보여주기
-  // select로 가져온 id랑 UserStore랑 아이디 비교해서 수정삭제 버튼 보여주기
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+  const supabase = createClient(supabaseUrl, supabaseKey);
+
+  // 온도 정보만 추출하는 함수 추가
+  const formatTemperature = (temperature: string) => {
+    // 정규식을 사용하여 숫자와 °만 추출
+    const match = temperature.match(/(\d+\s?\-?\s?\d+°?)/);
+    return match ? match[0] : 'N/A';
+  };
 
   useEffect(() => {
     // 유저 포스트 1개의 정보를 가져오기
@@ -47,20 +50,16 @@ function PostDetail({
 
       if (error) {
         console.error(error);
-      } else if (postDetail && postDetail.image_url) {
+      } else if (postDetail) {
         setPostImages(postDetail.image_url.split(','));
+        setDetailList(postDetail);
+        setTemperature(postDetail.weather ?? 'N/A'); // weather 컬럼에서 온도 정보 가져오기
       } else {
         setPostImages([]);
-      }
-
-      if (error) {
-        console.error(error);
-      } else {
-        setDetailList(postDetail);
+        setTemperature('N/A');
       }
     };
 
-    // 유저 코멘트 가져오기
     const fetchPostComments = async () => {
       const { data, error } = await supabase
         .from('posts')
@@ -74,7 +73,7 @@ function PostDetail({
         setUserComment(data.comment ? [data.comment] : []);
       }
     };
-    // 유저 카테고리 가져오기
+
     const fetchPostLocations = async () => {
       const { data, error } = await supabase
         .from('posts')
@@ -87,13 +86,14 @@ function PostDetail({
       } else {
         setUserLocations(
           data.locations
-            ? data.locations.split(',').map((location) => ` #${location}`)
+            ? data.locations
+                .split(',')
+                .map((location: string) => `#${location}`)
             : [],
         );
       }
     };
 
-    //유저 좋아요 수 가져오기
     const fetchUserLiked = async () => {
       const { data, error } = await supabase
         .from('posts')
@@ -107,6 +107,7 @@ function PostDetail({
         setUserLiked([data.like ?? 0]);
       }
     };
+
     const fetchData = async () => {
       await fetchPostDetail();
       await fetchPostComments();
@@ -228,7 +229,7 @@ function PostDetail({
                   sizes="100vw"
                   className="w-[288px] h-[412px] rounded-xl flex justify-center items-center mx-auto"
                 />
-                <div className="absolute top-3 left-6 bg-white bg-opacity-50 p-1 m-1 font-[18px] rounded-lg  flex flex-row gap-2 justify-center items-center">
+                <div className="absolute top-3 left-6 bg-white bg-opacity-50 p-1 m-1 font-[18px] rounded-lg flex flex-row gap-2 justify-center items-center">
                   <div className="detail-icon">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -313,7 +314,7 @@ function PostDetail({
                           <feComposite in2="hardAlpha" operator="out" />
                           <feColorMatrix
                             type="matrix"
-                            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.06 0"
+                            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0"
                           />
                           <feBlend
                             mode="normal"
@@ -352,7 +353,7 @@ function PostDetail({
                           <feColorMatrix
                             in="SourceAlpha"
                             type="matrix"
-                            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0"
                             result="hardAlpha"
                           />
                           <feOffset dx="0.5" dy="-0.5" />
@@ -360,11 +361,11 @@ function PostDetail({
                           <feComposite in2="hardAlpha" operator="out" />
                           <feColorMatrix
                             type="matrix"
-                            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.05 0"
+                            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0"
                           />
                           <feBlend
                             mode="normal"
-                            in2="effect1_backgroundBlur_4483_4767"
+                            in2="BackgroundImageFix"
                             result="effect2_dropShadow_4483_4767"
                           />
                           <feBlend
@@ -377,7 +378,8 @@ function PostDetail({
                       </defs>
                     </svg>
                   </div>
-                  26°
+                  {temperature ? formatTemperature(temperature) : 'N/A'}{' '}
+                  {/* 수정된 부분 */}
                 </div>
               </SwiperSlide>
             ))}
@@ -439,7 +441,7 @@ function PostDetail({
                       <feColorMatrix
                         in="SourceAlpha"
                         type="matrix"
-                        values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                        values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0"
                         result="hardAlpha"
                       />
                       <feOffset dx="0.5" dy="-0.5" />
@@ -447,7 +449,7 @@ function PostDetail({
                       <feComposite in2="hardAlpha" operator="out" />
                       <feColorMatrix
                         type="matrix"
-                        values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.06 0"
+                        values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0"
                       />
                       <feBlend
                         mode="normal"
@@ -636,7 +638,7 @@ function PostDetail({
                       className="h-[286px] object-cover rounded-lg"
                     />
                     <div className="absolute top-2 left-2 bg-white bg-opacity-50 p-1 m-1 text-sm rounded-lg font-bold">
-                      ☀️ 26°
+                      {temperature}
                     </div>
                   </SwiperSlide>
                 ))}
@@ -751,4 +753,5 @@ function PostDetail({
     </div>
   );
 }
+
 export default PostDetail;

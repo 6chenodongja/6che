@@ -432,7 +432,9 @@ function PostList() {
                     </defs>
                   </svg>
                 </div>
-                26°
+                {post.weather && post.weather.match(/\d+°/g)
+                  ? post.weather.match(/\d+°/g)![0]
+                  : 'N/A'}
               </div>
             </Link>
 

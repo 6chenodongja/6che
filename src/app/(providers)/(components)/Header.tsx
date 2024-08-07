@@ -14,7 +14,7 @@ const Header = () => {
   const handleMenuToggle = () => {
     setIsMenuOpen(!isMenuOpen);
   };
-  // fixed
+  // fixed 밑에 header className 에 추가해야함 그래야 헤더 고정됌
   return (
     <header className="w-[320px] bg-white shadow-md py-4 flex justify-between items-center px-4  top-0 z-50">
       <button title="button" onClick={handleMenuToggle}>
