@@ -7,39 +7,22 @@ import Image from 'next/image';
 import { FormEventHandler, useState } from 'react';
 
 const BottomSheet = () => {
-  const { setUser } = useUserStore();
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const profileIcons = [
-    '/images/Weather/sun.svg',
-    '/images/Weather/night.svg',
-    '/images/Weather/once_cloudy.svg',
-    '/images/Weather/once_cloudy_night.svg',
-    '/images/Weather/snow.svg',
-    '/images/Weather/drizzling.svg',
-    '/images/Weather/downpour.svg',
-    '/images/Weather/sleet.svg',
-    '/images/Weather/sunrise.svg',
-    '/images/Weather/sunset.svg',
-    '/images/Weather/blur.svg',
-    '/images/Weather/heavy_snow.svg',
-    '/images/Weather/thunderstorm.svg',
-    '/images/Weather/wind.svg',
-    '/images/Weather/thread_fog.svg',
-    '/images/Weather/drizzling_night.svg',
-    '/images/Weather/fog.svg',
-    '/images/Weather/rain.svg',
-  ];
+  const { setUser, user } = useUserStore();
+  const randomIndex = Math.floor(Math.random() * profileIcons.length);
+  const [selectedImage, setSelectedImage] = useState<string>(
+    profileIcons[randomIndex],
+  );
+  // 유저가 선택하면 선택한 이미지로 저장
+  // 선택 안하면 랜덤 이미지로 저장 => 디볼트로 랜덤 이미지 먼저 삽입  => 유저가 클릭하면 상태값 업데이트
 
   const handleImageClick = (url: string) => {
     setSelectedImage(url);
   };
-  const selectRandomImage = () => {
-    const randomIndex = Math.floor(Math.random() * profileIcons.length);
-    setSelectedImage(profileIcons[randomIndex]);
-  };
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
+    // 여기서 바로 이미지 url 제출!
+    // 백앤드 함수 호출하고 인자로 url 정보
     const randomIndex = Math.floor(Math.random() * profileIcons.length);
     const imageToSave = selectedImage || profileIcons[randomIndex];
     setSelectedImage(imageToSave);
@@ -90,3 +73,24 @@ const BottomSheet = () => {
 };
 
 export default BottomSheet;
+
+const profileIcons = [
+  '/images/Weather/sun.svg',
+  '/images/Weather/night.svg',
+  '/images/Weather/once_cloudy.svg',
+  '/images/Weather/once_cloudy_night.svg',
+  '/images/Weather/snow.svg',
+  '/images/Weather/drizzling.svg',
+  '/images/Weather/downpour.svg',
+  '/images/Weather/sleet.svg',
+  '/images/Weather/sunrise.svg',
+  '/images/Weather/sunset.svg',
+  '/images/Weather/blur.svg',
+  '/images/Weather/heavy_snow.svg',
+  '/images/Weather/thunderstorm.svg',
+  '/images/Weather/wind.svg',
+  '/images/Weather/thread_fog.svg',
+  '/images/Weather/drizzling_night.svg',
+  '/images/Weather/fog.svg',
+  '/images/Weather/rain.svg',
+];
