@@ -16,6 +16,10 @@ const SocialLogin = () => {
       provider,
       options: {
         redirectTo: `http://localhost:3000/api/auth/callback`,
+        queryParams: {
+          access_type: 'offline',
+          prompt: 'select_account',
+        },
       },
     });
 
@@ -40,20 +44,23 @@ const SocialLogin = () => {
         console.log('User metadata:', user.user_metadata);
 
         // 사용자 메타데이터에서 이름 가져오기
-        const displayName = user.user_metadata?.full_name || user.user_metadata?.name || user.user_metadata?.nickname || '';
+        const displayName =
+          user.user_metadata?.full_name ||
+          user.user_metadata?.name ||
+          user.user_metadata?.nickname ||
+          '';
 
-        console.log('Display Name:', displayName);  // Display Name이 올바르게 추출되는지 확인
+        console.log('Display Name:', displayName); // Display Name이 올바르게 추출되는지 확인
 
         // 필수 필드들을 포함한 사용자 정보 설정
         const userData = {
           id: user.id,
           email: user.email!,
           nick_name: displayName,
-          avatar: user.user_metadata?.avatar_url || null,
-          created_at: new Date().toISOString(), // 'created_at' 필드가 필요할 경우 추가
+          
         };
 
-        console.log('User Data:', userData);  // User Data가 올바르게 구성되었는지 확인
+        console.log('User Data:', userData); // User Data가 올바르게 구성되었는지 확인
 
         // users 테이블에 사용자 정보 업데이트
         const { error: updateError } = await supabase

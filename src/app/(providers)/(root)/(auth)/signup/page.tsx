@@ -64,7 +64,7 @@ const SignUpPage: React.FC = () => {
       password,
       options: {
         data: {
-          first_name: nickname,
+          name: nickname,
         },
       },
     });
