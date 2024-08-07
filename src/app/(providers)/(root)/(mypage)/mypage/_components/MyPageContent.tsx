@@ -4,6 +4,7 @@ import Header from 'app/(providers)/(components)/Header';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useUserStore } from '@/zustand/store/useUserStore';
+import LoginDropdown from '@/components/LoginDropdown/LoginDropdown';
 
 const MyPageContent: React.FC = () => {
   const { user } = useUserStore();

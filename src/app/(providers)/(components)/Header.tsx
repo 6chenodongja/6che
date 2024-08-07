@@ -8,6 +8,7 @@ import { IconLogin } from '../../../icons/IconLogin';
 import { User } from '@supabase/supabase-js';
 import LogoutButton from '../../../components/LogoutButton/LogoutButton';
 import { useUserStore } from '@/zustand/store/useUserStore';
+import LoginDropdown from '@/components/LoginDropdown/LoginDropdown';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -28,7 +29,7 @@ const Header = () => {
         {user ? (
           <>
             <div>{user.nickname}</div>
-            <LogoutButton />
+            <LoginDropdown />
           </>
         ) : (
           <>
