@@ -6,13 +6,14 @@ type User = {
   nickname: string;
   email: string;
   profileImage: string;
+  provider: string
 };
 
 interface UserState {
   user: User | null;
   isLoggedIn: boolean;
   setUser: (user: User) => void;
-  clearUser: () => void; // 상태 초기화
+  clearUser: () => void;
   setIsLoggedIn: (isLoggedIn: boolean) => void;
 }
 

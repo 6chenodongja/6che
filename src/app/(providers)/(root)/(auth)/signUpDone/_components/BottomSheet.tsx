@@ -1,12 +1,14 @@
 'use client';
 
+import { supabase } from '@/supabase/client';
+import { useUserStore } from '@/zustand/store/useUserStore';
+import { motion } from 'framer-motion';
 import Image from 'next/image';
-import { useState } from 'react';
-import { FormEventHandler } from 'react';
+import { FormEventHandler, useState } from 'react';
 
-function BottomSheet() {
+const BottomSheet = () => {
+  const { setUser } = useUserStore();
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
-
   const profileIcons = [
     '/images/Weather/sun.svg',
     '/images/Weather/night.svg',
@@ -27,53 +29,64 @@ function BottomSheet() {
     '/images/Weather/fog.svg',
     '/images/Weather/rain.svg',
   ];
-  // const randomIcon = () => {
-  //   return Math.random();
-  // };
-  // const selectUserProfile = async () => {
-  //   if (profileIcon) {
-  //   }
-  // };
+
   const handleImageClick = (url: string) => {
     setSelectedImage(url);
   };
-
-  const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
-    e.preventDefault();
-    if (selectedImage) {
-      alert(selectedImage);
-    } else {
-      alert('No image selected.');
-    }
+  const selectRandomImage = () => {
+    const randomIndex = Math.floor(Math.random() * profileIcons.length);
+    setSelectedImage(profileIcons[randomIndex]);
   };
 
+  const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
+    e.preventDefault();
+    const randomIndex = Math.floor(Math.random() * profileIcons.length);
+    const imageToSave = selectedImage || profileIcons[randomIndex];
+    setSelectedImage(imageToSave);
+  };
   return (
-    <>
-      <div className="flex flex-col drop-shadow-lg">
-        <form onSubmit={handleSubmit}>
-          <div className="grid grid-cols-5 gap-3 h-full rounded-t-xl bg-white m-auto mt-[61px] px-5 py-4">
-            {profileIcons.map((icon, index) => (
-              <div
-                key={icon}
-                className={`flex justify-center items-center ${selectedImage === icon ? 'border border-2 rounded-[3px] border-blue-300' : 'border-transparent'}`}
-              >
-                <Image
-                  src={icon}
-                  alt=""
-                  width={34}
-                  height={34}
-                  onClick={() => handleImageClick(icon)}
-                />
-              </div>
-            ))}
+    <motion.div
+      initial={{ y: '500%' }}
+      animate={{ y: 0 }}
+      transition={{ type: 'spring', stiffness: 200, damping: 40 }}
+      className="flex flex-col justify-center rounded-t-2xl bg-white"
+    >
+      <div className="">
+        <div className="text-center mt-[30px] mb-1">
+          <h2 className="text-xl font-semibold">프로필 선택</h2>
+        </div>
+        <form onSubmit={handleSubmit} className="h-full">
+          <div className="grid grid-cols-5">
+            {profileIcons.map((icon, index) => {
+              return (
+                <div
+                  key={icon}
+                  className="grid grid-cols-5 w-72 h-auto rounded-2xl"
+                >
+                  <Image
+                    src={icon}
+                    alt=""
+                    width={34}
+                    height={34}
+                    onClick={() => handleImageClick(icon)}
+                    className={`border-2 rounded-md ${selectedImage === icon ? 'border-blue-200' : 'border-transparent'}`}
+                  />
+                </div>
+              );
+            })}
           </div>
-          <button className="bg-black text-white rounded-lg w-[288px] h-[49px] hover:bg-blue-400 mb-[77px]">
-            선택 완료
-          </button>
+          <div className="flex justify-center items-center">
+            <button
+              type="submit"
+              className="w-[288px] h-[49px] py-2 px-4 rounded-md shadow-sm text-center font-medium text-[white] bg-[#121212] hover:bg-blue-400"
+            >
+              선택 완료
+            </button>
+          </div>
         </form>
       </div>
-    </>
+    </motion.div>
   );
-}
+};
 
 export default BottomSheet;

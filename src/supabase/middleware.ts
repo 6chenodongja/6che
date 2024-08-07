@@ -39,5 +39,18 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
+  // 왜 안 됐는지 분석...
+  if(user && request.nextUrl.pathname.startsWith('/login')) {
+    const url = request.nextUrl.clone();
+    url.pathname = '/';
+    return NextResponse.redirect(url);
+  }
+  if(user && request) {
+
+  }
+  
+
   return supabaseResponse;
 }
+
+// || user && request.nextUrl.pathname.startsWith('/singUpDone')

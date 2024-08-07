@@ -16,7 +16,6 @@ const Header = () => {
   const handleMenuToggle = () => {
     setIsMenuOpen(!isMenuOpen);
   };
-
   return (
     <header className="w-full bg-white shadow-md py-4 flex justify-between items-center px-4">
       <button title="button" onClick={handleMenuToggle}>

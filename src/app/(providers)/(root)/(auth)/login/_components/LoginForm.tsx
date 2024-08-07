@@ -35,6 +35,7 @@ function LoginForm() {
           nickname: res.data.nickname,
           email: res.data.email,
           profileImage: '',
+          provider: 'Email',
         });
         setIsLoggedIn(true);
         router.replace('/');
@@ -139,13 +140,13 @@ function LoginForm() {
             onClick={() => handleSocialLogin('google')}
             className="bg-white border-2 hover:bg-[#ccc] hover:bg-opacity-70 border-[#121212] text-[#4D4D4D] font-bold w-[288px] h-[52px] rounded-xl"
           >
-            구글
+            구글로 시작하기
           </button>
           <button
             onClick={() => handleSocialLogin('kakao')}
             className="bg-[#FFD65E] hover:bg-[#ccc] hover:bg-opacity-70 text-[#4D4D4D] font-bold w-[288px] h-[52px] rounded-xl"
           >
-            카카오톡
+            카카오로 시작하기
           </button>
         </div>
       </form>
