@@ -15,13 +15,9 @@ export interface VerificationRule {
 export const verificationRules: { [key: string]: VerificationRule[] } = {
   nickname: [
     {
-      validator: (value: string) => value.length <= 10,
-      message: '닉네임은 최대 10글자 이하입니다.',
-    },
-    {
-      validator: (value: string) => !/\s/.test(value),
-      message: '닉네임에 공백을 사용할 수 없습니다.',
-    },
+      validator: (value: string) => /^.{1,10}$/.test(value),
+      message: '닉네임은 띄어쓰기, 공백, 특수문자를 포함하여 최대 10글자까지 가능합니다.',
+    }
   ],
   email: [
     {

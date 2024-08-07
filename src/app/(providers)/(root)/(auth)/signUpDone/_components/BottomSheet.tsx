@@ -38,16 +38,19 @@ const BottomSheet = () => {
   };
 
   const handleSubmit = async () => {
-    if (!user) return;
-
     const updates: Record<string, any> = {};
-    updates['avatar'] = selectedImage;
-
+    if (selectedImage && selectedImage !== selectedImage) {
+      updates['nick_name'] = selectedImage;
+    }
+    if (profileIcons) {
+      updates['avatar'] = profileIcons;
+    }
+    if (!user) return;
     setUser({
       ...user,
-      profileImage: updates.avatar,
+      avatar: updates.nick_name || user.nickname,
+      profileImage: updates.avatar || user.profileImage,
     });
-
     const data = await updateUserProfile(updates, user.id);
     if (data) {
       alert('프로필이 성공적으로 업데이트되었습니다.');
