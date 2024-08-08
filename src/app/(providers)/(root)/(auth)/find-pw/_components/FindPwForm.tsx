@@ -80,7 +80,7 @@ const FindPwForm = () => {
           </p>
         </div>
         <form onSubmit={handleSubmit} className="w-full">
-          <div className="mb-4">
+          {/* <div className="mb-4">
             <label
               htmlFor="email"
               className="block text-text-default font-subtitle-KR-small mb-1.5 font-medium not-italic text-sm leading-5 tracking-tight"
@@ -98,7 +98,28 @@ const FindPwForm = () => {
                 placeholder={
                   domain === 'custom' ? '이메일 주소를 입력하세요' : ''
                 }
+              /> */}
+
+          <div className="mb-4">
+            <label
+              htmlFor="email"
+              className="block text-text-default font-subtitle-KR-small mb-1.5 font-medium not-italic text-sm leading-5 tracking-tight"
+            >
+              이메일
+            </label>
+            <div className="flex items-center mt-2 mb-20 space-x-1.5 text-black">
+              <input
+                type="text"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="p-2 border-1 border-black-500 rounded-lg hover:border-blue-400 focus:border-blue-400 focus:outline-none"
+                style={{ width: '141px', height: '48px' }}
+                placeholder={
+                  domain === 'custom' ? '이메일 주소를 입력하세요' : ''
+                }
               />
+
               {domain !== 'custom' && (
                 <select
                   value={domain}
