@@ -1,6 +1,5 @@
 'use client';
 
-import Header from 'app/(providers)/(components)/Header';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useUserStore } from '@/zustand/store/useUserStore';
@@ -10,17 +9,16 @@ const MyPageContent: React.FC = () => {
 
   return (
     <div className="container h-[1381px] overflow-hidden bg-neutral-50">
-      <Header />
-      <div className="flex flex-col justify-start items-start w-72 absolute left-4 top-[68px] gap-3 drop-shadow-xl">
+      <div className="flex flex-col justify-start items-start w-72 drop-shadow-xl m-auto">
         <div className="flex flex-col justify-start items-start self-stretch flex-grow-0 flex-shrink-0 gap-3 px-4 py-5 rounded-[14px] bg-white">
           <div className="flex justify-between items-center self-stretch flex-grow-0 flex-shrink-0 pb-1.5">
-            <div className="flex justify-start items-center flex-grow-0 flex-shrink-0 w-[108px]  gap-2">
+            <div className="flex justify-start items-center flex-grow-0 flex-shrink-0 w-[32px] h-[32px] gap-2">
               <Image
                 src={user?.profileImage || '/images/Weather/sun.svg'}
                 alt="profile-icon"
-                width={40}
-                height={40}
-                className="flex-grow-0 flex-shrink-0 w-8 h-8 "
+                width={28}
+                height={28}
+                className="flex-grow-0 flex-shrink-0 w-8 h-8 rounded-lg shadow-md"
               />
               <div className="flex justify-start items-center self-stretch flex-grow-0 flex-shrink-0 gap-0.5">
                 <p className="flex-grow-0 flex-shrink-0 text-lg font-medium text-left text-[#121212]">

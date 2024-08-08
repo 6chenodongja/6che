@@ -34,7 +34,7 @@ function LoginDropdown() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.2 }}
-            className="origin-top-right absolute right-0 mt-2 w-44 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5"
+            className="origin-top-right absolute right-0 top-[80px] w-44 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5"
           >
             <div className="py-1">
               <ul className="flex flex-col">

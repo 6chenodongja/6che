@@ -1,32 +1,50 @@
-import { DOMAttributes, useState } from 'react';
+import { useState } from 'react';
+import { useRouter } from 'next/router';
+import Modal from './Modal'; // 모달 컴포넌트 임포트
+// import { supabase } from '../utils/supabaseClient'; // Supabase 클라이언트 임포트
 
-function DeleteUser() {
-  const [deleteUser, setDeleteUser] = useState();
+const DeleteUser: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  /**
-   * 1. 회원탈퇴 버튼을 클릭 했을 때, 모달이 열림
-   * 2. 모달 안에는 한 번 더 물어보는 안내 메세지와 이전으로 돌아가는 버튼, 삭제하는 버튼이 있어야함
-   * 3. 상단에 모달 닫기 버튼도
-   *
-   * 탈퇴 버튼을 누른 뒤에 회원 탈퇴가 완료 되었다는 알람과 함께 메인 페이지로 이동
-   *
-   */
+  const router = useRouter();
+
   // 모달 열기
   const handleDeleteUserClick = () => {
     setIsModalOpen(true);
   };
 
-  // 삭제 버튼
-  const handleUserDeletionConfirm = () => {
+  // 모달 닫기
+  const handleCloseModal = () => {
     setIsModalOpen(false);
   };
-  // 이전 페이지로 돌아가는 버튼
-  const handlePreviously = () => {};
-  // supabase user 탈퇴 함수
-  //   const { data, error } = await supabase.auth.admin.deleteUser(
-  //     '715ed5db-f090-4b8c-a067-640ecee36aa0'
-  //   )
-  return <button>회원탈퇴</button>;
-}
+
+  // 사용자 삭제 확인
+  const handleUserDeletionConfirm = async () => {
+    const user = supabase.auth.user();
+    if (user) {
+      const { error } = await supabase.auth.api.deleteUser(user.id);
+
+      if (error) {
+        console.error('Error deleting user:', error);
+        return;
+      }
+
+      // 삭제 성공 시 모달 닫기 및 메인 페이지로 이동
+      alert('회원 탈퇴가 완료되었습니다.');
+      setIsModalOpen(false);
+      router.push('/'); // 메인 페이지로 이동
+    }
+  };
+
+  return (
+    <div>
+      <button onClick={handleDeleteUserClick}>회원탈퇴</button>
+      <Modal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        onConfirm={handleUserDeletionConfirm}
+      />
+    </div>
+  );
+};
 
 export default DeleteUser;
