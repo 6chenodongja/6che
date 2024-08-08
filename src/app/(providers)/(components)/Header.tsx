@@ -20,20 +20,18 @@ const Header = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  useEffect(() => {
-    const storeUser = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      if (!user) return;
+  // useEffect(() => {
+  //   const storeUser = async () => {
+  //     const {
+  //       data: { user },
+  //     } = await supabase.auth.getUser();
+  //     if (!user) return;
 
-      const { data } = await supabase.from('users').select().eq('id', user.id);
+  //     const { data } = await supabase.from('users').select().eq('id', user.id);
+  //   };
 
-      console.log(data);
-    };
-
-    storeUser();
-  }, [supabase]);
+  //   storeUser();
+  // }, [supabase]);
 
   return (
     <header className="w-full bg-white shadow-md py-4 flex justify-between items-center px-4">
@@ -46,7 +44,6 @@ const Header = () => {
       <div>
         {user ? (
           <>
-            <div>{user.nickname}</div>
             <LoginDropdown />
           </>
         ) : (

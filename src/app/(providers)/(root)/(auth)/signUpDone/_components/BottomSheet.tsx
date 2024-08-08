@@ -8,21 +8,40 @@ import { FormEventHandler, useState } from 'react';
 
 const BottomSheet = () => {
   const { setUser, user } = useUserStore();
-  const randomIndex = Math.floor(Math.random() * profileIcons.length);
-  const [selectedImage, setSelectedImage] = useState<string>(
-    profileIcons[randomIndex],
-  );
-  // 유저가 선택하면 선택한 이미지로 저장
-  // 선택 안하면 랜덤 이미지로 저장 => 디볼트로 랜덤 이미지 먼저 삽입  => 유저가 클릭하면 상태값 업데이트
-
-  const handleImageClick = (url: string) => {
-    setSelectedImage(url);
+  const [profileIcon, setProfileIcon] = useState<string>('');
+  const handleProfileIconSelect = (icon: string) => {
+    setProfileIcon(icon);
   };
 
-  const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
-    e.preventDefault();
-    // 여기서 바로 이미지 url 제출!
-    // 백앤드 함수 호출하고 인자로 url 정보
+  const updateUserProfile = async (
+    updates: Record<string, any>,
+    userId: string,
+  ) => {
+    const { data, error } = await supabase
+      .from('users')
+      .update(updates)
+      .eq('id', userId)
+      .single();
+
+    if (error) {
+      console.error('프로필 수정이 되지 않았어요.', error);
+      return null;
+    }
+
+    return alert('프로필과 닉네임이 변경 되었어요.');
+  };
+
+  const handleSubmit = async () => {
+    const updates: Record<string, any> = {};
+    if (profileIcon) {
+      updates['avatar'] = profileIcon;
+    }
+    if (!user) return;
+    setUser({
+      ...user,
+      profileImage: updates.avatar || user.profileImage,
+    });
+    await updateUserProfile(updates, user.id);
   };
   return (
     <motion.div
@@ -40,16 +59,16 @@ const BottomSheet = () => {
             {profileIcons.map((icon, index) => {
               return (
                 <div
-                  key={icon}
+                  key={index}
                   className="grid grid-cols-5 w-72 h-auto rounded-2xl"
                 >
                   <Image
                     src={icon}
-                    alt=""
+                    alt={`rofile-icon-${index}`}
                     width={34}
                     height={34}
-                    onClick={() => handleImageClick(icon)}
-                    className={`border-2 rounded-md ${selectedImage === icon ? 'border-blue-200' : 'border-transparent'}`}
+                    onClick={() => handleProfileIconSelect(icon)}
+                    className={`border-2 rounded-md ${profileIcon === icon ? 'border-blue-200' : 'border-transparent'}`}
                   />
                 </div>
               );

@@ -3,10 +3,11 @@ import { IconHeart2 } from 'icons/IconHeart2';
 import { useState } from 'react';
 import LogoutButton from '../LogoutButton/LogoutButton';
 import Link from 'next/link';
+import { useUserStore } from '@/zustand/store/useUserStore';
 
 function LoginDropdown() {
   const [isOpen, setIsOpen] = useState(false);
-
+  const { user, setUser } = useUserStore();
   const toggleDropdown = () => setIsOpen(!isOpen);
 
   return (
@@ -28,7 +29,7 @@ function LoginDropdown() {
           >
             <div className="py-1">
               <ul>
-                <li>닉네임</li>
+                <li>{user?.nickname}</li>
                 <li>
                   <Link href={'/mypage'}>설정</Link>
                 </li>
