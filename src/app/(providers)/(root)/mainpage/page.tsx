@@ -29,6 +29,20 @@ interface Post {
   weather: string | null;
 }
 
+type Weather = {
+  Date: string;
+  Temperature: {
+    Minimum: { Value: number };
+    Maximum: { Value: number };
+  };
+  Day: {
+    Icon: number;
+    IconPhrase: string;
+  };
+};
+
+type WeatherData = Weather[];
+
 // 강수확률에 따른 이미지를 반환하는 함수
 const getPrecipitationImage = (probability: number) => {
   const precipitationValue = Math.min(Math.floor(probability / 10) * 10, 100);
@@ -217,7 +231,7 @@ const LocationInput = ({
       </div>
 
       <div
-        className="h-[26px] px-2 py-1 bg-white/40 rounded-full shadow border border-white/50 backdrop-blur-[20px] justify-center items-center inline-flex"
+        className="h-[26px] px-2 py-1 bg-white/40 rounded-full shadow border border-white/50 linear-gradient(37deg, rgba(255,255,255,0.5018601190476191) 0%, rgba(255,255,255,0) 100%) background: rgb(255,255,255) backdrop-blur-[20px] justify-center items-center inline-flex"
         style={{ zIndex: 1 }} // 위치 박스 z-index를 1로 설정하여 앞으로 보냄
       >
         <div className="justify-start items-center gap-0.5 flex">
@@ -389,6 +403,15 @@ const MainPage = () => {
     setIsOpen(!isOpen);
   };
 
+  // 오늘 이후의 주간 날씨만 필터링하는 함수
+  const filterWeeklyWeather = (weatherData: WeatherData): Weather[] => {
+    const today = new Date();
+    return weatherData.filter((weather) => {
+      const weatherDate = new Date(weather.Date);
+      return weatherDate > today;
+    });
+  };
+
   // 시간대에 따른 배경색을 반환하는 함수
   const getBackgroundByTime = (hours: number) => {
     if (hours >= 7 && hours < 9) {
@@ -556,7 +579,7 @@ const MainPage = () => {
 
         <section className="w-full mt-3.5">
           <div className="flex justify-between items-center mb-4">
-            <div className="w-[88px] h-[100px] px-[17px] py-2.5 bg-white/40 rounded-2xl shadow border border-white backdrop-blur-[20px] flex-col justify-center items-center gap-2 inline-flex">
+            <div className="w-[88px] h-[100px] px-[17px] py-2.5 bg-white/40 rounded-2xl shadow border border-white linear-gradient(37deg, rgba(255,255,255,0.5018601190476191) 0%, rgba(255,255,255,0) 100%) background: rgb(255,255,255) backdrop-blur-[20px] flex-col justify-center items-center gap-2 inline-flex">
               <div className="text-center text-[#121212]/70 text-xs font-normal font-['Noto Sans KR'] leading-none">
                 반팔티
               </div>
@@ -573,7 +596,7 @@ const MainPage = () => {
               </div>
             </div>
 
-            <div className="w-[88px] h-[100px] px-[17px] py-2.5 bg-white/40 rounded-2xl shadow border border-white backdrop-blur-[20px] flex-col justify-center items-center gap-2 inline-flex">
+            <div className="w-[88px] h-[100px] px-[17px] py-2.5 bg-white/40 rounded-2xl shadow border border-white linear-gradient(37deg, rgba(255,255,255,0.5018601190476191) 0%, rgba(255,255,255,0) 100%) background: rgb(255,255,255) backdrop-blur-[20px] flex-col justify-center items-center gap-2 inline-flex">
               <div className="text-center text-[#121212]/70 text-xs font-normal font-['Noto Sans KR'] leading-none">
                 반바지
               </div>
@@ -590,7 +613,7 @@ const MainPage = () => {
               </div>
             </div>
 
-            <div className="w-[88px] h-[100px] px-[17px] py-2.5 bg-white/40 rounded-2xl shadow border border-white backdrop-blur-[20px] flex-col justify-center items-center gap-2 inline-flex">
+            <div className="w-[88px] h-[100px] px-[17px] py-2.5 bg-white/40 rounded-2xl shadow border border-white linear-gradient(37deg, rgba(255,255,255,0.5018601190476191) 0%, rgba(255,255,255,0) 100%) background: rgb(255,255,255) backdrop-blur-[20px] flex-col justify-center items-center gap-2 inline-flex">
               <div className="text-center text-[#121212]/70 text-xs font-normal font-['Noto Sans KR'] leading-none">
                 셔츠
               </div>
@@ -610,7 +633,7 @@ const MainPage = () => {
         </section>
 
         <section className="w-full mt-[5px]">
-          <div className="w-full max-w-[320px] h-[297px] px-4 pt-4 pb-5 bg-white/40 rounded-2xl shadow border border-white backdrop-blur-[20px] flex-col justify-start items-start gap-3.5 inline-flex">
+          <div className="w-full max-w-[320px] h-[297px] px-4 pt-4 pb-5 bg-white/40 rounded-2xl shadow border border-white linear-gradient(37deg, rgba(255,255,255,0.5018601190476191) 0%, rgba(255,255,255,0) 100%) background: rgb(255,255,255) backdrop-blur-[20px] flex-col justify-start items-start gap-3.5 inline-flex">
             <div className="self-stretch justify-between items-center inline-flex">
               <div className="h-[21px] px-2 justify-center items-center gap-[129px] flex">
                 <div className="text-[#121212] text-base font-semibold font-['NotoSansKR'] leading-tight">
@@ -658,7 +681,7 @@ const MainPage = () => {
                   return (
                     <SwiperSlide key={index}>
                       <div
-                        className="w-28 h-40 relative rounded-lg overflow-hidden cursor-pointer"
+                        className="w-28 h-40 relative rounded-lg overflow-hidden cursor-pointer linear-gradient(37deg, rgba(255,255,255,0.5018601190476191) 0%, rgba(255,255,255,0) 100%) background: rgb(255,255,255)"
                         onClick={() => router.push(`/detail/${post.id}`)}
                       >
                         <Image
@@ -706,7 +729,7 @@ const MainPage = () => {
           <Swiper spaceBetween={4} slidesPerView={3}>
             {extraWeatherInfo.map((info, index) => (
               <SwiperSlide key={index} className="weather-slide">
-                <div className="w-[88px] h-[100px] relative bg-white/40 rounded-2xl shadow border border-white backdrop-blur-[20px] flex flex-col justify-center items-center">
+                <div className="w-[88px] h-[100px] relative bg-white/40 rounded-2xl shadow border border-white linear-gradient(37deg, rgba(255,255,255,0.5018601190476191) 0%, rgba(255,255,255,0) 100%) background: rgb(255,255,255) backdrop-blur-[20px] flex flex-col justify-center items-center">
                   <span className="text-center text-[#121212]/70 text-xs font-normal font-['Noto Sans KR'] leading-none">
                     {info.label}
                   </span>
@@ -724,7 +747,7 @@ const MainPage = () => {
               </SwiperSlide>
             ))}
             <SwiperSlide className="weather-slide">
-              <div className="w-[88px] h-[100px] relative bg-white/40 rounded-2xl shadow border border-white backdrop-blur-[20px] flex flex-col justify-center items-center">
+              <div className="w-[88px] h-[100px] relative bg-white/40 rounded-2xl shadow border border-white linear-gradient(37deg, rgba(255,255,255,0.5018601190476191) 0%, rgba(255,255,255,0) 100%) background: rgb(255,255,255) backdrop-blur-[20px] flex flex-col justify-center items-center">
                 <button
                   onClick={() => setShowModal(true)}
                   className="w-full h-full flex justify-center items-center"
@@ -737,7 +760,7 @@ const MainPage = () => {
         </section>
 
         <section className="w-full mt-[18px]">
-          <div className="w-full max-w-[320px] h-[148px] px-2 pt-4 pb-5 bg-white/40 rounded-2xl shadow border border-white/50 backdrop-blur-[20px] flex-col justify-start items-start gap-2 inline-flex">
+          <div className="w-full max-w-[320px] h-[148px] px-2 pt-4 pb-5 bg-white/40 rounded-2xl shadow border border-white/50 linear-gradient(37deg, rgba(255,255,255,0.5018601190476191) 0%, rgba(255,255,255,0) 100%) background: rgb(255,255,255) backdrop-blur-[20px] flex-col justify-start items-start gap-2 inline-flex">
             <div className="px-2 justify-center items-center gap-2 inline-flex">
               <div className="text-center text-[#1a1a1a] text-xs font-normal font-['Noto Sans KR'] leading-none">
                 시간대별 날씨
@@ -859,7 +882,7 @@ const MainPage = () => {
 
         <button
           onClick={handleWeeklyWeatherClick}
-          className="px-3 py-2 bg-white/40 rounded-full shadow border border-white backdrop-blur-[20px] flex justify-center items-center gap-2 mt-4"
+          className="px-3 py-2 bg-white/40 rounded-full shadow border border-white linear-gradient(37deg, rgba(255,255,255,0.5018601190476191) 0%, rgba(255,255,255,0) 100%) background: rgb(255,255,255) backdrop-blur-[20px] flex justify-center items-center gap-2 mt-4"
         >
           <div className="text-[#4d4d4d] text-sm font-normal font-['Noto Sans KR'] leading-[18.20px]">
             이번주 날씨
@@ -895,74 +918,76 @@ const MainPage = () => {
               transition={{ duration: 0.5 }}
               className="w-full mt-8"
             >
-              <div className="w-full h-[348px] px-2.5 py-5 bg-white/40 rounded-2xl shadow border border-white backdrop-blur-[20px] flex-col justify-start items-start inline-flex">
-                {weeklyWeather.slice(1, 7).map((weather, index) => (
-                  <div
-                    key={index}
-                    className="self-stretch px-2 py-1.5 justify-between items-center inline-flex"
-                  >
-                    <div className="justify-start items-center gap-1 flex">
-                      <div
-                        className="w-[26px] text-center text-black text-sm font-medium font-['Noto Sans KR'] leading-[21px]"
-                        style={{ whiteSpace: 'nowrap' }}
-                      >
-                        {index === 0
-                          ? '내일'
-                          : formatDate(weather.Date).split(' ')[0]}
-                      </div>
-                      <div className="text-center text-[#7f7f7f] text-sm font-normal font-['Noto Sans KR'] leading-[21px]">
-                        {formatDate(weather.Date).split(' ')[1]}
-                      </div>
-                    </div>
-                    <div className="justify-center items-center gap-[11px] flex">
+              <div className="w-full h-auto px-2.5 py-5 bg-white/40 rounded-2xl shadow border border-white linear-gradient(37deg, rgba(255,255,255,0.5018601190476191) 0%, rgba(255,255,255,0) 100%) background: rgb(255,255,255) backdrop-blur-[20px] flex-col justify-start items-start inline-flex">
+                {filterWeeklyWeather(weeklyWeather)
+                  .slice(0, 4)
+                  .map((weather, index) => (
+                    <div
+                      key={index}
+                      className="self-stretch px-2 py-1.5 justify-between items-center inline-flex"
+                    >
                       <div className="justify-start items-center gap-1 flex">
-                        <div className="w-8 h-8 p-0.5 justify-center items-center flex">
-                          <div className="w-7 h-7 px-[2.33px] py-[5.83px] bg-white/60 rounded justify-center items-center inline-flex">
-                            <div className="relative w-[23.33px] h-[16.33px]">
-                              <Image
-                                src="/images/Weather/sunset.svg"
-                                alt="sunset"
-                                layout="fill"
-                                objectFit="cover"
-                              />
-                            </div>
-                          </div>
+                        <div
+                          className="w-[26px] text-center text-black text-sm font-medium font-['Noto Sans KR'] leading-[21px]"
+                          style={{ whiteSpace: 'nowrap' }}
+                        >
+                          {index === 0
+                            ? '내일'
+                            : formatDate(weather.Date).split(' ')[0]}
                         </div>
-                        <div className="text-center text-black text-base font-normal font-['Varela'] leading-tight">
-                          {Math.round(
-                            convertFahrenheitToCelsius(
-                              weather.Temperature.Minimum.Value,
-                            ),
-                          )}
-                          °
+                        <div className="text-center text-[#7f7f7f] text-sm font-normal font-['Noto Sans KR'] leading-[21px]">
+                          {formatDate(weather.Date).split(' ')[1]}
                         </div>
                       </div>
-                      <div className="w-0.5 h-6 bg-[#e6e6e6]/60 rounded-sm" />
-                      <div className="justify-start items-center gap-1.5 flex">
-                        <div className="w-8 h-8 p-0.5 justify-center items-center flex">
-                          <div className="w-7 h-7 px-[3.50px] pt-[3.50px] pb-[3.28px] bg-white/60 rounded justify-center items-center inline-flex">
-                            <div className="relative w-[21px] h-[21.22px]">
-                              <Image
-                                src="/images/Weather/sunrise.svg"
-                                alt="sunrise"
-                                layout="fill"
-                                objectFit="cover"
-                              />
+                      <div className="justify-center items-center gap-[11px] flex">
+                        <div className="justify-start items-center gap-1 flex">
+                          <div className="w-8 h-8 p-0.5 justify-center items-center flex">
+                            <div className="w-7 h-7 px-[2.33px] py-[5.83px] bg-white/60 rounded justify-center items-center inline-flex">
+                              <div className="relative w-[23.33px] h-[16.33px]">
+                                <Image
+                                  src="/images/Weather/sunset.svg"
+                                  alt="sunset"
+                                  layout="fill"
+                                  objectFit="cover"
+                                />
+                              </div>
                             </div>
                           </div>
+                          <div className="text-center text-black text-base font-normal font-['Varela'] leading-tight">
+                            {Math.round(
+                              convertFahrenheitToCelsius(
+                                weather.Temperature.Minimum.Value,
+                              ),
+                            )}
+                            °
+                          </div>
                         </div>
-                        <div className="text-center text-black text-base font-normal font-['Varela'] leading-tight">
-                          {Math.round(
-                            convertFahrenheitToCelsius(
-                              weather.Temperature.Maximum.Value,
-                            ),
-                          )}
-                          °
+                        <div className="w-0.5 h-6 bg-[#e6e6e6]/60 rounded-sm" />
+                        <div className="justify-start items-center gap-1.5 flex">
+                          <div className="w-8 h-8 p-0.5 justify-center items-center flex">
+                            <div className="w-7 h-7 px-[3.50px] pt-[3.50px] pb-[3.28px] bg-white/60 rounded justify-center items-center inline-flex">
+                              <div className="relative w-[21px] h-[21.22px]">
+                                <Image
+                                  src="/images/Weather/sunrise.svg"
+                                  alt="sunrise"
+                                  layout="fill"
+                                  objectFit="cover"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                          <div className="text-center text-black text-base font-normal font-['Varela'] leading-tight">
+                            {Math.round(
+                              convertFahrenheitToCelsius(
+                                weather.Temperature.Maximum.Value,
+                              ),
+                            )}
+                            °
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
               </div>
             </motion.section>
           )}
