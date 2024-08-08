@@ -6,7 +6,9 @@ function SignUpPage() {
   return (
     <main>
       <Header />
-      <SingUp />
+      <div>
+        <SingUp />
+      </div>
       <Footer />
     </main>
   );

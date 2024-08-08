@@ -1,22 +1,40 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { LogoText } from '../../..//icons/LogoText';
 import { IconLogin } from '../../../icons/IconLogin';
 import { User } from '@supabase/supabase-js';
-import LogoutButton from '../../../components/LogoutButton/LogoutButton';
 import { useUserStore } from '@/zustand/store/useUserStore';
 import LoginDropdown from '@/components/LoginDropdown/LoginDropdown';
+import { createClient } from '@/supabase/client';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [users, setUsers] = useState<User | null>(null);
   const { clearUser, setUser, user } = useUserStore();
+  const supabase = createClient();
+
   const handleMenuToggle = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+
+  useEffect(() => {
+    const storeUser = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (!user) return;
+
+      const { data } = await supabase.from('users').select().eq('id', user.id);
+
+      console.log(data);
+    };
+
+    storeUser();
+  }, [supabase]);
+
   return (
     <header className="w-full bg-white shadow-md py-4 flex justify-between items-center px-4">
       <button title="button" onClick={handleMenuToggle}>

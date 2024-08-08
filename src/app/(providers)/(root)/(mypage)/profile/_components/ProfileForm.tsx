@@ -61,11 +61,11 @@ const ProfileForm: React.FC = () => {
       .single();
 
     if (error) {
-      console.error('Error updating user profile:', error);
+      console.error('프로필 수정이 되지 않았어요.', error);
       return null;
     }
 
-    return data;
+    return alert('프로필과 닉네임이 변경 되었어요.');
   };
 
   const handleSubmit = async () => {
@@ -82,10 +82,7 @@ const ProfileForm: React.FC = () => {
       nickname: updates.nick_name || user.nickname,
       profileImage: updates.avatar || user.profileImage,
     });
-    const data = await updateUserProfile(updates, user.id);
-    if (data) {
-      alert('프로필이 성공적으로 업데이트되었습니다.');
-    }
+    await updateUserProfile(updates, user.id);
   };
 
   return (

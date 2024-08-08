@@ -3,7 +3,6 @@
 import { createClient } from '@/supabase/client';
 import { useUserStore } from '@/zustand/store/useUserStore';
 import axios from 'axios';
-import { IconLogin } from 'icons/IconLogin';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useRef } from 'react';
@@ -36,9 +35,7 @@ function LoginForm() {
           nickname: res.data.nickname,
           email: res.data.email,
           profileImage: '',
-          // provider: 'Email',
         });
-        setIsLoggedIn(true);
         router.replace('/');
       } else {
         alert('로그인 실패');
@@ -55,14 +52,43 @@ function LoginForm() {
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
-          redirectTo: `${process.env.NEXT_PUBLIC_BASE_URL}/auth/callback`,
+          redirectTo: `http://localhost:3000/api/auth/callback`,
+          queryParams: {
+            access_type: 'offline',
+            prompt: 'select_account',
+          },
         },
       });
-      if (error) throw error;
+
+      if (error) {
+        console.error('소셜 로그인 중 오류 발생:', error);
+        alert('소셜 로그인 중 오류가 발생했습니다.');
+        return;
+      }
+
+      // const { data, error } = await supabase.auth.signInWithOAuth({
+      //   provider,
+      //   options: {
+      //     redirectTo: `${process.env.NEXT_PUBLIC_BASE_URL}/auth/callback`,
+      //   },
+      // });
+      // if (error) throw error;
 
       if (data) {
-        setIsLoggedIn(true);
-        // window.location.href = data.url;
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
+
+        if (!user) return;
+
+        // const { data } = await supabase.from('users').select().eq('id', user.id);
+
+        setUser({
+          id: user.id,
+          nickname: user.user_metadata.name,
+          email: user.email || '',
+          profileImage: '',
+        });
       }
     } catch (error) {
       console.error(`ERROR ${provider.toUpperCase()}`, error);
@@ -141,14 +167,14 @@ function LoginForm() {
             onClick={() => handleSocialLogin('google')}
             className="bg-white border-1 hover:bg-[#ccc] hover:bg-opacity-70 border-[#121212] text-[#4D4D4D] font-bold w-[288px] h-[52px] rounded-xl"
           >
-            <IconLogin className="w-6 h-6 border" />
+            {/* <IconLogin className="w-6 h-6 border" /> */}
             구글로 시작하기
           </button>
           <button
             onClick={() => handleSocialLogin('kakao')}
             className="bg-[#FFD65E] hover:bg-[#ccc] hover:bg-opacity-70 text-[#4D4D4D] font-bold w-[288px] h-[52px] rounded-xl"
           >
-            <IconLogin className="w-6 h-6 border" />
+            {/* <IconLogin className="w-6 h-6 border" /> */}
             카카오로 시작하기
           </button>
         </div>

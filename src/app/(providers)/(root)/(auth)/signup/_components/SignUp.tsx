@@ -77,7 +77,7 @@ function SingUp() {
   };
 
   return (
-    <main className="h-auto justify-center m-auto">
+    <main className="flex w-[80px]">
       <form onSubmit={onSubmit} className="flex flex-col">
         <h1 className="text-2xl font-bold text-center text-black mb-6">
           이메일로 회원가입
