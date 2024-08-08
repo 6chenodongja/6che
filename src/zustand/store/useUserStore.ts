@@ -6,7 +6,7 @@ type User = {
   nickname: string;
   email: string;
   profileImage: string;
-  provider: string
+  // provider: string
 };
 
 interface UserState {

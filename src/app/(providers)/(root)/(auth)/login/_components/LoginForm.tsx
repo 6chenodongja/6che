@@ -3,6 +3,7 @@
 import { createClient } from '@/supabase/client';
 import { useUserStore } from '@/zustand/store/useUserStore';
 import axios from 'axios';
+import { IconLogin } from 'icons/IconLogin';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useRef } from 'react';
@@ -35,7 +36,7 @@ function LoginForm() {
           nickname: res.data.nickname,
           email: res.data.email,
           profileImage: '',
-          provider: 'Email',
+          // provider: 'Email',
         });
         setIsLoggedIn(true);
         router.replace('/');
@@ -69,7 +70,7 @@ function LoginForm() {
   };
 
   return (
-    <main>
+    <main className="flex">
       <form onSubmit={onSubmit} className="h-auto justify-center m-auto">
         <h1 className="mt-[119px] text-[24px] font-bold text-center text-[#121212]">
           로그인
@@ -138,14 +139,16 @@ function LoginForm() {
         <div className="flex flex-col gap-2">
           <button
             onClick={() => handleSocialLogin('google')}
-            className="bg-white border-2 hover:bg-[#ccc] hover:bg-opacity-70 border-[#121212] text-[#4D4D4D] font-bold w-[288px] h-[52px] rounded-xl"
+            className="bg-white border-1 hover:bg-[#ccc] hover:bg-opacity-70 border-[#121212] text-[#4D4D4D] font-bold w-[288px] h-[52px] rounded-xl"
           >
+            <IconLogin className="w-6 h-6 border" />
             구글로 시작하기
           </button>
           <button
             onClick={() => handleSocialLogin('kakao')}
             className="bg-[#FFD65E] hover:bg-[#ccc] hover:bg-opacity-70 text-[#4D4D4D] font-bold w-[288px] h-[52px] rounded-xl"
           >
+            <IconLogin className="w-6 h-6 border" />
             카카오로 시작하기
           </button>
         </div>

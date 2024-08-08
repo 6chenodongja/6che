@@ -2,8 +2,6 @@
 
 import { useRouter } from 'next/navigation';
 import { useUserStore } from '@/zustand/store/useUserStore';
-import { IconWeatherBlur } from 'icons/IconWeatherBlur';
-import { IconWeatherThunderstorm } from 'icons/IconWeatherThunderstorm';
 
 function LogoutButton() {
   const router = useRouter();
