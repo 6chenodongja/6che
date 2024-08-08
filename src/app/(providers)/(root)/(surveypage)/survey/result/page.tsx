@@ -79,7 +79,7 @@ const ResultPage: React.FC = () => {
             style={{ right: 'initial', left: '11px' }}
           >
             <Image
-              src={"/images/icons/arrow_left.svg"}
+              src={'/images/icons/arrow_left.svg'}
               alt="뒤로가기"
               width={8}
               height={8}
@@ -100,7 +100,7 @@ const ResultPage: React.FC = () => {
                 className="rounded-lg"
               />
               <button
-                className="absolute bottom-2 right-2 text-xl"
+                className="absolute bottom-2 right-2 text-xl backdrop-filter: blur(2px)"
                 onClick={() => handleLikeClick(index)}
               >
                 <Image
