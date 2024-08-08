@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation'; // next/router 대신 next/navigation 사용
 import '../../../../app/globals.css';
 import 'swiper/css';
@@ -16,7 +16,18 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Header from '../../(components)/Header';
 import Footer from '../../(components)/Footer';
 import { supabase } from '@/supabase/client';
-import { useCallback } from 'react';
+
+// Post 타입 정의
+interface Post {
+  id: string;
+  user_id: string;
+  created_at: string | null;
+  image_url: string | null;
+  comment: string | null;
+  like: number | null;
+  gender: string | null;
+  weather: string | null;
+}
 
 // 강수확률에 따른 이미지를 반환하는 함수
 const getPrecipitationImage = (probability: number) => {
@@ -67,17 +78,7 @@ const convertFahrenheitToCelsius = (fahrenheit: number) => {
   return ((fahrenheit - 32) * 5) / 9;
 };
 
-interface Post {
-  id: string;
-  user_id: string;
-  created_at: string | null;
-  image_url: string | null;
-  comment: string | null;
-  like: number | null;
-  gender: string | null;
-  weather: string | null;
-}
-
+// 게시글 데이터를 가져오고 필터링하는 함수
 const fetchAndFilterPosts = async (currentTemp: number): Promise<Post[]> => {
   const { data: posts, error } = await supabase
     .from('posts')
@@ -102,6 +103,7 @@ const fetchAndFilterPosts = async (currentTemp: number): Promise<Post[]> => {
     .slice(0, 2);
 };
 
+// LocationInput 컴포넌트
 const LocationInput = ({
   setWeather,
 }: {
@@ -128,6 +130,7 @@ const LocationInput = ({
     types: string[];
   };
 
+  // 위치 데이터를 가져오는 함수
   const fetchLocationData = async (lat: number, lon: number) => {
     try {
       // 날씨 데이터를 먼저 가져옵니다.
@@ -174,6 +177,7 @@ const LocationInput = ({
     }
   };
 
+  // 위치 정보를 가져오는 함수
   const handleLocationClick = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -248,6 +252,7 @@ const LocationInput = ({
   );
 };
 
+// MainPage 컴포넌트
 const MainPage = () => {
   const [filteredPosts, setFilteredPosts] = useState<Post[]>([]);
   const [weather, setWeather] = useState<any>(null);
@@ -270,6 +275,7 @@ const MainPage = () => {
     router.push('/survey');
   };
 
+  // 날씨 데이터를 업데이트하는 함수
   const updateWeatherData = useCallback((data: any) => {
     console.log(data);
     if (data && data.current) {
@@ -316,6 +322,7 @@ const MainPage = () => {
     }
   }, []);
 
+  // 날씨 데이터를 가져오는 함수
   const fetchWeatherData = useCallback(
     async (locationKey = '226081') => {
       try {
@@ -349,15 +356,18 @@ const MainPage = () => {
     [updateWeatherData],
   );
 
+  // 초기 로드 시 날씨 데이터를 가져옴
   useEffect(() => {
     fetchWeatherData();
   }, [fetchWeatherData]);
 
+  // 유효한 이미지 URL인지 확인하는 함수
   const isValidImageUrl = (url: string | null) => {
     if (!url) return false;
     return url.startsWith('https://') && !url.includes('InvalidKey');
   };
 
+  // 주간 날씨 데이터를 가져오는 함수
   const fetchWeeklyWeatherData = async () => {
     try {
       const response = await fetch(
@@ -370,6 +380,7 @@ const MainPage = () => {
     }
   };
 
+  // 주간 날씨 버튼 클릭 핸들러
   const handleWeeklyWeatherClick = async () => {
     if (!isWeeklyWeatherVisible) {
       await fetchWeeklyWeatherData();
@@ -378,6 +389,7 @@ const MainPage = () => {
     setIsOpen(!isOpen);
   };
 
+  // 시간대에 따른 배경색을 반환하는 함수
   const getBackgroundByTime = (hours: number) => {
     if (hours >= 7 && hours < 9) {
       return 'linear-gradient(180deg, rgba(41,140,255,1) 0%, rgba(95,163,243,0.6) 34%, rgba(255,149,24,0.3) 69%, rgba(255,205,30,0.1) 100%)';
