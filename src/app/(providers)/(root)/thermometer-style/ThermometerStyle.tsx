@@ -67,13 +67,13 @@ const outfits: OutfitImages = {
     '/images/Weather2/heattech.svg',
     '/images/Weather2/leather_clothes.svg',
     '/images/Weather2/brushed.svg'
-  ], 
+  ], // figma 울 코트 ~ 기모
   '4°C 이하': [
-    '/images/Weather2/padding.png',
-    '/images/Weather2/thick_coat.png',
-    '/images/Weather2/muffler.png',
-    '/images/Weather2/gloves.png',
-  ],
+    '/images/Weather2/padding.svg',
+    '/images/Weather2/thick_coat.svg',
+    '/images/Weather2/muffler.svg',
+    '/images/Weather2/Gloves.svg',
+  ], // figma 패딩 ~ 목도리
 };
 
 const defaultImages: string[] = [
