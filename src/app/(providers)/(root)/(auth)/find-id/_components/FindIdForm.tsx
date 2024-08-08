@@ -111,6 +111,9 @@ const FindIdForm = () => {
                   <option value="gmail.com">@gmail.com</option>
                   <option value="naver.com">@naver.com</option>
                   <option value="daum.net">@daum.net</option>
+                  <option value="nate.com">@nate.com</option>
+                  <option value="icloud.com">@icloud.com</option>
+                  <option value="hanmail.net">@hanmail.net</option>
                   <option value="custom">직접 입력</option>
                 </select>
               )}
