@@ -53,7 +53,7 @@ const SurveyLayout: React.FC = () => {
                   </p>
                 </div>
                 <div className="absolute top-[120px] right-[-23px]">
-                  <Image src="/images/Survey/bottom.svg" alt="하단 옷" width={118} height={100} />
+                  <Image src="/images/Survey/bottom.svg" alt="하단 옷" width={155} height={100} />
                 </div>
               </div>
               <p className="text-base text-center text-[#121212] mt-5" style={{ fontFamily: 'Noto Sans KR' }}>

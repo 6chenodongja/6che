@@ -117,7 +117,7 @@ const ResultPage: React.FC = () => {
             </div>
           ))}
         </div>
-        <div className="flex flex-col items-center space-y-8">
+        <div className="flex flex-col items-center space-y-1">
           <h2 className="text-sm text-center text-[#121212]">
             더 많은 코디를 보고싶다면
           </h2>
