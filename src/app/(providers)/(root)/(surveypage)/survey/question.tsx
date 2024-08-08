@@ -4,10 +4,11 @@ import React, { useState } from 'react';
 import { questions, optionTags } from '@/utils/questions';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { Modak } from 'next/font/google';
+import { Modak, Noto_Sans_KR } from 'next/font/google';
 import { useTagStore } from '@/zustand/store/useTagStore';
 
 const modak = Modak({ weight: '400', subsets: ['latin'] });
+const notoSansKr = Noto_Sans_KR({ weight: '500', subsets: ['latin'] });
 
 interface TagCount {
   [key: string]: number;
@@ -165,7 +166,7 @@ const QuestionPage: React.FC = () => {
           </div>
           {currentQuestionIndex === 0 && (
             <p
-              className="text-2xl text-left text-[#121212]"
+              className={`text-2xl text-left text-[#121212] ${notoSansKr.className}`}
               style={{ marginTop: '24px' }}
             >
               <span className="text-2xl font-bold text-left text-[#121212]">
@@ -178,7 +179,7 @@ const QuestionPage: React.FC = () => {
           )}
           {currentQuestionIndex === 1 && (
             <p
-              className="text-2xl text-left text-[#121212]"
+              className={`text-2xl text-left text-[#121212] ${notoSansKr.className}`}
               style={{ marginTop: '24px' }}
             >
               <span className="text-2xl font-bold text-left text-[#121212]">
@@ -191,7 +192,7 @@ const QuestionPage: React.FC = () => {
           )}
           {currentQuestionIndex === 2 && (
             <p
-              className="text-2xl text-left text-[#121212]"
+              className={`text-2xl text-left text-[#121212] ${notoSansKr.className}`}
               style={{ marginTop: '24px' }}
             >
               <span className="text-2xl font-bold text-left text-[#121212]">
@@ -204,7 +205,7 @@ const QuestionPage: React.FC = () => {
           )}
           {currentQuestionIndex === 3 && (
             <p
-              className="text-2xl text-center text-[#121212]"
+              className={`text-2xl text-center text-[#121212] ${notoSansKr.className}`}
               style={{ marginTop: '24px' }}
             >
               <span className="w-[266px] text-2xl text-center text-[#121212]">
@@ -220,7 +221,7 @@ const QuestionPage: React.FC = () => {
           )}
           {currentQuestionIndex === 4 && (
             <p
-              className="text-2xl text-center text-[#121212]"
+              className={`text-2xl text-center text-[#121212] ${notoSansKr.className}`}
               style={{ marginTop: '24px' }}
             >
               <span className="w-72 text-2xl font-bold text-center text-[#121212]">
@@ -237,7 +238,7 @@ const QuestionPage: React.FC = () => {
           )}
           {currentQuestionIndex === 5 && (
             <p
-              className="text-2xl text-center text-[#121212]"
+              className={`text-2xl text-center text-[#121212] ${notoSansKr.className}`}
               style={{ marginTop: '24px' }}
             >
               <span className="w-72 text-2xl font-bold text-center text-[#121212]">
@@ -250,7 +251,7 @@ const QuestionPage: React.FC = () => {
           )}
           {currentQuestionIndex === 3 && (
             <p
-              className="text-sm font-medium text-center text-[#666]"
+              className={`text-sm font-medium text-center text-[#666] ${notoSansKr.className}`}
               style={{ marginTop: '5px' }}
             >
               최대 2개
@@ -278,6 +279,21 @@ const QuestionPage: React.FC = () => {
                  quality={100}
                  className="absolute inset-0 w-full h-full object-cover"
                />
+               <p
+                 className={`absolute ${notoSansKr.className}`}
+                 style={{
+                   color: '#4D4D4D',
+                   fontSize: '16px',
+                   fontWeight: 500,
+                   lineHeight: '130%',
+                   letterSpacing: '-0.32px',
+                   top: '14px',
+                   left: '50%',
+                   transform: 'translateX(-50%)'
+                 }}
+               >
+                 {option}
+               </p>
              </div>
               ))}
             </div>
