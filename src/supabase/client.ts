@@ -1,4 +1,4 @@
-// 기존
+// 기존_혹시나해서 남겨둠
 // import { createClient as createSupabaseClient } from '@supabase/supabase-js';
 // import { Database } from '../../types/supabase';
 

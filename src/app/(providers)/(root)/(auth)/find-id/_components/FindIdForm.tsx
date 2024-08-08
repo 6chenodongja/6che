@@ -74,7 +74,6 @@ const FindIdForm = () => {
           </button>
         </div>
         <div className="mb-1.5">
-          {/* <h3 className=" font-subtitle-KR-medium text-text-default text-[16px] font-medium"> */}
           <h3 className="not-italic font-medium lineHeight-130% font-subtitle-KR-medium text-base ">
             아이디 찾기
           </h3>
@@ -109,7 +108,6 @@ const FindIdForm = () => {
                   className="p-2 border-1 border-black-500 rounded-lg font-[16px] hover:border-blue-400 focus:border-blue-400 focus:outline-none"
                   style={{ width: '141px', height: '48px' }}
                 >
-                  <option value="select">선택</option>
                   <option value="gmail.com">@gmail.com</option>
                   <option value="naver.com">@naver.com</option>
                   <option value="daum.net">@daum.net</option>

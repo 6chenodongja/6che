@@ -1,4 +1,4 @@
-// 기존 코드
+// 기존 코드_ 혹시나 해서 남겨둠
 // const nextConfig = {
 //   images: {
 //     remotePatterns: [

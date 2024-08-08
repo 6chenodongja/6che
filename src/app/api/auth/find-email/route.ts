@@ -1,4 +1,4 @@
-// src/api/auth/find-email/route.ts
+
 import { createClient } from '@/supabase/server';
 import { NextRequest, NextResponse } from 'next/server';
 
