@@ -19,12 +19,6 @@ const FindPwForm = () => {
         redirectTo: `http://localhost:3000/reset-pw`,
       });
 
-      // if (error) {
-      //   toast.error(error.message);
-      // } else {
-      //   toast.success('비밀번호 재설정 링크가 이메일로 전송되었습니다.');
-      // }
-
       if (error) {
         if (error.message.includes('60 seconds')) {
           toast.error('60초 후에 다시 시도해 주세요.');
