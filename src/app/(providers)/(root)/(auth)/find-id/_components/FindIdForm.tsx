@@ -10,7 +10,7 @@ const FindIdForm = () => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const fullEmail = domain === 'custom' ? email : `${email}@${domain}`;
+    const fullEmail = domain === '직접 입력' ? email : `${email}@${domain}`;
 
     try {
       const response = await fetch('/api/auth/find-email', {
@@ -97,9 +97,7 @@ const FindIdForm = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 className="p-2 border-1 border-black-500 rounded-lg hover:border-blue-400 focus:border-blue-400 focus:outline-none"
                 style={{ width: '141px', height: '48px' }}
-                placeholder={
-                  domain === 'custom' ? '이메일 주소를 입력하세요' : ''
-                }
+                placeholder={domain === '직접 입력' ? '' : ''}
               />
               {domain !== 'custom' && (
                 <select
@@ -114,7 +112,7 @@ const FindIdForm = () => {
                   <option value="nate.com">@nate.com</option>
                   <option value="icloud.com">@icloud.com</option>
                   <option value="hanmail.net">@hanmail.net</option>
-                  <option value="custom">직접 입력</option>
+                  <option value="직접 입력">직접 입력</option>
                 </select>
               )}
             </div>
