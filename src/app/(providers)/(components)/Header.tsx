@@ -17,6 +17,15 @@ const Header = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  const handleLogoClick = () => {
+    // 메인화면에서 로고 클릭 시 새로고침
+    if (window.location.pathname === '/') {
+      window.location.reload(); // 메인화면에서는 새로고침
+    } else {
+      router.push('/'); // 다른 페이지에서는 메인화면으로 이동
+    }
+  };
+
   const handleNavigation = (url: string) => {
     setIsLoading(true);
     setTimeout(() => {
@@ -34,9 +43,9 @@ const Header = () => {
       <button title="button" onClick={handleMenuToggle}>
         <Image src="/images/menu.png" alt="메뉴" width={24} height={24} />
       </button>
-      <Link href="/">
+      <div onClick={handleLogoClick} className="cursor-pointer">
         <LogoText className="w-24 h-8" />
-      </Link>
+      </div>
       <Link href="/login">
         <IconLogin className="w-6 h-6" />
       </Link>
