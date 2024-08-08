@@ -14,6 +14,7 @@ const config: Config = {
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
       colors: {
+        '--text':'var(--text, #4d4d4d)',
         'black-100': 'var(--black-100)',
         'black-200': 'var(--black-200)',
         'black-300': 'var(--black-300)',
@@ -131,6 +132,30 @@ const config: Config = {
       boxShadow: {
         '': 'var(--)',
         'icon-button': 'var(--icon-button)',
+      },
+      lineHeight:{
+        '130': '1.3',
+      },
+      letterSpacing: {
+        '-0.32': '-0.32px',
+        '-0.28': '-0.28px',
+
+      },
+      opacity: {
+        'sds-size-stroke-border': 'var(--sds-size-stroke-border)',
+      },
+      backgroundColor: {
+        'black-121212': 'var(--Black, #121212)',
+      },
+      padding: {
+        'sds-200': 'var(--sds-size-space-200)',
+        'blur-10': 'var(--Blur-10, 10px)',
+      },
+      gap: {
+        '4': '4px',
+      },
+      borderRadius: {
+        'sds-200': 'var(--sds-size-radius-200)',
       },
     },
   },

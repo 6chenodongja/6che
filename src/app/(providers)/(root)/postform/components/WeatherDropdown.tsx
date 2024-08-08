@@ -5,7 +5,6 @@ import Image from 'next/image';
 import { styled } from '@mui/material/styles';
 
 const weatherIcons = [
-  { value: '/location.svg', label: '현재 날씨', src: '/location.svg' },
   { value: '/sun.svg', label: '맑음', src: '/sun.svg' },
   { value: '/blur.svg', label: '흐림', src: '/blur.svg' },
   { value: '/rain.svg', label: '비', src: '/rain.svg' },
