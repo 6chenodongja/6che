@@ -4,7 +4,7 @@ import { createClient } from '@/supabase/client';
 import { useUserStore } from '@/zustand/store/useUserStore';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import { FormEventHandler, useState } from 'react';
+import { FormEventHandler, useState, useEffect } from 'react';
 
 const profileIcons = [
   '/images/Weather/sun.svg',
@@ -32,6 +32,7 @@ const BottomSheet = () => {
   const { user, setUser } = useUserStore();
   const supabase = createClient();
   const [isVisible, setIsVisible] = useState<boolean>(true);
+  const [isClosing, setIsClosing] = useState<boolean>(false);
 
   const handleProfileIconSelect = (icon: string) => {
     setProfileIcon(icon);
@@ -71,29 +72,32 @@ const BottomSheet = () => {
   };
 
   const handleClose = () => {
-    setIsVisible(false);
+    setIsClosing(true);
+    setTimeout(() => {
+      setIsVisible(false);
+    }, 500); // 애니메이션 지속 시간 후에 컴포넌트를 숨김
   };
 
   return (
     <div
-      className={`fixed inset-0 z-50 flex items-end justify-center transition-opacity duration-500 ${isVisible ? 'bg-black bg-opacity-50' : 'bg-transparent'}`}
+      className={`fixed inset-0 z-50 flex items-end justify-center w-full ${isVisible ? 'bg-black bg-opacity-50' : 'bg-transparent'} transition-opacity duration-500`}
       style={{
         visibility: isVisible ? 'visible' : 'hidden',
         opacity: isVisible ? 1 : 0,
       }}
     >
       <motion.div
-        initial={{ y: '100%' }}
-        animate={{ y: isVisible ? '0%' : '100%' }}
+        initial={{ y: '500%' }}
+        animate={{ y: isClosing ? '500%' : 0 }}
         transition={{ type: 'spring', stiffness: 200, damping: 40 }}
-        className="flex flex-col justify-center rounded-t-2xl bg-white"
+        className="flex flex-col justify-center rounded-t-2xl p-6 bg-white bg-opacity-70"
       >
         <div className="">
           <div className="text-center mt-[30px] mb-1">
             <h2 className="text-xl font-semibold">프로필 선택</h2>
           </div>
           <form className="h-full" onSubmit={handleSubmit}>
-            <div className="grid grid-cols-5 gap-2.5 w-72 h-56 relative pl-[19px] pr-[19px] pt-[16px] pb-[16px] rounded-2xl bg-white">
+            <div className="grid grid-cols-5 gap-2  h-56 pl-[19px] pr-[19px] pt-[16px] pb-[16px] rounded-2xl">
               {profileIcons.map((icon, index) => (
                 <Image
                   key={index}
@@ -106,11 +110,11 @@ const BottomSheet = () => {
                 />
               ))}
             </div>
-            <div className="flex justify-center items-center">
+            <div className="flex justify-center items-center mb-3">
               <button
-                type="button"
+                type="button" // type을 "button"으로 변경하여 폼 제출이 아니라 버튼 클릭 이벤트로 처리
                 onClick={() => handleSubmit}
-                className="w-[288px] h-[49px] py-2 px-4 rounded-md shadow-sm text-center font-medium text-white bg-[#121212] hover:bg-blue-400"
+                className="w-[288px] h-[49px] py-2 px-4 rounded-md shadow-sm text-center font-medium text-[white] bg-[#121212] hover:bg-blue-400"
               >
                 선택 완료
               </button>

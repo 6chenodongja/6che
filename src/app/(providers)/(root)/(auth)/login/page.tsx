@@ -6,7 +6,7 @@ import Footer from 'app/(providers)/(components)/Footer';
 
 function LoginPage() {
   return (
-    <main className="flex flex-row justify-center container">
+    <main className="container bg-neutral-50 flex flex-col justify-center items-center w-full">
       <div className="bg-[#fafafa60] w-full h-auto">
         <Header />
         <LoginForm />

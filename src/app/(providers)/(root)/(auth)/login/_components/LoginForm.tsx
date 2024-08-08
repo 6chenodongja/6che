@@ -77,6 +77,11 @@ function LoginForm() {
     }
   };
 
+  /**
+   * css
+   * 전체를 담는 main 1개
+   * main을 담은 div 1개
+   */
   return (
     <main className="flex">
       <form onSubmit={onSubmit} className="h-auto justify-center m-auto">
@@ -84,10 +89,11 @@ function LoginForm() {
           로그인
         </h1>
         <div></div>
-        <div className="bg-slate-50 flex flex-col">
+        {/* 이메일 input */}
+        <div className="bg-slate-50 flex flex-col text-[#4D4D4D]">
           <label
             htmlFor="email"
-            className="text-[16px] font-bold text-left text-[#4d4d4d] mb-1 ml-1 flex"
+            className="text-[16px] font-bold text-left  mb-1 ml-1 flex"
           >
             이메일
           </label>
@@ -99,7 +105,8 @@ function LoginForm() {
             className="flex justify-start items-center flex-grow relative gap-2 px-4 py-3 rounded-xl border-[1px] w-[288px] border-[#4D4D4D]"
           />
         </div>
-        <div className="mt-2">
+        {/* 비밀번호 input */}
+        <div className="mt-2 text-[#4D4D4D]">
           <label className="text-[16px] font-bold text-left text-black-500 mb-1 ml-1 flex">
             비밀번호
           </label>
@@ -121,8 +128,8 @@ function LoginForm() {
             로그인 유지
           </label>
         </div> */}
-        <div className="flex flex-col gap-2 bg-red-600">
-          <div className="flex flex-row w-full mt-16">
+        <div className="flex flex-col gap-2 bg-blue-500">
+          <div className="flex flex-row w-full">
             <button className="bg-black text-[#fff] rounded-xl px-4 py-3 w-[288px] font-bold">
               로그인
             </button>
