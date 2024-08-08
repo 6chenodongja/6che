@@ -13,6 +13,7 @@ function LoginDropdown() {
   return (
     <div className="inline-block text-left">
       <button
+        title="프로필 아이콘"
         onClick={toggleDropdown}
         className="flex items-center justify-between bg-white border border-gray-300 rounded-lg shadow-sm px-4 py-2 text-sm font-medium text-gray-700 "
       >
