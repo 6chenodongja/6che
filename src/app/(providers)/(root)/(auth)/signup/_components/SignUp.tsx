@@ -2,12 +2,10 @@
 
 import { createClient } from '@/supabase/client';
 import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
 import { emailDomains } from '@/utils/emailDomains';
 import { useSignUpForm } from 'hooks/useSignUpForm';
 
 function SingUp() {
-  const [open, setOpen] = useState(false);
   const {
     nickname,
     emailId,

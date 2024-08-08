@@ -20,22 +20,23 @@ const Header = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  useEffect(() => {
-    supabase.auth.onAuthStateChange((event, session) => {
-      if (event === 'SIGNED_IN' && session) {
-        const userData = {
-          id: session.user.id,
-          nickname: session.user.user_metadata.name,
-          email: session.user.email || '',
-          provider: session.user.app_metadata.provider || '',
-        };
+  // 이 로직이 실행 되는 것인지, event랑, session console로 확인해 보기
+  // useEffect(() => {
+  //   supabase.auth.onAuthStateChange((event, session) => {
+  //     if (event === 'SIGNED_IN' && session) {
+  //       const userData = {
+  //         id: session.user.id,
+  //         nickname: session.user.user_metadata.name,
+  //         email: session.user.email || '',
+  //         provider: session.user.app_metadata.provider || '',
+  //       };
 
-        setUser(userData);
-      } else if (event === 'SIGNED_OUT') {
-        clearUser();
-      }
-    });
-  }, []);
+  //       setUser(userData);
+  //     } else if (event === 'SIGNED_OUT') {
+  //       clearUser();
+  //     }
+  //   });
+  // }, []);
 
   return (
     <header className="w-full bg-white shadow-md py-4 flex justify-between items-center px-4">

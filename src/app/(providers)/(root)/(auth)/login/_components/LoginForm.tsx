@@ -44,7 +44,6 @@ function LoginForm() {
       console.error('로그인 중 오류 발생:', error);
       alert('아이디 또는 비밀번호는 다시 입력해주세요!');
     }
-    // alert(`환영합니다 ${res.data.nickname}님!`);
   };
 
   const handleSocialLogin = async (provider: 'google' | 'kakao') => {
@@ -81,9 +80,10 @@ function LoginForm() {
   return (
     <main className="flex">
       <form onSubmit={onSubmit} className="h-auto justify-center m-auto">
-        <h1 className="mt-[119px] text-[24px] font-bold text-center text-[#121212]">
+        <h1 className="text-center text-[20px] font-bold leading-[26px] tracking-[-0.4px] text-[#121212] font-['Noto_Sans_KR']">
           로그인
         </h1>
+        <div></div>
         <div className="bg-slate-50 flex flex-col">
           <label
             htmlFor="email"
@@ -111,7 +111,7 @@ function LoginForm() {
             className="flex justify-start items-center flex-grow relative gap-2 px-4 py-3 rounded-xl border-[1px] w-[288px] border-[#808080]"
           />
         </div>
-        <div className="bg-red-500">
+        {/* <div className="bg-red-500">
           <input
             type="checkbox"
             placeholder="체크 박스입니다"
@@ -120,7 +120,7 @@ function LoginForm() {
           <label className="flex-grow-0 flex-shrink-0 text-sm text-left hover: text-[#808080]">
             로그인 유지
           </label>
-        </div>
+        </div> */}
         <div className="flex flex-col gap-2 bg-red-600">
           <div className="flex flex-row w-full mt-16">
             <button className="bg-black text-[#fff] rounded-xl px-4 py-3 w-[288px] font-bold">

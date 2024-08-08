@@ -65,7 +65,7 @@ const ProfileForm: React.FC = () => {
       return null;
     }
 
-    return alert('프로필과 닉네임이 변경 되었어요.');
+    return alert('프로필 또는 닉네임이 변경 되었어요.');
   };
 
   const handleSubmit = async () => {
