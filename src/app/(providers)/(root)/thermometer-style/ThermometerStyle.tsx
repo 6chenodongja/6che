@@ -25,50 +25,49 @@ interface TemperatureRange {
 
 const outfits: OutfitImages = {
   '28°C 이상': [
-    '/images/Weather2/T-sleeveless.png',
-    '/images/Weather2/ss-t-shirt.png',
-    '/images/Weather2/linen.png',
-    '/images/Weather2/short-skirt.png',
-    '/images/Weather2/shorts.png',
-  ],
+    '/images/Weather2/sleeveless.svg',
+    '/images/Weather2/short_sleeve_t_shirt.svg',
+    '/images/Weather2/shorts.svg',
+    '/images/Weather2/short_skirt.svg',
+    '/images/Weather2/linen_clothes.svg'
+  ], // figma 민소매 ~ 린넨 옷
   '23°C - 27°C': [
-    '/images/Weather2/ss-t-shirt.png',
-    '/images/Weather2/thin-shirt.png',
-    '/images/Weather2/shorts.png',
-    '/images/Weather2/cotton-pants.png',
-  ],
+    '/images/Weather2/short_sleeve_t_shirt.svg',
+    '/images/Weather2/shorts.svg',
+    '/images/Weather2/thin_shirt.svg',
+    '/images/Weather2/cotton_pants.svg',
+  ], // figma 반팔티 ~ 면바지
   '20°C - 22°C': [
-    '/images/Weather2/blouse.png',
-    '/images/Weather2/long sleeve.png',
-    '/images/Weather2/cotton-pants.png',
-    '/images/Weather2/slacks.png',
-  ],
+    '/images/Weather2/Long_sleeve_t_shirt.svg',
+    '/images/Weather2/blouse.svg',
+    '/images/Weather2/slacks.svg',
+    '/images/Weather2/cotton_pants.svg'
+  ], // figma 긴팔 티 ~ 면바지
   '17°C - 19°C': [
-    '/images/Weather2/Cardigan.png',
-    '/images/Weather2/neat.png',
-    '/images/Weather2/sweatshirt.png',
-    '/images/Weather2/hood.png',
-    '/images/Weather2/long-pants.png',
-  ],
+    '/images/Weather2/Cardigan.svg',
+    '/images/Weather2/man_to_man.svg',
+    '/images/Weather2/Hood.svg',
+    '/images/Weather2/hose.svg'
+  ], // figma 가디건 ~ 긴 바지
   '12°C - 16°C': [
-    '/images/Weather2/jacket.png',
-    '/images/Weather2/Cardigan.png',
-    '/images/Weather2/denim-jacket.png',
-    '/images/Weather2/neat.png',
-    '/images/Weather2/jeans.png',
-  ],
+    '/images/Weather2/Cardigan.svg',
+    '/images/Weather2/neat.svg',
+    '/images/Weather2/jacket.svg',
+    '/images/Weather2/denim_jacket.svg',
+    '/images/Weather2/jeans.svg'
+  ], // figma 가디건 ~ 청바지
   '9°C - 11°C': [
-    '/images/Weather2/trench-coat.png',
-    '/images/Weather2/field-jacket.png',
-    '/images/Weather2/jumper.png',
-    '/images/Weather2/brushed-pants.png',
-  ],
+    '/images/Weather2/jumper.svg',
+    '/images/Weather2/nocturnal.svg',
+    '/images/Weather2/trench_coat.svg',
+    '/images/Weather2/brushed_pants.svg'
+  ], // figma 점퍼 ~ 기모바지
   '5°C - 8°C': [
-    '/images/Weather2/wool-coat.png',
-    '/images/Weather2/heattech.png',
-    '/images/Weather2/leather-jacket.png',
-    // '/images/Weather2/기모.png', 삽입 예정
-  ],
+    '/images/Weather2/wool_coat.svg',
+    '/images/Weather2/heattech.svg',
+    '/images/Weather2/leather_clothes.svg',
+    '/images/Weather2/brushed.svg'
+  ], 
   '4°C 이하': [
     '/images/Weather2/padding.png',
     '/images/Weather2/thick_coat.png',
