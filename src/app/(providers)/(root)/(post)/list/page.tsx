@@ -13,17 +13,17 @@ import ListHeader from './_components/ListHeader';
 import ListSelects from './_components/ListSelect';
 import ScrollButtons from './_components/ScrollButtons';
 import _ from 'lodash';
-import { useUserStore } from '@/zustand/store/useUserStore';
 import { Tables } from '../../../../../../types/supabase';
 import Header from 'app/(providers)/(components)/Header';
 import Footer from 'app/(providers)/(components)/Footer';
 
+type PostItem = Tables<'posts'> & { users: Tables<'users'> | null };
+
 function PostList() {
   const [liked, setLiked] = useState<{ [key: string]: boolean }>({});
-  const [posts, setPosts] = useState<Tables<'posts'>[]>([]);
-  const [users, setUsers] = useState<Tables<'users'>[]>([]);
+  const [posts, setPosts] = useState<PostItem[]>([]);
   const [latest, setLatest] = useState('latest');
-  const [filteredPosts, setFilteredPosts] = useState<Tables<'posts'>[]>([]);
+  const [filteredPosts, setFilteredPosts] = useState<PostItem[]>([]);
   const [selectedOptions, setSelectedOptions] = useState<{
     [key: string]: string[];
   }>({});
@@ -31,8 +31,6 @@ function PostList() {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [searchInput, setSearchInput] = useState<string>('');
   const [showSearchDropdown, setShowSearchDropdown] = useState<boolean>(false);
-
-  const User = useUserStore();
 
   const handleLike = useCallback(
     async (postId: string, userId: string) => {
@@ -112,37 +110,19 @@ function PostList() {
 
   const debouncedHandleLike = _.debounce(handleLike, 500);
 
-  const fetchUsers = useCallback(async () => {
-    const { data } = await supabase.from('users').select('*').eq('id', User);
-    if (data) {
-      setUsers(data);
-    }
-  }, [User]);
-
-  useEffect(() => {
-    fetchUsers();
-  }, [fetchUsers]);
-
-  const getNickName = useCallback(
-    (userId: string) => {
-      const user = users.find((user) => user.id === userId);
-      return user ? user.nick_name : 'Unknown';
-    },
-    [users],
-  );
-
+  // 포스트 리스트 가져오기
   const fetchPosts = useCallback(async (order: string) => {
     const orderColumn = order === 'latest' ? 'created_at' : 'like';
-    const { data, error } = await supabase
+    const { data: postList, error } = await supabase
       .from('posts')
-      .select('*')
+      .select('*,  users(*)')
       .order(orderColumn, { ascending: false });
 
     if (error) {
       console.error(error);
     } else {
-      setPosts(data);
-      setFilteredPosts(data);
+      setPosts(postList);
+      setFilteredPosts(postList);
     }
   }, []);
 
@@ -155,7 +135,7 @@ function PostList() {
   };
 
   const filterPosts = useCallback(() => {
-    let filtered: Tables<'posts'>[] = [...posts];
+    let filtered: PostItem[] = [...posts];
 
     Object.keys(selectedOptions).forEach((key) => {
       if (selectedOptions[key].length > 0) {
@@ -241,7 +221,7 @@ function PostList() {
       } else {
         newOptions[selectedTab].push(option);
       }
-      console.log('Selected options:', newOptions);
+      console.log('Selected options:', newOptions); // newOptions가 2개가 동시에 찍힌다 그래서 클릭이 안되는 것 처럼 보인다.
       return newOptions;
     });
   };
@@ -261,8 +241,6 @@ function PostList() {
   const handleSearchInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchInput(e.target.value);
   };
-
-  console.log(User);
 
   return (
     <div className="container mx-auto h-auto bg-[#FAFAFA]">
@@ -309,11 +287,12 @@ function PostList() {
                   alt="alt"
                   width={100}
                   height={100}
+                  sizes="100"
                   className="w-[140px] h-[200px] object-cover rounded-lg"
                   priority
                 />
               )}
-              <div className="absolute top-2 left-2 icon-box p-[4px] text-[#4D4D4D] flex flex-row justify-center items-center gap-2">
+              <div className="absolute top-2 left-2 list-icon-border inline-flex items-center gap-[2px] px-[4px] py-[1px] text-[#4D4D4D]">
                 <div className="list-icon">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -453,7 +432,9 @@ function PostList() {
                     </defs>
                   </svg>
                 </div>
-                26°
+                {post.weather && post.weather.match(/\d+°/g)
+                  ? post.weather.match(/\d+°/g)![0]
+                  : 'N/A'}
               </div>
             </Link>
 
@@ -634,7 +615,7 @@ function PostList() {
                         </defs>
                       </svg>
                     </div>
-                    {getNickName(post.user_id)}
+                    {post.users?.nick_name}
                   </span>
                   <span className="flex flex-row text-[12px]  justify-center items-center">
                     <svg
