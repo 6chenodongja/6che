@@ -107,11 +107,16 @@ const fetchAndFilterPosts = async (currentTemp: number): Promise<Post[]> => {
 
   return posts
     .map((post) => {
+      // 이미지 URL에서 첫 번째 링크만 사용
+      const firstImageUrl = post.image_url
+        ? post.image_url.split(',')[0]
+        : null;
+
       const postTempMatch = post.weather?.match(/(\d+)(?=°C)/);
       const postTemp = postTempMatch ? parseInt(postTempMatch[1], 10) : null;
       const tempDifference =
         postTemp !== null ? Math.abs(postTemp - currentTemp) : Number.MAX_VALUE;
-      return { ...post, tempDifference };
+      return { ...post, image_url: firstImageUrl, tempDifference };
     })
     .sort((a, b) => a.tempDifference - b.tempDifference)
     .slice(0, 2);
