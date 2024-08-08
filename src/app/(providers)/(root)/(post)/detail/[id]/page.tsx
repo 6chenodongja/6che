@@ -33,9 +33,6 @@ function PostDetail({
   const { user } = useUserStore();
   const supabase = createClient();
 
-  // 수정 삭제 보여주기
-  // select로 가져온 id랑 UserStore랑 아이디 비교해서 수정삭제 버튼 보여주기
-
   useEffect(() => {
     // 유저 포스트 1개의 정보를 가져오기
     const fetchPostDetail = async () => {
