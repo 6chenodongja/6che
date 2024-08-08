@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import Image from 'next/image';
@@ -16,7 +16,7 @@ const weatherIcons = [
 ];
 
 const temperatures = [
-  { value: '/location.svg', label: '현재 기온', src: '/location.svg' },
+  { value: '현재 기온', label: '현재 기온', src: '/location.svg' },
   { value: '4°C 이하', label: '4°C 이하' },
   { value: '8 - 5°C', label: '8 - 5°C' },
   { value: '9 - 11°C', label: '9 - 11°C' },
@@ -55,6 +55,10 @@ const WeatherDropdown = ({
   setWeatherIcon: (icon: string | null) => void;
   setTemperature: (temperature: string | null) => void;
 }) => {
+  const [currentTemperature, setCurrentTemperature] = useState<string | null>(
+    null,
+  );
+
   const handleWeatherIconChange = (
     event: React.ChangeEvent<{}>,
     newValue: { value: string; label: string; src: string } | null,
@@ -62,11 +66,45 @@ const WeatherDropdown = ({
     setWeatherIcon(newValue ? newValue.value : null);
   };
 
-  const handleTemperatureChange = (
+  const handleTemperatureChange = async (
     event: React.ChangeEvent<{}>,
     newValue: { value: string; label: string } | null,
   ) => {
-    setTemperature(newValue ? newValue.value : null);
+    if (newValue?.value === '현재 기온') {
+      // 현재 위치의 온도를 가져오는 로직 추가
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          async (position) => {
+            const { latitude, longitude } = position.coords;
+            try {
+              const response = await fetch(
+                `/api/weather?lat=${latitude}&lon=${longitude}`,
+              );
+              const weatherData = await response.json();
+              if (weatherData && weatherData.current) {
+                const currentTemp = `${Math.round(weatherData.current.Temperature.Metric.Value)}°C`;
+                setCurrentTemperature(currentTemp);
+                setTemperature(currentTemp);
+              } else {
+                alert('현재 온도를 가져올 수 없습니다.');
+              }
+            } catch (error) {
+              console.error('Error fetching current temperature:', error);
+              alert('현재 온도를 가져올 수 없습니다.');
+            }
+          },
+          (error) => {
+            console.error('Error getting location', error);
+            alert('위치를 가져올 수 없습니다. 위치 권한을 확인해주세요.');
+          },
+        );
+      } else {
+        alert('현재 브라우저에서 위치 정보를 사용할 수 없습니다.');
+      }
+    } else {
+      setCurrentTemperature(null);
+      setTemperature(newValue ? newValue.value : null);
+    }
   };
 
   return (
@@ -104,11 +142,15 @@ const WeatherDropdown = ({
         />
         <Autocomplete
           options={temperatures}
-          getOptionLabel={(option) => option.label}
+          getOptionLabel={(option) =>
+            currentTemperature && option.value === '현재 기온'
+              ? currentTemperature
+              : option.label
+          }
           onChange={handleTemperatureChange}
           renderOption={(props, option) => (
             <li {...props} className="flex items-center gap-1 pl-3 mb-3">
-              {option.value === '/location.svg' && option.src ? (
+              {option.value === '현재 기온' && option.src ? (
                 <>
                   <Image
                     src={option.src ?? '/default-image.svg'}
@@ -116,7 +158,11 @@ const WeatherDropdown = ({
                     width={20}
                     height={20}
                   />
-                  <span className="ml-2">{option.label}</span>
+                  <span className="ml-2">
+                    {currentTemperature && option.value === '현재 기온'
+                      ? currentTemperature
+                      : option.label}
+                  </span>
                 </>
               ) : (
                 <span>{option.label}</span>

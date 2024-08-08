@@ -42,8 +42,8 @@ function ListSelects({
 
   return (
     <div className="relative z-10">
-      <div className="w-[320px] h-[50px] relative pt-[8px] pb-[9px] px-[14px]">
-        <div className="flex justify-center items-start w-[75px] absolute left-3.5 top-2">
+      <div className="list-header flex justify-start items-center shrink-0">
+        <div className="flex justify-center items-start w-[75px] shrink-0">
           <div className="flex justify-center items-center flex-grow-0 flex-shrink-0 relative overflow-hidden px-1 py-1.5 rounded-lg]">
             <p className="flex-grow-0 flex-shrink-0 text-sm text-left text-[#121212]">
               <select onChange={handleSortChange} className="bg-[#FAFAFA]">
