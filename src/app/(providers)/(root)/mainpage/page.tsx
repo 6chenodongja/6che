@@ -218,7 +218,7 @@ const LocationInput = ({
 
       <div
         className="h-[26px] px-2 py-1 bg-white/40 rounded-full shadow border border-white/50 backdrop-blur-[20px] justify-center items-center inline-flex"
-        style={{ zIndex: 1 }} // 서울시 동작구 박스의 z-index를 1로 설정하여 앞으로 보냄
+        style={{ zIndex: 1 }} // 위치 박스 z-index를 1로 설정하여 앞으로 보냄
       >
         <div className="justify-start items-center gap-0.5 flex">
           {isEditing ? (
@@ -471,8 +471,8 @@ const MainPage = () => {
             className="absolute"
             style={{
               top: '-27px', // 구름 이미지의 위치 조정
-              right: '-128px', // 구름 이미지의 위치 조정
-              width: '120px',
+              right: '-208px', // 구름 이미지의 위치 조정
+              width: '200px',
               height: '120px',
               zIndex: 1, // 구름 이미지의 z-index를 1로 설정하여 Sun.svg보다 앞에 위치
             }}
@@ -505,18 +505,36 @@ const MainPage = () => {
             />
           </div>
 
-          <div className="relative w-[75px] h-16" style={{ marginTop: '-5px' }}>
-            <div className="absolute top-0 left-0 font-temperature-60 font-[number:var(--temperature-60-font-weight)] text-black text-[length:var(--temperature-60-font-size)] tracking-[var(--temperature-60-letter-spacing)] leading-[var(--temperature-60-line-height)] whitespace-nowrap [font-style:var(--temperature-60-font-style)] z-10">
-              {weather && weather.Temperature && weather.Temperature.Metric
-                ? `${Math.round(weather.Temperature.Metric.Value)}°`
-                : 'N/A'}
+          <div
+            className="relative w-[75px] h-[64px] mt-[15px]"
+            style={{ top: '-15px' }}
+          >
+            <div className="absolute top-0 left-0 text-black text-[63.6px] font-[400] tracking-[0] leading-[63.6px] whitespace-nowrap z-10">
+              {weather && weather.Temperature && weather.Temperature.Metric ? (
+                <>
+                  {Math.round(weather.Temperature.Metric.Value)}
+                  <span
+                    style={{
+                      position: 'relative',
+                      top: '-15px', // ° 기호를 위로 올리기 위해 top 속성 사용
+                    }}
+                  >
+                    °
+                  </span>
+                </>
+              ) : (
+                'N/A'
+              )}
             </div>
           </div>
         </div>
 
-        <div className="mt-[23px] flex justify-center items-center">
+        <div
+          className="relative flex justify-center items-center"
+          style={{ top: '12px', zIndex: 10, marginBottom: '24px' }}
+        >
           {weather ? (
-            <span className="text-lg text-black">
+            <span className="text-[#121212] text-sm font-semibold font-['Noto Sans KR'] leading-[18.20px]">
               {difference !== null
                 ? Math.abs(difference) <= 0.9
                   ? '어제 기온과 비슷해요'
@@ -532,10 +550,11 @@ const MainPage = () => {
           )}
         </div>
 
-        <section className="w-full mt-8">
-          <h2 className="text-xl font-semibold mb-4 text-black text-center">
-            오늘 옷차림
-          </h2>
+        <h2 className="text-[#121212] text-base font-black font-['Noto Sans KR'] leading-tight mt-[34px]">
+          오늘 옷차림
+        </h2>
+
+        <section className="w-full mt-3.5">
           <div className="flex justify-between items-center mb-4">
             <div className="w-[88px] h-[100px] px-[17px] py-2.5 bg-white/40 rounded-2xl shadow border border-white backdrop-blur-[20px] flex-col justify-center items-center gap-2 inline-flex">
               <div className="text-center text-[#121212]/70 text-xs font-normal font-['Noto Sans KR'] leading-none">
@@ -581,7 +600,7 @@ const MainPage = () => {
                     src="/images/shirt.svg"
                     alt="셔츠"
                     className="object-contain"
-                    width={53.04}
+                    width={55}
                     height={55}
                   />
                 </div>
@@ -590,11 +609,11 @@ const MainPage = () => {
           </div>
         </section>
 
-        <section className="w-full mt-8">
+        <section className="w-full mt-[5px]">
           <div className="w-full max-w-[320px] h-[297px] px-4 pt-4 pb-5 bg-white/40 rounded-2xl shadow border border-white backdrop-blur-[20px] flex-col justify-start items-start gap-3.5 inline-flex">
             <div className="self-stretch justify-between items-center inline-flex">
-              <div className="h-[21px] px-2 justify-center items-center gap-2 flex">
-                <div className="section-box text-center text-[#121212] text-base font-medium font-['Noto Sans KR'] leading-tight">
+              <div className="h-[21px] px-2 justify-center items-center gap-[129px] flex">
+                <div className="text-[#121212] text-base font-semibold font-['NotoSansKR'] leading-tight">
                   추천 코디
                 </div>
               </div>
@@ -616,6 +635,7 @@ const MainPage = () => {
                 </div>
               </div>
             </div>
+
             <div className="self-stretch rounded-lg justify-start items-start gap-2 inline-flex">
               <Swiper
                 spaceBetween={8}
@@ -679,8 +699,10 @@ const MainPage = () => {
           </div>
         </section>
 
-        <section className="w-full mt-8">
-          <h2 className="text-xl font-semibold mb-4 text-black">날씨</h2>
+        <section className="w-full mt-[58px]">
+          <h2 className=" box-sizing-[20.8px] text-[16px] text-center font-semibold mb-4 text-[#121212]">
+            날씨
+          </h2>
           <Swiper spaceBetween={4} slidesPerView={3}>
             {extraWeatherInfo.map((info, index) => (
               <SwiperSlide key={index} className="weather-slide">
@@ -714,10 +736,10 @@ const MainPage = () => {
           </Swiper>
         </section>
 
-        <section className="w-full mt-8">
-          <div className="w-full max-w-[320px] h-[148px] px-4 pt-4 pb-5 bg-white/40 rounded-2xl shadow border border-white/50 backdrop-blur-[20px] flex-col justify-start items-start gap-2 inline-flex">
+        <section className="w-full mt-[18px]">
+          <div className="w-full max-w-[320px] h-[148px] px-2 pt-4 pb-5 bg-white/40 rounded-2xl shadow border border-white/50 backdrop-blur-[20px] flex-col justify-start items-start gap-2 inline-flex">
             <div className="px-2 justify-center items-center gap-2 inline-flex">
-              <div className=" section-box text-center text-[#1a1a1a] text-xs font-normal font-['Noto Sans KR'] leading-none">
+              <div className="text-center text-[#1a1a1a] text-xs font-normal font-['Noto Sans KR'] leading-none">
                 시간대별 날씨
               </div>
             </div>
