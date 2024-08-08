@@ -20,18 +20,22 @@ const Header = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  // useEffect(() => {
-  //   const storeUser = async () => {
-  //     const {
-  //       data: { user },
-  //     } = await supabase.auth.getUser();
-  //     if (!user) return;
+  useEffect(() => {
+    supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_IN' && session) {
+        const userData = {
+          id: session.user.id,
+          nickname: session.user.user_metadata.name,
+          email: session.user.email || '',
+          provider: session.user.app_metadata.provider || '',
+        };
 
-  //     const { data } = await supabase.from('users').select().eq('id', user.id);
-  //   };
-
-  //   storeUser();
-  // }, [supabase]);
+        setUser(userData);
+      } else if (event === 'SIGNED_OUT') {
+        clearUser();
+      }
+    });
+  }, []);
 
   return (
     <header className="w-full bg-white shadow-md py-4 flex justify-between items-center px-4">

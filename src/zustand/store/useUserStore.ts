@@ -5,8 +5,8 @@ type User = {
   id: string;
   nickname: string;
   email: string;
-  profileImage: string;
-  // provider: string
+  provider: string;
+  profileImage?: string;
 };
 
 interface UserState {
