@@ -15,6 +15,17 @@ const FindPwForm = () => {
     const fullEmail = domain === 'custom' ? email : `${email}@${domain}`;
 
     try {
+      const { data: userData, error: userError } = await supabase
+        .from('users')
+        .select('*')
+        .eq('email', fullEmail)
+        .single();
+
+      if (userError || !userData) {
+        toast.error('가입되지 않은 이메일입니다. 회원가입 먼저 진행해주세요.');
+        return;
+      }
+
       const { error } = await supabase.auth.resetPasswordForEmail(fullEmail, {
         redirectTo: `http://localhost:3000/reset-pw`,
       });
@@ -80,26 +91,6 @@ const FindPwForm = () => {
           </p>
         </div>
         <form onSubmit={handleSubmit} className="w-full">
-          {/* <div className="mb-4">
-            <label
-              htmlFor="email"
-              className="block text-text-default font-subtitle-KR-small mb-1.5 font-medium not-italic text-sm leading-5 tracking-tight"
-            >
-              이메일
-            </label>
-            <div className="flex items-center mt-2 mb-20 space-x-1.5">
-              <input
-                type="text"
-                id="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="p-2 border-1 border-black-500 rounded-lg hover:border-blue-400 focus:border-blue-400 focus:ring-0"
-                style={{ width: '141px', height: '48px' }}
-                placeholder={
-                  domain === 'custom' ? '이메일 주소를 입력하세요' : ''
-                }
-              /> */}
-
           <div className="mb-4">
             <label
               htmlFor="email"
