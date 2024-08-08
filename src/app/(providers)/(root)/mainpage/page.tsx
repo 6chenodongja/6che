@@ -119,7 +119,7 @@ const fetchAndFilterPosts = async (currentTemp: number): Promise<Post[]> => {
       return { ...post, image_url: firstImageUrl, tempDifference };
     })
     .sort((a, b) => a.tempDifference - b.tempDifference)
-    .slice(0, 2);
+    .slice(0, 5);
 };
 
 // LocationInput 컴포넌트
