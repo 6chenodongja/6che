@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useUserStore } from '@/zustand/store/useUserStore';
+import DeleteUser from '@/components/DeleteUser/DeleteUser';
 
 const MyPageContent: React.FC = () => {
   const { user } = useUserStore();
@@ -66,6 +67,9 @@ const MyPageContent: React.FC = () => {
                   className="flex-grow-0 flex-shrink-0 w-[18px] h-[18px] "
                 />
               </Link>
+            </div>
+            <div>
+              <DeleteUser />
             </div>
           </nav>
         </div>

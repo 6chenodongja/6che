@@ -12,7 +12,6 @@ function LoginForm() {
   const passwordRef = useRef<HTMLInputElement>(null);
   const supabase = createClient();
   const router = useRouter();
-  const { setUser, setIsLoggedIn } = useUserStore(); // 구조분해 할당으로 스토어 가져오기
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -30,13 +29,6 @@ function LoginForm() {
       });
 
       if (res.data) {
-        // setUser({
-        //   id: res.data.id,
-        //   nickname: res.data.nickname,
-        //   email: res.data.email,
-        //   provider: '',
-        //   profileImage: '',
-        // });
         router.replace('/');
       } else {
         alert('로그인 실패');

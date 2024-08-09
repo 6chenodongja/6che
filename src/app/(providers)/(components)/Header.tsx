@@ -20,23 +20,34 @@ const Header = () => {
   };
 
   useEffect(() => {
-    supabase.auth.onAuthStateChange((event, session) => {
-      console.log(event);
-      // console.log('session', session);
-      if (event === 'SIGNED_IN') {
-        if (!session) return;
-        console.log('user', user);
-        const userData = {
-          id: session.user.id,
-          nickname: session.user.user_metadata.name,
-          email: session.user.email || '',
-          provider: session.user.app_metadata.provider || '',
-          profileImage: session.user.user_metadata.avatar,
-        };
-        // console.log('userData', userData);
-        setUser(userData);
+    const getUser = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (!user) return;
+
+      const { data, error } = await supabase
+        .from('users')
+        .select()
+        .eq('id', user.id)
+        .single();
+
+      if (error) {
+        console.error('유저 데이터 받아오기 실패:', error);
+        return;
       }
-    });
+
+      setUser({
+        id: user.id,
+        nickname: data.nick_name || '',
+        email: data.email,
+        provider: user.app_metadata.provider || '',
+        profileImage: data.avatar || '',
+      });
+    };
+
+    getUser();
   }, []);
 
   return (
