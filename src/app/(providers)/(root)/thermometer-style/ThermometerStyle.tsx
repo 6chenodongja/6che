@@ -110,6 +110,8 @@ const ThermometerStyle: React.FC = () => {
   );
   const [currentOutfitIndex, setCurrentOutfitIndex] = useState<number>(0);
   const sliderRef = useRef<HTMLDivElement | null>(null);
+  const leftButtonRef = useRef<HTMLButtonElement | null>(null);
+  const rightButtonRef = useRef<HTMLButtonElement | null>(null);
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [initialView, setInitialView] = useState<boolean>(true);
   const router = useRouter();
@@ -126,13 +128,35 @@ const ThermometerStyle: React.FC = () => {
     if (!sliderRef.current || !isDragging) return;
 
     const sliderRect = sliderRef.current.getBoundingClientRect();
-    const x = 'clientX' in e ? e.clientX : e.touches[0]?.clientX;
-    if (x == null) return;
+    const leftButtonRect = leftButtonRef.current?.getBoundingClientRect();
+    const rightButtonRect = rightButtonRef.current?.getBoundingClientRect();
+    const handleWidth = 28; // 핸들의 너비 (대략적인 값)
 
-    const sliderWidth = sliderRect.width;
-    const relativeX = x - sliderRect.left;
-    const percentage = Math.min(Math.max(relativeX / sliderWidth, 0.25), 0.75);
-    const newIndex = Math.round((temperatureRanges.length - 1) * percentage);
+    if (!leftButtonRect || !rightButtonRect) return;
+
+    let x =
+      'clientX' in e
+        ? e.clientX - sliderRect.left
+        : e.touches[0]?.clientX - sliderRect.left;
+
+    // 왼쪽과 오른쪽 버튼의 경계를 벗어나지 않도록 제한
+    const minX = leftButtonRect.right - sliderRect.left;
+    const maxX = rightButtonRect.left - sliderRect.left - handleWidth;
+
+    // x 좌표를 제한된 범위 내로 조정
+    x = Math.max(minX, Math.min(x, maxX));
+
+    // 슬라이더 핸들의 위치를 설정
+    const percentage = (x - minX) / (maxX - minX);
+    const newIndex = Math.round(percentage * (temperatureRanges.length - 1));
+
+    // handleDrag 함수에서 핸들의 left 속성 값을 설정합니다.
+    const handleElement = sliderRef.current?.querySelector(
+      '.handle',
+    ) as HTMLDivElement;
+    if (handleElement) {
+      handleElement.style.left = `${x}px`;
+    }
 
     handleTemperatureChange(newIndex);
   };
@@ -229,6 +253,7 @@ const ThermometerStyle: React.FC = () => {
           {/* 왼쪽 버튼 */}
           {currentOutfitIndex > 0 && (
             <button
+              ref={leftButtonRef}
               className="absolute left-[1px] top-[49%] transform -translate-y-1/2 flex items-start opacity-[var(--sds-size-stroke-border)] shadow-[0px_1px_2px_0px_rgba(0,0,0,0.10)] backdrop-filter backdrop-blur-[2px] rounded-full z-10"
               onClick={handlePrev}
               style={{ padding: 0, border: 'none', background: 'transparent' }}
@@ -246,6 +271,7 @@ const ThermometerStyle: React.FC = () => {
           {/* 오른쪽 버튼 */}
           {currentOutfitIndex + 4 < currentOutfits.length && (
             <button
+              ref={rightButtonRef}
               className="absolute right-[9px] top-[48%] transform -translate-y-1/2 flex items-start opacity-[var(--sds-size-stroke-border)] shadow-[0px_1px_2px_0px_rgba(0,0,0,0.10)] backdrop-filter backdrop-blur-[2px] rounded-full z-10"
               onClick={handleNext}
               style={{ padding: 0, border: 'none', background: 'transparent' }}
@@ -272,6 +298,7 @@ const ThermometerStyle: React.FC = () => {
       >
         {/* 왼쪽 버튼 */}
         <button
+          ref={leftButtonRef}
           className="absolute left-[35px] top-[41.5%] transform -translate-y-1/2 flex items-center justify-center z-10"
           onClick={handleLeftClick}
           style={{ padding: 0, border: 'none', background: 'transparent' }}
@@ -291,12 +318,11 @@ const ThermometerStyle: React.FC = () => {
           width={411}
           height={63}
           sizes="100vw"
-          style={{ width: 'auto', height: 'auto' }}
           priority
         />
 
         <div
-          className="absolute"
+          className="absolute handle"
           style={{
             left: initialView
               ? '50%'
@@ -324,6 +350,7 @@ const ThermometerStyle: React.FC = () => {
 
         {/* 오른쪽 버튼 */}
         <button
+          ref={rightButtonRef}
           className="absolute right-[35px] top-[41.5%] transform -translate-y-1/2 flex items-center justify-center z-10"
           onClick={handleRightClick}
           style={{ padding: 0, border: 'none', background: 'transparent' }}
