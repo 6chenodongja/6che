@@ -341,7 +341,7 @@ const ThermometerStyle: React.FC = () => {
       <div className="w-full px-4 mb-8">
         <Link href="/list">
           <button className="w-full px-4 py-2 mb-4 text-base bg-black text-white rounded-lg button-style">
-            온도에 맞는 스타일 보러가기
+            온도에 맞는 코디 보러가기
           </button>
         </Link>
         <Link href="/survey">
