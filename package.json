@@ -29,6 +29,7 @@
     "nodemailer": "^6.9.14",
     "react": "^18",
     "react-dom": "^18",
+    "react-hot-toast": "^2.4.1",
     "react-select": "^5.8.0",
     "react-transition-group": "^4.4.5",
     "react-toastify": "^10.0.5",

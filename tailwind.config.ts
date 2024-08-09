@@ -14,7 +14,7 @@ const config: Config = {
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
       colors: {
-        '--text':'var(--text, #4d4d4d)',
+        'text-default': 'var(--text, #4D4D4D)',
         'black-100': 'var(--black-100)',
         'black-200': 'var(--black-200)',
         'black-300': 'var(--black-300)',
@@ -162,7 +162,18 @@ const config: Config = {
         2: '2px',
         4: '4px',
         20: '20px',
-      }
+      },
+      borderWidth: {
+        1: '1px',
+      },
+      spacing: {
+        '1.5': '6px',
+        '1':'4px',
+      },
+      // lineHeight: {
+      //   '130%': '20.8px',
+      // },
+
     },
   },
   plugins: [],
