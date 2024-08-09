@@ -9,6 +9,7 @@ import Header from 'app/(providers)/(components)/Header';
 import MyStyleHeader from '../myStyle/_components/MyStyleHeader';
 import { postLikedItem } from '../../../../../../types/post';
 import MyListPage from './_components/MyListPage';
+import { useCallback } from 'react';
 
 const PostLike = () => {
   const [posts, setPosts] = useState<postLikedItem[]>([]);
@@ -16,7 +17,7 @@ const PostLike = () => {
   const { user } = useUserStore();
 
   // 좋아요 한 게시물을 가져오는 함수
-  const fetchLikedPosts = async () => {
+  const fetchLikedPosts = useCallback(async () => {
     if (!user) return;
     try {
       setIsLoading(true);
@@ -34,11 +35,11 @@ const PostLike = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [user]); // user를 의존성 배열에 추가
 
   useEffect(() => {
     fetchLikedPosts();
-  }, [user]);
+  }, [user, fetchLikedPosts]); // fetchLikedPosts를 의존성 배열에 추가
 
   return (
     <div className="container">
