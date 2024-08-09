@@ -9,11 +9,9 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import Link from 'next/link';
 import { useUserStore } from '@/zustand/store/useUserStore';
-import { Tables } from '../../../../../../../types/supabase';
 import { useRouter } from 'next/navigation';
-import { createClient } from '@supabase/supabase-js';
-
-type PostDetailItem = Tables<'posts'> & { users: Tables<'users'> | null };
+import { supabase } from '@/supabase/client';
+import { PostDetailItem } from '../../../../../../../types/post';
 
 function PostDetail({ params }: { params: { id: string } }) {
   const [userComment, setUserComment] = useState<string[]>([]);
@@ -27,10 +25,6 @@ function PostDetail({ params }: { params: { id: string } }) {
   const router = useRouter();
 
   const { user } = useUserStore();
-
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-  const supabase = createClient(supabaseUrl, supabaseKey);
 
   // 온도 정보만 추출하는 함수 추가
   const formatTemperature = (temperature: string) => {
@@ -47,11 +41,11 @@ function PostDetail({ params }: { params: { id: string } }) {
         .select('*, users(*)')
         .eq('id', params.id)
         .single();
-
+      // postDetail.image_url.split(',')
       if (error) {
         console.error(error);
-      } else if (postDetail) {
-        setPostImages(postDetail.image_url.split(','));
+      } else if (postDetail.image_url) {
+        setPostImages(postDetail.image_url?.split(','));
         setDetailList(postDetail);
         setTemperature(postDetail.weather ?? 'N/A'); // weather 컬럼에서 온도 정보 가져오기
       } else {
@@ -116,7 +110,7 @@ function PostDetail({ params }: { params: { id: string } }) {
     };
 
     fetchData();
-  }, [params.id, supabase]);
+  }, [params.id]);
 
   //공유 팝업 모달
   const clickModal = () => setModalOpen(!modalOpen);
@@ -218,17 +212,19 @@ function PostDetail({ params }: { params: { id: string } }) {
           >
             {userPostImages.map((image, index) => (
               <SwiperSlide
-                key={index}
+                key={image}
                 className="w-[288px] h-[412px] object-cover"
               >
-                <Image
-                  src={image}
-                  alt={`이미지 ${index}`}
-                  width={200}
-                  height={100}
-                  sizes="100vw"
-                  className="w-[288px] h-[412px] rounded-xl flex justify-center items-center mx-auto"
-                />
+                {image && (
+                  <Image
+                    src={image}
+                    alt={`이미지 ${index}`}
+                    width={200}
+                    height={100}
+                    sizes="100vw"
+                    className="w-[288px] h-[412px] rounded-xl flex justify-center items-center mx-auto"
+                  />
+                )}
                 <div className="absolute top-3 left-6 bg-white bg-opacity-50 p-1 m-1 font-[18px] rounded-lg flex flex-row gap-2 justify-center items-center">
                   <div className="detail-icon">
                     <svg

@@ -5,7 +5,7 @@ import Header from 'app/(providers)/(components)/Header';
 import Link from 'next/link';
 import Footer from 'app/(providers)/(components)/Footer';
 import MyStyleList from './_components/MyStyleList';
-import { createClient } from '@/supabase/client';
+import { supabase } from '@/supabase/client';
 import { useEffect, useState, useCallback } from 'react';
 import { useUserStore } from '@/zustand/store/useUserStore';
 import { Tables } from '../../../../../../types/supabase';
@@ -16,7 +16,6 @@ function MyStylePage() {
   const [posts, setPosts] = useState<Tables<'posts'>[]>([]);
   const [likedPosts, setLikedPosts] = useState<postListLikedType[]>([]);
 
-  const supabase = createClient();
   const { user } = useUserStore();
 
   //내가 올린 게시물 가져오기
@@ -37,7 +36,7 @@ function MyStylePage() {
     } finally {
       setIsLoading(false);
     }
-  }, [user, supabase]);
+  }, [user]);
 
   // post_likes 테이블에 좋아요 유저 정보
   const fetchUserLiked = useCallback(async () => {
@@ -53,7 +52,7 @@ function MyStylePage() {
     } else {
       setLikedPosts(isLikes);
     }
-  }, [user, supabase]);
+  }, [user]);
 
   useEffect(() => {
     fetchMyPosts();
