@@ -44,7 +44,7 @@ type Weather = {
 
 type WeatherData = Weather[];
 
-// 강수확률에 따른 이미지를 반환하는 함수
+// 강수확률에 따른 이미지를 반환하는 함수!
 const getPrecipitationImage = (probability: number) => {
   const precipitationValue = Math.min(Math.floor(probability / 10) * 10, 100);
   return `/images/Precipitation-probability/${precipitationValue}.svg`;
