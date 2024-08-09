@@ -38,7 +38,7 @@ function PostList() {
       const orderColumn = order === 'latest' ? 'created_at' : 'like';
       const { data: postList, error } = await supabase
         .from('posts')
-        .select('*,  users(*)')
+        .select('*, users(*)')
         .order(orderColumn, { ascending: false });
 
       if (error) {
@@ -48,11 +48,11 @@ function PostList() {
         setFilteredPosts(postList);
       }
     },
-    [user],
+    [], // 'user'를 의존성 배열에서 제거했습니다.
   );
 
   // post_likes 테이블에 좋아요 유저 정보
-  const fetchUserLiked = async () => {
+  const fetchUserLiked = useCallback(async () => {
     if (!user) return;
 
     const { data: isLikes, error } = await supabase
@@ -65,12 +65,12 @@ function PostList() {
     } else {
       setLikedPosts(isLikes);
     }
-  };
+  }, [user]); // user를 의존성 배열에 추가
 
   useEffect(() => {
     fetchPosts(latest);
-    fetchUserLiked();
-  }, [latest, fetchPosts]);
+    fetchUserLiked(); // 'fetchUserLiked'를 의존성 배열에 추가했습니다.
+  }, [latest, fetchPosts, fetchUserLiked]);
 
   const handleSortChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setLatest(e.target.value);

@@ -1,11 +1,5 @@
 'use client';
-import React, {
-  ChangeEvent,
-  use,
-  useCallback,
-  useEffect,
-  useState,
-} from 'react';
+import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { Tables } from '../../../../../../../types/supabase';
 import { createClient } from '@/supabase/client';
 import MyStyleFilter from './MyStyleFilter';
@@ -23,20 +17,23 @@ function MySelectPage() {
   const supabase = createClient();
 
   // 포스트 리스트 가져오기
-  const fetchPosts = useCallback(async (order: string) => {
-    const orderColumn = order === 'latest' ? 'created_at' : 'like';
-    const { data: postList, error } = await supabase
-      .from('posts')
-      .select('*, users(*)')
-      .order(orderColumn, { ascending: false });
+  const fetchPosts = useCallback(
+    async (order: string) => {
+      const orderColumn = order === 'latest' ? 'created_at' : 'like';
+      const { data: postList, error } = await supabase
+        .from('posts')
+        .select('*, users(*)')
+        .order(orderColumn, { ascending: false });
 
-    if (error) {
-      console.error(error);
-    } else {
-      setPosts(postList);
-      setFilteredPosts(postList);
-    }
-  }, []);
+      if (error) {
+        console.error(error);
+      } else {
+        setPosts(postList);
+        setFilteredPosts(postList);
+      }
+    },
+    [supabase],
+  );
 
   useEffect(() => {
     fetchPosts(latest);

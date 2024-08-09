@@ -116,7 +116,7 @@ function PostDetail({ params }: { params: { id: string } }) {
     };
 
     fetchData();
-  }, [params.id]);
+  }, [params.id, supabase]);
 
   //공유 팝업 모달
   const clickModal = () => setModalOpen(!modalOpen);
