@@ -1,7 +1,6 @@
 'use client';
 
 import { createClient } from '@/supabase/client';
-import { useUserStore } from '@/zustand/store/useUserStore';
 import Link from 'next/link';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';

@@ -33,7 +33,7 @@ export function createSupabaseClientForUserDeletion() {
 
   return createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_KEY!, // 노출되면 안 되는 위험한 key
+    process.env.SUPABASE_SERVICE_ROLE_KEY!, // 노출되면 안 되는 위험한 key
     {
       cookies: {
         getAll() {

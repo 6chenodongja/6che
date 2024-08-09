@@ -12,8 +12,7 @@ import { createClient } from '@/supabase/client';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [users, setUsers] = useState<User | null>(null);
-  const { clearUser, setUser, user } = useUserStore();
+  const { setUser, user } = useUserStore();
   const supabase = createClient();
   const handleMenuToggle = () => {
     setIsMenuOpen(!isMenuOpen);

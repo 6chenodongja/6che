@@ -162,7 +162,6 @@ function PostDetail({
       alert('게시물이 삭제되었습니다.');
     }
   };
-  console.log(User.user?.nickname);
 
   return (
     <div>

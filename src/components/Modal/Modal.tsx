@@ -6,8 +6,8 @@ interface ModalProps {
   onConfirm: () => void;
 }
 
-const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onConfirm }) => {
-  if (!isOpen) return null;
+const Modal = ({ isOpen, onClose, onConfirm }: ModalProps) => {
+  const handleCloserModal = () => {};
 
   return (
     <div className="modal">

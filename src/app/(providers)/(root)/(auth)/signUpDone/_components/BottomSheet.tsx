@@ -54,7 +54,6 @@ const BottomSheet = () => {
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
-    console.log('회원가입된 유저', user);
     if (!user) return;
 
     setUser({
