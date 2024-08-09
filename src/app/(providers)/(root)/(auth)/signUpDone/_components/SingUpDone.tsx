@@ -5,13 +5,6 @@ import Link from 'next/link';
 
 function SingUpDone() {
   const { user, setUser } = useUserStore();
-  // console.log(user);
-  // const [isDropdownView, setDropdownView] = useState(false);
-  // const [user, setUser] = useState();
-  // const handleClickContainer = () => {
-  //   setDropdownView(!isDropdownView);
-  // };
-  // const [profileIcon, setProfileIcon] = useState<string>('');
 
   return (
     <main className="h-auto justify-center m-auto">

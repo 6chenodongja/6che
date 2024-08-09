@@ -38,16 +38,12 @@ const BottomSheet = () => {
     setProfileIcon(icon);
   };
 
-  const updateUserProfile = async (
-    updates: Record<string, any>,
-    userId: string,
-  ) => {
+  const updateUserProfile = async (profileImage: string, userId: string) => {
     const { data, error } = await supabase
       .from('users')
-      .update(updates)
+      .update({ avatar: profileImage })
       .eq('id', userId)
       .single();
-
     if (error) {
       console.error('선택한 프로필이 수정되지 않았어요.', error);
       return;
@@ -58,16 +54,15 @@ const BottomSheet = () => {
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
-    const updates: Record<string, any> = {};
-    if (profileIcon) {
-      updates['avatar'] = profileIcon;
-    }
-    if (!user) return;
-    setUser({
-      ...user,
-      profileImage: updates.avatar || user.profileImage,
-    });
-    await updateUserProfile(updates, user.id);
+    // setUser({
+    //   ...user,
+    //   profileImage: profileIcon,
+    // });
+    //
+    await updateUserProfile(
+      profileIcon,
+      'db89bb12-dae0-490f-94cc-509bcf195da3',
+    );
     handleClose();
   };
 
@@ -112,8 +107,8 @@ const BottomSheet = () => {
             </div>
             <div className="flex justify-center items-center mb-3">
               <button
-                type="button" // type을 "button"으로 변경하여 폼 제출이 아니라 버튼 클릭 이벤트로 처리
-                onClick={() => handleSubmit}
+                type="submit"
+                // onClick={() => handleSubmit}
                 className="w-[288px] h-[49px] py-2 px-4 rounded-md shadow-sm text-center font-medium text-[white] bg-[#121212] hover:bg-blue-400"
               >
                 선택 완료

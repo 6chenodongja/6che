@@ -1,6 +1,7 @@
 'use client';
 
 import { createClient } from '@/supabase/client';
+import { useUserStore } from '@/zustand/store/useUserStore';
 import axios from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -11,6 +12,7 @@ function LoginForm() {
   const passwordRef = useRef<HTMLInputElement>(null);
   const supabase = createClient();
   const router = useRouter();
+  const { setUser, setIsLoggedIn } = useUserStore(); // 구조분해 할당으로 스토어 가져오기
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -28,6 +30,13 @@ function LoginForm() {
       });
 
       if (res.data) {
+        setUser({
+          id: res.data.id,
+          nickname: res.data.nickname,
+          email: res.data.email,
+          provider: '',
+          profileImage: '',
+        });
         router.replace('/');
       } else {
         alert('로그인 실패');
@@ -52,11 +61,6 @@ function LoginForm() {
     }
   };
 
-  /**
-   * css
-   * 전체를 담는 main 1개
-   * main을 담은 div 1개
-   */
   return (
     <main className="flex">
       <form onSubmit={onSubmit} className="h-auto justify-center m-auto">
