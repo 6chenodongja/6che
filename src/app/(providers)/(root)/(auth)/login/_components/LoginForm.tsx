@@ -2,10 +2,11 @@
 
 import { createClient } from '@/supabase/client';
 import { useUserStore } from '@/zustand/store/useUserStore';
-import axios from 'axios';
 import Link from 'next/link';
+import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import React, { useRef } from 'react';
+import SocialLogin from './SocialLogin';
 
 function LoginForm() {
   const emailRef = useRef<HTMLInputElement>(null);

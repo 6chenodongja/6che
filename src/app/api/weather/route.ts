@@ -8,7 +8,7 @@ interface AirQualityItem {
 
 async function getWeather(locationKey: string) {
   try {
-    const apiKey = 'U8AuE7Glix0G2AZ76oRKO1yPSW0gg5WR'; // AccuWeather API 키
+    // const apiKey = 'U8AuE7Glix0G2AZ76oRKO1yPSW0gg5WR'; // AccuWeather API 키
 
     const currentWeatherResponse = await axios.get(
       `https://dataservice.accuweather.com/currentconditions/v1/${locationKey}`,
