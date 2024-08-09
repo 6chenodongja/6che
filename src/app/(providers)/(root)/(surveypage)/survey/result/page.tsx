@@ -79,7 +79,7 @@ const ResultPage: React.FC = () => {
             style={{ right: 'initial', left: '11px' }}
           >
             <Image
-              src={"/images/icons/arrow_left.svg"}
+              src={'/images/icons/arrow_left.svg'}
               alt="뒤로가기"
               width={8}
               height={8}
@@ -98,9 +98,10 @@ const ResultPage: React.FC = () => {
                 layout="fill"
                 objectFit="cover"
                 className="rounded-lg"
+                quality={100}
               />
               <button
-                className="absolute bottom-2 right-2 text-xl"
+                className="absolute bottom-2 right-2 text-xl backdrop-filter: blur(2px)"
                 onClick={() => handleLikeClick(index)}
               >
                 <Image
@@ -117,7 +118,7 @@ const ResultPage: React.FC = () => {
             </div>
           ))}
         </div>
-        <div className="flex flex-col items-center space-y-8">
+        <div className="flex flex-col items-center space-y-1">
           <h2 className="text-sm text-center text-[#121212]">
             더 많은 코디를 보고싶다면
           </h2>
