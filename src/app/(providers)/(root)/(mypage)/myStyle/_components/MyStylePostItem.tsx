@@ -3,26 +3,31 @@ import ListWeatherIcon from 'app/(providers)/(root)/(post)/list/_components/icon
 import Image from 'next/image';
 import MyStyleLikeButton from './MyStyleLikeButton';
 import { Tables } from '../../../../../../../types/supabase';
-import { useState } from 'react';
+import { ChangeEvent } from 'react';
+import MyStyleFilter from './MyStyleFilter';
 
 interface PostProps {
   post: Tables<'posts'>;
   isLiked: boolean;
   handleLike: (postId: string) => Promise<void>;
+  checkItems: string[];
+  fetchUserPostDelete: () => Promise<void>;
+  checkItemsHandler: (postId: string, isChecked: boolean) => void;
+  isChecked: boolean;
 }
 
-// 체그 박스 누르면 checkItems에 들어가는 로직
-function MyStylePostItem({ post, isLiked, handleLike }: PostProps) {
-  const [checkItems, setCheckItems] = useState<string[]>([]);
-
-  const checkItemsHandler = (postId: string, isChecked: boolean) => {
-    if (isChecked) {
-      setCheckItems((prev) => [...prev, postId]);
-    } else {
-      setCheckItems((prev) => prev.filter((id) => id !== postId));
-    }
+function MyStylePostItem({
+  post,
+  isLiked,
+  handleLike,
+  fetchUserPostDelete,
+  checkItemsHandler,
+  isChecked,
+  checkItems,
+}: PostProps) {
+  const handleCheck = (e: ChangeEvent<HTMLInputElement>) => {
+    checkItemsHandler(post.id, e.target.checked);
   };
-  console.log(checkItems);
 
   return (
     <div>
@@ -45,10 +50,7 @@ function MyStylePostItem({ post, isLiked, handleLike }: PostProps) {
           26°
         </div>
         <div className="absolute top-2 left-[115px]">
-          <input
-            type="checkbox"
-            onChange={(e) => checkItemsHandler(post.id, e.target.checked)}
-          />
+          <input type="checkbox" checked={isChecked} onChange={handleCheck} />
         </div>
 
         {/* 좋아요 부분 */}

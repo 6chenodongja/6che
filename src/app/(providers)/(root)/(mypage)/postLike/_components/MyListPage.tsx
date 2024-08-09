@@ -3,13 +3,13 @@ import React, { useCallback } from 'react';
 import _ from 'lodash';
 import Header from 'app/(providers)/(components)/Header';
 import Footer from 'app/(providers)/(components)/Footer';
-import MySelectPage from './MySelectPage';
 import MyStyleHeader from '../../myStyle/_components/MyStyleHeader';
 import { postLikedItem } from '../../../../../../../types/post';
 import { supabase } from '@/supabase/client';
 import { useUserStore } from '@/zustand/store/useUserStore';
 import MyListPostItem from './MyListPostItem';
 import ScrollButtons from 'app/(providers)/(root)/(post)/list/_components/ScrollButtons';
+import MySelectPage from './MySelectPage';
 
 interface PostsProps {
   posts: postLikedItem[];

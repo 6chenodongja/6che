@@ -1,29 +1,27 @@
 'use client';
-import ListSelects from 'app/(providers)/(root)/(post)/list/_components/ListSelect';
-import React, {
-  ChangeEvent,
-  KeyboardEvent,
-  useCallback,
-  useEffect,
-  useState,
-} from 'react';
-import { Tables } from '../../../../../../../types/supabase';
+import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { createClient } from '@/supabase/client';
+import MyStyleFilter from './MyStyleFilter';
+import { PostItemType } from '../../../../../../../types/post';
 
-type PostItem = Tables<'posts'> & { users: Tables<'users'> | null };
+interface allCheckProps {
+  allCheckHandler: (e: ChangeEvent<HTMLInputElement>) => void;
+  fetchUserPostDelete: () => Promise<void>;
+  checkItems: string[];
+}
 
-function MyStyleSelect() {
-  const [liked, setLiked] = useState<{ [key: string]: boolean }>({});
-  const [posts, setPosts] = useState<PostItem[]>([]);
+function MyStyleSelect({
+  allCheckHandler,
+  fetchUserPostDelete,
+  checkItems,
+}: allCheckProps) {
+  const [posts, setPosts] = useState<PostItemType[]>([]);
   const [latest, setLatest] = useState('latest');
-  const [filteredPosts, setFilteredPosts] = useState<PostItem[]>([]);
+  const [filteredPosts, setFilteredPosts] = useState<PostItemType[]>([]);
   const [selectedOptions, setSelectedOptions] = useState<{
     [key: string]: string[];
   }>({});
   const [selectedTab, setSelectedTab] = useState<string>('유형');
-  const [searchTerm, setSearchTerm] = useState<string>('');
-  const [searchInput, setSearchInput] = useState<string>('');
-  const [showSearchDropdown, setShowSearchDropdown] = useState<boolean>(false);
   const supabase = createClient();
 
   // 포스트 리스트 가져오기
@@ -31,7 +29,7 @@ function MyStyleSelect() {
     const orderColumn = order === 'latest' ? 'created_at' : 'like';
     const { data: postList, error } = await supabase
       .from('posts')
-      .select('*,  users(*)')
+      .select('*, users(*)')
       .order(orderColumn, { ascending: false });
 
     if (error) {
@@ -46,12 +44,8 @@ function MyStyleSelect() {
     fetchPosts(latest);
   }, [latest, fetchPosts]);
 
-  const handleSortChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    setLatest(e.target.value);
-  };
-
   const filterPosts = useCallback(() => {
-    let filtered: PostItem[] = [...posts];
+    let filtered: PostItemType[] = [...posts];
 
     Object.keys(selectedOptions).forEach((key) => {
       if (selectedOptions[key].length > 0) {
@@ -91,7 +85,7 @@ function MyStyleSelect() {
     });
 
     setFilteredPosts(filtered.length > 0 ? filtered : posts);
-  }, [selectedOptions, searchTerm, posts]);
+  }, [selectedOptions, posts]);
 
   useEffect(() => {
     filterPosts();
@@ -110,59 +104,60 @@ function MyStyleSelect() {
       } else {
         newOptions[selectedTab].push(option);
       }
-      console.log('Selected options:', newOptions); // newOptions가 2개가 동시에 찍힌다 그래서 클릭이 안되는 것 처럼 보인다.
       return newOptions;
     });
   };
 
-  const handleSearch = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      setSearchTerm(searchInput);
-      filterPosts();
-      setShowSearchDropdown(false); // 드롭다운 닫기
-    }
-  };
-
-  const handleSearchClick = () => {
-    setShowSearchDropdown((prev) => !prev);
-  };
-
-  const handleSearchInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setSearchInput(e.target.value);
+  //버튼 삭제 로직
+  const handleOptionRemove = (key: string, option: string) => {
+    setSelectedOptions((prevOptions) => {
+      const newOptions = { ...prevOptions };
+      newOptions[key] = newOptions[key].filter((item) => item !== option);
+      if (newOptions[key].length === 0) {
+        delete newOptions[key];
+      }
+      return newOptions;
+    });
   };
 
   return (
     <div>
-      <div className="mt-2">
-        <ListSelects
-          handleSortChange={handleSortChange}
+      <div className="mt-6">
+        <MyStyleFilter
           selectedOptions={selectedOptions}
           handleOptionClick={handleOptionClick}
           selectedTab={selectedTab}
           setSelectedTab={setSelectedTab}
-          searchTerm={searchInput}
-          setSearchTerm={handleSearchInputChange}
-          handleSearch={handleSearch}
-          showSearchDropdown={showSearchDropdown}
-          handleSearchClick={handleSearchClick}
+          allCheckHandler={allCheckHandler}
+          fetchUserPostDelete={fetchUserPostDelete}
+          checkItems={checkItems}
         />
       </div>
 
-      <div className="flex justify-start items-center gap-[6px] ml-4">
+      <div className="flex justify-start items-center gap-[4px] ml-4">
         {Object.entries(selectedOptions).map(([key, options]) =>
           options.map((option) => (
             <div
               key={`${key}-${option}`}
-              className=" mb-4 px-[10px] pt-[4px] pb-[6px] bg-black text-white rounded font-KR"
-              style={{
-                fontSize: '14px',
-                fontStyle: 'normal',
-                fontWeight: '400%',
-                lineHeight: '21px',
-                letterSpacing: '-0.28px',
-              }}
+              className="mb-[12px] flex items-center h-[32px] gap-[4px] rounded-xl bg-[#121212] text-white px-[12px] pt-[4px] pb-[6px] text-[14px] font-KR font-normal leading-[1.5px] tracking-[-0.28px]"
             >
               {option}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="17"
+                viewBox="0 0 16 17"
+                fill="none"
+                className="flex justify-center items-center w-[16px] h-[16px] cursor-pointer"
+                onClick={() => handleOptionRemove(key, option)}
+              >
+                <path
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                  d="M4.47132 4.02864C4.21097 3.76829 3.78886 3.76829 3.52851 4.02864C3.26816 4.28899 3.26816 4.7111 3.52851 4.97145L7.05711 8.50004L3.52851 12.0286C3.26816 12.289 3.26816 12.7111 3.52851 12.9714C3.78886 13.2318 4.21097 13.2318 4.47132 12.9714L7.99992 9.44285L11.5285 12.9714C11.7889 13.2318 12.211 13.2318 12.4713 12.9714C12.7317 12.7111 12.7317 12.289 12.4713 12.0286L8.94273 8.50004L12.4713 4.97145C12.7317 4.7111 12.7317 4.28899 12.4713 4.02864C12.211 3.76829 11.7889 3.76829 11.5285 4.02864L7.99992 7.55723L4.47132 4.02864Z"
+                  fill="#B3B3B3"
+                />
+              </svg>
             </div>
           )),
         )}
