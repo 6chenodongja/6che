@@ -1,5 +1,3 @@
-'use client';
-
 import Header from 'app/(providers)/(components)/Header';
 import LoginForm from './_components/LoginForm';
 import Footer from 'app/(providers)/(components)/Footer';
