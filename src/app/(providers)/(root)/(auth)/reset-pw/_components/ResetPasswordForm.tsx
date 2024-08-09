@@ -9,9 +9,8 @@ import { Toaster, toast } from 'react-hot-toast';
 const ResetPasswordForm = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [passwordMessage, setPasswordMessage] = useState(
-    '대문자, 특수문자를 포함하여 8자 이상이어야 합니다.',
-  );
+  const [passwordMessage, setPasswordMessage] =
+    useState('특수문자,대문자 포함 8자 이상');
   const [token, setToken] = useState<{
     access_token: string;
     refresh_token: string;
@@ -44,7 +43,7 @@ const ResetPasswordForm = () => {
 
     if (!hasUpperCase || !hasSpecialChar || !hasMinLength) {
       return !hasUpperCase && !hasSpecialChar && !hasMinLength
-        ? '대문자, 특수문자를 포함하여 8자 이상이어야 합니다.'
+        ? '대문자, 특수문자를 포함 8자 이상'
         : !hasUpperCase && !hasSpecialChar
           ? '특수문자, 대문자를 포함시켜야 합니다.'
           : !hasUpperCase
@@ -110,7 +109,7 @@ const ResetPasswordForm = () => {
               id="password"
               value={password}
               onChange={handlePasswordChange}
-              className="w-full px-3 py-2 border rounded-lg hover:border-blue-400 focus:border-blue-400 focus:outline-none"
+              className="w-full px-3 py-2 border rounded-lg hover:border-blue-500 focus:border-blue-500 focus:outline-none"
               required
             />
             {passwordMessage && (
@@ -138,13 +137,13 @@ const ResetPasswordForm = () => {
               id="confirmPassword"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              className="w-full px-3 py-2 border rounded-lg hover:border-blue-400 focus:border-blue-400 focus:outline-none mt-[6px]"
+              className="w-full px-3 py-2 border rounded-lg hover:border-blue-500 focus:border-blue-500 focus:outline-none mt-[6px]"
               required
             />
           </div>
           <button
             type="submit"
-            className="font-button w-full py-2 bg-black text-white rounded-lg hover:bg-blue-400 "
+            className="font-button w-full py-2 bg-black text-white rounded-lg hover:bg-blue-500 "
           >
             재설정
           </button>

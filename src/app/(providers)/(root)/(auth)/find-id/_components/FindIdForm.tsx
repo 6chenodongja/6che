@@ -95,7 +95,7 @@ const FindIdForm = () => {
                 id="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="p-2 border-1 border-black-500 rounded-lg hover:border-blue-400 focus:border-blue-400 focus:outline-none"
+                className="p-2 border-1 border-black-500 rounded-lg hover:border-blue-500 focus:border-blue-500 focus:outline-none"
                 style={{ width: '141px', height: '48px' }}
                 placeholder={domain === '직접 입력' ? '' : ''}
               />
@@ -103,7 +103,7 @@ const FindIdForm = () => {
                 <select
                   value={domain}
                   onChange={(e) => setDomain(e.target.value)}
-                  className="p-2 border-1 border-black-500 rounded-lg font-[16px] hover:border-blue-400 focus:border-blue-400 focus:outline-none"
+                  className="p-2 border-1 border-black-500 rounded-lg font-[16px] hover:border-blue-500 focus:border-blue-500 focus:outline-none"
                   style={{ width: '141px', height: '48px' }}
                 >
                   <option value="gmail.com">@gmail.com</option>
@@ -119,7 +119,7 @@ const FindIdForm = () => {
           </div>
           <button
             type="submit"
-            className={`w-full py-2 rounded-lg ${email && domain !== 'select' ? 'bg-black text-white hover:bg-blue-400' : 'bg-black-100 text-black-300'}`}
+            className={`w-full py-2 rounded-lg ${email && domain !== 'select' ? 'bg-black text-white hover:bg-blue-500' : 'bg-black-100 text-black-300'}`}
             disabled={!email || domain === 'select'}
           >
             계정 확인
