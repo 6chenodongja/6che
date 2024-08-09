@@ -1,12 +1,18 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import Modal from '../Modal/Modal';
-import { createSupabaseClientForUserDeletion } from '@/supabase/server';
+import {
+  createClient,
+  createSupabaseClientForUserDeletion,
+} from '@/supabase/server';
+import { useUserStore } from '@/zustand/store/useUserStore';
 
-const DeleteUser: React.FC = () => {
+function DeleteUser() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const router = useRouter();
+  const [userId, setUserId] = useState(false);
   const supabase = createSupabaseClientForUserDeletion();
+  const { user } = useUserStore();
+
   // 모달 열기
   const handleDeleteUserClick = () => {
     setIsModalOpen(true);
@@ -19,9 +25,8 @@ const DeleteUser: React.FC = () => {
 
   // 사용자 삭제 확인
   const handleUserDeletionConfirm = async () => {
-    const { data, error } = await supabase.auth.admin.deleteUser(
-      '715ed5db-f090-4b8c-a067-640ecee36aa0',
-    );
+    if (!user) return;
+    const { data, error } = await supabase.auth.admin.deleteUser(user.id);
   };
 
   return (
@@ -34,6 +39,6 @@ const DeleteUser: React.FC = () => {
       />
     </div>
   );
-};
+}
 
 export default DeleteUser;

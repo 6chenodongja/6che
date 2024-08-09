@@ -38,6 +38,11 @@ const ProfileForm: React.FC = () => {
   const handleCheckNickname = async () => {
     const isAvailable = await checkNicknameDuplication(nickname);
     setNicknameAvailable(isAvailable);
+    alert(
+      isAvailable
+        ? '사용 가능한 닉네임 입니다. 다른 닉네임을 사용해 주세요'
+        : '이미 사용하고 있는 닉네임 입니다.',
+    );
   };
 
   const handleNicknameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -103,17 +108,27 @@ const ProfileForm: React.FC = () => {
               placeholder="최대 8글자"
             />
           </div>
-          <div className="flex justify-center items-center self-stretch flex-grow-0 flex-shrink-0 w-14 relative overflow-hidden gap-1 p-1.5 rounded-lg bg-[#e6e6e6]/60">
+          <div className="flex justify-center items-center self-stretch flex-grow-0 flex-shrink-0 w-14 relative overflow-hidden gap-1 p-1.5 rounded-lg bg-[#e6e6e6]/60 hover:bg-[#5EB0FF]">
             <button
               onClick={handleCheckNickname}
-              className="flex-grow-0 flex-shrink-0 text-xs text-left text-[#b3b3b3]"
+              className="flex-grow-0 flex-shrink-0 text-xs text-left text-[#b3b3b3] hover:text-white"
+              disabled={!nickname}
             >
               중복확인
             </button>
           </div>
         </div>
+
         <div className="flex justify-start items-start self-stretch flex-grow-0 flex-shrink-0 relative gap-0.5">
           <p className="flex-grow w-[268px] text-xs text-left text-[#4d4d4d]">
+            <span>
+              <Image
+                src="images/ExclamationMarks/ExclamationMarks.svg"
+                alt=""
+                width={12}
+                height={12}
+              />
+            </span>
             현재 닉네임 : {user?.nickname}
           </p>
         </div>
@@ -140,6 +155,7 @@ const ProfileForm: React.FC = () => {
         <button
           onClick={handleSubmit}
           className="bg-black text-white p-4 w-[288px] border rounded-xl"
+          disabled={!nicknameAvailable}
         >
           <Link href={'/mypage'}>완료</Link>
         </button>
