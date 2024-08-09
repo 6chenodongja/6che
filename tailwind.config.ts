@@ -134,6 +134,30 @@ const config: Config = {
         '': 'var(--)',
         'icon-button': 'var(--icon-button)',
       },
+      lineHeight:{
+        '130': '1.3',
+      },
+      letterSpacing: {
+        '-0.32': '-0.32px',
+        '-0.28': '-0.28px',
+
+      },
+      opacity: {
+        'sds-size-stroke-border': 'var(--sds-size-stroke-border)',
+      },
+      backgroundColor: {
+        'black-121212': 'var(--Black, #121212)',
+      },
+      padding: {
+        'sds-200': 'var(--sds-size-space-200)',
+        'blur-10': 'var(--Blur-10, 10px)',
+      },
+      gap: {
+        '4': '4px',
+      },
+      borderRadius: {
+        'sds-200': 'var(--sds-size-radius-200)',
+      },
       blur: {
         2: '2px',
         4: '4px',
@@ -146,9 +170,9 @@ const config: Config = {
         '1.5': '6px',
         '1':'4px',
       },
-      lineHeight: {
-        '130%': '20.8px',
-      },
+      // lineHeight: {
+      //   '130%': '20.8px',
+      // },
 
     },
   },
