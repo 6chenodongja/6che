@@ -11,6 +11,7 @@ interface PostProps {
   handleLike: (postId: string) => Promise<void>;
 }
 
+// 체그 박스 누르면 checkItems에 들어가는 로직
 function MyStylePostItem({ post, isLiked, handleLike }: PostProps) {
   const [checkItems, setCheckItems] = useState<string[]>([]);
 
