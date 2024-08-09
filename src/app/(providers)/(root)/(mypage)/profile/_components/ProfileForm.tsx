@@ -82,7 +82,6 @@ const ProfileForm: React.FC = () => {
       nickname: updates.nick_name || user.nickname,
       profileImage: updates.avatar || user.profileImage,
     });
-
     await updateUserProfile(updates, user.id);
   };
 
@@ -115,7 +114,6 @@ const ProfileForm: React.FC = () => {
         </div>
         <div className="flex justify-start items-start self-stretch flex-grow-0 flex-shrink-0 relative gap-0.5">
           <p className="flex-grow w-[268px] text-xs text-left text-[#4d4d4d]">
-            <span className="border-2 border-black-700 rounded-full"></span>
             현재 닉네임 : {user?.nickname}
           </p>
         </div>
