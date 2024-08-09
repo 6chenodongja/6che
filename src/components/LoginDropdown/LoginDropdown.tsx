@@ -9,7 +9,7 @@ function LoginDropdown() {
   const [isOpen, setIsOpen] = useState(false);
   const { user } = useUserStore();
   const toggleDropdown = () => setIsOpen(!isOpen);
-
+  console.log(user);
   return (
     <div className="inline-block text-left">
       <button

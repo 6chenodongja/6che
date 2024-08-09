@@ -82,6 +82,7 @@ const ProfileForm: React.FC = () => {
       nickname: updates.nick_name || user.nickname,
       profileImage: updates.avatar || user.profileImage,
     });
+
     await updateUserProfile(updates, user.id);
   };
 

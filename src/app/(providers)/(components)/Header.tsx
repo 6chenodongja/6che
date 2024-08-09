@@ -15,25 +15,26 @@ const Header = () => {
   const [users, setUsers] = useState<User | null>(null);
   const { clearUser, setUser, user } = useUserStore();
   const supabase = createClient();
-  console.log(user);
   const handleMenuToggle = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
   useEffect(() => {
     supabase.auth.onAuthStateChange((event, session) => {
-      console.log(event, session);
-      if (event === 'SIGNED_IN' && session) {
+      console.log(event);
+      // console.log('session', session);
+      if (event === 'SIGNED_IN') {
+        if (!session) return;
+        console.log('user', user);
         const userData = {
           id: session.user.id,
           nickname: session.user.user_metadata.name,
           email: session.user.email || '',
           provider: session.user.app_metadata.provider || '',
+          profileImage: session.user.user_metadata.avatar,
         };
-        console.log(userData);
+        // console.log('userData', userData);
         setUser(userData);
-      } else if (event === 'SIGNED_OUT') {
-        clearUser();
       }
     });
   }, []);

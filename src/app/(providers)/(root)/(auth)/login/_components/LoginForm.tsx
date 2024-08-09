@@ -6,7 +6,6 @@ import Link from 'next/link';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import React, { useRef } from 'react';
-import SocialLogin from './SocialLogin';
 
 function LoginForm() {
   const emailRef = useRef<HTMLInputElement>(null);
@@ -31,13 +30,13 @@ function LoginForm() {
       });
 
       if (res.data) {
-        setUser({
-          id: res.data.id,
-          nickname: res.data.nickname,
-          email: res.data.email,
-          provider: '',
-          profileImage: '',
-        });
+        // setUser({
+        //   id: res.data.id,
+        //   nickname: res.data.nickname,
+        //   email: res.data.email,
+        //   provider: '',
+        //   profileImage: '',
+        // });
         router.replace('/');
       } else {
         alert('로그인 실패');
@@ -54,11 +53,16 @@ function LoginForm() {
         provider,
         options: {
           redirectTo: `${process.env.NEXT_PUBLIC_BASE_URL}/auth/callback`,
+          queryParams: {
+            access_type: 'offline',
+            prompt: provider === 'google' ? 'consent' : 'select_account',
+          },
         },
       });
       if (error) throw error;
     } catch (error) {
-      console.error(`ERROR ${provider.toUpperCase()}`, error);
+      console.error('소셜 로그인 중 오류 발생:', error);
+      alert('소셜 로그인 중 오류가 발생했습니다.');
     }
   };
 

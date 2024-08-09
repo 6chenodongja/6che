@@ -29,10 +29,10 @@ const profileIcons = [
 
 const BottomSheet = () => {
   const [profileIcon, setProfileIcon] = useState<string>('');
-  const { user, setUser } = useUserStore();
   const supabase = createClient();
   const [isVisible, setIsVisible] = useState<boolean>(true);
   const [isClosing, setIsClosing] = useState<boolean>(false);
+  const { user, setUser } = useUserStore();
 
   const handleProfileIconSelect = (icon: string) => {
     setProfileIcon(icon);
@@ -54,15 +54,16 @@ const BottomSheet = () => {
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
-    // setUser({
-    //   ...user,
-    //   profileImage: profileIcon,
-    // });
-    //
-    await updateUserProfile(
-      profileIcon,
-      'db89bb12-dae0-490f-94cc-509bcf195da3',
-    );
+    console.log('회원가입된 유저', user);
+    if (!user) return;
+
+    setUser({
+      ...user,
+      profileImage: profileIcon,
+    });
+
+    await updateUserProfile(profileIcon, user.id);
+
     handleClose();
   };
 
