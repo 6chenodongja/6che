@@ -1,21 +1,10 @@
 import ListWeatherIcon from 'app/(providers)/(root)/(post)/list/_components/icons/ListWeatherIcon';
 import Image from 'next/image';
 import MyStyleLikeButton from './MyStyleLikeButton';
+import { Tables } from '../../../../../../../types/supabase';
 
 interface PostProps {
-  post: {
-    comment: string | null;
-    created_at: string | null;
-    gender: string | null;
-    id: string;
-    image_url: string | null;
-    like: number | null;
-    locations: string | null;
-    seasons: string | null;
-    style: string | null;
-    user_id: string;
-    weather: string | null;
-  };
+  post: Tables<'posts'>;
   isLiked: boolean;
   handleLike: (postId: string) => Promise<void>;
 }

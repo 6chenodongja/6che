@@ -28,7 +28,7 @@ function PostItem({ post, isLiked, handleLike }: PostProps) {
               priority
             />
           )}
-          <div className="absolute top-2 left-2 list-icon-border inline-flex items-center gap-[2px] px-[4px] py-[1px] text-[#4D4D4D]">
+          <div className="absolute top-2 left-2 list-icon-border inline-flex items-center gap-[2px] px-[4px] py-[0.5px] text-[#4D4D4D]">
             <div className="list-icon">
               <ListWeatherIcon />
             </div>
@@ -43,7 +43,7 @@ function PostItem({ post, isLiked, handleLike }: PostProps) {
           isLiked={isLiked}
         />
 
-        <div className="mt-2">
+        <div className="mt-0.5">
           <div className="text-sm">
             <span className="flex justify-between">
               {/* 날짜이모지와 닉네임  */}

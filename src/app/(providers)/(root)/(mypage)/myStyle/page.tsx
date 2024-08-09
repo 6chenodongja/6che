@@ -9,10 +9,12 @@ import { createClient } from '@/supabase/client';
 import { useEffect, useState } from 'react';
 import { useUserStore } from '@/zustand/store/useUserStore';
 import { Tables } from '../../../../../../types/supabase';
+import { postListLikedType } from '../../../../../../types/post';
 
 function MyStylePage() {
   const [isLoading, setIsLoading] = useState(true);
   const [posts, setPosts] = useState<Tables<'posts'>[]>([]);
+  const [likedPosts, setLikedPosts] = useState<postListLikedType[]>([]);
 
   const supabase = createClient();
   const { user } = useUserStore();
@@ -37,8 +39,27 @@ function MyStylePage() {
     }
   };
 
+  // post_likes 테이블에 좋아요 유저 정보
+  const fetchUserLiked = async () => {
+    if (!user) return;
+
+    const { data: isLikes, error } = await supabase
+      .from('post_likes')
+      .select('post_id')
+      .eq('user_id', user?.id);
+
+    console.log(isLikes);
+
+    if (error) {
+      console.error('좋아요 누른 유저가 없다:', error);
+    } else {
+      setLikedPosts(isLikes);
+    }
+  };
+
   useEffect(() => {
     fetchMyPosts();
+    fetchUserLiked();
   }, [user]);
 
   return (
@@ -70,7 +91,12 @@ function MyStylePage() {
           </div>
         </div>
       ) : (
-        <MyStyleList posts={posts} setPosts={setPosts} />
+        <MyStyleList
+          posts={posts}
+          setPosts={setPosts}
+          likedPosts={likedPosts}
+          setLikedPosts={setLikedPosts}
+        />
       )}
     </div>
   );

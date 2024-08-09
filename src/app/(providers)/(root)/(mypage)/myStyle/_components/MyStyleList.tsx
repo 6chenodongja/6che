@@ -4,56 +4,34 @@ import { supabase } from '@/supabase/client';
 import _ from 'lodash';
 import Header from 'app/(providers)/(components)/Header';
 import Footer from 'app/(providers)/(components)/Footer';
-import MyStyleSelect from './MyStyleSelect';
 import MyStyleHeader from './MyStyleHeader';
 import MyStylePostItem from './MyStylePostItem';
 import { useUserStore } from '@/zustand/store/useUserStore';
+import MySelectPage from '../../postLike/_components/MySelectPage';
+import { Tables } from '../../../../../../../types/supabase';
+import { postListLikedType } from '../../../../../../../types/post';
 
 interface PostProps {
-  posts: {
-    comment: string | null;
-    created_at: string | null;
-    gender: string | null;
-    id: string;
-    image_url: string | null;
-    like: number | null;
-    locations: string | null;
-    seasons: string | null;
-    style: string | null;
-    user_id: string;
-    weather: string | null;
-  }[];
-  setPosts: Dispatch<
-    SetStateAction<
-      {
-        comment: string | null;
-        created_at: string | null;
-        gender: string | null;
-        id: string;
-        image_url: string | null;
-        like: number | null;
-        locations: string | null;
-        seasons: string | null;
-        style: string | null;
-        user_id: string;
-        weather: string | null;
-      }[]
-    >
-  >;
+  posts: Tables<'posts'>[];
+  setPosts: Dispatch<SetStateAction<Tables<'posts'>[]>>;
+  likedPosts: postListLikedType[];
+  setLikedPosts: Dispatch<SetStateAction<postListLikedType[]>>;
 }
 
-function MyStyleList({ posts, setPosts }: PostProps) {
+function MyStyleList({
+  posts,
+  setPosts,
+  setLikedPosts,
+  likedPosts,
+}: PostProps) {
   const { user } = useUserStore();
-
-  const likedPosts = posts;
-  const setLikedPosts = setPosts;
 
   const handleLike = useCallback(
     async (postId: string) => {
       if (!user) return;
 
       const isLiked = likedPosts.some(
-        (likedPost) => likedPost.user_id === user.id,
+        (likedPost) => likedPost.post_id === postId,
       );
 
       try {
@@ -84,11 +62,11 @@ function MyStyleList({ posts, setPosts }: PostProps) {
 
           setPosts((prevPosts) =>
             prevPosts.map((post) =>
-              post.user_id === user.id ? { ...post, like: newLikeCount } : post,
+              post.id === postId ? { ...post, like: newLikeCount } : post,
             ),
           );
           setLikedPosts((prev) =>
-            prev.filter((post) => post.user_id === user.id),
+            prev.filter((post) => post.post_id !== postId),
           );
         } else {
           await supabase
@@ -115,34 +93,32 @@ function MyStyleList({ posts, setPosts }: PostProps) {
 
           setPosts((prevPosts) =>
             prevPosts.map((post) =>
-              post.user_id === user.id ? { ...post, like: newLikeCount } : post,
+              post.id === postId ? { ...post, like: newLikeCount } : post,
             ),
           );
-          setLikedPosts((prev) =>
-            prev.filter((post) => post.user_id !== user.id),
-          );
+          setLikedPosts((prev) => [...prev, { post_id: postId }]);
         }
       } catch (error) {
         console.error(error);
       }
     },
-    [user, likedPosts, setLikedPosts, setPosts],
+    [user, likedPosts, setPosts, setLikedPosts],
   );
 
   return (
-    <div className="container mx-auto h-auto bg-[#FAFAFA]">
+    <div className="container mx-auto bg-[#FAFAFA]">
       <Header />
       <MyStyleHeader />
-      <MyStyleSelect />
+      <MySelectPage />
       <div className="grid grid-cols-2 gap-y-2 gap-x-2 w-[288px] mx-auto">
-        {likedPosts.map((post) => {
+        {posts.map((post) => {
           return (
             <MyStylePostItem
               key={post.id}
               post={post}
               handleLike={handleLike}
               isLiked={likedPosts.some(
-                (likedPost) => likedPost.user_id !== user?.id,
+                (likedPost) => likedPost.post_id === post.id,
               )}
             />
           );

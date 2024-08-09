@@ -587,28 +587,3 @@
   align-items: center;
   background: var(--Black, #121212);
 }
-
-.dropdown-enter {
-  max-height: 0;
-  opacity: 0;
-  overflow: hidden;
-  transition:
-    max-height 300ms ease-out,
-    opacity 300ms ease-out;
-}
-.dropdown-enter-active {
-  max-height: 100px; /* 드롭다운 높이 */
-  opacity: 1;
-}
-.dropdown-exit {
-  max-height: 100px;
-  opacity: 1;
-  overflow: hidden;
-  transition:
-    max-height 300ms ease-in,
-    opacity 300ms ease-in;
-}
-.dropdown-exit-active {
-  max-height: 0;
-  opacity: 0;
-}

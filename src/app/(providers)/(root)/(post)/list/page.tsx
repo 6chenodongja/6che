@@ -294,7 +294,7 @@ function PostList() {
           )),
         )}
       </div>
-      <div className="grid grid-cols-2 gap-y-2 gap-x-2 w-[288px] mx-auto">
+      <div className="grid grid-cols-2 gap-y-2.5 gap-x-2 w-[288px] mx-auto">
         {filteredPosts.map((post) => (
           <PostItem
             post={post}

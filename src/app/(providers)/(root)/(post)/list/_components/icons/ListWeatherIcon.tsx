@@ -6,6 +6,7 @@ const ListWeatherIcon = () => {
       height="12"
       viewBox="0 0 15 12"
       fill="none"
+      className="p-[1px] w-[18px] h-[18px]"
     >
       <g filter="url(#filter0_f_4483_794)">
         <path

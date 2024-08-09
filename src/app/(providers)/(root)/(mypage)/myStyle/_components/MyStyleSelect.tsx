@@ -90,33 +90,6 @@ function MyStyleSelect() {
       }
     });
 
-    // if (searchTerm) {
-    //   filtered = filtered.filter((post) => {
-    //     const lowerCaseSearchTerm = searchTerm.toLowerCase();
-    //     const locations = Array.isArray(post.locations)
-    //       ? post.locations
-    //       : (post.locations ?? '').split(',');
-    //     const seasons = Array.isArray(post.seasons)
-    //       ? post.seasons
-    //       : (post.seasons ?? '').split(',');
-    //     const style = Array.isArray(post.style)
-    //       ? post.style
-    //       : (post.style ?? '').split(',');
-    //     return (
-    //       (post.gender ?? '').toLowerCase().includes(lowerCaseSearchTerm) ||
-    //       locations.some((loc) =>
-    //         loc.toLowerCase().includes(lowerCaseSearchTerm),
-    //       ) ||
-    //       seasons.some((season) =>
-    //         season.toLowerCase().includes(lowerCaseSearchTerm),
-    //       ) ||
-    //       style.some((style) =>
-    //         style.toLowerCase().includes(lowerCaseSearchTerm),
-    //       )
-    //     );
-    //   });
-    // }
-
     setFilteredPosts(filtered.length > 0 ? filtered : posts);
   }, [selectedOptions, searchTerm, posts]);
 
@@ -180,7 +153,14 @@ function MyStyleSelect() {
           options.map((option) => (
             <div
               key={`${key}-${option}`}
-              className=" mb-4 px-[10px] pt-[4px] pb-[6px] bg-black text-white rounded"
+              className=" mb-4 px-[10px] pt-[4px] pb-[6px] bg-black text-white rounded font-KR"
+              style={{
+                fontSize: '14px',
+                fontStyle: 'normal',
+                fontWeight: '400%',
+                lineHeight: '21px',
+                letterSpacing: '-0.28px',
+              }}
             >
               {option}
             </div>

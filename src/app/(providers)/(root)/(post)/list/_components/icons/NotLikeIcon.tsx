@@ -1,52 +1,28 @@
 const NotLikeIcon = () => {
   return (
     <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="28"
-      height="28"
-      viewBox="0 0 28 28"
+      width="24"
+      height="21"
+      viewBox="0 0 24 21"
       fill="none"
+      xmlns="http://www.w3.org/2000/svg"
     >
-      <g filter="url(#filter0_b_5482_4103)">
-        <g filter="url(#filter1_bd_5482_4103)">
-          <path
-            d="M11.0449 21.807C10.8637 21.7072 10.6191 21.5687 10.3316 21.3963C9.76866 21.0587 8.98349 20.5566 8.16667 19.9268C7.38362 19.323 6.37347 18.4516 5.50743 17.3387C4.70629 16.3091 3.5 14.3976 3.5 11.8306C3.5 8.51841 6.11167 5.83337 9.33333 5.83337C11.2415 5.83337 12.9357 6.77534 14 8.23166C15.0643 6.77534 16.7585 5.83337 18.6667 5.83337C21.8883 5.83337 24.5 8.51841 24.5 11.8306C24.5 14.3976 23.2937 16.3091 22.4926 17.3387C21.6265 18.4516 20.6164 19.323 19.8333 19.9268C19.0165 20.5566 18.2313 21.0587 17.6684 21.3963C17.3809 21.5687 17.1363 21.7072 16.9551 21.807L15.8357 22.3852C14.6842 22.98 13.3158 22.98 12.1643 22.3852L11.0449 21.807Z"
-            fill="white"
-            fillOpacity="0.5"
-            shapeRendering="crispEdges"
-          />
-        </g>
+      <g filter="url(#filter0_bd_2323_704)">
+        <path
+          d="M9.46702 16.6916C9.31172 16.6061 9.1021 16.4874 8.85564 16.3396C8.37314 16.0502 7.70013 15.6199 7 15.0801C6.32882 14.5625 5.46297 13.8156 4.72066 12.8617C4.03396 11.9792 3 10.3407 3 8.14045C3 5.30146 5.23858 3 8 3C9.6356 3 11.0878 3.8074 12 5.05568C12.9122 3.8074 14.3644 3 16 3C18.7614 3 21 5.30146 21 8.14045C21 10.3407 19.966 11.9792 19.2793 12.8617C18.537 13.8156 17.6712 14.5625 17 15.0801C16.2999 15.6199 15.6269 16.0502 15.1444 16.3396C14.8979 16.4874 14.6883 16.6061 14.533 16.6916L13.8357 17.0518C12.6842 17.6466 11.3158 17.6466 10.1643 17.0518L9.46702 16.6916Z"
+          fill="white"
+          fillOpacity="0.5"
+          shapeRendering="crispEdges"
+          className="backdrop-blur-[10px]  stroke-[2px] opacity-[var(--sds-size-stroke-border)] stroke-[var(--text-box, rgba(255, 255, 255, 0.50))]"
+        />
       </g>
       <defs>
         <filter
-          id="filter0_b_5482_4103"
-          x="-20"
-          y="-20"
-          width="68"
-          height="68"
-          filterUnits="userSpaceOnUse"
-          colorInterpolationFilters="sRGB"
-        >
-          <feFlood floodOpacity="0" result="BackgroundImageFix" />
-          <feGaussianBlur in="BackgroundImageFix" stdDeviation="10" />
-          <feComposite
-            in2="SourceAlpha"
-            operator="in"
-            result="effect1_backgroundBlur_5482_4103"
-          />
-          <feBlend
-            mode="normal"
-            in="SourceGraphic"
-            in2="effect1_backgroundBlur_5482_4103"
-            result="shape"
-          />
-        </filter>
-        <filter
-          id="filter1_bd_5482_4103"
-          x="-0.5"
-          y="1.83337"
-          width="29"
-          height="24.9979"
+          id="filter0_bd_2323_704"
+          x="-1"
+          y="-1"
+          width="26"
+          height="22.4978"
           filterUnits="userSpaceOnUse"
           colorInterpolationFilters="sRGB"
         >
@@ -55,7 +31,7 @@ const NotLikeIcon = () => {
           <feComposite
             in2="SourceAlpha"
             operator="in"
-            result="effect1_backgroundBlur_5482_4103"
+            result="effect1_backgroundBlur_2323_704"
           />
           <feColorMatrix
             in="SourceAlpha"
@@ -72,13 +48,13 @@ const NotLikeIcon = () => {
           />
           <feBlend
             mode="normal"
-            in2="effect1_backgroundBlur_5482_4103"
-            result="effect2_dropShadow_5482_4103"
+            in2="effect1_backgroundBlur_2323_704"
+            result="effect2_dropShadow_2323_704"
           />
           <feBlend
             mode="normal"
             in="SourceGraphic"
-            in2="effect2_dropShadow_5482_4103"
+            in2="effect2_dropShadow_2323_704"
             result="shape"
           />
         </filter>

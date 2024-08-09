@@ -11,8 +11,6 @@ interface PostProps {
 function MyStyleLikeButton({ handleLike, postId, isLiked }: PostProps) {
   const debouncedHandleLike = _.debounce(handleLike, 500);
 
-  console.log(isLiked);
-
   return (
     <button
       className={`absolute bottom-0 right-0  bg-opacity-50 p-1 m-1 text-sm rounded-lg cursor-pointer  ${
