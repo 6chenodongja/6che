@@ -598,3 +598,24 @@
   font-style: var(--body-KR-large-font-style); /* normal */
   color: var(--palette-black); /* Color for text */
 }
+
+/* 온도 display 스타일 */
+.temperature-display {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  align-self: stretch;
+  font-family: 'Varela', sans-serif;
+  font-size: 1.125rem; /* text-lg */
+  font-weight: 700; /* font-bold */
+}
+
+/* 버튼 스타일 */
+.button-style {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 130%; /* 20.8px */
+  letter-spacing: -0.32px;
+}

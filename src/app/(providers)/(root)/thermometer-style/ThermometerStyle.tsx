@@ -176,7 +176,7 @@ const ThermometerStyle: React.FC = () => {
   return (
     <div className="w-full max-w-md mx-auto flex flex-col min-h-screen bg-[#FFFFF]">
       <div className="flex flex-col items-center mt-5 mb-8">
-        <div className="relative mb-4 mt-10" style={{ marginTop: '-8px' }}>
+        <div className="relative mb-4 mt-10" style={{ marginTop: '-40px' }}>
           <Image
             src="/images/Thermometer/temperature-box.svg"
             alt="Temperature Box"
@@ -190,17 +190,21 @@ const ThermometerStyle: React.FC = () => {
               ?
             </span>
           ) : (
-            <span className="absolute inset-0 flex items-center justify-center text-lg font-bold">
+            <span className="absolute inset-0 flex items-center justify-center temperature-display">
               {temperatureRanges[temperatureIndex].display}
             </span>
           )}
         </div>
-
-        <div className="relative w-full grid grid-cols-2 gap-[2px]">
+        <div className="relative w-full grid grid-cols-2 px-[15px] py-[25px] ml-[9px]">
           {currentOutfits
             .slice(currentOutfitIndex, currentOutfitIndex + 4)
             .map((src: string, index: number) => (
-              <div key={index} className="relative w-[168px] h-[160px]">
+              <div
+                key={index}
+                className={`relative ${
+                  index % 2 === 0 ? 'col-start-1' : 'col-start-4'
+                } w-[159px] h-[140px]`}
+              >
                 <Image
                   src={src}
                   alt={`Outfit ${index + 1}`}
@@ -209,12 +213,12 @@ const ThermometerStyle: React.FC = () => {
                 />
               </div>
             ))}
-
           {/* 왼쪽 버튼 */}
           {currentOutfitIndex > 0 && (
             <button
-              className="absolute left-[1px] top-[50%] transform -translate-y-1/2"
+              className="absolute left-[1px] top-[49%] transform -translate-y-1/2 flex items-start opacity-[var(--sds-size-stroke-border)] shadow-[0px_1px_2px_0px_rgba(0,0,0,0.10)] backdrop-filter backdrop-blur-[2px] rounded-full"
               onClick={handlePrev}
+              style={{ padding: 0, border: 'none', background: 'transparent' }}
             >
               <Image
                 src="/images/Thermometer/skip(512h-png).png"
@@ -222,15 +226,16 @@ const ThermometerStyle: React.FC = () => {
                 width={32}
                 height={32}
                 sizes="100vw"
-                className="transform rotate-180 drop-shadow-lg"
+                className="transform rotate-180"
               />
             </button>
           )}
           {/* 오른쪽 버튼 */}
           {currentOutfitIndex + 4 < currentOutfits.length && (
             <button
-              className="absolute right-[1px] top-[50%] transform -translate-y-1/2"
+              className="absolute right-[9px] top-[48%] transform -translate-y-1/2 flex items-start opacity-[var(--sds-size-stroke-border)] shadow-[0px_1px_2px_0px_rgba(0,0,0,0.10)] backdrop-filter backdrop-blur-[2px] rounded-full"
               onClick={handleNext}
+              style={{ padding: 0, border: 'none', background: 'transparent' }}
             >
               <Image
                 src="/images/Thermometer/skip(512h-png).png"
@@ -273,7 +278,8 @@ const ThermometerStyle: React.FC = () => {
           }}
         >
           <div
-            className="w-[34px] h-[77px] rounded-full bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-20 border border-gray-100 flex items-center justify-center shadow-[0_4px_10px_rgba(0,0,0,0.2)]"
+            className="w-[28px] h-[63px] rounded-full bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-20 border border-gray-100 flex items-center justify-center shadow-[0_4px_10px_rgba(0,0,0,0.2)]"
+            style={{ backdropFilter: 'blur(5px)' }}
             draggable="true"
             onDragStart={(e) => {
               setIsDragging(true);
@@ -291,12 +297,12 @@ const ThermometerStyle: React.FC = () => {
 
       <div className="w-full px-4 mb-8">
         <Link href="/list">
-          <button className="w-full px-4 py-2 mb-4 text-base bg-black text-white rounded-lg">
+          <button className="w-full px-4 py-2 mb-4 text-base bg-black text-white rounded-lg button-style">
             온도에 맞는 스타일 보러가기
           </button>
         </Link>
         <Link href="/survey">
-          <button className="w-full px-4 py-2 border-2 border-black bg-white rounded-lg text-base">
+          <button className="w-full px-4 py-2 border-2 border-black bg-white rounded-lg text-base button-style">
             취향 코디 추천받기
           </button>
         </Link>
