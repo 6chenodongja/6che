@@ -637,3 +637,71 @@
   padding-top: var(--sds-size-space-200);
   padding-bottom: var(--sds-size-space-200);
 }
+
+/* 게시글 작성 페이지 */
+.font-NotoSansKR {
+  font-family: var(--font-KR-button-font-family);
+}
+
+.font-KR-button {
+  font-family: var(--font-KR-button-font-family);
+  font-size: var(--font-KR-button-font-size);
+  font-style: var(--font-KR-button-font-style);
+  font-weight: var(--font-KR-button-font-weight);
+  letter-spacing: var(--font-KR-button-letter-spacing);
+  line-height: var(--font-KR-button-line-height);
+}
+
+.opacity-sds-stroke-border {
+  opacity: var(--sds-size-stroke-border);
+}
+
+.bg-black-121212 {
+  background-color: var(--Black);
+}
+
+.rounded-sds-200 {
+  border-radius: var(--sds-size-radius-200);
+}
+
+.px-blur-10 {
+  padding-left: var(--Blur-10);
+  padding-right: var(--Blur-10);
+}
+
+.py-sds-200 {
+  padding-top: var(--sds-size-space-200);
+  padding-bottom: var(--sds-size-space-200);
+}
+
+/* 설문페이지 */
+.survey-text-style {
+  font-family: var(--body-KR-large-font-family); /* Noto Sans KR, Helvetica */
+  font-size: var(--body-KR-large-font-size); /* 18px */
+  font-weight: var(--body-KR-large-font-weight); /* 400 */
+  line-height: var(--body-KR-large-line-height); /* 150% */
+  letter-spacing: var(--body-KR-large-letter-spacing); /* -0.36px */
+  font-style: var(--body-KR-large-font-style); /* normal */
+  color: var(--palette-black); /* Color for text */
+}
+
+/* 온도 display 스타일 */
+.temperature-display {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  align-self: stretch;
+  font-family: 'Varela', sans-serif;
+  font-size: 1.125rem; /* text-lg */
+  font-weight: 700; /* font-bold */
+}
+
+/* 버튼 스타일 */
+.button-style {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 130%; /* 20.8px */
+  letter-spacing: -0.32px;
+}

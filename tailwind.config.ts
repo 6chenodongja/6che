@@ -158,6 +158,11 @@ const config: Config = {
       borderRadius: {
         'sds-200': 'var(--sds-size-radius-200)',
       },
+      blur: {
+        2: '2px',
+        4: '4px',
+        20: '20px',
+      }
     },
   },
   plugins: [],
