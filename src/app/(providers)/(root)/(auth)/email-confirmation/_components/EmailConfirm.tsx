@@ -24,19 +24,23 @@ const EmailConfirmContent = () => {
         <h2 className="text-xl text-center font-bold mb-[126px]">
           아이디 비밀번호 찾기
         </h2>
-        <p className="mb-[131px] text-center">
-          <span className="text-gray-900">{messageLine1}</span>
+        <p className="text-center">
+          <span className="text-[#4d4d4d] text-[16px] font-body-EN-medium font-normal">
+            {messageLine1}
+          </span>
           <br />
-          <span className="text-gray-600">{messageLine2}</span>
+          <span className="text-[#4d4d4d] font-medium text-lg font-subtitle-KR-large mt-[10px]">
+            {messageLine2}
+          </span>
         </p>
-        <div className="space-y-2 flex flex-col items-center">
+        <div className="space-y-2 flex flex-col items-center mt-[135px]">
           <Link href="/login">
-            <button className="w-[288px] h-auto px-8 py-3 rounded-lg text-white bg-black">
+            <button className="w-[288px] h-auto px-8 py-3 rounded-lg text-white bg-black font-button font-medium">
               로그인하러 가기
             </button>
           </Link>
           <Link href="/find-pw">
-            <button className="w-[288px] h-auto px-8 py-3 rounded-lg text-[#121212] bg-transparent border border-[#121212]">
+            <button className="w-[288px] h-auto px-8 py-3 rounded-lg text-[#121212] bg-transparent border border-[#121212] font-button font-medium">
               비밀번호 찾기
             </button>
           </Link>
