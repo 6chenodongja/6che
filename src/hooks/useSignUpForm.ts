@@ -70,7 +70,6 @@ export const useSignUpForm = () => {
         debounceCheckNickname(value);
         break;
       case 'email':
-        // '@' 문자의 입력을 막는 로직 추가
         if (!value.includes('@')) {
           setEmailId(value);
         }

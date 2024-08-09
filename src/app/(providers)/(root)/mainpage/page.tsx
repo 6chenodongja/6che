@@ -74,7 +74,7 @@ const MainPage = () => {
 
   const fetchWeatherData = async () => {
     try {
-      // const response = await fetch('/api/weather?locationKey=226081');
+      const response = await fetch('/api/weather?locationKey=226081');
       const weatherData = await response.json();
       setWeather(weatherData.current);
       setDifference(
