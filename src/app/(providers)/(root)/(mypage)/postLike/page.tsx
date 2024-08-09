@@ -50,15 +50,17 @@ const PostLike = () => {
             <Image
               src={'/myLikePage.png'}
               alt="myListPage"
-              width={200}
-              height={100}
-              sizes="100vw"
-              className="h-[147px] w-[288px]"
+              width={288} // 원본 이미지의 실제 너비를 여기에 설정
+              height={147} // 원본 이미지의 실제 높이를 여기에 설정
+              layout="intrinsic" // 레이아웃을 고정 크기로 설정
+              objectFit="cover" // 이미지를 요소에 꽉 차게 설정
+              quality={100} // 이미지 품질을 최대화
             />
           </div>
-          <div className="text-[#4D4D4D] font-KR mt-[46px] ml-[53px] mr-[52px] flex justify-center w-[215px] gap-0">
+          <div className="text-[#4D4D4D] font-KR mt-[46px] ml-[53px] mr-[52px] flex justify-center w-[215px] gap-0 whitespace-nowrap">
             아직 좋아요를 한 스타일이 없어요
           </div>
+
           <Link href={'/list'}>
             <button className="myPage-style-button myPage-style-text flex justify-center items-center mx-auto p-3 rounded-lg mt-[111px]">
               스타일 보러 가기
