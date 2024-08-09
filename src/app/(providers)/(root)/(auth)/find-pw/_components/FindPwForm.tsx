@@ -108,33 +108,22 @@ const FindPwForm = () => {
                 style={{ width: '141px', height: '48px' }}
                 placeholder={domain === '직접 입력' ? '' : ''}
               />
-
               {domain !== 'custom' && (
                 <select
                   value={domain}
                   onChange={(e) => setDomain(e.target.value)}
-                  className="p-2 border-1 border-black-500 rounded-lg font-[16px] hover:border-blue-400 focus:border-blue-400 focus:ring-0"
+                  className="p-2 border-1 border-black-500 rounded-lg font-[16px] hover:border-blue-400 focus:border-blue-400 focus:outline-none"
                   style={{ width: '141px', height: '48px' }}
                 >
-                  <option value="@gmail.com">@gmail.com</option>
-                  <option value="@naver.com">@naver.com</option>
-                  <option value="@daum.net">@daum.net</option>
+                  <option value="gmail.com">@gmail.com</option>
+                  <option value="naver.com">@naver.com</option>
+                  <option value="daum.net">@daum.net</option>
                   <option value="nate.com">@nate.com</option>
                   <option value="icloud.com">@icloud.com</option>
                   <option value="hanmail.net">@hanmail.net</option>
                   <option value="직접 입력">직접 입력</option>
                 </select>
               )}
-              {/* {domain === 'custom' && (
-                <input
-                  type="text"
-                  value={domain}
-                  onChange={(e) => setDomain(e.target.value)}
-                  className="p-2 border-1 border-black-500 rounded-lg mt-2 hover:border-blue-400 focus:border-blue-400 focus:ring-0"
-                  placeholder="도메인 입력"
-                  style={{ width: '141px', height: '48px' }}
-                />
-              )} */}
             </div>
           </div>
           <button
