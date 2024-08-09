@@ -1,7 +1,6 @@
 import React, { useState, ChangeEvent } from 'react';
 
 interface ListSelectsProps {
-  handleSortChange: (e: ChangeEvent<HTMLSelectElement>) => void;
   selectedOptions: { [key: string]: string[] };
   handleOptionClick: (option: string) => void;
   selectedTab: string;
@@ -9,7 +8,6 @@ interface ListSelectsProps {
 }
 
 function MyStyleFilter({
-  handleSortChange,
   selectedOptions,
   handleOptionClick,
   selectedTab,
@@ -31,14 +29,10 @@ function MyStyleFilter({
     <div className="relative z-10">
       <div className="list-header flex justify-start items-center shrink-0">
         <div className="flex justify-center items-start w-[75px] shrink-0">
-          <div className="flex justify-center items-center flex-grow-0 flex-shrink-0 relative overflow-hidden px-1 py-1.5 rounded-lg]">
-            <p className="flex-grow-0 flex-shrink-0 text-sm text-left text-[#121212]">
-              <select onChange={handleSortChange} className="bg-[#FAFAFA]">
-                <option value="latest">최신순</option>
-                <option value="likes">좋아요순</option>
-              </select>
-            </p>
-          </div>
+          <label className="flex items-center h-[33px] px-[4px] py-[8px] gap-[6px] rounded text-[14px] font-normal leading-[14px] tracking-[-0.28px] font-KR text-black-500 w-full">
+            <input type="checkbox" className="" />
+            전체 선택
+          </label>
         </div>
         <div className="flex justify-start items-center absolute left-[275px] top-[9px]">
           <button

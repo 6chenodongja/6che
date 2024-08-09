@@ -8,7 +8,7 @@ import React, {
 } from 'react';
 import { Tables } from '../../../../../../../types/supabase';
 import { createClient } from '@/supabase/client';
-import MyStyleFilter from './MyStyleFilter';
+import MyStyleFilter from '../../myStyle/_components/MyStyleFilter';
 
 type PostItem = Tables<'posts'> & { users: Tables<'users'> | null };
 
@@ -126,7 +126,6 @@ function MySelectPage() {
     <div>
       <div className="mt-6">
         <MyStyleFilter
-          handleSortChange={handleSortChange}
           selectedOptions={selectedOptions}
           handleOptionClick={handleOptionClick}
           selectedTab={selectedTab}

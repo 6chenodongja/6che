@@ -1,7 +1,9 @@
+'use client';
 import ListWeatherIcon from 'app/(providers)/(root)/(post)/list/_components/icons/ListWeatherIcon';
 import Image from 'next/image';
 import MyStyleLikeButton from './MyStyleLikeButton';
 import { Tables } from '../../../../../../../types/supabase';
+import { useState } from 'react';
 
 interface PostProps {
   post: Tables<'posts'>;
@@ -10,6 +12,17 @@ interface PostProps {
 }
 
 function MyStylePostItem({ post, isLiked, handleLike }: PostProps) {
+  const [checkItems, setCheckItems] = useState<string[]>([]);
+
+  const checkItemsHandler = (postId: string, isChecked: boolean) => {
+    if (isChecked) {
+      setCheckItems((prev) => [...prev, postId]);
+    } else {
+      setCheckItems((prev) => prev.filter((id) => id !== postId));
+    }
+  };
+  console.log(checkItems);
+
   return (
     <div>
       <div key={post.id} className="relative w-[140px] object-cover">
@@ -29,6 +42,12 @@ function MyStylePostItem({ post, isLiked, handleLike }: PostProps) {
             <ListWeatherIcon />
           </div>
           26°
+        </div>
+        <div className="absolute top-2 left-[115px]">
+          <input
+            type="checkbox"
+            onChange={(e) => checkItemsHandler(post.id, e.target.checked)}
+          />
         </div>
 
         {/* 좋아요 부분 */}
