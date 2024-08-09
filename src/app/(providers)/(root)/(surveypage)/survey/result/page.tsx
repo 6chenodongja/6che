@@ -98,6 +98,7 @@ const ResultPage: React.FC = () => {
                 layout="fill"
                 objectFit="cover"
                 className="rounded-lg"
+                quality={100}
               />
               <button
                 className="absolute bottom-2 right-2 text-xl backdrop-filter: blur(2px)"
