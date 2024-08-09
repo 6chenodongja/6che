@@ -8,6 +8,7 @@ interface ListSelectsProps {
   allCheckHandler: (e: ChangeEvent<HTMLInputElement>) => void;
   fetchUserPostDelete: () => Promise<void>;
   checkItems: string[];
+  setCheckItems: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 function MyStyleFilter({
@@ -18,6 +19,7 @@ function MyStyleFilter({
   allCheckHandler,
   fetchUserPostDelete,
   checkItems,
+  setCheckItems,
 }: ListSelectsProps) {
   const [isFilterOn, setIsFilterOn] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -30,6 +32,15 @@ function MyStyleFilter({
   const handleTabClick = (tab: string) => {
     setSelectedTab(tab);
   };
+
+  const handlePostDelete = async () => {
+    await fetchUserPostDelete();
+    setCheckItems((prevCheckItems) =>
+      prevCheckItems.filter((item) => item !== item),
+    );
+  };
+
+  console.log(checkItems);
 
   return (
     <div className="relative z-10">
@@ -86,7 +97,7 @@ function MyStyleFilter({
             </button>
           ) : (
             <button
-              onClick={fetchUserPostDelete}
+              onClick={handlePostDelete}
               className="border text-black rounded"
             >
               삭제

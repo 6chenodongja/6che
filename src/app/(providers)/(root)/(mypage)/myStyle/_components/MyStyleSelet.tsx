@@ -8,12 +8,14 @@ interface allCheckProps {
   allCheckHandler: (e: ChangeEvent<HTMLInputElement>) => void;
   fetchUserPostDelete: () => Promise<void>;
   checkItems: string[];
+  setCheckItems: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 function MyStyleSelect({
   allCheckHandler,
   fetchUserPostDelete,
   checkItems,
+  setCheckItems,
 }: allCheckProps) {
   const [posts, setPosts] = useState<PostItemType[]>([]);
   const [latest, setLatest] = useState('latest');
@@ -130,6 +132,7 @@ function MyStyleSelect({
           allCheckHandler={allCheckHandler}
           fetchUserPostDelete={fetchUserPostDelete}
           checkItems={checkItems}
+          setCheckItems={setCheckItems}
         />
       </div>
 

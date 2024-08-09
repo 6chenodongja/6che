@@ -41,7 +41,7 @@ function PostDetail({ params }: { params: { id: string } }) {
         .select('*, users(*)')
         .eq('id', params.id)
         .single();
-      // postDetail.image_url.split(',')
+
       if (error) {
         console.error(error);
       } else if (postDetail.image_url) {

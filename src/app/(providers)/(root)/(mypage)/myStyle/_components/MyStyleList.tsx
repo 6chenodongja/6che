@@ -140,7 +140,7 @@ function MyStyleList({
     }
   };
 
-  //올 체크
+  // all체크 하는 로직
   const allCheckHandler = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.checked) {
       setCheckItems(posts.map((item) => item.id));
@@ -157,6 +157,7 @@ function MyStyleList({
         allCheckHandler={allCheckHandler}
         fetchUserPostDelete={fetchUserPostDelete}
         checkItems={checkItems}
+        setCheckItems={setCheckItems}
       />
 
       <div className="grid grid-cols-2 gap-y-2 gap-x-2 w-[288px] mx-auto">
