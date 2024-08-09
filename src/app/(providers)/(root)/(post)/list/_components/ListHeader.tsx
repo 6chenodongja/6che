@@ -1,7 +1,42 @@
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import React from 'react';
 
 function ListHeader() {
+  const [temperature, setTemperature] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchLocationAndWeather = async () => {
+      try {
+        const position = await new Promise<GeolocationPosition>(
+          (resolve, reject) => {
+            navigator.geolocation.getCurrentPosition(resolve, reject);
+          },
+        );
+
+        const { latitude, longitude } = position.coords;
+        console.log('Current Position:', latitude, longitude); // 위치 정보 로그
+
+        // `/api/weather`로 현재 위치의 기온을 가져오는 로직
+        const response = await fetch(
+          `/api/weather?lat=${latitude}&lon=${longitude}`,
+        );
+        const weatherData = await response.json();
+
+        if (weatherData && weatherData.current) {
+          const currentTemp = `${Math.round(weatherData.current.Temperature.Metric.Value)}`;
+          setTemperature(currentTemp);
+        } else {
+          throw new Error('현재 온도를 가져올 수 없습니다.');
+        }
+      } catch (error) {
+        console.error('Error fetching location or weather:', error);
+        setTemperature('N/A');
+      }
+    };
+
+    fetchLocationAndWeather();
+  }, []);
+
   return (
     <div
       className="flex justify-between items-center w-[288px] px-1 py-1.5 rounded-lg bg-white/50 border border-white/60 backdrop-blur-[20px] mx-auto mt-[16px]"
@@ -121,7 +156,7 @@ function ListHeader() {
                 <feColorMatrix
                   in="SourceAlpha"
                   type="matrix"
-                  values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                  values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0"
                   result="hardAlpha"
                 />
                 <feOffset dx="0.5" dy="0.5" />
@@ -129,7 +164,7 @@ function ListHeader() {
                 <feComposite in2="hardAlpha" operator="out" />
                 <feColorMatrix
                   type="matrix"
-                  values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.06 0"
+                  values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0"
                 />
                 <feBlend
                   mode="normal"
@@ -153,7 +188,7 @@ function ListHeader() {
                 colorInterpolationFilters="sRGB"
               >
                 <feFlood floodOpacity={0} result="BackgroundImageFix" />
-                <feGaussianBlur in="BackgroundImageFix" stdDeviation={1} />
+                <feGaussianBlur in="BackgroundImageFix" stdDeviation="1" />
                 <feComposite
                   in2="SourceAlpha"
                   operator="in"
@@ -162,7 +197,7 @@ function ListHeader() {
                 <feColorMatrix
                   in="SourceAlpha"
                   type="matrix"
-                  values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                  values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0"
                   result="hardAlpha"
                 />
                 <feOffset dx="0.5" dy="-0.5" />
@@ -170,11 +205,11 @@ function ListHeader() {
                 <feComposite in2="hardAlpha" operator="out" />
                 <feColorMatrix
                   type="matrix"
-                  values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.05 0"
+                  values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0"
                 />
                 <feBlend
                   mode="normal"
-                  in2="effect1_backgroundBlur_3033_4449"
+                  in2="BackgroundImageFix"
                   result="effect2_dropShadow_3033_4449"
                 />
                 <feBlend
@@ -187,7 +222,7 @@ function ListHeader() {
             </defs>
           </svg>
           <p className="flex-grow-0 flex-shrink-0 text-base text-left text-[#121212]">
-            26
+            {temperature !== null ? `${temperature}°` : 'N/A'}
           </p>
         </div>
       </div>
