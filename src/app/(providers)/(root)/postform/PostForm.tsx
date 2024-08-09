@@ -110,6 +110,18 @@ const PostFormPage = () => {
   const handleSubmit = async () => {
     if (images.length === 0) {
       setImageError(true);
+      toast.error('최소한 하나의 이미지를 업로드해야 합니다.');
+      return;
+    }
+
+    if (
+      !description ||
+      !gender ||
+      !style.length ||
+      !seasons.length ||
+      !locations.length
+    ) {
+      toast.error('모든 필수 항목을 입력하세요.');
       return;
     }
 
@@ -271,7 +283,6 @@ const PostFormPage = () => {
           />
         </button>
         <div className="flex-grow text-center">
-          {/* <h2 className="text-xl font-bold flex-grow font-subtitle-KR-medium"> */}
           <h2 className="font-subtitle-KR-medium font-medium text-base leading-130 tracking--0.32 text-black opacity-sds-size-stroke-border">
             코디 등록
           </h2>
@@ -384,7 +395,6 @@ const PostFormPage = () => {
               key={genderItem}
               type="button"
               onClick={() => setGender(genderItem)}
-              // className={buttonClass(gender === genderItem)}
               className={`px-2 py-0.5 border-2 cursor-pointer rounded ${
                 gender.includes(genderItem)
                   ? 'border-black bg-black text-white'
@@ -422,7 +432,6 @@ const PostFormPage = () => {
               key={season}
               type="button"
               onClick={() => handleSeasonClick(season)}
-              // className={buttonClass(seasons.includes(season))}
               className={`px-2 py-0.5 border-2 cursor-pointer rounded ${
                 seasons.includes(season)
                   ? 'border-black bg-black text-white'
@@ -443,7 +452,7 @@ const PostFormPage = () => {
       <div className="mb-8">
         <div className="flex items-center justify-between">
           <div className="flex items-baseline">
-            <div className="text-[#4d4d4d] font-subtitle-KR-small text-sm not-italic font-medium  leading-[150%] tracking-[-0.28px]">
+            <div className="text-[#4d4d4d] font-subtitle-KR-small text-sm not-italic font-medium leading-[150%] tracking-[-0.28px]">
               스타일
             </div>
             <div className="ml-2 text-sm text-[#4d4d4d] font-normal not-italic leading-[150%] tracking-[-0.28px]">
@@ -466,8 +475,6 @@ const PostFormPage = () => {
               key={index}
               type="button"
               onClick={() => handleStyleClick(styleItem)}
-              // className={buttonClass(style.includes(styleItem))}
-
               className={`px-2 py-0.5 border-2 cursor-pointer rounded ${
                 style.includes(styleItem)
                   ? 'border-black bg-black text-white'
@@ -525,7 +532,6 @@ const PostFormPage = () => {
               key={index}
               type="button"
               onClick={() => handleLocationClick(locationItem)}
-              // className={buttonClass(locations.includes(locationItem))}
               className={`px-2 py-0.5 border-2 cursor-pointer rounded ${
                 locations.includes(locationItem)
                   ? 'border-black bg-black text-white'
