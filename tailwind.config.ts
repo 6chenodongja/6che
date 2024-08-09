@@ -112,6 +112,7 @@ const config: Config = {
         'body-KR-large': 'var(--body-KR-large-font-family)',
         'body-KR-medium': 'var(--body-KR-medium-font-family)',
         'body-KR-small': 'var(--body-KR-small-font-family)',
+        'KR':['Noto Sans KR'],
         button: 'var(--button-font-family)',
         caption: 'var(--caption-font-family)',
         'headline-01': 'var(--headline-01-font-family)',
