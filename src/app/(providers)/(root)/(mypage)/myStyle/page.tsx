@@ -6,7 +6,7 @@ import Link from 'next/link';
 import Footer from 'app/(providers)/(components)/Footer';
 import MyStyleList from './_components/MyStyleList';
 import { createClient } from '@/supabase/client';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useUserStore } from '@/zustand/store/useUserStore';
 import { Tables } from '../../../../../../types/supabase';
 import { postListLikedType } from '../../../../../../types/post';
@@ -20,7 +20,7 @@ function MyStylePage() {
   const { user } = useUserStore();
 
   //내가 올린 게시물 가져오기
-  const fetchMyPosts = async () => {
+  const fetchMyPosts = useCallback(async () => {
     if (!user) return;
     try {
       const { data } = await supabase
@@ -37,10 +37,10 @@ function MyStylePage() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [user, supabase]);
 
   // post_likes 테이블에 좋아요 유저 정보
-  const fetchUserLiked = async () => {
+  const fetchUserLiked = useCallback(async () => {
     if (!user) return;
 
     const { data: isLikes, error } = await supabase
@@ -53,12 +53,12 @@ function MyStylePage() {
     } else {
       setLikedPosts(isLikes);
     }
-  };
+  }, [user, supabase]);
 
   useEffect(() => {
     fetchMyPosts();
     fetchUserLiked();
-  }, [user]);
+  }, [user, fetchMyPosts, fetchUserLiked]);
 
   return (
     <div className="container">
