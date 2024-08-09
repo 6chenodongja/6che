@@ -2,7 +2,7 @@
 import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { Tables } from '../../../../../../../types/supabase';
 import { createClient } from '@/supabase/client';
-import MyStyleFilter from './MyStyleFilter';
+import MyLikeFilter from './MyLikeFilter';
 
 type PostItem = Tables<'posts'> & { users: Tables<'users'> | null };
 
@@ -122,7 +122,7 @@ function MySelectPage() {
   return (
     <div>
       <div className="mt-6">
-        <MyStyleFilter
+        <MyLikeFilter
           handleSortChange={handleSortChange}
           selectedOptions={selectedOptions}
           handleOptionClick={handleOptionClick}

@@ -48,8 +48,6 @@ function MyStylePage() {
       .select('post_id')
       .eq('user_id', user?.id);
 
-    console.log(isLikes);
-
     if (error) {
       console.error('좋아요 누른 유저가 없다:', error);
     } else {

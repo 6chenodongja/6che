@@ -8,7 +8,7 @@ interface ListSelectsProps {
   setSelectedTab: React.Dispatch<React.SetStateAction<string>>;
 }
 
-function MyStyleFilter({
+function MyLikeFilter({
   handleSortChange,
   selectedOptions,
   handleOptionClick,
@@ -230,4 +230,4 @@ function MyStyleFilter({
   );
 }
 
-export default MyStyleFilter;
+export default MyLikeFilter;

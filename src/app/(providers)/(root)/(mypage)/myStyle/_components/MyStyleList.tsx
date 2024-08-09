@@ -1,5 +1,11 @@
 'use client';
-import React, { useCallback, SetStateAction, Dispatch } from 'react';
+import React, {
+  useCallback,
+  SetStateAction,
+  Dispatch,
+  useState,
+  ChangeEvent,
+} from 'react';
 import { supabase } from '@/supabase/client';
 import _ from 'lodash';
 import Header from 'app/(providers)/(components)/Header';
@@ -7,9 +13,9 @@ import Footer from 'app/(providers)/(components)/Footer';
 import MyStyleHeader from './MyStyleHeader';
 import MyStylePostItem from './MyStylePostItem';
 import { useUserStore } from '@/zustand/store/useUserStore';
-import MySelectPage from '../../postLike/_components/MySelectPage';
 import { Tables } from '../../../../../../../types/supabase';
 import { postListLikedType } from '../../../../../../../types/post';
+import MyStyleSelect from './MyStyleSelet';
 
 interface PostProps {
   posts: Tables<'posts'>[];
@@ -105,11 +111,54 @@ function MyStyleList({
     [user, likedPosts, setPosts, setLikedPosts],
   );
 
+  // 개별 체크
+  const [checkItems, setCheckItems] = useState<string[]>([]); // setcheckItmes로 전체 체크
+
+  const checkItemsHandler = (postId: string, isChecked: boolean) => {
+    if (isChecked) {
+      setCheckItems((prev) => [...prev, postId]);
+    } else {
+      setCheckItems((prev) => prev.filter((id) => id !== postId));
+    }
+  };
+
+  const fetchUserPostDelete = async () => {
+    if (!user || checkItems.length === 0) return;
+
+    const { error } = await supabase
+      .from('posts')
+      .delete()
+      .in('id', checkItems);
+
+    if (error) {
+      console.error('내가 올린 포스트 삭제 에러:', error);
+    } else {
+      setCheckItems(
+        (prevPosts) => prevPosts.filter((id) => !checkItems.includes(id)), // checkItems 배열 안에 없는 애들만 필터링
+      );
+      setCheckItems([]);
+    }
+  };
+
+  //올 체크
+  const allCheckHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.checked) {
+      setCheckItems(posts.map((item) => item.id));
+    } else {
+      setCheckItems([]);
+    }
+  };
+
   return (
     <div className="container mx-auto bg-[#FAFAFA]">
       <Header />
       <MyStyleHeader />
-      <MySelectPage />
+      <MyStyleSelect
+        allCheckHandler={allCheckHandler}
+        fetchUserPostDelete={fetchUserPostDelete}
+        checkItems={checkItems}
+      />
+
       <div className="grid grid-cols-2 gap-y-2 gap-x-2 w-[288px] mx-auto">
         {posts.map((post) => {
           return (
@@ -118,8 +167,12 @@ function MyStyleList({
               post={post}
               handleLike={handleLike}
               isLiked={likedPosts.some(
-                (likedPost) => likedPost.post_id === post.id,
+                (likedPost) => likedPost.post_id === post.id, // some는 2차원 적으로 객체의배열 에서만 사용
               )}
+              checkItemsHandler={checkItemsHandler}
+              fetchUserPostDelete={fetchUserPostDelete}
+              checkItems={checkItems}
+              isChecked={checkItems.includes(post.id)} // includes는 1차원 적 string, number에서만 사용
             />
           );
         })}
