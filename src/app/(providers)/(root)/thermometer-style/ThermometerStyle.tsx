@@ -142,6 +142,18 @@ const ThermometerStyle: React.FC = () => {
     e.preventDefault();
   };
 
+  const handleLeftClick = () => {
+    if (temperatureIndex > 0) {
+      handleTemperatureChange(temperatureIndex - 1);
+    }
+  };
+
+  const handleRightClick = () => {
+    if (temperatureIndex < temperatureRanges.length - 1) {
+      handleTemperatureChange(temperatureIndex + 1);
+    }
+  };
+
   useEffect(() => {
     const handleMouseUpGlobal = () => setIsDragging(false);
 
@@ -195,6 +207,7 @@ const ThermometerStyle: React.FC = () => {
             </span>
           )}
         </div>
+
         <div className="relative w-full grid grid-cols-2 px-[15px] py-[25px] ml-[9px]">
           {currentOutfits
             .slice(currentOutfitIndex, currentOutfitIndex + 4)
@@ -216,7 +229,7 @@ const ThermometerStyle: React.FC = () => {
           {/* 왼쪽 버튼 */}
           {currentOutfitIndex > 0 && (
             <button
-              className="absolute left-[1px] top-[49%] transform -translate-y-1/2 flex items-start opacity-[var(--sds-size-stroke-border)] shadow-[0px_1px_2px_0px_rgba(0,0,0,0.10)] backdrop-filter backdrop-blur-[2px] rounded-full"
+              className="absolute left-[1px] top-[49%] transform -translate-y-1/2 flex items-start opacity-[var(--sds-size-stroke-border)] shadow-[0px_1px_2px_0px_rgba(0,0,0,0.10)] backdrop-filter backdrop-blur-[2px] rounded-full z-10"
               onClick={handlePrev}
               style={{ padding: 0, border: 'none', background: 'transparent' }}
             >
@@ -233,7 +246,7 @@ const ThermometerStyle: React.FC = () => {
           {/* 오른쪽 버튼 */}
           {currentOutfitIndex + 4 < currentOutfits.length && (
             <button
-              className="absolute right-[9px] top-[48%] transform -translate-y-1/2 flex items-start opacity-[var(--sds-size-stroke-border)] shadow-[0px_1px_2px_0px_rgba(0,0,0,0.10)] backdrop-filter backdrop-blur-[2px] rounded-full"
+              className="absolute right-[9px] top-[48%] transform -translate-y-1/2 flex items-start opacity-[var(--sds-size-stroke-border)] shadow-[0px_1px_2px_0px_rgba(0,0,0,0.10)] backdrop-filter backdrop-blur-[2px] rounded-full z-10"
               onClick={handleNext}
               style={{ padding: 0, border: 'none', background: 'transparent' }}
             >
@@ -257,6 +270,21 @@ const ThermometerStyle: React.FC = () => {
         onMouseDown={handleMouseDown}
         onTouchStart={handleMouseDown}
       >
+        {/* 왼쪽 버튼 */}
+        <button
+          className="absolute left-[35px] top-[41.5%] transform -translate-y-1/2 flex items-center justify-center z-10"
+          onClick={handleLeftClick}
+          style={{ padding: 0, border: 'none', background: 'transparent' }}
+        >
+          <Image
+            src="/images/Weather2/Lbtn.svg"
+            alt="Left Button"
+            width={30}
+            height={22}
+            sizes="100vw"
+          />
+        </button>
+
         <Image
           src="/images/Thermometer/Thermometer.png"
           alt="Thermometer Bar"
@@ -293,6 +321,21 @@ const ThermometerStyle: React.FC = () => {
             }}
           ></div>
         </div>
+
+        {/* 오른쪽 버튼 */}
+        <button
+          className="absolute right-[35px] top-[41.5%] transform -translate-y-1/2 flex items-center justify-center z-10"
+          onClick={handleRightClick}
+          style={{ padding: 0, border: 'none', background: 'transparent' }}
+        >
+          <Image
+            src="/images/Weather2/Rbtn.svg"
+            alt="Right Button"
+            width={30}
+            height={22}
+            sizes="100vw"
+          />
+        </button>
       </div>
 
       <div className="w-full px-4 mb-8">
