@@ -124,7 +124,7 @@ const ResultPage: React.FC = () => {
           </h2>
           <Link href="/list">
             <button className="w-72 h-[46px] rounded-lg bg-[#121212] hover:bg-[rgba(94,176,255,0.80)] text-white mt-2">
-              게시글 보러가기
+              코디 보러가기
             </button>
           </Link>
         </div>
