@@ -4,9 +4,9 @@ import Footer from 'app/(providers)/(components)/Footer';
 
 function SignUpPage() {
   return (
-    <main>
+    <main className="">
       <Header />
-      <div>
+      <div className="">
         <SingUp />
       </div>
       <Footer />

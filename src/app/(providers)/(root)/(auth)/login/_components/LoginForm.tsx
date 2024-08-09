@@ -1,7 +1,6 @@
 'use client';
 
 import { createClient } from '@/supabase/client';
-import { useUserStore } from '@/zustand/store/useUserStore';
 import axios from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -12,7 +11,6 @@ function LoginForm() {
   const passwordRef = useRef<HTMLInputElement>(null);
   const supabase = createClient();
   const router = useRouter();
-  const { setUser, setIsLoggedIn } = useUserStore(); // 구조분해 할당으로 스토어 가져오기
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -30,12 +28,6 @@ function LoginForm() {
       });
 
       if (res.data) {
-        setUser({
-          id: res.data.id,
-          nickname: res.data.nickname,
-          email: res.data.email,
-          profileImage: '',
-        });
         router.replace('/');
       } else {
         alert('로그인 실패');
@@ -55,23 +47,6 @@ function LoginForm() {
         },
       });
       if (error) throw error;
-
-      if (data) {
-        const {
-          data: { user },
-        } = await supabase.auth.getUser();
-
-        if (!user) return;
-
-        // const { data } = await supabase.from('users').select().eq('id', user.id);
-
-        setUser({
-          id: user.id,
-          nickname: user.user_metadata.name,
-          email: user.email || '',
-          profileImage: user.user_metadata?.avatar_url || '',
-        });
-      }
     } catch (error) {
       console.error(`ERROR ${provider.toUpperCase()}`, error);
     }
@@ -128,7 +103,7 @@ function LoginForm() {
             로그인 유지
           </label>
         </div> */}
-        <div className="flex flex-col gap-2 bg-blue-500">
+        <div className="flex flex-col gap-2">
           <div className="flex flex-row w-full">
             <button className="bg-black text-[#fff] rounded-xl px-4 py-3 w-[288px] font-bold">
               로그인

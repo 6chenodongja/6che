@@ -15,28 +15,28 @@ const Header = () => {
   const [users, setUsers] = useState<User | null>(null);
   const { clearUser, setUser, user } = useUserStore();
   const supabase = createClient();
-
+  console.log(user);
   const handleMenuToggle = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  // 이 로직이 실행 되는 것인지, event랑, session console로 확인해 보기
-  // useEffect(() => {
-  //   supabase.auth.onAuthStateChange((event, session) => {
-  //     if (event === 'SIGNED_IN' && session) {
-  //       const userData = {
-  //         id: session.user.id,
-  //         nickname: session.user.user_metadata.name,
-  //         email: session.user.email || '',
-  //         provider: session.user.app_metadata.provider || '',
-  //       };
-
-  //       setUser(userData);
-  //     } else if (event === 'SIGNED_OUT') {
-  //       clearUser();
-  //     }
-  //   });
-  // }, []);
+  useEffect(() => {
+    supabase.auth.onAuthStateChange((event, session) => {
+      console.log(event, session);
+      if (event === 'SIGNED_IN' && session) {
+        const userData = {
+          id: session.user.id,
+          nickname: session.user.user_metadata.name,
+          email: session.user.email || '',
+          provider: session.user.app_metadata.provider || '',
+        };
+        console.log(userData);
+        setUser(userData);
+      } else if (event === 'SIGNED_OUT') {
+        clearUser();
+      }
+    });
+  }, []);
 
   return (
     <header className="w-full bg-white shadow-md py-4 flex justify-between items-center px-4">

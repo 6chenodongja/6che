@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
-import Modal from './Modal'; // 모달 컴포넌트 임포트
-// import { supabase } from '../utils/supabaseClient'; // Supabase 클라이언트 임포트
+import Modal from '../Modal/Modal';
 
 const DeleteUser: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -31,7 +30,7 @@ const DeleteUser: React.FC = () => {
       // 삭제 성공 시 모달 닫기 및 메인 페이지로 이동
       alert('회원 탈퇴가 완료되었습니다.');
       setIsModalOpen(false);
-      router.push('/'); // 메인 페이지로 이동
+      router.replace('/'); // 메인 페이지로 이동
     }
   };
 

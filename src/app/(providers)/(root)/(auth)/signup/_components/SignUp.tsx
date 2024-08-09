@@ -75,7 +75,7 @@ function SingUp() {
   };
 
   return (
-    <main className="flex w-[80px]">
+    <main className="container flex flex-col items-center w-full py-8 px-4">
       <form onSubmit={onSubmit} className="flex flex-col">
         <h1 className="text-2xl font-bold text-center text-black mb-6">
           이메일로 회원가입
