@@ -67,7 +67,7 @@ const SurveyLayout: React.FC = () => {
               </p>
             </div>
             <div
-              className="flex justify-center items-center w-[288px] py-[14px] px-[var(--sds-size-space-300)] gap-[var(--sds-size-space-200)] rounded-lg opacity-[var(--sds-size-stroke-border)] bg-[#121212] hover:bg-[rgba(94,176,255,0.80)] active:bg-[rgba(88,168,243,0.8)] mt-20 mb-14 cursor-pointer"
+              className="flex justify-center items-center w-[288px] py-[14px] px-[var(--sds-size-space-300)] gap-[var(--sds-size-space-200)] rounded-lg opacity-[var(--sds-size-stroke-border)] bg-[#121212] hover:bg-[rgba(94,176,255,0.80)] active:bg-[rgba(88,168,243,0.8)] mb-40 cursor-pointer"
               onClick={handleStartClick}
             >
               <p className="text-center text-white"
