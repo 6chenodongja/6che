@@ -112,7 +112,8 @@ const LoginForm = () => {
         </Link>
       </div>
       <div className="flex-grow-0 flex-shrink-0 text-sm text-left text-[#4d4d4d]">
-        <Link href={''} className="">
+        {/* 은겸 - 아이디 비밀번호 찾기 이동 기능 추가 */}
+        <Link href={'/find-id'} passHref>
           아이디/비밀번호 찾기
         </Link>
       </div>
