@@ -131,7 +131,7 @@ const PostFormPage = () => {
       !weatherIcon ||
       !temperature
     ) {
-      toast.error('모든 필드를 작성해 주세요.');
+      toast.error('모든 내용을 작성해 주세요.');
       return;
     }
 
