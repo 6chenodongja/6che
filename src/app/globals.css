@@ -512,7 +512,6 @@
   flex: 1 0 0;
 }
 .myPage-style {
-  color: var(--text, #4d4d4d);
   font-family: 'Noto Sans KR';
   font-size: 16px;
   font-style: normal;
@@ -569,3 +568,22 @@
   border-radius: inherit;
   pointer-events: none;
 } */
+/* myStyle 부분 */
+.my-style-page-header {
+  border-radius: 16px;
+  border-bottom: var(--sds-size-stroke-border) solid
+    var(--Bg_icon, rgba(255, 255, 255, 0.6));
+  opacity: var(--sds-size-stroke-border);
+  background: var(--White, #fff);
+  box-shadow:
+    0px 0px 2px 0px rgba(0, 0, 0, 0.05),
+    4px 4px var(--Blur-8, 8px) 0px rgba(0, 0, 0, 0.05);
+  backdrop-filter: blur(calc(var(--Blur-20, 20px) / 2));
+}
+.myStyle-button {
+  display: flex;
+  width: 288px;
+  justify-content: center;
+  align-items: center;
+  background: var(--Black, #121212);
+}
