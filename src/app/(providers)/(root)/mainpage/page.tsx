@@ -438,6 +438,10 @@ const MainPage = () => {
   const currentHours = new Date().getHours();
   const backgroundStyle = { background: getBackgroundByTime(currentHours) };
 
+  // 텍스트 색상 시간에 따라 동적으로 설정
+  const isNightTime = currentHours >= 18 || currentHours < 7;
+  const textColor = isNightTime ? 'text-white' : 'text-[#121212]';
+
   return (
     <div className="container bg-neutral-50 flex flex-col justify-center items-center w-full">
       <Header />
@@ -538,7 +542,9 @@ const MainPage = () => {
             className="relative w-[75px] h-[64px] mt-[15px]"
             style={{ top: '-15px' }}
           >
-            <div className="absolute top-0 left-0 text-black text-[63.6px] font-[400] tracking-[0] leading-[63.6px] whitespace-nowrap z-10">
+            <div
+              className={`absolute top-0 left-0 ${textColor} text-[63.6px] font-[400] tracking-[0] leading-[63.6px] whitespace-nowrap z-10`}
+            >
               {weather && weather.Temperature && weather.Temperature.Metric ? (
                 <>
                   {Math.round(weather.Temperature.Metric.Value)}
@@ -563,7 +569,9 @@ const MainPage = () => {
           style={{ top: '12px', zIndex: 10, marginBottom: '24px' }}
         >
           {weather ? (
-            <span className="text-[#121212] text-sm font-semibold font-['Noto Sans KR'] leading-[18.20px]">
+            <span
+              className={`${textColor} text-sm font-semibold font-['Noto Sans KR'] leading-[18.20px]`}
+            >
               {difference !== null
                 ? Math.abs(difference) <= 0.9
                   ? '어제 기온과 비슷해요'
@@ -579,7 +587,9 @@ const MainPage = () => {
           )}
         </div>
 
-        <h2 className="text-[#121212] text-base font-black font-['Noto Sans KR'] leading-tight mt-[34px]">
+        <h2
+          className={`${textColor} text-base font-black font-['Noto Sans KR'] leading-tight mt-[34px]`}
+        >
           오늘 옷차림
         </h2>
 
@@ -729,7 +739,9 @@ const MainPage = () => {
         </section>
 
         <section className="w-full mt-[58px]">
-          <h2 className=" box-sizing-[20.8px] text-[16px] text-center font-semibold mb-4 text-[#121212]">
+          <h2
+            className={`box-sizing-[20.8px] text-[16px] text-center font-semibold mb-4 ${textColor}`}
+          >
             날씨
           </h2>
           <Swiper spaceBetween={4} slidesPerView={3}>
