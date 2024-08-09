@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation'; // next/router 대신 next/navigation 사용
 import '../../../../app/globals.css';
 import 'swiper/css';
@@ -13,9 +13,21 @@ import { LogoText } from '../../../../icons/LogoText';
 import { IconLogin } from '../../../../icons/IconLogin';
 import { IconLocation } from '../../../../icons/IconLocation';
 import { motion, AnimatePresence } from 'framer-motion';
-
 import Header from '../../(components)/Header';
 import Footer from '../../(components)/Footer';
+import { supabase } from '@/supabase/client';
+
+// Post 타입 정의
+interface Post {
+  id: string;
+  user_id: string;
+  created_at: string | null;
+  image_url: string | null;
+  comment: string | null;
+  like: number | null;
+  gender: string | null;
+  weather: string | null;
+}
 
 // 강수확률에 따른 이미지를 반환하는 함수
 const getPrecipitationImage = (probability: number) => {
@@ -37,8 +49,22 @@ const getAirQualityImage = (phrase: string) => {
   return `/images/AirQuality/${imageName}.svg`;
 };
 
-// 날짜 포맷 함수!
-//함수
+// 자외선 지수에 따른 이미지를 반환하는 함수
+const getUVIndexImage = (uvIndex: number) => {
+  if (uvIndex >= 0 && uvIndex <= 2) {
+    return `/images/UVIndex/low.svg`;
+  } else if (uvIndex >= 3 && uvIndex <= 5) {
+    return `/images/UVIndex/moderate.svg`;
+  } else if (uvIndex >= 6 && uvIndex <= 7) {
+    return `/images/UVIndex/high.svg`;
+  } else if (uvIndex >= 8 && uvIndex <= 10) {
+    return `/images/UVIndex/very_high.svg`;
+  } else {
+    return `/images/UVIndex/extreme.svg`;
+  }
+};
+
+// 날짜 포맷 함수
 const formatDate = (dateString: string): string => {
   const date = new Date(dateString);
   const dayNames = ['일', '월', '화', '수', '목', '금', '토'];
@@ -52,7 +78,183 @@ const convertFahrenheitToCelsius = (fahrenheit: number) => {
   return ((fahrenheit - 32) * 5) / 9;
 };
 
+// 게시글 데이터를 가져오고 필터링하는 함수
+const fetchAndFilterPosts = async (currentTemp: number): Promise<Post[]> => {
+  const { data: posts, error } = await supabase
+    .from('posts')
+    .select(
+      'id, user_id, created_at, image_url, comment, like, gender, weather',
+    );
+
+  if (error) {
+    console.error('Failed to fetch posts', error);
+    return [];
+  }
+
+  return posts
+    .map((post) => {
+      const postTempMatch = post.weather?.match(/(\d+)(?=°C)/);
+      const postTemp = postTempMatch ? parseInt(postTempMatch[1], 10) : null;
+      const tempDifference =
+        postTemp !== null ? Math.abs(postTemp - currentTemp) : Number.MAX_VALUE;
+      return { ...post, tempDifference };
+    })
+    .sort((a, b) => a.tempDifference - b.tempDifference)
+    .slice(0, 2);
+};
+
+// LocationInput 컴포넌트
+const LocationInput = ({
+  setWeather,
+}: {
+  setWeather: (weatherData: any) => void;
+}) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [location, setLocation] = useState('서울시 동작구');
+
+  const handleEditClick = () => {
+    setIsEditing(true);
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setLocation(e.target.value);
+  };
+
+  const handleBlur = () => {
+    setIsEditing(false);
+  };
+
+  type GeocodeAddressComponent = {
+    long_name: string;
+    short_name: string;
+    types: string[];
+  };
+
+  // 위치 데이터를 가져오는 함수
+  const fetchLocationData = async (lat: number, lon: number) => {
+    try {
+      // 날씨 데이터를 먼저 가져옵니다.
+      const weatherResponse = await fetch(`/api/weather?lat=${lat}&lon=${lon}`);
+      const weatherData = await weatherResponse.json();
+      setWeather(weatherData);
+
+      // 위치 이름을 가져옵니다.
+      const geocodeResponse = await fetch(
+        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lon}&language=ko&key=AIzaSyDVa-q7hV1cCNDYTKyhV5Mbef_ydoYOyzo`,
+      );
+      const geocodeData = await geocodeResponse.json();
+
+      if (geocodeData.status === 'OK' && geocodeData.results.length > 0) {
+        const result = geocodeData.results[0];
+        const addressComponents = result.address_components;
+
+        const locality = addressComponents.find(
+          (component: GeocodeAddressComponent) =>
+            component.types.includes('locality'),
+        );
+
+        const sublocality = addressComponents.find(
+          (component: GeocodeAddressComponent) =>
+            component.types.includes('sublocality_level_1'),
+        );
+
+        const locationName =
+          `${locality?.long_name || ''} ${sublocality?.long_name || ''}`.trim();
+
+        if (locationName) {
+          setLocation(locationName);
+        } else {
+          setLocation('위치 정보 없음');
+        }
+      } else {
+        setLocation('위치 정보 없음');
+      }
+
+      setIsEditing(false);
+    } catch (error) {
+      console.error('Failed to fetch location data', error);
+      setLocation('위치 정보 없음');
+    }
+  };
+
+  // 위치 정보를 가져오는 함수
+  const handleLocationClick = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          fetchLocationData(latitude, longitude);
+        },
+        (error) => {
+          console.error('Error getting location', error);
+          alert('위치를 가져올 수 없습니다. 위치 권한을 확인해주세요.');
+        },
+      );
+    } else {
+      alert('현재 브라우저에서 위치 정보를 사용할 수 없습니다.');
+    }
+  };
+
+  return (
+    <>
+      <div
+        className="absolute"
+        style={{
+          top: '-86px',
+          right: '-44px',
+          width: '94px',
+          height: '94px',
+          zIndex: 0, // Sun.svg의 z-index를 0으로 설정하여 뒤로 보냄
+        }}
+      >
+        <Image
+          src="/images/Sun.svg"
+          alt="Sun"
+          className="object-contain"
+          width={94}
+          height={94}
+        />
+      </div>
+
+      <div
+        className="h-[26px] px-2 py-1 bg-white/40 rounded-full shadow border border-white/50 backdrop-blur-[20px] justify-center items-center inline-flex"
+        style={{ zIndex: 1 }} // 서울시 동작구 박스의 z-index를 1로 설정하여 앞으로 보냄
+      >
+        <div className="justify-start items-center gap-0.5 flex">
+          {isEditing ? (
+            <input
+              type="text"
+              value={location}
+              onChange={handleInputChange}
+              onBlur={handleBlur}
+              autoFocus
+              className="text-[#121212] text-xs font-normal font-['Noto Sans KR'] leading-none bg-transparent border-none outline-none"
+              style={{ whiteSpace: 'nowrap', lineHeight: '1' }}
+            />
+          ) : (
+            <span
+              className="text-[#121212] text-xs font-normal font-['Noto Sans KR'] leading-none"
+              onClick={handleEditClick}
+              style={{ whiteSpace: 'nowrap', lineHeight: '1' }}
+            >
+              {location}
+            </span>
+          )}
+        </div>
+        <div className="w-[18px] h-[18px] p-px justify-center items-center flex">
+          <IconLocation
+            className="w-4 h-4 cursor-pointer"
+            onClick={handleLocationClick}
+          />
+        </div>
+      </div>
+    </>
+  );
+};
+
+// MainPage 컴포넌트
 const MainPage = () => {
+  const [filteredPosts, setFilteredPosts] = useState<Post[]>([]);
   const [weather, setWeather] = useState<any>(null);
   const [difference, setDifference] = useState<number | null>(null);
   const [hourlyWeather, setHourlyWeather] = useState<any[]>([]);
@@ -60,6 +262,7 @@ const MainPage = () => {
   const [extraWeatherInfo, setExtraWeatherInfo] = useState<any[]>([]);
   const [isWeeklyWeatherVisible, setIsWeeklyWeatherVisible] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -72,46 +275,99 @@ const MainPage = () => {
     router.push('/survey');
   };
 
-  const fetchWeatherData = async () => {
-    try {
-      const response = await fetch('/api/weather?locationKey=226081');
-      const weatherData = await response.json();
-      setWeather(weatherData.current);
+  // 날씨 데이터를 업데이트하는 함수
+  const updateWeatherData = useCallback((data: any) => {
+    console.log(data);
+    if (data && data.current) {
+      setWeather(data.current);
+
       setDifference(
         parseFloat(
           (
-            weatherData.current.Temperature.Metric.Value -
-            weatherData.historical.Temperature.Metric.Value
+            data.current.Temperature.Metric.Value -
+            data.historical.Temperature.Metric.Value
           ).toFixed(1),
         ),
       );
-      setHourlyWeather(weatherData.hourly || []);
+      setHourlyWeather(data.hourly || []);
+
+      const uvIndex =
+        data.current?.UVIndex ?? data.dailyForecasts?.[0]?.UVIndex ?? 'N/A';
+      console.log('UV Index:', uvIndex);
+
       setExtraWeatherInfo([
         {
           label: '강수확률',
-          value: `${weatherData.current.PrecipitationProbability || '0'}%`,
+          value: `${data.current.Day?.PrecipitationProbability || '0'}%`,
           image: getPrecipitationImage(
-            weatherData.current.PrecipitationProbability || 0,
+            data.current.Day?.PrecipitationProbability || 0,
           ),
         },
         {
           label: '습도',
-          value: `${weatherData.current.RelativeHumidity || 'N/A'}%`,
-          image: getHumidityImage(weatherData.current.RelativeHumidity || null),
+          value: `${data.current.RelativeHumidity || 'N/A'}%`,
+          image: getHumidityImage(data.current.RelativeHumidity || null),
         },
         {
           label: '미세먼지',
-          value: `${weatherData.airQuality?.Category || 'N/A'}`,
-          image: getAirQualityImage(
-            weatherData.airQuality?.Category || 'Unhealthy',
-          ),
+          value: `${data.airQuality?.Category || 'N/A'}`,
+          image: getAirQualityImage(data.airQuality?.Category || 'Unhealthy'),
+        },
+        {
+          label: '자외선',
+          value: `${uvIndex !== 'N/A' ? uvIndex : 'N/A'}`,
+          image: getUVIndexImage(uvIndex !== 'N/A' ? uvIndex : 0),
         },
       ]);
-    } catch (error) {
-      console.error('Failed to fetch weather data', error);
     }
+  }, []);
+
+  // 날씨 데이터를 가져오는 함수
+  const fetchWeatherData = useCallback(
+    async (locationKey = '226081') => {
+      try {
+        const response = await fetch(`/api/weather?locationKey=${locationKey}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch weather data');
+        }
+        const weatherData = await response.json();
+
+        if (!weatherData || !weatherData.current) {
+          throw new Error('Invalid weather data received');
+        }
+
+        updateWeatherData(weatherData);
+
+        const currentTemp = Math.round(
+          weatherData.current.Temperature.Metric.Value,
+        );
+        const posts = await fetchAndFilterPosts(currentTemp);
+        setFilteredPosts(posts);
+      } catch (error) {
+        console.error('Error fetching weather data:', error);
+        setWeather(null);
+        setDifference(null);
+        setHourlyWeather([]);
+        setWeeklyWeather([]);
+        setExtraWeatherInfo([]);
+        setFilteredPosts([]);
+      }
+    },
+    [updateWeatherData],
+  );
+
+  // 초기 로드 시 날씨 데이터를 가져옴
+  useEffect(() => {
+    fetchWeatherData();
+  }, [fetchWeatherData]);
+
+  // 유효한 이미지 URL인지 확인하는 함수
+  const isValidImageUrl = (url: string | null) => {
+    if (!url) return false;
+    return url.startsWith('https://') && !url.includes('InvalidKey');
   };
 
+  // 주간 날씨 데이터를 가져오는 함수
   const fetchWeeklyWeatherData = async () => {
     try {
       const response = await fetch(
@@ -124,10 +380,7 @@ const MainPage = () => {
     }
   };
 
-  useEffect(() => {
-    fetchWeatherData();
-  }, []);
-
+  // 주간 날씨 버튼 클릭 핸들러
   const handleWeeklyWeatherClick = async () => {
     if (!isWeeklyWeatherVisible) {
       await fetchWeeklyWeatherData();
@@ -136,6 +389,7 @@ const MainPage = () => {
     setIsOpen(!isOpen);
   };
 
+  // 시간대에 따른 배경색을 반환하는 함수
   const getBackgroundByTime = (hours: number) => {
     if (hours >= 7 && hours < 9) {
       return 'linear-gradient(180deg, rgba(41,140,255,1) 0%, rgba(95,163,243,0.6) 34%, rgba(255,149,24,0.3) 69%, rgba(255,205,30,0.1) 100%)';
@@ -187,31 +441,95 @@ const MainPage = () => {
 
       <main
         className="container flex flex-col items-center w-full text-white py-8 px-4"
-        style={backgroundStyle}
+        style={{
+          ...backgroundStyle, // 기존 배경 스타일을 유지하고
+          paddingTop: '64px', // 헤더 높이만큼 패딩을 추가
+        }}
       >
-        <div className="mt-[40px] flex items-center space-x-2 rounded-full bg-white bg-opacity-30 py-1 px-4 backdrop-blur-lg">
-          <span className="text-black">서울시 동작구</span>
-          <IconLocation className="w-4 h-4" />
-        </div>
-        <div className="mt-[24px] flex items-end flex-col">
-          <div className="relative w-[75px] h-16">
-            <div className="absolute top-0 left-0 font-temperature-60 font-[number:var(--temperature-60-font-weight)] text-black text-[length:var(--temperature-60-font-size)] tracking-[var(--temperature-60-letter-spacing)] leading-[var(--temperature-60-line-height)] whitespace-nowrap [font-style:var(--temperature-60-font-style)]">
-              {weather
+        <LocationInput setWeather={updateWeatherData} />
+
+        <div className="mt-[24px] flex items-end flex-col relative">
+          <div
+            className="absolute"
+            style={{
+              top: '-78px',
+              right: '-84px',
+              width: '94px',
+              height: '94px',
+            }}
+          >
+            <Image
+              src="/images/Sun.svg"
+              alt="Sun"
+              className="object-contain"
+              width={94}
+              height={94}
+            />
+          </div>
+
+          <div
+            className="absolute"
+            style={{
+              top: '-27px', // 구름 이미지의 위치 조정
+              right: '-128px', // 구름 이미지의 위치 조정
+              width: '120px',
+              height: '120px',
+              zIndex: 1, // 구름 이미지의 z-index를 1로 설정하여 Sun.svg보다 앞에 위치
+            }}
+          >
+            <Image
+              src="/images/up_cloud.svg"
+              alt="Cloud"
+              className="object-contain"
+              width={146}
+              height={86}
+            />
+          </div>
+
+          <div
+            className="absolute"
+            style={{
+              top: '35px', // 새로운 구름 이미지의 위치 조정
+              right: '9px', // 새로운 구름 이미지의 위치 조정
+              width: '189px',
+              height: '115px',
+              zIndex: 1, // 뒤쪽에 배치
+            }}
+          >
+            <Image
+              src="/images/down_cloud.svg"
+              alt="Down Cloud"
+              className="object-contain"
+              width={143}
+              height={83}
+            />
+          </div>
+
+          <div className="relative w-[75px] h-16" style={{ marginTop: '-5px' }}>
+            <div className="absolute top-0 left-0 font-temperature-60 font-[number:var(--temperature-60-font-weight)] text-black text-[length:var(--temperature-60-font-size)] tracking-[var(--temperature-60-letter-spacing)] leading-[var(--temperature-60-line-height)] whitespace-nowrap [font-style:var(--temperature-60-font-style)] z-10">
+              {weather && weather.Temperature && weather.Temperature.Metric
                 ? `${Math.round(weather.Temperature.Metric.Value)}°`
                 : 'N/A'}
             </div>
           </div>
         </div>
+
         <div className="mt-[23px] flex justify-center items-center">
-          <span className="text-lg text-black">
-            {difference !== null
-              ? Math.abs(difference) <= 0.9
-                ? '어제 기온과 비슷해요'
-                : `어제 기온보다 ${Math.round(Math.abs(difference))}° ${
-                    difference > 0 ? '높아요' : '낮아요'
-                  }`
-              : '정보 없음'}
-          </span>
+          {weather ? (
+            <span className="text-lg text-black">
+              {difference !== null
+                ? Math.abs(difference) <= 0.9
+                  ? '어제 기온과 비슷해요'
+                  : `어제 기온보다 ${Math.round(Math.abs(difference))}° ${
+                      difference > 0 ? '높아요' : '낮아요'
+                    }`
+                : '정보 없음'}
+            </span>
+          ) : (
+            <div className="text-center text-red-500">
+              날씨 정보를 불러오는데 실패했습니다. 나중에 다시 시도해주세요.
+            </div>
+          )}
         </div>
 
         <section className="w-full mt-8">
@@ -226,7 +544,7 @@ const MainPage = () => {
               <div className="w-[54px] h-14 relative flex-col justify-start items-start flex">
                 <div className="w-[53.04px] h-[55px] relative">
                   <Image
-                    src="/images/tshirt.png"
+                    src="/images/tshirt.svg"
                     alt="반팔티"
                     className="object-contain"
                     width={53.04}
@@ -243,7 +561,7 @@ const MainPage = () => {
               <div className="w-[54px] h-14 relative flex-col justify-start items-start flex">
                 <div className="w-[53.04px] h-[55px] relative">
                   <Image
-                    src="/images/shorts.png"
+                    src="/images/shorts.svg"
                     alt="반바지"
                     className="object-contain"
                     width={53.04}
@@ -260,7 +578,7 @@ const MainPage = () => {
               <div className="w-[54px] h-14 relative flex-col justify-start items-start flex">
                 <div className="w-[53.04px] h-[55px] relative">
                   <Image
-                    src="/images/shirt.png"
+                    src="/images/shirt.svg"
                     alt="셔츠"
                     className="object-contain"
                     width={53.04}
@@ -276,11 +594,14 @@ const MainPage = () => {
           <div className="w-full max-w-[320px] h-[297px] px-4 pt-4 pb-5 bg-white/40 rounded-2xl shadow border border-white backdrop-blur-[20px] flex-col justify-start items-start gap-3.5 inline-flex">
             <div className="self-stretch justify-between items-center inline-flex">
               <div className="h-[21px] px-2 justify-center items-center gap-2 flex">
-                <div className=" section-box text-center text-[#121212] text-base font-medium font-['Noto Sans KR'] leading-tight">
+                <div className="section-box text-center text-[#121212] text-base font-medium font-['Noto Sans KR'] leading-tight">
                   추천 코디
                 </div>
               </div>
-              <div className="p-1.5 rounded-lg justify-center items-center gap-1 flex">
+              <div
+                className="p-1.5 rounded-lg justify-center items-center gap-1 flex cursor-pointer"
+                onClick={() => router.push('/list')}
+              >
                 <div className="text-[#4d4d4d] text-xs font-normal font-['Noto Sans KR'] leading-none">
                   더보기
                 </div>
@@ -296,52 +617,57 @@ const MainPage = () => {
               </div>
             </div>
             <div className="self-stretch rounded-lg justify-start items-start gap-2 inline-flex">
-              <div className="w-28 h-40 relative rounded-lg">
-                <Image
-                  src="/images/test_look.svg"
-                  alt="추천 코디 1"
-                  className="w-[113.60px] h-40 left-0 top-0 absolute object-cover"
-                  width={113.6}
-                  height={160}
-                />
-                <div className="w-6 h-6 left-[84px] top-[132px] absolute justify-center items-center inline-flex">
-                  <div className="w-6 h-6 relative backdrop-blur-[20px] flex-col justify-start items-start flex" />
-                </div>
-                <div className="px-1 py-px left-[10px] top-[10px] absolute bg-white/50 rounded border border-white/60 justify-start items-center gap-0.5 inline-flex">
-                  <div className="w-4 h-4 bg-white rounded-sm backdrop-blur-[20px] justify-center items-center flex">
-                    <div className="w-4 h-4 p-0.5 bg-white/60 rounded justify-center items-center inline-flex">
-                      <div className="w-3 h-3 relative" />
-                    </div>
-                  </div>
-                  <div className="text-black text-sm font-normal font-['Varela'] leading-[18.20px]">
-                    26°
-                  </div>
-                </div>
-              </div>
+              <Swiper
+                spaceBetween={8}
+                slidesPerView={2}
+                pagination={{ clickable: true }}
+                navigation={false} // 스와이퍼 네비게이션 화살표 제거
+              >
+                {filteredPosts.map((post, index) => {
+                  const validImageUrl = isValidImageUrl(post.image_url);
 
-              <div className="w-[114px] h-40 relative rounded-lg">
-                <Image
-                  src="/images/test_look.svg"
-                  alt="추천 코디 2"
-                  className="w-[114px] h-40 left-0 top-0 absolute object-cover"
-                  width={114}
-                  height={160}
-                />
-                <div className="w-6 h-6 left-[84px] top-[132px] absolute justify-center items-center inline-flex">
-                  <div className="w-6 h-6 relative backdrop-blur-[20px] flex-col justify-start items-start flex" />
-                </div>
-                <div className="px-1 py-px left-[10px] top-[10px] absolute bg-white/50 rounded border border-white/60 justify-start items-center gap-0.5 inline-flex">
-                  <div className="w-4 h-4 bg-white rounded-sm backdrop-blur-[20px] justify-center items-center flex">
-                    <div className="w-4 h-4 p-0.5 bg-white/60 rounded justify-center items-center inline-flex">
-                      <div className="w-3 h-3 relative" />
-                    </div>
-                  </div>
-                  <div className="text-black text-sm font-normal font-['Varela'] leading-[18.20px]">
-                    26°
-                  </div>
-                </div>
-              </div>
+                  const imageUrl = validImageUrl
+                    ? post.image_url
+                    : '/images/default_image.png';
+
+                  const postTempMatch = post.weather?.match(/(\d+)(?=°C)/);
+                  const postTemperature = postTempMatch
+                    ? parseInt(postTempMatch[1], 10)
+                    : 'N/A';
+
+                  return (
+                    <SwiperSlide key={index}>
+                      <div
+                        className="w-28 h-40 relative rounded-lg overflow-hidden cursor-pointer"
+                        onClick={() => router.push(`/detail/${post.id}`)}
+                      >
+                        <Image
+                          src={imageUrl as string}
+                          alt={`추천 코디 ${index + 1}`}
+                          className="w-[113.60px] h-40 left-0 top-0 absolute object-cover"
+                          width={113.6}
+                          height={160}
+                        />
+                        <div className="w-6 h-6 left-[84px] top-[132px] absolute justify-center items-center inline-flex">
+                          <div className="w-6 h-6 relative backdrop-blur-[20px] flex-col justify-start items-start flex" />
+                        </div>
+                        <div className="px-1 py-px left-[10px] top-[10px] absolute bg-white/50 rounded border border-white/60 justify-start items-center gap-0.5 inline-flex">
+                          <div className="w-4 h-4 bg-white rounded-sm backdrop-blur-[20px] justify-center items-center flex">
+                            <div className="w-4 h-4 p-0.5 bg-white/60 rounded justify-center items-center inline-flex">
+                              <div className="w-3 h-3 relative" />
+                            </div>
+                          </div>
+                          <div className="text-black text-sm font-normal font-['Varela'] leading-[18.20px]">
+                            {postTemperature}°
+                          </div>
+                        </div>
+                      </div>
+                    </SwiperSlide>
+                  );
+                })}
+              </Swiper>
             </div>
+
             <button
               onClick={handleCodiClick}
               className="self-stretch p-3 bg-[#121212] rounded-lg justify-center items-center gap-2 inline-flex"
@@ -355,60 +681,37 @@ const MainPage = () => {
 
         <section className="w-full mt-8">
           <h2 className="text-xl font-semibold mb-4 text-black">날씨</h2>
-          <div className="grid grid-cols-3 gap-4">
-            <div className="w-[88px] h-[100px] relative bg-white/40 rounded-2xl shadow border border-white backdrop-blur-[20px] flex flex-col justify-center items-center">
-              <span className="text-center text-[#121212]/70 text-xs font-normal font-['Noto Sans KR'] leading-none">
-                강수확률
-              </span>
-              <Image
-                src={`/images/Precipitation-probability/${Math.min(
-                  Math.floor(
-                    (parseFloat(extraWeatherInfo[0]?.value || '0%') / 10) * 10,
-                  ),
-                  100,
-                )}.svg`}
-                alt="강수확률"
-                className="w-5 h-8 mt-1"
-                width={20}
-                height={32}
-              />
-              <span className="text-center text-[#121212] text-base font-normal font-['Varela'] leading-tight mt-2">
-                {extraWeatherInfo[0]?.value || '0%'}
-              </span>
-            </div>
-
-            <div className="w-[88px] h-[100px] relative bg-white/40 rounded-2xl shadow border border-white backdrop-blur-[20px] flex flex-col justify-center items-center">
-              <span className="text-center text-[#121212]/70 text-xs font-normal font-['Noto Sans KR'] leading-none">
-                미세먼지
-              </span>
-              <Image
-                src={extraWeatherInfo[2]?.image}
-                alt="미세먼지"
-                className="w-5 h-8 mt-1"
-                width={20}
-                height={32}
-              />
-              <span className="text-center text-[#121212] text-base font-normal font-['Varela'] leading-tight mt-2">
-                {extraWeatherInfo[2]?.value || 'N/A'}
-              </span>
-            </div>
-
-            <div className="w-[88px] h-[100px] relative bg-white/40 rounded-2xl shadow border border-white backdrop-blur-[20px] flex flex-col justify-center items-center">
-              <span className="text-center text-[#121212]/70 text-xs font-normal font-['Noto Sans KR'] leading-none">
-                습도
-              </span>
-              <Image
-                src={extraWeatherInfo[1]?.image}
-                alt="습도"
-                className="w-5 h-8 mt-1"
-                width={32}
-                height={32}
-              />
-              <span className="text-center text-[#121212] text-base font-normal font-['Varela'] leading-tight mt-2">
-                {extraWeatherInfo[1]?.value || 'N/A'}
-              </span>
-            </div>
-          </div>
+          <Swiper spaceBetween={4} slidesPerView={3}>
+            {extraWeatherInfo.map((info, index) => (
+              <SwiperSlide key={index} className="weather-slide">
+                <div className="w-[88px] h-[100px] relative bg-white/40 rounded-2xl shadow border border-white backdrop-blur-[20px] flex flex-col justify-center items-center">
+                  <span className="text-center text-[#121212]/70 text-xs font-normal font-['Noto Sans KR'] leading-none">
+                    {info.label}
+                  </span>
+                  <Image
+                    src={info.image}
+                    alt={info.label}
+                    className="w-5 h-8 mt-1"
+                    width={20}
+                    height={32}
+                  />
+                  <span className="text-center text-[#121212] text-base font-normal font-['Varela'] leading-tight mt-2">
+                    {info.value}
+                  </span>
+                </div>
+              </SwiperSlide>
+            ))}
+            <SwiperSlide className="weather-slide">
+              <div className="w-[88px] h-[100px] relative bg-white/40 rounded-2xl shadow border border-white backdrop-blur-[20px] flex flex-col justify-center items-center">
+                <button
+                  onClick={() => setShowModal(true)}
+                  className="w-full h-full flex justify-center items-center"
+                >
+                  <span className="text-[#121212] text-xl">+</span>
+                </button>
+              </div>
+            </SwiperSlide>
+          </Swiper>
         </section>
 
         <section className="w-full mt-8">
@@ -421,7 +724,6 @@ const MainPage = () => {
             <div className="self-stretch justify-start items-center inline-flex overflow-x-auto">
               <Swiper spaceBetween={10} slidesPerView={6}>
                 {hourlyWeather.map((weather, index) => {
-                  // WeatherIcon 숫자에 따른 이미지 파일 이름 결정
                   const getWeatherIconSrc = (iconNumber: number) => {
                     switch (iconNumber) {
                       case 1:
@@ -485,14 +787,12 @@ const MainPage = () => {
                     }
                   };
 
-                  // ISO8601 날짜 형식에서 시간만 추출
                   const formatTime = (dateTime: string) => {
                     const date = new Date(dateTime);
                     const hours = date.getHours();
                     return `${hours}시`; // 시간과 "시"를 같은 문자열로 반환
                   };
 
-                  // 섭씨로 변환하는 함수
                   const fahrenheitToCelsius = (fahrenheit: number) => {
                     return ((fahrenheit - 32) * 5) / 9;
                   };
@@ -647,6 +947,30 @@ const MainPage = () => {
         </AnimatePresence>
       </main>
       <Footer />
+
+      {showModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+          <div className="bg-white p-6 rounded-lg shadow-lg">
+            <h2 className="text-lg font-semibold mb-4">날씨 요소 추가</h2>
+            <div className="grid grid-cols-2 gap-4">
+              <button
+                onClick={() => {
+                  setShowModal(false);
+                }}
+                className="p-2 bg-gray-200 rounded-md"
+              >
+                예: 자외선 지수
+              </button>
+            </div>
+            <button
+              onClick={() => setShowModal(false)}
+              className="mt-4 p-2 bg-blue-500 text-white rounded-md"
+            >
+              닫기
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -51,7 +51,6 @@ export type Database = {
           image_url: string | null
           like: number | null
           locations: string | null
-          nick_name: string | null
           seasons: string | null
           style: string | null
           user_id: string
@@ -65,7 +64,6 @@ export type Database = {
           image_url?: string | null
           like?: number | null
           locations?: string | null
-          nick_name?: string | null
           seasons?: string | null
           style?: string | null
           user_id?: string
@@ -79,7 +77,6 @@ export type Database = {
           image_url?: string | null
           like?: number | null
           locations?: string | null
-          nick_name?: string | null
           seasons?: string | null
           style?: string | null
           user_id?: string
@@ -88,6 +85,13 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "posts_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "posts_user_id_fkey1"
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "users"
