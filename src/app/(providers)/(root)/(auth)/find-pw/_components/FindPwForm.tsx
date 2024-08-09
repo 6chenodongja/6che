@@ -53,7 +53,7 @@ const FindPwForm = () => {
           아이디 비밀번호 찾기
         </h2>
         <div
-          className="flex justify-center p-4 bg-[#fafafa] border border-gray-300 rounded-lg mb-[37px] space-x-4 shadow-sm"
+          className="flex justify-center p-4 bg-[#fafafa] border-1 border-black-200 rounded-lg mb-[37px] space-x-4 shadow-sm"
           style={{
             borderRadius: '8px',
             opacity: 'var(--sds-size-stroke-border)',
