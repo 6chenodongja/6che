@@ -55,7 +55,6 @@ const BottomSheet = () => {
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
     if (!user) return;
-
     setUser({
       ...user,
       profileImage: profileIcon,
@@ -108,7 +107,6 @@ const BottomSheet = () => {
             <div className="flex justify-center items-center mb-3">
               <button
                 type="submit"
-                // onClick={() => handleSubmit}
                 className="w-[288px] h-[49px] py-2 px-4 rounded-md shadow-sm text-center font-medium text-[white] bg-[#121212] hover:bg-blue-400"
               >
                 선택 완료

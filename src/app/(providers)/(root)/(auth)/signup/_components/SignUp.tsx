@@ -4,6 +4,7 @@ import { createClient } from '@/supabase/client';
 import { useRouter } from 'next/navigation';
 import { emailDomains } from '@/utils/emailDomains';
 import { useSignUpForm } from 'hooks/useSignUpForm';
+import { useUserStore } from '@/zustand/store/useUserStore';
 
 function SingUp() {
   const {
@@ -31,6 +32,7 @@ function SingUp() {
 
   const supabase = createClient();
   const router = useRouter();
+  const { setUser } = useUserStore();
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -65,6 +67,15 @@ function SingUp() {
         },
       },
     });
+    if (data.user) {
+      setUser({
+        id: data.user.id,
+        nickname: data.user.user_metadata.name,
+        email: data.user.user_metadata.email,
+        provider: '',
+        profileImage: data.user.user_metadata.avatar,
+      });
+    }
 
     if (error) {
       return alert(error.message);

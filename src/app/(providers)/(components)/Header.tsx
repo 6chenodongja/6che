@@ -11,12 +11,11 @@ import { createClient } from '@/supabase/client';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { setUser, user } = useUserStore();
+  const { setUser, clearUser, user } = useUserStore();
   const supabase = createClient();
   const handleMenuToggle = () => {
     setIsMenuOpen(!isMenuOpen);
   };
-
   useEffect(() => {
     const getUser = async () => {
       const {
@@ -44,8 +43,9 @@ const Header = () => {
         profileImage: data.avatar || '',
       });
     };
-  }, []);
 
+    getUser();
+  }, []);
   return (
     <header className="w-full bg-white shadow-md py-4 flex justify-between items-center px-4">
       <button title="button" onClick={handleMenuToggle}>

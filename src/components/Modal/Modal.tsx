@@ -7,8 +7,6 @@ interface ModalProps {
 }
 
 const Modal = ({ isOpen, onClose, onConfirm }: ModalProps) => {
-  const handleCloserModal = () => {};
-
   return (
     <div className="modal">
       <div className="modal-content">

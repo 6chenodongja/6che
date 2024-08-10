@@ -5,12 +5,14 @@ import Link from 'next/link';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import React, { useRef } from 'react';
+import { useUserStore } from '@/zustand/store/useUserStore';
 
 function LoginForm() {
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const supabase = createClient();
   const router = useRouter();
+  const { setUser } = useUserStore();
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -26,8 +28,15 @@ function LoginForm() {
         email,
         password,
       });
-      console.log('아이왜로그인안되는데미친것', res);
       if (res.data) {
+        setUser({
+          id: res.data.id,
+          nickname: res.data.nickname,
+          email: res.data.email,
+          provider: '',
+          profileImage: '',
+        });
+
         router.replace('/');
       } else {
         alert('로그인 실패');
