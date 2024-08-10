@@ -1,13 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import React, {
-  useState,
-  useRef,
-  useEffect,
-  MouseEvent,
-  TouchEvent,
-} from 'react';
+import React, { useState, useRef, useEffect, MouseEvent, TouchEvent } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
@@ -89,18 +83,12 @@ const defaultImages: string[] = [
 
 const temperatureRanges: TemperatureRange[] = [
   { min: 28, label: 'hot', display: '28° 이상' },
-  { min: 28, label: 'hot', display: '28° 이상' },
-  { min: 28, label: 'hot', display: '28° 이상' },
-  { min: 28, label: 'hot', display: '28° 이상' },
-  { min: 4, label: 'coldest', display: '23° - 27°' },
-  { min: 9, label: 'cold', display: '20° - 22°' },
-  { min: 12, label: 'chilly', display: '17° - 19°' },
-  { min: 17, label: 'cool', display: '12° - 16°' },
-  { min: 20, label: 'mild', display: '9° - 11°'},
-  { min: 23, label: 'warm', display: '5° - 8°' },
-  { min: -Infinity, label: 'coldest', display: '4° 이하' },
-  { min: -Infinity, label: 'coldest', display: '4° 이하' },
-  { min: -Infinity, label: 'coldest', display: '4° 이하' },
+  { min: 23, label: 'warm', display: '23° - 27°' },
+  { min: 20, label: 'mild', display: '20° - 22°' },
+  { min: 17, label: 'cool', display: '17° - 19°' },
+  { min: 12, label: 'chilly', display: '12° - 16°' },
+  { min: 9, label: 'cold', display: '9° - 11°' },
+  { min: 4, label: 'colder', display: '5° - 8°' },
   { min: -Infinity, label: 'coldest', display: '4° 이하' },
 ];
 
@@ -109,55 +97,63 @@ const ThermometerStyle: React.FC = () => {
     Math.floor(temperatureRanges.length / 2),
   );
   const [currentOutfitIndex, setCurrentOutfitIndex] = useState<number>(0);
+  const [prevTemperatureIndex, setPrevTemperatureIndex] = useState<number>(temperatureIndex);
   const sliderRef = useRef<HTMLDivElement | null>(null);
-  const leftButtonRef = useRef<HTMLButtonElement | null>(null);
-  const rightButtonRef = useRef<HTMLButtonElement | null>(null);
+  const handleRef = useRef<HTMLDivElement | null>(null);
+  const textContainerRef = useRef<HTMLDivElement | null>(null);
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [initialView, setInitialView] = useState<boolean>(true);
   const router = useRouter();
 
   const handleTemperatureChange = (newIndex: number) => {
     if (newIndex >= 0 && newIndex < temperatureRanges.length) {
+      setPrevTemperatureIndex(temperatureIndex);
       setTemperatureIndex(newIndex);
       setInitialView(false);
       setCurrentOutfitIndex(0);
     }
   };
 
+  const calculatePosition = (index: number, thermometerWidth: number) => {
+    // 각각의 구역에 맞는 위치를 설정 (대략적인 비율)
+    const positions = [
+      0.26,   // 28° 이상 (0%)
+      0.35, // 23° - 27° (21.5%)
+      0.45, // 20° - 22° (21.5%)
+      0.55,  // 17° - 19° (46%)
+      0.65,  // 12° - 16° (46%)
+      0.75,   // 9° - 11° (70%)
+      0.80,   // 5° - 8° (70%)
+      0.84,  // 4° 이하 (93%)
+    ];
+
+    return positions[index] * thermometerWidth;
+  };
+
   const handleDrag = (e: MouseEvent | TouchEvent) => {
-    if (!sliderRef.current || !isDragging) return;
+    if (!sliderRef.current || !handleRef.current || !isDragging) return;
 
     const sliderRect = sliderRef.current.getBoundingClientRect();
-    const leftButtonRect = leftButtonRef.current?.getBoundingClientRect();
-    const rightButtonRect = rightButtonRef.current?.getBoundingClientRect();
-    const handleWidth = 28; // 핸들의 너비 (대략적인 값)
+    const handleWidth = handleRef.current.offsetWidth;
 
-    if (!leftButtonRect || !rightButtonRect) return;
+    const thermometerPadding = 0; // 구역의 비율에 맞게 조정
+
+    const thermometerWidth = sliderRect.width - handleWidth - 2 * thermometerPadding;
 
     let x =
       'clientX' in e
         ? e.clientX - sliderRect.left
         : e.touches[0]?.clientX - sliderRect.left;
 
-    // 왼쪽과 오른쪽 버튼의 경계를 벗어나지 않도록 제한
-    const minX = leftButtonRect.right - sliderRect.left;
-    const maxX = rightButtonRect.left - sliderRect.left - handleWidth;
-
     // x 좌표를 제한된 범위 내로 조정
-    x = Math.max(minX, Math.min(x, maxX));
+    x = Math.max(0, Math.min(x, thermometerWidth));
 
-    // 슬라이더 핸들의 위치를 설정
-    const percentage = (x - minX) / (maxX - minX);
-    const newIndex = Math.round(percentage * (temperatureRanges.length - 1));
+    // 비율에 맞게 핸들의 위치 계산
+    const segmentWidth = thermometerWidth / (temperatureRanges.length - 1);
+    const newIndex = Math.round((x - thermometerPadding) / segmentWidth);
+    const left = calculatePosition(newIndex, thermometerWidth) + thermometerPadding;
 
-    // handleDrag 함수에서 핸들의 left 속성 값을 설정합니다.
-    const handleElement = sliderRef.current?.querySelector(
-      '.handle',
-    ) as HTMLDivElement;
-    if (handleElement) {
-      handleElement.style.left = `${x}px`;
-    }
-
+    handleRef.current.style.left = `${left}px`;
     handleTemperatureChange(newIndex);
   };
 
@@ -190,6 +186,37 @@ const ThermometerStyle: React.FC = () => {
     };
   }, []);
 
+  useEffect(() => {
+    // 슬라이더와 핸들이 렌더링된 후 핸들의 초기 위치를 온도에 맞춰 설정
+    if (sliderRef.current && handleRef.current) {
+      const sliderRect = sliderRef.current.getBoundingClientRect();
+      const handleWidth = handleRef.current.offsetWidth;
+
+      const thermometerPadding = 0; // 구역의 비율에 맞게 조정
+      const thermometerWidth = sliderRect.width - handleWidth - 2 * thermometerPadding;
+
+      const initialLeft = calculatePosition(temperatureIndex, thermometerWidth);
+      handleRef.current.style.left = `${initialLeft}px`;
+    }
+  }, [temperatureIndex]);
+
+  useEffect(() => {
+    if (textContainerRef.current) {
+      const direction = prevTemperatureIndex < temperatureIndex ? 1 : -1;
+      textContainerRef.current.style.transform = `translateX(${direction * 100}%)`;
+      textContainerRef.current.style.transition = 'transform 0.3s ease';
+
+      const timer = setTimeout(() => {
+        if (textContainerRef.current) {
+          textContainerRef.current.style.transition = 'none';
+          textContainerRef.current.style.transform = 'translateX(0)';
+        }
+      }, 300);
+
+      return () => clearTimeout(timer);
+    }
+  }, [temperatureIndex, prevTemperatureIndex]);
+
   const getOutfitsForTemperature = (tempDisplay: string): string[] => {
     const outfitKeys = Object.keys(outfits);
     const matchedKey = outfitKeys.find((key) => key === tempDisplay);
@@ -197,7 +224,7 @@ const ThermometerStyle: React.FC = () => {
   };
 
   const currentOutfits =
-    temperatureIndex === Math.floor(temperatureRanges.length / 2) && initialView
+    initialView && temperatureIndex === Math.floor(temperatureRanges.length / 2)
       ? defaultImages
       : getOutfitsForTemperature(temperatureRanges[temperatureIndex].display);
 
@@ -212,7 +239,13 @@ const ThermometerStyle: React.FC = () => {
   return (
     <div className="w-full max-w-md mx-auto flex flex-col min-h-screen bg-[#FFFFF]">
       <div className="flex flex-col items-center mt-5 mb-8">
-        <div className="relative mb-4 mt-10" style={{ marginTop: '-40px' }}>
+        <div
+          className="relative mb-4 mt-10 temperature-display-container"
+          style={{
+            marginTop: '-40px',
+            overflow: 'hidden', // 슬라이드 애니메이션을 위한 overflow 숨김
+          }}
+        >
           <Image
             src="/images/Thermometer/temperature-box.svg"
             alt="Temperature Box"
@@ -221,15 +254,12 @@ const ThermometerStyle: React.FC = () => {
             sizes="100vw"
             priority
           />
-          {initialView ? (
-            <span className="absolute inset-0 flex items-center justify-center text-lg font-bold">
-              ?
-            </span>
-          ) : (
-            <span className="absolute inset-0 flex items-center justify-center temperature-display">
-              {temperatureRanges[temperatureIndex].display}
-            </span>
-          )}
+          <div
+            ref={textContainerRef}
+            className="absolute inset-0 flex items-center justify-center text-lg font-bold temperature-display-text"
+          >
+            {initialView ? '?' : temperatureRanges[temperatureIndex].display}
+          </div>
         </div>
 
         <div className="relative w-full grid grid-cols-2 px-[15px] py-[25px] ml-[9px]">
@@ -253,7 +283,6 @@ const ThermometerStyle: React.FC = () => {
           {/* 왼쪽 버튼 */}
           {currentOutfitIndex > 0 && (
             <button
-              ref={leftButtonRef}
               className="absolute left-[1px] top-[49%] transform -translate-y-1/2 flex items-start opacity-[var(--sds-size-stroke-border)] shadow-[0px_1px_2px_0px_rgba(0,0,0,0.10)] backdrop-filter backdrop-blur-[2px] rounded-full z-10"
               onClick={handlePrev}
               style={{ padding: 0, border: 'none', background: 'transparent' }}
@@ -271,7 +300,6 @@ const ThermometerStyle: React.FC = () => {
           {/* 오른쪽 버튼 */}
           {currentOutfitIndex + 4 < currentOutfits.length && (
             <button
-              ref={rightButtonRef}
               className="absolute right-[9px] top-[48%] transform -translate-y-1/2 flex items-start opacity-[var(--sds-size-stroke-border)] shadow-[0px_1px_2px_0px_rgba(0,0,0,0.10)] backdrop-filter backdrop-blur-[2px] rounded-full z-10"
               onClick={handleNext}
               style={{ padding: 0, border: 'none', background: 'transparent' }}
@@ -298,7 +326,6 @@ const ThermometerStyle: React.FC = () => {
       >
         {/* 왼쪽 버튼 */}
         <button
-          ref={leftButtonRef}
           className="absolute left-[35px] top-[41.5%] transform -translate-y-1/2 flex items-center justify-center z-10"
           onClick={handleLeftClick}
           style={{ padding: 0, border: 'none', background: 'transparent' }}
@@ -322,13 +349,13 @@ const ThermometerStyle: React.FC = () => {
         />
 
         <div
+          ref={handleRef}
           className="absolute handle"
           style={{
-            left: initialView
-              ? '50%'
-              : `${(temperatureIndex / (temperatureRanges.length - 1)) * 100}%`,
+            left: `${(sliderRef.current?.getBoundingClientRect().width || 0) / 2}px`,
             top: '50%',
             transform: 'translate(-50%, -50%) translateY(-10px)',
+            transition: 'left 0.2s ease', // 부드러운 이동을 위한 transition 효과 추가
           }}
         >
           <div
@@ -350,7 +377,6 @@ const ThermometerStyle: React.FC = () => {
 
         {/* 오른쪽 버튼 */}
         <button
-          ref={rightButtonRef}
           className="absolute right-[35px] top-[41.5%] transform -translate-y-1/2 flex items-center justify-center z-10"
           onClick={handleRightClick}
           style={{ padding: 0, border: 'none', background: 'transparent' }}
