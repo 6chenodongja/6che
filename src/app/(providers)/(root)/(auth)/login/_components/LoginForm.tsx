@@ -26,7 +26,7 @@ function LoginForm() {
         email,
         password,
       });
-
+      console.log('아이왜로그인안되는데미친것', res);
       if (res.data) {
         router.replace('/');
       } else {

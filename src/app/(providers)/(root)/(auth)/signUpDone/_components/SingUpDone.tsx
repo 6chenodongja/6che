@@ -4,7 +4,7 @@ import { useUserStore } from '@/zustand/store/useUserStore';
 import Link from 'next/link';
 
 function SingUpDone() {
-  const { user, setUser } = useUserStore();
+  const { user } = useUserStore();
 
   return (
     <main className="h-auto justify-center m-auto">

@@ -5,7 +5,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { LogoText } from '../../..//icons/LogoText';
 import { IconLogin } from '../../../icons/IconLogin';
-import { User } from '@supabase/supabase-js';
 import { useUserStore } from '@/zustand/store/useUserStore';
 import LoginDropdown from '@/components/LoginDropdown/LoginDropdown';
 import { createClient } from '@/supabase/client';
@@ -45,8 +44,6 @@ const Header = () => {
         profileImage: data.avatar || '',
       });
     };
-
-    getUser();
   }, []);
 
   return (
