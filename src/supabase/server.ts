@@ -28,6 +28,7 @@ export function createClient() {
   );
 }
 
+// 회원 탈퇴
 export function createSupabaseClientForUserDeletion() {
   const cookieStore = cookies();
 

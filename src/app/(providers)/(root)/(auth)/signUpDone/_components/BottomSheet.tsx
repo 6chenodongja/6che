@@ -4,7 +4,7 @@ import { createClient } from '@/supabase/client';
 import { useUserStore } from '@/zustand/store/useUserStore';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import { FormEventHandler, useState, useEffect } from 'react';
+import { FormEventHandler, useState } from 'react';
 
 const profileIcons = [
   '/images/Weather/sun.svg',

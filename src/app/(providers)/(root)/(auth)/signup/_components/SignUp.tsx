@@ -4,7 +4,6 @@ import { createClient } from '@/supabase/client';
 import { useRouter } from 'next/navigation';
 import { emailDomains } from '@/utils/emailDomains';
 import { useSignUpForm } from 'hooks/useSignUpForm';
-import { useUserStore } from '@/zustand/store/useUserStore';
 
 function SingUp() {
   const {

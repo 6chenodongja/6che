@@ -63,7 +63,6 @@ function LoginForm() {
         <h1 className="text-center text-[20px] font-bold leading-[26px] tracking-[-0.4px] text-[#121212] font-['Noto_Sans_KR']">
           로그인
         </h1>
-        <div></div>
         {/* 이메일 input */}
         <div className="bg-slate-50 flex flex-col text-[#4D4D4D]">
           <label
@@ -93,16 +92,6 @@ function LoginForm() {
             className="flex justify-start items-center flex-grow relative gap-2 px-4 py-3 rounded-xl border-[1px] w-[288px] border-[#808080]"
           />
         </div>
-        {/* <div className="bg-red-500">
-          <input
-            type="checkbox"
-            placeholder="체크 박스입니다"
-            className="w-[18px] h-[18px] bg-black-200"
-          />
-          <label className="flex-grow-0 flex-shrink-0 text-sm text-left hover: text-[#808080]">
-            로그인 유지
-          </label>
-        </div> */}
         <div className="flex flex-col gap-2">
           <div className="flex flex-row w-full">
             <button className="bg-black text-[#fff] rounded-xl px-4 py-3 w-[288px] font-bold">
@@ -132,14 +121,12 @@ function LoginForm() {
             onClick={() => handleSocialLogin('google')}
             className="bg-white border-1 hover:bg-[#ccc] hover:bg-opacity-70 border-[#121212] text-[#4D4D4D] font-bold w-[288px] h-[52px] rounded-xl"
           >
-            {/* <IconLogin className="w-6 h-6 border" /> */}
             구글로 시작하기
           </button>
           <button
             onClick={() => handleSocialLogin('kakao')}
             className="bg-[#FFD65E] hover:bg-[#ccc] hover:bg-opacity-70 text-[#4D4D4D] font-bold w-[288px] h-[52px] rounded-xl"
           >
-            {/* <IconLogin className="w-6 h-6 border" /> */}
             카카오로 시작하기
           </button>
         </div>

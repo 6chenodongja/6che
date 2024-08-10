@@ -6,8 +6,6 @@ import { useUserStore } from '@/zustand/store/useUserStore';
 import axios from 'axios';
 
 function DeleteUser() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [userId, setUserId] = useState(false);
   const { user } = useUserStore();
   const handlerDelete = async () => {
     try {
@@ -15,8 +13,8 @@ function DeleteUser() {
         data: { userId: user?.id },
       });
     } catch (error) {
-      // console.error('로그인 중 오류 발생:', error);
-      // alert('아이디 또는 비밀번호는 다시 입력해주세요!');
+      console.error('회원탈퇴 실패:', error);
+      alert('회원 탈퇴가 실패 되었어요.');
     }
   };
   const test = () => {};

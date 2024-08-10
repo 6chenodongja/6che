@@ -1,5 +1,4 @@
 import { createSupabaseClientForUserDeletion } from '@/supabase/server';
-import { useUserStore } from '@/zustand/store/useUserStore';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function DELETE(request: NextRequest) {
