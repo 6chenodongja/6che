@@ -88,20 +88,20 @@ const defaultImages: string[] = [
 ];
 
 const temperatureRanges: TemperatureRange[] = [
-  { min: -Infinity, label: 'coldest', display: '4° 이하' },
-  { min: -Infinity, label: 'coldest', display: '4° 이하' },
-  { min: -Infinity, label: 'coldest', display: '4° 이하' },
-  { min: -Infinity, label: 'coldest', display: '4° 이하' },
-  { min: 4, label: 'coldest', display: '5° - 8°' },
-  { min: 9, label: 'cold', display: '9° - 11°' },
-  { min: 12, label: 'chilly', display: '12° - 16°' },
-  { min: 17, label: 'cool', display: '17° - 19°' },
-  { min: 20, label: 'mild', display: '20° - 22°' },
-  { min: 23, label: 'warm', display: '23° - 27°' },
   { min: 28, label: 'hot', display: '28° 이상' },
   { min: 28, label: 'hot', display: '28° 이상' },
   { min: 28, label: 'hot', display: '28° 이상' },
   { min: 28, label: 'hot', display: '28° 이상' },
+  { min: 4, label: 'coldest', display: '23° - 27°' },
+  { min: 9, label: 'cold', display: '20° - 22°' },
+  { min: 12, label: 'chilly', display: '17° - 19°' },
+  { min: 17, label: 'cool', display: '12° - 16°' },
+  { min: 20, label: 'mild', display: '9° - 11°'},
+  { min: 23, label: 'warm', display: '5° - 8°' },
+  { min: -Infinity, label: 'coldest', display: '4° 이하' },
+  { min: -Infinity, label: 'coldest', display: '4° 이하' },
+  { min: -Infinity, label: 'coldest', display: '4° 이하' },
+  { min: -Infinity, label: 'coldest', display: '4° 이하' },
 ];
 
 const ThermometerStyle: React.FC = () => {
