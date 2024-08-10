@@ -98,11 +98,12 @@ const ThermometerStyle: React.FC = () => {
   );
   const [currentOutfitIndex, setCurrentOutfitIndex] = useState<number>(0);
   const [prevTemperatureIndex, setPrevTemperatureIndex] = useState<number>(temperatureIndex);
+  const [isDragging, setIsDragging] = useState<boolean>(false);
+  const [initialView, setInitialView] = useState<boolean>(true);
+  const [animationsEnabled, setAnimationsEnabled] = useState<boolean>(false); // 애니메이션 활성화 상태
   const sliderRef = useRef<HTMLDivElement | null>(null);
   const handleRef = useRef<HTMLDivElement | null>(null);
   const textContainerRef = useRef<HTMLDivElement | null>(null);
-  const [isDragging, setIsDragging] = useState<boolean>(false);
-  const [initialView, setInitialView] = useState<boolean>(true);
   const router = useRouter();
 
   const handleTemperatureChange = (newIndex: number) => {
@@ -111,22 +112,21 @@ const ThermometerStyle: React.FC = () => {
       setTemperatureIndex(newIndex);
       setInitialView(false);
       setCurrentOutfitIndex(0);
+      setAnimationsEnabled(true); // 핸들 이동 시 애니메이션 활성화
     }
   };
 
   const calculatePosition = (index: number, thermometerWidth: number) => {
-    // 각각의 구역에 맞는 위치를 설정 (대략적인 비율)
     const positions = [
-      0.26,   // 28° 이상 (0%)
-      0.35, // 23° - 27° (21.5%)
-      0.45, // 20° - 22° (21.5%)
-      0.55,  // 17° - 19° (46%)
-      0.65,  // 12° - 16° (46%)
-      0.75,   // 9° - 11° (70%)
-      0.80,   // 5° - 8° (70%)
-      0.84,  // 4° 이하 (93%)
+      0.21, // 28° 이상
+      0.30, // 23° - 27°
+      0.40, // 20° - 22°
+      0.50, // 17° - 19°
+      0.60, // 12° - 16°
+      0.70, // 9° - 11°
+      0.75, // 5° - 8°
+      0.79, // 4° 이하
     ];
-
     return positions[index] * thermometerWidth;
   };
 
@@ -137,7 +137,6 @@ const ThermometerStyle: React.FC = () => {
     const handleWidth = handleRef.current.offsetWidth;
 
     const thermometerPadding = 0; // 구역의 비율에 맞게 조정
-
     const thermometerWidth = sliderRect.width - handleWidth - 2 * thermometerPadding;
 
     let x =
@@ -145,7 +144,7 @@ const ThermometerStyle: React.FC = () => {
         ? e.clientX - sliderRect.left
         : e.touches[0]?.clientX - sliderRect.left;
 
-    // x 좌표를 제한된 범위 내로 조정
+        // x 좌표를 제한된 범위 내로 조정
     x = Math.max(0, Math.min(x, thermometerWidth));
 
     // 비율에 맞게 핸들의 위치 계산
@@ -197,14 +196,19 @@ const ThermometerStyle: React.FC = () => {
 
       const initialLeft = calculatePosition(temperatureIndex, thermometerWidth);
       handleRef.current.style.left = `${initialLeft}px`;
+
+      if (initialView) {
+        handleRef.current.style.transition = 'none';
+        handleRef.current.style.left = `${(sliderRect.width - handleWidth) / 2}px`;
+      }
     }
-  }, [temperatureIndex]);
+  }, [temperatureIndex, initialView]);
 
   useEffect(() => {
     if (textContainerRef.current) {
       const direction = prevTemperatureIndex < temperatureIndex ? 1 : -1;
       textContainerRef.current.style.transform = `translateX(${direction * 100}%)`;
-      textContainerRef.current.style.transition = 'transform 0.3s ease';
+      textContainerRef.current.style.transition = animationsEnabled ? 'transform 0.3s ease' : 'none';
 
       const timer = setTimeout(() => {
         if (textContainerRef.current) {
@@ -215,7 +219,7 @@ const ThermometerStyle: React.FC = () => {
 
       return () => clearTimeout(timer);
     }
-  }, [temperatureIndex, prevTemperatureIndex]);
+  }, [temperatureIndex, prevTemperatureIndex, animationsEnabled]);
 
   const getOutfitsForTemperature = (tempDisplay: string): string[] => {
     const outfitKeys = Object.keys(outfits);
@@ -351,11 +355,11 @@ const ThermometerStyle: React.FC = () => {
         <div
           ref={handleRef}
           className="absolute handle"
-          style={{
-            left: `${(sliderRef.current?.getBoundingClientRect().width || 0) / 2}px`,
+          style={{            
+            left: `${(sliderRef.current?.getBoundingClientRect().width || 0) / 10}px`,
             top: '50%',
-            transform: 'translate(-50%, -50%) translateY(-10px)',
-            transition: 'left 0.2s ease', // 부드러운 이동을 위한 transition 효과 추가
+            transform: 'translate(-0%, -50%) translateY(-10px)',
+            transition: animationsEnabled ? 'left 0.2s' : 'none', // 애니메이션 제어
           }}
         >
           <div
