@@ -1,8 +1,12 @@
 import React from 'react';
 import ProfileForm from './_components/ProfileForm';
 
-const Profile: React.FC = () => {
-  return <ProfileForm />;
-};
+function ProfileFormPage() {
+  return (
+    <main className="">
+      <ProfileForm />
+    </main>
+  );
+}
 
-export default Profile;
+export default ProfileFormPage;
