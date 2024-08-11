@@ -140,13 +140,20 @@ function MyStyleList({
     }
   };
 
-  //올 체크
+  // all체크 하는 로직
   const allCheckHandler = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.checked) {
       setCheckItems(posts.map((item) => item.id));
     } else {
       setCheckItems([]);
     }
+  };
+
+  //myStylePage 포스트 삭제
+  const handlePostDelete = async () => {
+    await fetchUserPostDelete();
+    setPosts((prev) => prev.filter((item) => !checkItems.includes(item.id)));
+    setCheckItems([]);
   };
 
   return (
@@ -157,6 +164,8 @@ function MyStyleList({
         allCheckHandler={allCheckHandler}
         fetchUserPostDelete={fetchUserPostDelete}
         checkItems={checkItems}
+        setCheckItems={setCheckItems}
+        handlePostDelete={handlePostDelete}
       />
 
       <div className="grid grid-cols-2 gap-y-2 gap-x-2 w-[288px] mx-auto">

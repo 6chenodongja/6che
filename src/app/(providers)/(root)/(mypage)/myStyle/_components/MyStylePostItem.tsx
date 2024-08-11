@@ -4,7 +4,6 @@ import Image from 'next/image';
 import MyStyleLikeButton from './MyStyleLikeButton';
 import { Tables } from '../../../../../../../types/supabase';
 import { ChangeEvent } from 'react';
-import MyStyleFilter from './MyStyleFilter';
 
 interface PostProps {
   post: Tables<'posts'>;
@@ -20,10 +19,8 @@ function MyStylePostItem({
   post,
   isLiked,
   handleLike,
-  fetchUserPostDelete,
   checkItemsHandler,
   isChecked,
-  checkItems,
 }: PostProps) {
   const handleCheck = (e: ChangeEvent<HTMLInputElement>) => {
     checkItemsHandler(post.id, e.target.checked);
