@@ -11,6 +11,7 @@ import { useUserStore } from '@/zustand/store/useUserStore';
 import { Tables } from '../../../../../../types/supabase';
 import { postListLikedType } from '../../../../../../types/post';
 import MyNotStyleHeader from './_components/MyNotStyleHeader';
+import { motion } from 'framer-motion';
 
 function MyStylePage() {
   const [isLoading, setIsLoading] = useState(true);
@@ -61,7 +62,13 @@ function MyStylePage() {
   }, [user, fetchMyPosts, fetchUserLiked]);
 
   return (
-    <div className="container">
+    <motion.div
+      className="container"
+      initial={{ opacity: 0, x: 100 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: -100 }}
+      transition={{ duration: 0.5 }}
+    >
       {!isLoading && posts.length === 0 ? (
         <div>
           <Header />
@@ -96,7 +103,7 @@ function MyStylePage() {
           setLikedPosts={setLikedPosts}
         />
       )}
-    </div>
+    </motion.div>
   );
 }
 

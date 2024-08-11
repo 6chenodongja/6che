@@ -11,6 +11,7 @@ import { postLikedItem } from '../../../../../../types/post';
 import MyListPage from './_components/MyListPage';
 import { useCallback } from 'react';
 import MyNotStyleHeader from '../myStyle/_components/MyNotStyleHeader';
+import { motion } from 'framer-motion';
 
 const PostLike = () => {
   const [posts, setPosts] = useState<postLikedItem[]>([]);
@@ -43,7 +44,13 @@ const PostLike = () => {
   }, [user, fetchLikedPosts]); // fetchLikedPosts를 의존성 배열에 추가
 
   return (
-    <div className="container">
+    <motion.div
+      className="container"
+      initial={{ opacity: 0, x: 100 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: -100 }}
+      transition={{ duration: 0.5 }}
+    >
       {!isLoading && posts.length === 0 ? (
         <div>
           <Header />
@@ -75,7 +82,7 @@ const PostLike = () => {
       ) : (
         <MyListPage posts={posts} setPosts={setPosts} />
       )}
-    </div>
+    </motion.div>
   );
 };
 
