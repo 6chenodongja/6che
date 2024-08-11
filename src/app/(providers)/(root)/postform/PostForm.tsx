@@ -201,7 +201,7 @@ const PostFormPage = () => {
           <span>게시 완료되었습니다</span>
           <button
             onClick={() => router.push('/myStyle')}
-            className="text-[#4d4d4d] font-caption font-normal underline text-xs"
+            className="text-[#4d4d4d] font-caption font-normal text-xs no-underline"
           >
             내 코디
           </button>
