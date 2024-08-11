@@ -197,16 +197,21 @@ const PostFormPage = () => {
     } else {
       console.log('Data inserted successfully');
       toast.success(
-        <div>
-          등록이 완료 되었습니다
+        <div className="toast-message">
+          <span>게시 완료되었습니다</span>
           <button
             onClick={() => router.push('/myStyle')}
-            className="ml-2 text-blue-500 underline"
+            className="text-[#4d4d4d] font-caption font-normal underline text-xs"
           >
             내 코디
           </button>
         </div>,
-        { autoClose: 2500 },
+        {
+          autoClose: 2500,
+          icon: false,
+          closeButton: false,
+          className: 'custom-toast',
+        },
       );
       setTimeout(() => {
         if (!sessionStorage.getItem('redirectToMyStyle')) {
