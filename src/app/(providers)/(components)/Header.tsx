@@ -1,27 +1,54 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { LogoText } from '../../..//icons/LogoText';
 import { IconLogin } from '../../../icons/IconLogin';
-import { useUserStore } from '@/zustand/store/useUserStore';
+import LoadingScreen from '../(components)/LoadingScreen'; // LoadingScreen 컴포넌트를 불러옵니다.
 import LoginDropdown from '@/components/LoginDropdown/LoginDropdown';
+import { useUserStore } from '@/zustand/store/useUserStore';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const { user } = useUserStore();
+  const router = useRouter();
+
   const handleMenuToggle = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+
+  const handleLogoClick = () => {
+    // 메인화면에서 로고 클릭 시 새로고침
+    if (window.location.pathname === '/') {
+      window.location.reload(); // 메인화면에서는 새로고침
+    } else {
+      router.push('/'); // 다른 페이지에서는 메인화면으로 이동
+    }
+  };
+
+  const handleNavigation = (url: string) => {
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+      router.push(url);
+    }, 5000); // 5초 동안 로딩 화면을 보여줍니다.
+  };
+
+  if (isLoading) {
+    return <LoadingScreen />; // 로딩 중일 때 LoadingScreen 컴포넌트를 보여줍니다.
+  }
+  // fixed 밑에 header className 에 추가해야함 그래야 헤더 고정됌
   return (
-    <header className="w-full bg-white shadow-md py-4 flex justify-between items-center px-4">
+    <header className="w-[320px] bg-white shadow-md py-4 flex justify-between items-center px-4 fixed top-0 z-50 h-[60px]">
       <button title="button" onClick={handleMenuToggle}>
         <Image src="/images/menu.png" alt="메뉴" width={24} height={24} />
       </button>
-      <Link href="/">
+      <div onClick={handleLogoClick} className="cursor-pointer">
         <LogoText className="w-24 h-8" />
-      </Link>
+      </div>
       <div>
         {user ? (
           <>
@@ -46,14 +73,20 @@ const Header = () => {
             </Link>
           </li>
           <li>
-            <Link href="/list" onClick={handleMenuToggle}>
+            <a
+              onClick={() => handleNavigation('/list')}
+              className="cursor-pointer"
+            >
               스타일
-            </Link>
+            </a>
           </li>
           <li>
-            <Link href="/list" onClick={handleMenuToggle}>
+            <a
+              onClick={() => handleNavigation('/list')}
+              className="cursor-pointer"
+            >
               옷차림
-            </Link>
+            </a>
           </li>
           <li>
             <Link href="/survey">취향 코디</Link>

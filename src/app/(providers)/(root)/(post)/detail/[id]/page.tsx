@@ -1,6 +1,5 @@
 'use client';
 
-import { createClient } from '@/supabase/client';
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -9,58 +8,58 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import Link from 'next/link';
-import 'swiper/swiper-bundle.css';
 import { useUserStore } from '@/zustand/store/useUserStore';
-import { Tables } from '../../../../../../../types/supabase';
+import { useRouter } from 'next/navigation';
+import { supabase } from '@/supabase/client';
+import { PostDetailItem } from '../../../../../../../types/post';
 
-function PostDetail({
-  params,
-}: {
-  params: { id: string; comment: string; locations: string; like: number };
-}) {
-  const [userList, setUserList] = useState<Tables<'users'>[]>([]);
+function PostDetail({ params }: { params: { id: string } }) {
   const [userComment, setUserComment] = useState<string[]>([]);
-  const [userImages, setUserImages] = useState<string[]>([]);
+  const [DetailList, setDetailList] = useState<PostDetailItem>();
+  const [userPostImages, setPostImages] = useState<string[]>([]);
   const [userLocations, setUserLocations] = useState<string[]>([]);
   const [userLiked, setUserLiked] = useState<number[]>([]);
+  const [temperature, setTemperature] = useState<string | null>(null);
+  const [weatherIcon, setWeatherIcon] = useState<string | null>(null); // weatherIcon 추가
   const [modalOpen, setModalOpen] = useState<boolean>(false);
-  const [userNickName, setUserNickName] = useState<Tables<'posts'>[]>([]);
 
-  const User = useUserStore();
-  const supabase = createClient();
+  const router = useRouter();
+
+  const { user } = useUserStore();
+
+  // 온도 정보만 추출하는 함수 추가
+  const formatTemperature = (temperature: string) => {
+    // 정규식을 사용하여 숫자와 °만 추출
+    const match = temperature.match(/(\d+\s?\-?\s?\d+°?)/);
+    return match ? match[0] : 'N/A';
+  };
 
   useEffect(() => {
-    // 유저 닉네임 가져오기
-    const fetchUserNickname = async () => {
-      const { data, error } = await supabase
-        .from('users')
-        .select('*')
-        .eq('id', params.id);
-
-      if (error) {
-        console.error(error);
-      }
-    };
-
-    // 유저 이미지 가져오기
-    const fetchUserImage = async () => {
-      const { data, error } = await supabase
+    // 유저 포스트 1개의 정보를 가져오기
+    const fetchPostDetail = async () => {
+      const { data: postDetail, error } = await supabase
         .from('posts')
-        .select('*')
+        .select('*, users(*)')
         .eq('id', params.id)
         .single();
 
       if (error) {
         console.error(error);
-      } else if (data && data.image_url) {
-        setUserImages(data.image_url.split(','));
+      } else if (postDetail.image_url) {
+        setPostImages(postDetail.image_url?.split(','));
+        setDetailList(postDetail);
+
+        const [icon, temp] = postDetail.weather?.split(' ') || ['N/A', 'N/A'];
+        setWeatherIcon(icon); // 아이콘 설정
+        setTemperature(temp ?? 'N/A'); // 온도 설정
       } else {
-        setUserImages([]);
+        setPostImages([]);
+        setWeatherIcon('N/A');
+        setTemperature('N/A');
       }
     };
 
-    // 유저 코멘트 가져오기
-    const fetchUserLocations = async () => {
+    const fetchPostComments = async () => {
       const { data, error } = await supabase
         .from('posts')
         .select('comment')
@@ -73,8 +72,8 @@ function PostDetail({
         setUserComment(data.comment ? [data.comment] : []);
       }
     };
-    // 유저 카테고리 가져오기
-    const fetchUserComment = async () => {
+
+    const fetchPostLocations = async () => {
       const { data, error } = await supabase
         .from('posts')
         .select('locations')
@@ -86,13 +85,14 @@ function PostDetail({
       } else {
         setUserLocations(
           data.locations
-            ? data.locations.split(',').map((location) => ` #${location}`)
+            ? data.locations
+                .split(',')
+                .map((location: string) => `#${location}`)
             : [],
         );
       }
     };
 
-    //유저 좋아요 수 가져오기
     const fetchUserLiked = async () => {
       const { data, error } = await supabase
         .from('posts')
@@ -106,11 +106,11 @@ function PostDetail({
         setUserLiked([data.like ?? 0]);
       }
     };
+
     const fetchData = async () => {
-      await fetchUserNickname();
-      await fetchUserImage();
-      await fetchUserComment();
-      await fetchUserLocations();
+      await fetchPostDetail();
+      await fetchPostComments();
+      await fetchPostLocations();
       await fetchUserLiked();
     };
 
@@ -151,15 +151,20 @@ function PostDetail({
   };
 
   //유저 게시물 삭제
-  const deletePost = async () => {
+  const deletePosts = async () => {
     try {
-      await supabase
+      const { error } = await supabase
         .from('posts')
         .delete()
-        .eq('id', params.id)
-        .eq('user_id', User);
-    } catch {
+        .eq('id', params.id);
+      if (error) {
+        throw error;
+      }
       alert('게시물이 삭제되었습니다.');
+      router.replace('/list');
+    } catch (error) {
+      console.error('게시물 삭제 중 오류가 발생했습니다:', error);
+      alert('게시물 삭제 중 오류가 발생했습니다.');
     }
   };
 
@@ -187,17 +192,22 @@ function PostDetail({
                 />
               </svg>
             </Link>
-            <div className="flex flex-row ml-auto gap-1">
-              <button
-                onClick={deletePost}
-                className="flex justify-center items-center bg-[#FF4732]/85 text-white rounded-xl px-[10px] py-[8px]"
-              >
-                삭제
-              </button>
-              <button className="flex  justify-center items-center bg-[#121212] text-white mr-4 rounded-xl px-[10px] py-[8px]">
-                수정
-              </button>
-            </div>
+            {DetailList?.user_id === user?.id && (
+              <div className="flex flex-row ml-auto gap-1">
+                <button
+                  onClick={deletePosts}
+                  className="flex justify-center items-center bg-[#FF4732]/85 text-white rounded-xl px-[10px] py-[8px]"
+                >
+                  삭제
+                </button>
+                <button
+                  onClick={() => router.push(`/edit/${params.id}`)}
+                  className="flex justify-center items-center bg-[#121212] text-white mr-4 rounded-xl px-[10px] py-[8px]"
+                >
+                  수정
+                </button>
+              </div>
+            )}
           </header>
           <Swiper
             slidesPerView={1}
@@ -205,168 +215,33 @@ function PostDetail({
             modules={[Pagination]}
             loop={true}
           >
-            {userImages.map((image, index) => (
+            {userPostImages.map((image, index) => (
               <SwiperSlide
-                key={index}
+                key={image}
                 className="w-[288px] h-[412px] object-cover"
               >
-                <Image
-                  src={image}
-                  alt={`이미지 ${index}`}
-                  width={200}
-                  height={100}
-                  className="w-[288px] h-[412px] rounded-xl flex justify-center items-center mx-auto"
-                />
-                <div className="absolute top-3 left-6 bg-white bg-opacity-50 p-1 m-1 font-[18px] rounded-lg  flex flex-row gap-2 justify-center items-center">
-                  <div className="detail-icon">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="21"
-                      height="16"
-                      viewBox="0 0 21 16"
-                      fill="none"
-                    >
-                      <g filter="url(#filter0_f_4483_4767)">
-                        <path
-                          fillRule="evenodd"
-                          clipRule="evenodd"
-                          d="M18.9763 5.93364C19.0942 5.65876 18.7487 5.44099 18.4786 5.56956C18.0835 5.75772 17.6412 5.86303 17.1744 5.86303C15.4967 5.86303 14.1367 4.50298 14.1367 2.82528C14.1367 2.35859 14.2419 1.91648 14.43 1.52139C14.5585 1.25133 14.3407 0.905834 14.0658 1.02376C12.7334 1.59549 11.8 2.91936 11.8 4.46122C11.8 6.52609 13.4739 8.2 15.5387 8.2C17.0807 8.2 18.4047 7.26642 18.9763 5.93364Z"
-                          fill="#FFC329"
-                          fillOpacity="0.8"
-                        />
-                      </g>
-                      <g filter="url(#filter1_d_4483_4767)">
-                        <path
-                          fillRule="evenodd"
-                          clipRule="evenodd"
-                          d="M18.9763 5.93364C19.0942 5.65876 18.7487 5.44099 18.4786 5.56956C18.0835 5.75772 17.6412 5.86303 17.1744 5.86303C15.4967 5.86303 14.1367 4.50298 14.1367 2.82528C14.1367 2.35859 14.2419 1.91648 14.43 1.52139C14.5585 1.25133 14.3407 0.905834 14.0658 1.02376C12.7334 1.59549 11.8 2.91936 11.8 4.46122C11.8 6.52609 13.4739 8.2 15.5387 8.2C17.0807 8.2 18.4047 7.26642 18.9763 5.93364Z"
-                          fill="#FFC329"
-                          fillOpacity="0.8"
-                          shapeRendering="crispEdges"
-                        />
-                      </g>
-                      <g filter="url(#filter2_bd_4483_4767)">
-                        <path
-                          d="M14.2353 15.4001C16.8668 15.4001 19 13.5868 19 11.3501C19 9.23574 17.0939 7.49982 14.6626 7.31614C14.1794 5.25412 12.0385 3.70007 9.47059 3.70007C6.54673 3.70007 4.17647 5.71479 4.17647 8.20007C4.17647 8.23787 4.17702 8.27556 4.17811 8.31313C2.35057 8.71229 1 10.1221 1 11.8001C1 13.7883 2.89621 15.4001 5.23529 15.4001H14.2353Z"
-                          fill="#CCCCCC"
-                          fillOpacity="0.7"
-                          shapeRendering="crispEdges"
-                        />
-                      </g>
-                      <defs>
-                        <filter
-                          id="filter0_f_4483_4767"
-                          x="10.8"
-                          y="0"
-                          width="9.19995"
-                          height="9.19995"
-                          filterUnits="userSpaceOnUse"
-                          colorInterpolationFilters="sRGB"
-                        >
-                          <feFlood
-                            floodOpacity="0"
-                            result="BackgroundImageFix"
-                          />
-                          <feBlend
-                            mode="normal"
-                            in="SourceGraphic"
-                            in2="BackgroundImageFix"
-                            result="shape"
-                          />
-                          <feGaussianBlur
-                            stdDeviation="0.5"
-                            result="effect1_foregroundBlur_4483_4767"
-                          />
-                        </filter>
-                        <filter
-                          id="filter1_d_4483_4767"
-                          x="11.3"
-                          y="0.5"
-                          width="9.19995"
-                          height="9.19995"
-                          filterUnits="userSpaceOnUse"
-                          colorInterpolationFilters="sRGB"
-                        >
-                          <feFlood
-                            floodOpacity="0"
-                            result="BackgroundImageFix"
-                          />
-                          <feColorMatrix
-                            in="SourceAlpha"
-                            type="matrix"
-                            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-                            result="hardAlpha"
-                          />
-                          <feOffset dx="0.5" dy="0.5" />
-                          <feGaussianBlur stdDeviation="0.5" />
-                          <feComposite in2="hardAlpha" operator="out" />
-                          <feColorMatrix
-                            type="matrix"
-                            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.06 0"
-                          />
-                          <feBlend
-                            mode="normal"
-                            in2="BackgroundImageFix"
-                            result="effect1_dropShadow_4483_4767"
-                          />
-                          <feBlend
-                            mode="normal"
-                            in="SourceGraphic"
-                            in2="effect1_dropShadow_4483_4767"
-                            result="shape"
-                          />
-                        </filter>
-                        <filter
-                          id="filter2_bd_4483_4767"
-                          x="-1"
-                          y="1.70007"
-                          width="22"
-                          height="15.7"
-                          filterUnits="userSpaceOnUse"
-                          colorInterpolationFilters="sRGB"
-                        >
-                          <feFlood
-                            floodOpacity="0"
-                            result="BackgroundImageFix"
-                          />
-                          <feGaussianBlur
-                            in="BackgroundImageFix"
-                            stdDeviation="1"
-                          />
-                          <feComposite
-                            in2="SourceAlpha"
-                            operator="in"
-                            result="effect1_backgroundBlur_4483_4767"
-                          />
-                          <feColorMatrix
-                            in="SourceAlpha"
-                            type="matrix"
-                            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-                            result="hardAlpha"
-                          />
-                          <feOffset dx="0.5" dy="-0.5" />
-                          <feGaussianBlur stdDeviation="0.5" />
-                          <feComposite in2="hardAlpha" operator="out" />
-                          <feColorMatrix
-                            type="matrix"
-                            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.05 0"
-                          />
-                          <feBlend
-                            mode="normal"
-                            in2="effect1_backgroundBlur_4483_4767"
-                            result="effect2_dropShadow_4483_4767"
-                          />
-                          <feBlend
-                            mode="normal"
-                            in="SourceGraphic"
-                            in2="effect2_dropShadow_4483_4767"
-                            result="shape"
-                          />
-                        </filter>
-                      </defs>
-                    </svg>
-                  </div>
-                  26°
+                {image && (
+                  <Image
+                    src={image}
+                    alt={`이미지 ${index}`}
+                    width={200}
+                    height={100}
+                    sizes="100vw"
+                    className="w-[288px] h-[412px] rounded-xl flex justify-center items-center mx-auto"
+                  />
+                )}
+                <div className="absolute top-3 left-6 bg-white bg-opacity-50 p-1 m-1 font-[18px] rounded-lg flex flex-row gap-2 justify-center items-center">
+                  {weatherIcon && (
+                    <div className="detail-icon">
+                      <Image
+                        src={weatherIcon}
+                        alt="Weather Icon"
+                        width={21}
+                        height={16}
+                      />
+                    </div>
+                  )}
+                  {temperature ? formatTemperature(temperature) : 'N/A'}{' '}
                 </div>
               </SwiperSlide>
             ))}
@@ -428,15 +303,14 @@ function PostDetail({
                       <feColorMatrix
                         in="SourceAlpha"
                         type="matrix"
-                        values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-                        result="hardAlpha"
+                        values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0"
                       />
                       <feOffset dx="0.5" dy="-0.5" />
                       <feGaussianBlur stdDeviation="0.5" />
                       <feComposite in2="hardAlpha" operator="out" />
                       <feColorMatrix
                         type="matrix"
-                        values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.06 0"
+                        values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0"
                       />
                       <feBlend
                         mode="normal"
@@ -454,15 +328,9 @@ function PostDetail({
                 </svg>
                 <div>
                   {/* 유저 닉네임 */}
-                  {userList.map((user) => {
-                    return (
-                      <div key={user.id}>
-                        <p className="flex-grow-0 flex-shrink-0 text-lg font-medium text-left text-black">
-                          {/* 여기에 유저 닉네임 로직 넣기 */}
-                        </p>
-                      </div>
-                    );
-                  })}
+                  <p className="flex-grow-0 flex-shrink-0 text-lg font-medium text-left text-black">
+                    {DetailList?.users?.nick_name}
+                  </p>
                 </div>
               </div>
               <div className="flex justify-start items-center flex-grow-0 flex-shrink-0 gap-2">
@@ -620,17 +488,18 @@ function PostDetail({
                 modules={[Pagination]}
                 loop={true}
               >
-                {userImages.map((image, index) => (
+                {userPostImages.map((image, index) => (
                   <SwiperSlide key={index}>
                     <Image
                       src={image}
                       alt={`이미지 ${index}`}
                       width={300}
                       height={100}
+                      sizes="100vw"
                       className="h-[286px] object-cover rounded-lg"
                     />
                     <div className="absolute top-2 left-2 bg-white bg-opacity-50 p-1 m-1 text-sm rounded-lg font-bold">
-                      ☀️ 26°
+                      {temperature}
                     </div>
                   </SwiperSlide>
                 ))}
@@ -745,4 +614,5 @@ function PostDetail({
     </div>
   );
 }
+
 export default PostDetail;

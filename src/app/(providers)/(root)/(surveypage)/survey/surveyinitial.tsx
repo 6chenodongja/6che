@@ -3,11 +3,15 @@
 import React, { useState } from 'react';
 import QuestionPage from './question';
 import Image from 'next/image';
-import top from '../../../../../assets/top.png';
-import middle from '../../../../../assets/middle.png';
-import under from '../../../../../assets/under.png';
 import Header from '../../../../(providers)/(components)/Header';
 import Footer from '../../../../(providers)/(components)/Footer';
+import { Noto_Sans_KR } from 'next/font/google';
+
+// Noto Sans KR 폰트 설정
+const notoSansKR = Noto_Sans_KR({
+  subsets: ['latin'],
+  weight: ['400', '500'],
+});
 
 const SurveyLayout: React.FC = () => {
   const [showQuestionPage, setShowQuestionPage] = useState(false);
@@ -17,63 +21,88 @@ const SurveyLayout: React.FC = () => {
   };
 
   return (
-    <div className="container bg-neutral-50 flex flex-col justify-center items-center w-full min-h-screen" >
+    <div
+      className={`container bg-neutral-50 flex flex-col justify-center items-center w-full min-h-screen ${notoSansKR.className}`}
+    >
       <Header />
-      <div className="flex-grow flex flex-col items-center justify-between w-full max-w-md mx-auto"style={{ height: '667px' }}>
+      <div
+        className="flex-grow flex flex-col items-center justify-between w-full max-w-md mx-auto"
+        style={{ height: '667px' }}
+      >
         {showQuestionPage ? (
           <QuestionPage />
         ) : (
           <>
             <div className="flex flex-col items-center mt-24">
               <div className="relative">
-                <div className="absolute top-[-60px] right-[-50px]">
-                  <Image src={top} alt="Top Clothes" width={90} height={112} />
-                </div>
-                <div className="absolute top-[30px] left-[-30px]">
+                <div className="absolute top-[-68px] right-[-17px] z-10">
                   <Image
-                    src={middle}
-                    alt="Medium Clothes"
-                    width={60}
-                    height={60}
+                    src="/images/Survey/top.svg"
+                    alt="상단 옷"
+                    width={100}
+                    height={68}
                   />
                 </div>
-                <div className="absolute top-[60px] right-[-30px]">
+                <div className="absolute top-[18px] left-[-39px]">
                   <Image
-                    src={under}
-                    alt="Bottom Clothes"
-                    width={60}
+                    src="/images/Survey/middle.svg"
+                    alt="중간 옷"
+                    width={100}
                     height={60}
                   />
                 </div>
                 <div
-                  className="flex justify-center items-center gap-2 px-4 py-2 rounded-[1000px] bg-[#ffc329]/80 border border-white/50 backdrop-blur-[20px]"
+                  className="inline-flex justify-center items-center gap-2 px-4 py-2 rounded-[1000px] border-2 border-white backdrop-blur-[5px]"
                   style={{
-                    boxShadow:
-                      '0px 0px 2px 0 rgba(0,0,0,0.05), 4px 4px 20px 0 rgba(0,0,0,0.05)',
+                    background: 'var(--Yellow-500, rgba(255, 195, 41, 0.80))',
+                    boxShadow: '0px 1px 2px 0px rgba(0, 0, 0, 0.10)',
                   }}
                 >
-                  <p className="flex-grow-0 flex-shrink-0 text-[34px] text-left text-[#121212]">
+                  <p
+                    className="text-[34px] text-left text-[#121212]"
+                    style={{
+                      fontWeight: 'normal',
+                      lineHeight: '115%',
+                      letterSpacing: '-0.68px',
+                      opacity: 'var(--sds-size-stroke-border)',
+                    }}
+                  >
                     취향 코디 찾기
                   </p>
                 </div>
+                <div className="absolute top-[120px] right-[-23px]">
+                  <Image
+                    src="/images/Survey/bottom.svg"
+                    alt="하단 옷"
+                    width={155}
+                    height={100}
+                  />
+                </div>
               </div>
-              <p className="text-base text-center text-[#121212] mt-5">
-                <span className="text-base text-center text-[#121212]">
+              <p
+                className="text-base text-center text-[#121212] mt-5"
+                style={{ fontFamily: 'Noto Sans KR' }}
+              >
+                <span
+                  className="text-base text-center text-[#121212]"
+                  style={{ fontFamily: 'Noto Sans KR' }}
+                >
                   질문의 답변을 통해
                 </span>
                 <br />
-                <span className="text-base text-center text-[#121212]">
+                <span
+                  className="text-base text-center text-[#121212]"
+                  style={{ fontFamily: 'Noto Sans KR' }}
+                >
                   내 성향에 맞는 코디를 추천해드려요
                 </span>
               </p>
             </div>
             <div
-              className="flex justify-center items-center w-72 relative overflow-hidden gap-2 p-3 rounded-lg bg-[#121212] cursor-pointer hover:bg-[rgba(94,176,255,0.80)] active:bg-[rgba(88, 168, 243, 0.8)] mt-20 mb-14"
+              className="flex justify-center items-center w-[288px] py-[14px] px-[var(--sds-size-space-300)] gap-[var(--sds-size-space-200)] rounded-lg opacity-[var(--sds-size-stroke-border)] bg-[#121212] hover:bg-[rgba(94,176,255,0.80)] active:bg-[rgba(88,168,243,0.8)] mb-40 cursor-pointer"
               onClick={handleStartClick}
             >
-              <p className="flex-grow-0 flex-shrink-0 text-base font-medium text-left text-white">
-                시작하기
-              </p>
+              <p className="text-center text-white"> 시작하기</p>
             </div>
           </>
         )}
