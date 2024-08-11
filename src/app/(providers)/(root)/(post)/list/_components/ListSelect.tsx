@@ -265,7 +265,7 @@ function ListSelects({
           </div>
         )}
         {showSearchDropdown && (
-          <div className="absolute w-[310px] p-4 top-[50px] left-3.5 bg-white rounded-lg border border-opacity-50 shadow-md backdrop-blur-sm">
+          <div className="absolute w-[290px] p-4 top-[50px] left-3.5 bg-white rounded-lg border border-opacity-50 shadow-md backdrop-blur-sm">
             <div className="flex items-center justify-left mb-2">
               <svg
                 width={24}
@@ -293,9 +293,12 @@ function ListSelects({
               />
             </div>
             <div className="border-b border-black mb-2"></div>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-[6px]">
               {['#봄패션', '#스트릿패션', '#데이트', '#야외'].map((tag) => (
-                <span key={tag} className="text-[#121212]">
+                <span
+                  key={tag}
+                  className="text-[#4D4D4D] text-[12px] font-KR font-normal"
+                >
                   {tag}
                 </span>
               ))}
