@@ -1,13 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import React, {
-  useState,
-  useRef,
-  useEffect,
-  MouseEvent,
-  TouchEvent,
-} from 'react';
+import React, { useState, useRef, useEffect, MouseEvent, TouchEvent } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
@@ -88,20 +82,14 @@ const defaultImages: string[] = [
 ];
 
 const temperatureRanges: TemperatureRange[] = [
-  { min: -Infinity, label: 'coldest', display: '4° 이하' },
-  { min: -Infinity, label: 'coldest', display: '4° 이하' },
-  { min: -Infinity, label: 'coldest', display: '4° 이하' },
-  { min: -Infinity, label: 'coldest', display: '4° 이하' },
-  { min: 4, label: 'coldest', display: '5° - 8°' },
-  { min: 9, label: 'cold', display: '9° - 11°' },
-  { min: 12, label: 'chilly', display: '12° - 16°' },
-  { min: 17, label: 'cool', display: '17° - 19°' },
-  { min: 20, label: 'mild', display: '20° - 22°' },
+  { min: 28, label: 'hot', display: '28° 이상' },
   { min: 23, label: 'warm', display: '23° - 27°' },
-  { min: 28, label: 'hot', display: '28° 이상' },
-  { min: 28, label: 'hot', display: '28° 이상' },
-  { min: 28, label: 'hot', display: '28° 이상' },
-  { min: 28, label: 'hot', display: '28° 이상' },
+  { min: 20, label: 'mild', display: '20° - 22°' },
+  { min: 17, label: 'cool', display: '17° - 19°' },
+  { min: 12, label: 'chilly', display: '12° - 16°' },
+  { min: 9, label: 'cold', display: '9° - 11°' },
+  { min: 4, label: 'colder', display: '5° - 8°' },
+  { min: -Infinity, label: 'coldest', display: '4° 이하' },
 ];
 
 const ThermometerStyle: React.FC = () => {
@@ -109,31 +97,62 @@ const ThermometerStyle: React.FC = () => {
     Math.floor(temperatureRanges.length / 2),
   );
   const [currentOutfitIndex, setCurrentOutfitIndex] = useState<number>(0);
-  const sliderRef = useRef<HTMLDivElement | null>(null);
+  const [prevTemperatureIndex, setPrevTemperatureIndex] = useState<number>(temperatureIndex);
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [initialView, setInitialView] = useState<boolean>(true);
+  const [animationsEnabled, setAnimationsEnabled] = useState<boolean>(false); // 애니메이션 활성화 상태
+  const sliderRef = useRef<HTMLDivElement | null>(null);
+  const handleRef = useRef<HTMLDivElement | null>(null);
+  const textContainerRef = useRef<HTMLDivElement | null>(null);
   const router = useRouter();
 
   const handleTemperatureChange = (newIndex: number) => {
     if (newIndex >= 0 && newIndex < temperatureRanges.length) {
+      setPrevTemperatureIndex(temperatureIndex);
       setTemperatureIndex(newIndex);
       setInitialView(false);
       setCurrentOutfitIndex(0);
+      setAnimationsEnabled(true); // 핸들 이동 시 애니메이션 활성화
     }
   };
 
+  const calculatePosition = (index: number, thermometerWidth: number) => {
+    const positions = [
+      0.21, // 28° 이상
+      0.30, // 23° - 27°
+      0.40, // 20° - 22°
+      0.50, // 17° - 19°
+      0.60, // 12° - 16°
+      0.70, // 9° - 11°
+      0.75, // 5° - 8°
+      0.79, // 4° 이하
+    ];
+    return positions[index] * thermometerWidth;
+  };
+
   const handleDrag = (e: MouseEvent | TouchEvent) => {
-    if (!sliderRef.current || !isDragging) return;
+    if (!sliderRef.current || !handleRef.current || !isDragging) return;
 
     const sliderRect = sliderRef.current.getBoundingClientRect();
-    const x = 'clientX' in e ? e.clientX : e.touches[0]?.clientX;
-    if (x == null) return;
+    const handleWidth = handleRef.current.offsetWidth;
 
-    const sliderWidth = sliderRect.width;
-    const relativeX = x - sliderRect.left;
-    const percentage = Math.min(Math.max(relativeX / sliderWidth, 0.25), 0.75);
-    const newIndex = Math.round((temperatureRanges.length - 1) * percentage);
+    const thermometerPadding = 0; // 구역의 비율에 맞게 조정
+    const thermometerWidth = sliderRect.width - handleWidth - 2 * thermometerPadding;
 
+    let x =
+      'clientX' in e
+        ? e.clientX - sliderRect.left
+        : e.touches[0]?.clientX - sliderRect.left;
+
+        // x 좌표를 제한된 범위 내로 조정
+    x = Math.max(0, Math.min(x, thermometerWidth));
+
+    // 비율에 맞게 핸들의 위치 계산
+    const segmentWidth = thermometerWidth / (temperatureRanges.length - 1);
+    const newIndex = Math.round((x - thermometerPadding) / segmentWidth);
+    const left = calculatePosition(newIndex, thermometerWidth) + thermometerPadding;
+
+    handleRef.current.style.left = `${left}px`;
     handleTemperatureChange(newIndex);
   };
 
@@ -166,6 +185,42 @@ const ThermometerStyle: React.FC = () => {
     };
   }, []);
 
+  useEffect(() => {
+    // 슬라이더와 핸들이 렌더링된 후 핸들의 초기 위치를 온도에 맞춰 설정
+    if (sliderRef.current && handleRef.current) {
+      const sliderRect = sliderRef.current.getBoundingClientRect();
+      const handleWidth = handleRef.current.offsetWidth;
+
+      const thermometerPadding = 0; // 구역의 비율에 맞게 조정
+      const thermometerWidth = sliderRect.width - handleWidth - 2 * thermometerPadding;
+
+      const initialLeft = calculatePosition(temperatureIndex, thermometerWidth);
+      handleRef.current.style.left = `${initialLeft}px`;
+
+      if (initialView) {
+        handleRef.current.style.transition = 'none';
+        handleRef.current.style.left = `${(sliderRect.width - handleWidth) / 2}px`;
+      }
+    }
+  }, [temperatureIndex, initialView]);
+
+  useEffect(() => {
+    if (textContainerRef.current) {
+      const direction = prevTemperatureIndex < temperatureIndex ? 1 : -1;
+      textContainerRef.current.style.transform = `translateX(${direction * 100}%)`;
+      textContainerRef.current.style.transition = animationsEnabled ? 'transform 0.3s ease' : 'none';
+
+      const timer = setTimeout(() => {
+        if (textContainerRef.current) {
+          textContainerRef.current.style.transition = 'none';
+          textContainerRef.current.style.transform = 'translateX(0)';
+        }
+      }, 300);
+
+      return () => clearTimeout(timer);
+    }
+  }, [temperatureIndex, prevTemperatureIndex, animationsEnabled]);
+
   const getOutfitsForTemperature = (tempDisplay: string): string[] => {
     const outfitKeys = Object.keys(outfits);
     const matchedKey = outfitKeys.find((key) => key === tempDisplay);
@@ -173,7 +228,7 @@ const ThermometerStyle: React.FC = () => {
   };
 
   const currentOutfits =
-    temperatureIndex === Math.floor(temperatureRanges.length / 2) && initialView
+    initialView && temperatureIndex === Math.floor(temperatureRanges.length / 2)
       ? defaultImages
       : getOutfitsForTemperature(temperatureRanges[temperatureIndex].display);
 
@@ -188,7 +243,13 @@ const ThermometerStyle: React.FC = () => {
   return (
     <div className="w-full max-w-md mx-auto flex flex-col min-h-screen bg-[#FFFFF]">
       <div className="flex flex-col items-center mt-5 mb-8">
-        <div className="relative mb-4 mt-10" style={{ marginTop: '-40px' }}>
+        <div
+          className="relative mb-4 mt-10 temperature-display-container"
+          style={{
+            marginTop: '-40px',
+            overflow: 'hidden', // 슬라이드 애니메이션을 위한 overflow 숨김
+          }}
+        >
           <Image
             src="/images/Thermometer/temperature-box.svg"
             alt="Temperature Box"
@@ -197,15 +258,12 @@ const ThermometerStyle: React.FC = () => {
             sizes="100vw"
             priority
           />
-          {initialView ? (
-            <span className="absolute inset-0 flex items-center justify-center text-lg font-bold">
-              ?
-            </span>
-          ) : (
-            <span className="absolute inset-0 flex items-center justify-center temperature-display">
-              {temperatureRanges[temperatureIndex].display}
-            </span>
-          )}
+          <div
+            ref={textContainerRef}
+            className="absolute inset-0 flex items-center justify-center text-lg font-bold temperature-display-text"
+          >
+            {initialView ? '?' : temperatureRanges[temperatureIndex].display}
+          </div>
         </div>
 
         <div className="relative w-full grid grid-cols-2 px-[15px] py-[25px] ml-[9px]">
@@ -291,18 +349,17 @@ const ThermometerStyle: React.FC = () => {
           width={411}
           height={63}
           sizes="100vw"
-          style={{ width: 'auto', height: 'auto' }}
           priority
         />
 
         <div
-          className="absolute"
-          style={{
-            left: initialView
-              ? '50%'
-              : `${(temperatureIndex / (temperatureRanges.length - 1)) * 100}%`,
+          ref={handleRef}
+          className="absolute handle"
+          style={{            
+            left: `${(sliderRef.current?.getBoundingClientRect().width || 0) / 10}px`,
             top: '50%',
-            transform: 'translate(-50%, -50%) translateY(-10px)',
+            transform: 'translate(-0%, -50%) translateY(-10px)',
+            transition: animationsEnabled ? 'left 0.2s' : 'none', // 애니메이션 제어
           }}
         >
           <div
