@@ -10,6 +10,7 @@ import MyStyleHeader from '../myStyle/_components/MyStyleHeader';
 import { postLikedItem } from '../../../../../../types/post';
 import MyListPage from './_components/MyListPage';
 import { useCallback } from 'react';
+import MyNotStyleHeader from '../myStyle/_components/MyNotStyleHeader';
 
 const PostLike = () => {
   const [posts, setPosts] = useState<postLikedItem[]>([]);
@@ -46,7 +47,7 @@ const PostLike = () => {
       {!isLoading && posts.length === 0 ? (
         <div>
           <Header />
-          <MyStyleHeader />
+          <MyNotStyleHeader />
           <div className="mt-[60px] mr-[50px] ml-[42px]">
             <Image
               src={'/myLikePage.png'}
@@ -58,12 +59,12 @@ const PostLike = () => {
               quality={100} // 이미지 품질을 최대화
             />
           </div>
-          <div className="text-[#4D4D4D] font-KR mt-[46px] ml-[53px] mr-[52px] flex justify-center w-[215px] gap-0 whitespace-nowrap">
+          <div className="text-[#4D4D4D] font-KR mt-[46px] ml-[53px] mr-[52px] flex justify-center w-[215px] gap-0 tracking-[-1.8px]">
             아직 좋아요를 한 스타일이 없어요
           </div>
 
           <Link href={'/list'}>
-            <button className="myPage-style-button myPage-style-text flex justify-center items-center mx-auto p-3 rounded-lg mt-[111px]">
+            <button className="myPage-style-text myStyle-button flex justify-center items-center mx-auto p-3 rounded-lg mt-[50px] w-[232px]">
               스타일 보러 가기
             </button>
           </Link>

@@ -1,5 +1,4 @@
 import React, { useState, ChangeEvent } from 'react';
-
 interface ListSelectsProps {
   selectedOptions: { [key: string]: string[] };
   handleOptionClick: (option: string) => void;
@@ -9,6 +8,7 @@ interface ListSelectsProps {
   fetchUserPostDelete: () => Promise<void>;
   checkItems: string[];
   setCheckItems: React.Dispatch<React.SetStateAction<string[]>>;
+  handlePostDelete: () => Promise<void>;
 }
 
 function MyStyleFilter({
@@ -17,12 +17,12 @@ function MyStyleFilter({
   selectedTab,
   setSelectedTab,
   allCheckHandler,
-  fetchUserPostDelete,
   checkItems,
-  setCheckItems,
+  handlePostDelete,
 }: ListSelectsProps) {
   const [isFilterOn, setIsFilterOn] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   const handleFilterClick = () => {
     setIsFilterOn((prev) => !prev);
@@ -33,27 +33,20 @@ function MyStyleFilter({
     setSelectedTab(tab);
   };
 
-  const handlePostDelete = async () => {
-    await fetchUserPostDelete();
-    setCheckItems((prevCheckItems) =>
-      prevCheckItems.filter((item) => item !== item),
-    );
-  };
-
-  console.log(checkItems);
+  const clickModal = () => setShowModal(!showModal);
 
   return (
     <div className="relative z-10">
       <div className="list-header flex justify-start items-center shrink-0">
         <div className="flex justify-center items-start w-[75px] shrink-0">
           <div className="flex justify-center items-center flex-grow-0 flex-shrink-0 relative overflow-hidden px-1 py-1.5 rounded-lg]">
-            <label className="flex items-center h-[33px] px-[4px] py-[8px] gap-[6px] rounded text-[14px] font-normal leading-[14px] tracking-[-0.28px] font-KR text-black-500 w-full">
-              <input type="checkbox" className="" onChange={allCheckHandler} />
-              전체 선택
+            <label className="flex items-center h-[33px] px-[4px] py-[8px] gap-[6px] rounded text-[14px] font-normal leading-[14px] tracking-[-0.28px] font-KR text-black-500 ml-4">
+              <input type="checkbox" onChange={allCheckHandler} />
+              모두 선택
             </label>
           </div>
         </div>
-        <div className="flex justify-start items-center absolute left-[275px] top-[9px]">
+        <div className="flex justify-start items-center absolute left-[255px] top-[9px]">
           {checkItems.length === 0 ? (
             <button
               className="flex justify-center items-center flex-grow-0 flex-shrink-0 relative overflow-hidden gap-2 p-1 rounded-[1000px]"
@@ -97,8 +90,9 @@ function MyStyleFilter({
             </button>
           ) : (
             <button
-              onClick={handlePostDelete}
-              className="border text-black rounded"
+              onClick={clickModal}
+              className="rounded-lg px-[10px] py-[6px] flex justify-center items-center text-[#FFF] text-[14px] font-KR font-medium"
+              style={{ backgroundColor: 'rgba(255, 71, 50, 0.85)' }}
             >
               삭제
             </button>
@@ -248,8 +242,41 @@ function MyStyleFilter({
           </div>
         </div>
       )}
+      {showModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+          <div className="bg-white rounded-lg shadow-lg  w-[281px] h-[185px] p-[40px]">
+            <h2 className="text-[18px] font-KR font-semibold text-[#4D4D4D] tracking-[-0.36px] self-stretch text-center leading-[23.4px] gap-[4px]">
+              정말 삭제하시겠습니까?
+              <p className="text-[14px] text-[#4D4D4D] font-KR font-medium leading-[21px] tracking-[-1.2px] self-stretch whitespace-nowrap text-center mt-[4px]">
+                삭제한 스타일은 복구 할 수 없습니다
+              </p>
+            </h2>
+
+            <span className="grid grid-cols-2 gap-[10px] mt-[21px]">
+              {/* 추가 가능한 요소 버튼 */}
+              <button
+                onClick={() => setShowModal(false)}
+                className="bg-black-100 text-[#4D4D4D] font-KR rounded-lg p-[14px] font-semibold "
+              >
+                이전으로
+              </button>
+              <button
+                onClick={handlePostDelete}
+                className="text-[#FFF] rounded-lg p-[14px] font-semibold"
+                style={{
+                  backgroundColor: 'rgba(255, 71, 50, 0.85)',
+                }}
+              >
+                삭제하기
+              </button>
+
+              {/* 다른 요소 버튼들도 추가 가능 */}
+            </span>
+          </div>
+        </div>
+      )}
     </div>
   );
-}
+} //모달에 딜리트 넣기
 
 export default MyStyleFilter;

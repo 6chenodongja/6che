@@ -149,6 +149,13 @@ function MyStyleList({
     }
   };
 
+  //myStylePage 포스트 삭제
+  const handlePostDelete = async () => {
+    await fetchUserPostDelete();
+    setPosts((prev) => prev.filter((item) => !checkItems.includes(item.id)));
+    setCheckItems([]);
+  };
+
   return (
     <div className="container mx-auto bg-[#FAFAFA]">
       <Header />
@@ -158,6 +165,7 @@ function MyStyleList({
         fetchUserPostDelete={fetchUserPostDelete}
         checkItems={checkItems}
         setCheckItems={setCheckItems}
+        handlePostDelete={handlePostDelete}
       />
 
       <div className="grid grid-cols-2 gap-y-2 gap-x-2 w-[288px] mx-auto">

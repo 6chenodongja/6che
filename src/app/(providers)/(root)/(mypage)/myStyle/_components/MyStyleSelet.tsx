@@ -9,6 +9,7 @@ interface allCheckProps {
   fetchUserPostDelete: () => Promise<void>;
   checkItems: string[];
   setCheckItems: React.Dispatch<React.SetStateAction<string[]>>;
+  handlePostDelete: () => Promise<void>;
 }
 
 function MyStyleSelect({
@@ -16,6 +17,7 @@ function MyStyleSelect({
   fetchUserPostDelete,
   checkItems,
   setCheckItems,
+  handlePostDelete,
 }: allCheckProps) {
   const [posts, setPosts] = useState<PostItemType[]>([]);
   const [latest, setLatest] = useState('latest');
@@ -123,7 +125,7 @@ function MyStyleSelect({
 
   return (
     <div>
-      <div className="mt-6">
+      <div className="mt-2">
         <MyStyleFilter
           selectedOptions={selectedOptions}
           handleOptionClick={handleOptionClick}
@@ -133,6 +135,7 @@ function MyStyleSelect({
           fetchUserPostDelete={fetchUserPostDelete}
           checkItems={checkItems}
           setCheckItems={setCheckItems}
+          handlePostDelete={handlePostDelete}
         />
       </div>
 

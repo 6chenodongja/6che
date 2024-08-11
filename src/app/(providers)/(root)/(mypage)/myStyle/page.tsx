@@ -10,6 +10,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { useUserStore } from '@/zustand/store/useUserStore';
 import { Tables } from '../../../../../../types/supabase';
 import { postListLikedType } from '../../../../../../types/post';
+import MyNotStyleHeader from './_components/MyNotStyleHeader';
 
 function MyStylePage() {
   const [isLoading, setIsLoading] = useState(true);
@@ -64,7 +65,7 @@ function MyStylePage() {
       {!isLoading && posts.length === 0 ? (
         <div>
           <Header />
-          <MyStyleHeader />
+          <MyNotStyleHeader />
           <div className="mt-[60px] mr-[50px] ml-[42px]">
             <Image
               src={'/myStylePage.png'}
@@ -75,7 +76,7 @@ function MyStylePage() {
               className="h-[220px] w-[238px]"
             />
           </div>
-          <div className="text-[#4D4D4D] font-KR text-base font-normal leading-6 tracking-[0.32px] ml-[69px] mr-[68px] ">
+          <div className="text-[#4D4D4D] font-KR text-base font-medium leading-6 tracking-[-0.80px] ml-[69px] mr-[68px] ">
             아직 등록한 코디가 없어요
           </div>
           <Link href={'/postform'}>
