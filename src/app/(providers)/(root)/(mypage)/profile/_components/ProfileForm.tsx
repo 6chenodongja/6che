@@ -40,7 +40,7 @@ const ProfileForm: React.FC = () => {
     setNicknameAvailable(isAvailable);
     alert(
       isAvailable
-        ? '사용 가능한 닉네임 입니다. 다른 닉네임을 사용해 주세요'
+        ? '사용 가능한 닉네임 입니다.'
         : '이미 사용하고 있는 닉네임 입니다.',
     );
   };

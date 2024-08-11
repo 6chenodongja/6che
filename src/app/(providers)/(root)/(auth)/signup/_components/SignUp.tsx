@@ -151,8 +151,8 @@ function SingUp() {
                 value={emailDomain}
                 className="w-40 h-10 px-3 rounded-r-lg border border-gray-300"
               >
-                {emailDomains.map((domain, index) => (
-                  <option key={domain} value={index}>
+                {emailDomains.map((domain) => (
+                  <option key={domain} value={domain}>
                     {domain}
                   </option>
                 ))}

@@ -40,7 +40,7 @@ export async function updateSession(request: NextRequest) {
   } else {
     if(request.nextUrl.pathname.startsWith('/mypage')) {
       const url = request.nextUrl.clone();
-      url.pathname = '/';
+      url.pathname = '/login';
       return NextResponse.redirect(url);
     }
   }

@@ -24,7 +24,7 @@ function LoginForm() {
       return;
     }
     try {
-      const res = await axios.post('/api/auth/ema/login', {
+      const res = await axios.post('/api/auth/email/login', {
         email,
         password,
       });
