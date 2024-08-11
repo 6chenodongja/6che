@@ -1,6 +1,5 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import ListWeatherIcon from './icons/ListWeatherIcon';
 import LikeButton from './LikeButton';
 import ListNicknameIcon from './icons/ListNicknameIcon';
 import ListLiveLikedIcon from './icons/ListLiveLikedIcon';
@@ -13,6 +12,24 @@ interface PostProps {
 }
 
 function PostItem({ post, isLiked, handleLike }: PostProps) {
+  // weather에서 아이콘과 온도 분리
+  const weatherData = post.weather ? post.weather.split(' ') : [];
+  const weatherIcon = weatherData[0] || '';
+  let temperature = weatherData[1] || '';
+
+  // 온도에서 '°C' 또는 'C'를 제거하고 '°'만 남김
+  temperature = temperature.replace('°C', '°').replace('C', '°');
+
+  // 만약 temperature가 범위 형태라면 평균값 계산
+  if (temperature.includes('-')) {
+    const [minTemp, maxTemp] = temperature
+      .split('-')
+      .map((t) => parseInt(t.replace('°', '').trim(), 10));
+    temperature = `${Math.round((minTemp + maxTemp) / 2)}°`;
+  } else if (temperature && !temperature.includes('°')) {
+    temperature = `${temperature}°`;
+  }
+
   return (
     <div>
       <div key={post.id} className="relative w-[140px] object-cover">
@@ -29,10 +46,17 @@ function PostItem({ post, isLiked, handleLike }: PostProps) {
             />
           )}
           <div className="absolute top-2 left-2 list-icon-border inline-flex items-center gap-[2px] px-[4px] py-[0.5px] text-[#4D4D4D]">
-            <div className="list-icon">
-              <ListWeatherIcon />
-            </div>
-            26°
+            {weatherIcon && weatherIcon !== 'undefined' && (
+              <div className="list-icon">
+                <Image
+                  src={weatherIcon}
+                  alt="Weather Icon"
+                  width={16}
+                  height={16}
+                />
+              </div>
+            )}
+            {temperature && <span>{temperature}</span>}
           </div>
         </Link>
 

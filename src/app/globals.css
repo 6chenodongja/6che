@@ -478,11 +478,11 @@
 }
 
 /* 반응형 조정 */
-@media (min-width: 320px) and (max-width: 500px) {
+/* @media (min-width: 320px) and (max-width: 500px) {
   .container {
     width: 100%;
   }
-}
+} */
 
 /* detail 부분 */
 .deleteButton {

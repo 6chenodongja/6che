@@ -9,11 +9,9 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import Link from 'next/link';
 import { useUserStore } from '@/zustand/store/useUserStore';
-import { Tables } from '../../../../../../../types/supabase';
 import { useRouter } from 'next/navigation';
-import { createClient } from '@supabase/supabase-js';
-
-type PostDetailItem = Tables<'posts'> & { users: Tables<'users'> | null };
+import { supabase } from '@/supabase/client';
+import { PostDetailItem } from '../../../../../../../types/post';
 
 function PostDetail({ params }: { params: { id: string } }) {
   const [userComment, setUserComment] = useState<string[]>([]);
@@ -22,15 +20,12 @@ function PostDetail({ params }: { params: { id: string } }) {
   const [userLocations, setUserLocations] = useState<string[]>([]);
   const [userLiked, setUserLiked] = useState<number[]>([]);
   const [temperature, setTemperature] = useState<string | null>(null);
+  const [weatherIcon, setWeatherIcon] = useState<string | null>(null); // weatherIcon 추가
   const [modalOpen, setModalOpen] = useState<boolean>(false);
 
   const router = useRouter();
 
   const { user } = useUserStore();
-
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-  const supabase = createClient(supabaseUrl, supabaseKey);
 
   // 온도 정보만 추출하는 함수 추가
   const formatTemperature = (temperature: string) => {
@@ -50,12 +45,16 @@ function PostDetail({ params }: { params: { id: string } }) {
 
       if (error) {
         console.error(error);
-      } else if (postDetail) {
-        setPostImages(postDetail.image_url.split(','));
+      } else if (postDetail.image_url) {
+        setPostImages(postDetail.image_url?.split(','));
         setDetailList(postDetail);
-        setTemperature(postDetail.weather ?? 'N/A'); // weather 컬럼에서 온도 정보 가져오기
+
+        const [icon, temp] = postDetail.weather?.split(' ') || ['N/A', 'N/A'];
+        setWeatherIcon(icon); // 아이콘 설정
+        setTemperature(temp ?? 'N/A'); // 온도 설정
       } else {
         setPostImages([]);
+        setWeatherIcon('N/A');
         setTemperature('N/A');
       }
     };
@@ -116,7 +115,7 @@ function PostDetail({ params }: { params: { id: string } }) {
     };
 
     fetchData();
-  }, [params.id, supabase]);
+  }, [params.id]);
 
   //공유 팝업 모달
   const clickModal = () => setModalOpen(!modalOpen);
@@ -218,168 +217,31 @@ function PostDetail({ params }: { params: { id: string } }) {
           >
             {userPostImages.map((image, index) => (
               <SwiperSlide
-                key={index}
+                key={image}
                 className="w-[288px] h-[412px] object-cover"
               >
-                <Image
-                  src={image}
-                  alt={`이미지 ${index}`}
-                  width={200}
-                  height={100}
-                  sizes="100vw"
-                  className="w-[288px] h-[412px] rounded-xl flex justify-center items-center mx-auto"
-                />
+                {image && (
+                  <Image
+                    src={image}
+                    alt={`이미지 ${index}`}
+                    width={200}
+                    height={100}
+                    sizes="100vw"
+                    className="w-[288px] h-[412px] rounded-xl flex justify-center items-center mx-auto"
+                  />
+                )}
                 <div className="absolute top-3 left-6 bg-white bg-opacity-50 p-1 m-1 font-[18px] rounded-lg flex flex-row gap-2 justify-center items-center">
-                  <div className="detail-icon">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="21"
-                      height="16"
-                      viewBox="0 0 21 16"
-                      fill="none"
-                    >
-                      <g filter="url(#filter0_f_4483_4767)">
-                        <path
-                          fillRule="evenodd"
-                          clipRule="evenodd"
-                          d="M18.9763 5.93364C19.0942 5.65876 18.7487 5.44099 18.4786 5.56956C18.0835 5.75772 17.6412 5.86303 17.1744 5.86303C15.4967 5.86303 14.1367 4.50298 14.1367 2.82528C14.1367 2.35859 14.2419 1.91648 14.43 1.52139C14.5585 1.25133 14.3407 0.905834 14.0658 1.02376C12.7334 1.59549 11.8 2.91936 11.8 4.46122C11.8 6.52609 13.4739 8.2 15.5387 8.2C17.0807 8.2 18.4047 7.26642 18.9763 5.93364Z"
-                          fill="#FFC329"
-                          fillOpacity="0.8"
-                        />
-                      </g>
-                      <g filter="url(#filter1_d_4483_4767)">
-                        <path
-                          fillRule="evenodd"
-                          clipRule="evenodd"
-                          d="M18.9763 5.93364C19.0942 5.65876 18.7487 5.44099 18.4786 5.56956C18.0835 5.75772 17.6412 5.86303 17.1744 5.86303C15.4967 5.86303 14.1367 4.50298 14.1367 2.82528C14.1367 2.35859 14.2419 1.91648 14.43 1.52139C14.5585 1.25133 14.3407 0.905834 14.0658 1.02376C12.7334 1.59549 11.8 2.91936 11.8 4.46122C11.8 6.52609 13.4739 8.2 15.5387 8.2C17.0807 8.2 18.4047 7.26642 18.9763 5.93364Z"
-                          fill="#FFC329"
-                          fillOpacity="0.8"
-                          shapeRendering="crispEdges"
-                        />
-                      </g>
-                      <g filter="url(#filter2_bd_4483_4767)">
-                        <path
-                          d="M14.2353 15.4001C16.8668 15.4001 19 13.5868 19 11.3501C19 9.23574 17.0939 7.49982 14.6626 7.31614C14.1794 5.25412 12.0385 3.70007 9.47059 3.70007C6.54673 3.70007 4.17647 5.71479 4.17647 8.20007C4.17647 8.23787 4.17702 8.27556 4.17811 8.31313C2.35057 8.71229 1 10.1221 1 11.8001C1 13.7883 2.89621 15.4001 5.23529 15.4001H14.2353Z"
-                          fill="#CCCCCC"
-                          fillOpacity="0.7"
-                          shapeRendering="crispEdges"
-                        />
-                      </g>
-                      <defs>
-                        <filter
-                          id="filter0_f_4483_4767"
-                          x="10.8"
-                          y="0"
-                          width="9.19995"
-                          height="9.19995"
-                          filterUnits="userSpaceOnUse"
-                          colorInterpolationFilters="sRGB"
-                        >
-                          <feFlood
-                            floodOpacity="0"
-                            result="BackgroundImageFix"
-                          />
-                          <feBlend
-                            mode="normal"
-                            in="SourceGraphic"
-                            in2="BackgroundImageFix"
-                            result="shape"
-                          />
-                          <feGaussianBlur
-                            stdDeviation="0.5"
-                            result="effect1_foregroundBlur_4483_4767"
-                          />
-                        </filter>
-                        <filter
-                          id="filter1_d_4483_4767"
-                          x="11.3"
-                          y="0.5"
-                          width="9.19995"
-                          height="9.19995"
-                          filterUnits="userSpaceOnUse"
-                          colorInterpolationFilters="sRGB"
-                        >
-                          <feFlood
-                            floodOpacity="0"
-                            result="BackgroundImageFix"
-                          />
-                          <feColorMatrix
-                            in="SourceAlpha"
-                            type="matrix"
-                            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-                            result="hardAlpha"
-                          />
-                          <feOffset dx="0.5" dy="0.5" />
-                          <feGaussianBlur stdDeviation="0.5" />
-                          <feComposite in2="hardAlpha" operator="out" />
-                          <feColorMatrix
-                            type="matrix"
-                            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0"
-                          />
-                          <feBlend
-                            mode="normal"
-                            in2="BackgroundImageFix"
-                            result="effect1_dropShadow_4483_4767"
-                          />
-                          <feBlend
-                            mode="normal"
-                            in="SourceGraphic"
-                            in2="effect1_dropShadow_4483_4767"
-                            result="shape"
-                          />
-                        </filter>
-                        <filter
-                          id="filter2_bd_4483_4767"
-                          x="-1"
-                          y="1.70007"
-                          width="22"
-                          height="15.7"
-                          filterUnits="userSpaceOnUse"
-                          colorInterpolationFilters="sRGB"
-                        >
-                          <feFlood
-                            floodOpacity="0"
-                            result="BackgroundImageFix"
-                          />
-                          <feGaussianBlur
-                            in="BackgroundImageFix"
-                            stdDeviation="1"
-                          />
-                          <feComposite
-                            in2="SourceAlpha"
-                            operator="in"
-                            result="effect1_backgroundBlur_4483_4767"
-                          />
-                          <feColorMatrix
-                            in="SourceAlpha"
-                            type="matrix"
-                            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0"
-                            result="hardAlpha"
-                          />
-                          <feOffset dx="0.5" dy="-0.5" />
-                          <feGaussianBlur stdDeviation="0.5" />
-                          <feComposite in2="hardAlpha" operator="out" />
-                          <feColorMatrix
-                            type="matrix"
-                            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0"
-                          />
-                          <feBlend
-                            mode="normal"
-                            in2="BackgroundImageFix"
-                            result="effect2_dropShadow_4483_4767"
-                          />
-                          <feBlend
-                            mode="normal"
-                            in="SourceGraphic"
-                            in2="effect2_dropShadow_4483_4767"
-                            result="shape"
-                          />
-                        </filter>
-                      </defs>
-                    </svg>
-                  </div>
+                  {weatherIcon && (
+                    <div className="detail-icon">
+                      <Image
+                        src={weatherIcon}
+                        alt="Weather Icon"
+                        width={21}
+                        height={16}
+                      />
+                    </div>
+                  )}
                   {temperature ? formatTemperature(temperature) : 'N/A'}{' '}
-                  {/* 수정된 부분 */}
                 </div>
               </SwiperSlide>
             ))}
@@ -442,7 +304,6 @@ function PostDetail({ params }: { params: { id: string } }) {
                         in="SourceAlpha"
                         type="matrix"
                         values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0"
-                        result="hardAlpha"
                       />
                       <feOffset dx="0.5" dy="-0.5" />
                       <feGaussianBlur stdDeviation="0.5" />
