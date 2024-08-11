@@ -1,6 +1,5 @@
 'use client';
 import Image from 'next/image';
-import MyStyleHeader from './_components/MyStyleHeader';
 import Header from 'app/(providers)/(components)/Header';
 import Link from 'next/link';
 import Footer from 'app/(providers)/(components)/Footer';

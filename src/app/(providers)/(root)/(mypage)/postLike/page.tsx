@@ -7,11 +7,11 @@ import Footer from 'app/(providers)/(components)/Footer';
 import { supabase } from '@/supabase/client';
 import { useUserStore } from '@/zustand/store/useUserStore';
 import Header from 'app/(providers)/(components)/Header';
-import MyStyleHeader from '../myStyle/_components/MyStyleHeader';
 import { postLikedItem } from '../../../../../../types/post';
 import MyListPage from './_components/MyListPage';
 import { useCallback } from 'react';
 import MyNotStyleHeader from '../myStyle/_components/MyNotStyleHeader';
+import MyNotLikeHeader from './_components/MyNotLikeHeader';
 
 const PostLike = () => {
   const [posts, setPosts] = useState<postLikedItem[]>([]);
