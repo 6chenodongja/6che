@@ -16,6 +16,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Header from '../../(components)/Header';
 import Footer from '../../(components)/Footer';
 import { supabase } from '@/supabase/client';
+import BottomSheet from './components/BottomSheet'; // 은겸: BottomSheet 컴포넌트 추가
 
 // Post 타입 정의
 interface Post {
@@ -44,7 +45,7 @@ type Weather = {
 
 type WeatherData = Weather[];
 
-// 강수확률에 따른 이미지를 반환하는 함수
+// 강수확률에 따른 이미지를 반환하는 함수!
 const getPrecipitationImage = (probability: number) => {
   const precipitationValue = Math.min(Math.floor(probability / 10) * 10, 100);
   return `/images/Precipitation-probability/${precipitationValue}.svg`;
@@ -283,6 +284,9 @@ const MainPage = () => {
   const [isWeeklyWeatherVisible, setIsWeeklyWeatherVisible] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [selectedWeatherElements, setSelectedWeatherElements] = useState<
+    string[]
+  >([]); // 은겸: 선택된 날씨 요소들을 관리하는 상태 추가
 
   const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -441,6 +445,11 @@ const MainPage = () => {
   // 텍스트 색상 시간에 따라 동적으로 설정
   const isNightTime = currentHours >= 18 || currentHours < 7;
   const textColor = isNightTime ? 'text-white' : 'text-[#121212]';
+
+  // 은겸: 바텀시트에서 요소를 선택할 때 호출되는 함수 추가
+  const handleElementSelection = (elements: string[]) => {
+    setSelectedWeatherElements(elements);
+  };
 
   return (
     <div className="container bg-neutral-50 flex flex-col justify-center items-center w-full">
@@ -1014,27 +1023,11 @@ const MainPage = () => {
       <Footer />
 
       {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white p-6 rounded-lg shadow-lg">
-            <h2 className="text-lg font-semibold mb-4">날씨 요소 추가</h2>
-            <div className="grid grid-cols-2 gap-4">
-              <button
-                onClick={() => {
-                  setShowModal(false);
-                }}
-                className="p-2 bg-gray-200 rounded-md"
-              >
-                예: 자외선 지수
-              </button>
-            </div>
-            <button
-              onClick={() => setShowModal(false)}
-              className="mt-4 p-2 bg-blue-500 text-white rounded-md"
-            >
-              닫기
-            </button>
-          </div>
-        </div>
+        <BottomSheet // 은겸 : BottomSheet 컴포넌트를 사용하여 바텀시트를 추가함
+          onClose={() => setShowModal(false)}
+          onSelectElements={handleElementSelection} // 은겸 : 요소 선택 핸들러를 바텀시트에 전달함
+          selectedElements={selectedWeatherElements} // 은겸: 선택된 요소들을 전달함
+        />
       )}
     </div>
   );

@@ -1,7 +1,13 @@
 'use client';
 
 import Link from 'next/link';
-import React, { useState, useRef, useEffect, MouseEvent, TouchEvent } from 'react';
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  MouseEvent,
+  TouchEvent,
+} from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
@@ -97,7 +103,8 @@ const ThermometerStyle: React.FC = () => {
     Math.floor(temperatureRanges.length / 2),
   );
   const [currentOutfitIndex, setCurrentOutfitIndex] = useState<number>(0);
-  const [prevTemperatureIndex, setPrevTemperatureIndex] = useState<number>(temperatureIndex);
+  const [prevTemperatureIndex, setPrevTemperatureIndex] =
+    useState<number>(temperatureIndex);
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [initialView, setInitialView] = useState<boolean>(true);
   const [animationsEnabled, setAnimationsEnabled] = useState<boolean>(false); // 애니메이션 활성화 상태
@@ -119,11 +126,11 @@ const ThermometerStyle: React.FC = () => {
   const calculatePosition = (index: number, thermometerWidth: number) => {
     const positions = [
       0.21, // 28° 이상
-      0.30, // 23° - 27°
-      0.40, // 20° - 22°
-      0.50, // 17° - 19°
-      0.60, // 12° - 16°
-      0.70, // 9° - 11°
+      0.3, // 23° - 27°
+      0.4, // 20° - 22°
+      0.5, // 17° - 19°
+      0.6, // 12° - 16°
+      0.7, // 9° - 11°
       0.75, // 5° - 8°
       0.79, // 4° 이하
     ];
@@ -137,20 +144,22 @@ const ThermometerStyle: React.FC = () => {
     const handleWidth = handleRef.current.offsetWidth;
 
     const thermometerPadding = 0; // 구역의 비율에 맞게 조정
-    const thermometerWidth = sliderRect.width - handleWidth - 2 * thermometerPadding;
+    const thermometerWidth =
+      sliderRect.width - handleWidth - 2 * thermometerPadding;
 
     let x =
       'clientX' in e
         ? e.clientX - sliderRect.left
         : e.touches[0]?.clientX - sliderRect.left;
 
-        // x 좌표를 제한된 범위 내로 조정
+    // x 좌표를 제한된 범위 내로 조정
     x = Math.max(0, Math.min(x, thermometerWidth));
 
     // 비율에 맞게 핸들의 위치 계산
     const segmentWidth = thermometerWidth / (temperatureRanges.length - 1);
     const newIndex = Math.round((x - thermometerPadding) / segmentWidth);
-    const left = calculatePosition(newIndex, thermometerWidth) + thermometerPadding;
+    const left =
+      calculatePosition(newIndex, thermometerWidth) + thermometerPadding;
 
     handleRef.current.style.left = `${left}px`;
     handleTemperatureChange(newIndex);
@@ -192,7 +201,8 @@ const ThermometerStyle: React.FC = () => {
       const handleWidth = handleRef.current.offsetWidth;
 
       const thermometerPadding = 0; // 구역의 비율에 맞게 조정
-      const thermometerWidth = sliderRect.width - handleWidth - 2 * thermometerPadding;
+      const thermometerWidth =
+        sliderRect.width - handleWidth - 2 * thermometerPadding;
 
       const initialLeft = calculatePosition(temperatureIndex, thermometerWidth);
       handleRef.current.style.left = `${initialLeft}px`;
@@ -208,7 +218,9 @@ const ThermometerStyle: React.FC = () => {
     if (textContainerRef.current) {
       const direction = prevTemperatureIndex < temperatureIndex ? 1 : -1;
       textContainerRef.current.style.transform = `translateX(${direction * 100}%)`;
-      textContainerRef.current.style.transition = animationsEnabled ? 'transform 0.3s ease' : 'none';
+      textContainerRef.current.style.transition = animationsEnabled
+        ? 'transform 0.3s ease'
+        : 'none';
 
       const timer = setTimeout(() => {
         if (textContainerRef.current) {
@@ -355,7 +367,7 @@ const ThermometerStyle: React.FC = () => {
         <div
           ref={handleRef}
           className="absolute handle"
-          style={{            
+          style={{
             left: `${(sliderRef.current?.getBoundingClientRect().width || 0) / 10}px`,
             top: '50%',
             transform: 'translate(-0%, -50%) translateY(-10px)',
