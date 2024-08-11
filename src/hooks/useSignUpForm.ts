@@ -27,15 +27,15 @@ export const useSignUpForm = () => {
       if (nickname.trim() === '') {
         setError((prevState) => ({
           ...prevState,
-          nickname: '닉네임을 입력해주세요.',
+          nickname: '최대 10글자.',
         }));
         setNicknameMessage('');
         return;
       }
 
-      setIsLoading(true);
+      // setIsLoading(true);
       const isAvailable = await checkNicknameDuplication(nickname);
-      setIsLoading(false);
+      // setIsLoading(false);
 
       if (!isAvailable) {
         setError((prevState) => ({
@@ -53,7 +53,7 @@ export const useSignUpForm = () => {
         setNicknameMessage('사용 가능한 닉네임입니다.');
       }
       setIsNicknameChecked(true);
-    }, 500),
+    }, 200),
     []
   );
 
@@ -99,7 +99,7 @@ export const useSignUpForm = () => {
     }
     handleChange('email')({
       target: {
-        value: `${emailId}@${value}`,
+        value: emailId,
       },
     } as React.ChangeEvent<HTMLInputElement>);
   };

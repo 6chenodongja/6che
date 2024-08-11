@@ -19,7 +19,6 @@ function SingUp() {
     isNicknameValid,
     isNicknameChecked,
     nicknameMessage,
-    isLoading,
     setEmailId,
     setEmailDomain,
     setCustomEmailDomain,
@@ -90,33 +89,32 @@ function SingUp() {
     <main className="container flex flex-col items-center w-full py-8 px-4">
       <form onSubmit={onSubmit} className="flex flex-col">
         <h1 className="text-2xl font-bold text-center text-black mb-6">
-          이메일로 회원가입
+          회원가입
         </h1>
-        <div className="mb-4">
-          <label className="block text-lg text-black mb-2">닉네임</label>
-          <div className="flex">
+        <div className="">
+          <label className="text-lg text-black mb-2">닉네임</label>
+          <div className="flex gap-1">
             <input
               type="text"
               maxLength={10}
               onChange={handleChange('nickname')}
               value={nickname}
-              placeholder="닉네임을 입력해 주세요"
-              className={`flex-grow h-10 px-3 rounded-l-lg border ${error.nickname ? 'border-red-500' : 'border-gray-300'}`}
+              placeholder="닉네임을 입력해주세요"
+              className={`flex-grow h-12 p-4 rounded-lg border border-[#808080] `}
             />
             <button
               type="button"
               onClick={() => checkNickname(nickname)}
-              disabled={!isNicknameValid || isLoading}
-              className={`w-24 h-10 rounded-r-lg text-white ${isNicknameValid && !isLoading ? 'bg-black-300' : 'bg-black hover:bg-blue-400'}`}
+              className={`w-[54px] font-xs h-12 rounded-lg text-white ${isNicknameValid ? 'bg-black' : 'bg-black-100 text-black-300'}`}
             >
-              {isLoading ? '확인 중...' : '중복확인'}
+              {isNicknameValid ? '재확인' : '중복확인'}
             </button>
           </div>
           {error.nickname && (
             <p className="text-red-500 mt-2">{error.nickname}</p>
           )}
           {!error.nickname && isNicknameChecked && (
-            <p className="text-green-500 mt-2">{nicknameMessage}</p>
+            <p className="text-black-700 mt-2">{nicknameMessage}</p>
           )}
           {!error.nickname && !isNicknameChecked && (
             <p className="text-gray-500 mt-2">최대 10글자</p>

@@ -12,7 +12,7 @@ function LoginForm() {
   const passwordRef = useRef<HTMLInputElement>(null);
   const supabase = createClient();
   const router = useRouter();
-  const { setUser } = useUserStore();
+  const { setUser, setIsLoggedIn } = useUserStore();
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -24,7 +24,7 @@ function LoginForm() {
       return;
     }
     try {
-      const res = await axios.post('/api/auth/login', {
+      const res = await axios.post('/api/auth/ema/login', {
         email,
         password,
       });
