@@ -8,7 +8,7 @@ function LogoutButton() {
   const { clearUser } = useUserStore();
   const handleLogout = async () => {
     try {
-      const response = await fetch('/api/auth/logout', {
+      const response = await fetch('/api/auth/email/logout', {
         method: 'POST',
       });
       if (response.ok) {

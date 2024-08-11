@@ -12,7 +12,7 @@ function LoginForm() {
   const passwordRef = useRef<HTMLInputElement>(null);
   const supabase = createClient();
   const router = useRouter();
-  const { setUser, setIsLoggedIn } = useUserStore();
+  const { setUser } = useUserStore();
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
