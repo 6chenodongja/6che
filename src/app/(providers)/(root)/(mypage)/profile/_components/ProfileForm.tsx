@@ -1,14 +1,11 @@
-// src/app/(providers)/(root)/(mypage)/profile/_components/ProfileForm.tsx
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import {
-  updateUserProfile,
-  checkNicknameAvailability,
-} from '@/utils/userUtils';
 import { useUserStore } from '@/zustand/store/useUserStore';
+import { supabase } from '@/supabase/client';
+import { checkNicknameDuplication } from '@/utils/verification';
 
 const ProfileForm: React.FC = () => {
   const [nickname, setNickname] = useState('');
@@ -39,8 +36,13 @@ const ProfileForm: React.FC = () => {
   ];
 
   const handleCheckNickname = async () => {
-    const isAvailable = await checkNicknameAvailability(nickname);
+    const isAvailable = await checkNicknameDuplication(nickname);
     setNicknameAvailable(isAvailable);
+    alert(
+      isAvailable
+        ? '사용 가능한 닉네임 입니다.'
+        : '이미 사용하고 있는 닉네임 입니다.',
+    );
   };
 
   const handleNicknameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -51,6 +53,24 @@ const ProfileForm: React.FC = () => {
 
   const handleProfileIconSelect = (icon: string) => {
     setProfileIcon(icon);
+  };
+
+  const updateUserProfile = async (
+    updates: Record<string, any>,
+    userId: string,
+  ) => {
+    const { data, error } = await supabase
+      .from('users')
+      .update(updates)
+      .eq('id', userId)
+      .single();
+
+    if (error) {
+      console.error('프로필 수정이 되지 않았어요.', error);
+      return null;
+    }
+
+    return alert('프로필 또는 닉네임이 변경 되었어요.');
   };
 
   const handleSubmit = async () => {
@@ -67,14 +87,11 @@ const ProfileForm: React.FC = () => {
       nickname: updates.nick_name || user.nickname,
       profileImage: updates.avatar || user.profileImage,
     });
-    const data = await updateUserProfile(updates, user.id);
-    if (data) {
-      alert('프로필이 성공적으로 업데이트되었습니다.');
-    }
+    await updateUserProfile(updates, user.id);
   };
 
   return (
-    <main className="w-80 h-[633px] relative overflow-hidden bg-neutral-50 m-auto">
+    <main className="w-80 h-[633px] overflow-hidden bg-neutral-50">
       <section className="flex flex-col justify-start items-start w-72 absolute left-4 top-[82px] gap-1.5 py-1.5">
         <header className="flex justify-start items-center self-stretch flex-grow-0 flex-shrink-0 relative gap-2 pl-0.5">
           <h1 className="flex-grow-0 flex-shrink-0 text-sm font-medium text-left text-[#4d4d4d]">
@@ -91,17 +108,27 @@ const ProfileForm: React.FC = () => {
               placeholder="최대 8글자"
             />
           </div>
-          <div className="flex justify-center items-center self-stretch flex-grow-0 flex-shrink-0 w-14 relative overflow-hidden gap-1 p-1.5 rounded-lg bg-[#e6e6e6]/60">
+          <div className="flex justify-center items-center self-stretch flex-grow-0 flex-shrink-0 w-14 relative overflow-hidden gap-1 p-1.5 rounded-lg bg-[#e6e6e6]/60 hover:bg-[#5EB0FF]">
             <button
               onClick={handleCheckNickname}
-              className="flex-grow-0 flex-shrink-0 text-xs text-left text-[#b3b3b3]"
+              className="flex-grow-0 flex-shrink-0 text-xs text-left text-[#b3b3b3] hover:text-white"
+              disabled={!nickname}
             >
               중복확인
             </button>
           </div>
         </div>
+
         <div className="flex justify-start items-start self-stretch flex-grow-0 flex-shrink-0 relative gap-0.5">
           <p className="flex-grow w-[268px] text-xs text-left text-[#4d4d4d]">
+            <span>
+              <Image
+                src="images/ExclamationMarks/ExclamationMarks.svg"
+                alt=""
+                width={12}
+                height={12}
+              />
+            </span>
             현재 닉네임 : {user?.nickname}
           </p>
         </div>
@@ -120,7 +147,7 @@ const ProfileForm: React.FC = () => {
               alt={`profile-icon-${index}`}
               width={34}
               height={34}
-              className={`border-2 rounded-md ${profileIcon === icon ? 'border-blue-200' : 'border-transparent'}`}
+              className={`border-2 rounded-md  ${profileIcon === icon ? 'border-blue-200' : 'border-transparent'}`}
               onClick={() => handleProfileIconSelect(icon)}
             />
           ))}
@@ -128,8 +155,9 @@ const ProfileForm: React.FC = () => {
         <button
           onClick={handleSubmit}
           className="bg-black text-white p-4 w-[288px] border rounded-xl"
+          disabled={!nicknameAvailable}
         >
-          완료
+          <Link href={'/mypage'}>완료</Link>
         </button>
       </section>
       <header className="flex justify-between items-center w-80 h-14 absolute left-0 top-0 px-4 py-1.5 bg-white/50 border border-white/60 backdrop-blur-[10px]">
