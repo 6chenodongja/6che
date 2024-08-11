@@ -1,16 +1,19 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { LogoText } from '../../..//icons/LogoText';
 import { IconLogin } from '../../../icons/IconLogin';
 import LoadingScreen from '../(components)/LoadingScreen'; // LoadingScreen 컴포넌트를 불러옵니다.
+import LoginDropdown from '@/components/LoginDropdown/LoginDropdown';
+import { useUserStore } from '@/zustand/store/useUserStore';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const { user } = useUserStore();
   const router = useRouter();
 
   const handleMenuToggle = () => {
@@ -46,10 +49,19 @@ const Header = () => {
       <div onClick={handleLogoClick} className="cursor-pointer">
         <LogoText className="w-24 h-8" />
       </div>
-      <Link href="/login">
-        <IconLogin className="w-6 h-6" />
-      </Link>
-
+      <div>
+        {user ? (
+          <>
+            <LoginDropdown />
+          </>
+        ) : (
+          <>
+            <Link href={'/login'}>
+              <IconLogin className="w-6 h-6" />
+            </Link>
+          </>
+        )}
+      </div>
       <nav className={`navbar ${isMenuOpen ? 'open' : ''}`}>
         <div className="navbar-close" onClick={handleMenuToggle}>
           &times;
