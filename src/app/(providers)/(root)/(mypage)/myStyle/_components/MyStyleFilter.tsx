@@ -255,7 +255,6 @@ function MyStyleFilter({
             </h2>
 
             <span className="grid grid-cols-2 gap-[10px] mt-[21px]">
-              {/* 추가 가능한 요소 버튼 */}
               <button
                 onClick={() => setShowModal(false)}
                 className="bg-black-100 text-[#4D4D4D] font-KR rounded-lg p-[14px] font-semibold "
@@ -271,14 +270,12 @@ function MyStyleFilter({
               >
                 삭제하기
               </button>
-
-              {/* 다른 요소 버튼들도 추가 가능 */}
             </span>
           </div>
         </div>
       )}
     </div>
   );
-} //모달에 딜리트 넣기
+}
 
 export default MyStyleFilter;

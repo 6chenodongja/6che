@@ -76,11 +76,11 @@ function MyStylePage() {
               className="h-[220px] w-[238px]"
             />
           </div>
-          <div className="text-[#4D4D4D] font-KR text-base font-medium leading-6 tracking-[-0.80px] ml-[69px] mr-[68px] ">
+          <div className="text-[#4D4D4D] font-KR text-base font-medium leading-6 tracking-[-0.80px] ml-[69px] mr-[68px] mt-[35px]">
             아직 등록한 코디가 없어요
           </div>
           <Link href={'/postform'}>
-            <button className="myPage-style-text myStyle-button mx-auto h-[49px] rounded-lg mt-[26px]">
+            <button className="myPage-style-text myStyle-button mx-auto h-[49px] rounded-lg mt-[26px] hover:bg-[#5EB0FF] transition-colors duration-300">
               코디 등록하기
             </button>
           </Link>

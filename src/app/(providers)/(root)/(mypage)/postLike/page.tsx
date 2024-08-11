@@ -6,11 +6,10 @@ import Footer from 'app/(providers)/(components)/Footer';
 import { supabase } from '@/supabase/client';
 import { useUserStore } from '@/zustand/store/useUserStore';
 import Header from 'app/(providers)/(components)/Header';
-import MyStyleHeader from '../myStyle/_components/MyStyleHeader';
 import { postLikedItem } from '../../../../../../types/post';
 import MyListPage from './_components/MyListPage';
 import { useCallback } from 'react';
-import MyNotStyleHeader from '../myStyle/_components/MyNotStyleHeader';
+import MyNotLikeHeader from './_components/MyNotLikeHeader';
 
 const PostLike = () => {
   const [posts, setPosts] = useState<postLikedItem[]>([]);
@@ -47,7 +46,7 @@ const PostLike = () => {
       {!isLoading && posts.length === 0 ? (
         <div>
           <Header />
-          <MyNotStyleHeader />
+          <MyNotLikeHeader />
           <div className="mt-[60px] mr-[50px] ml-[42px]">
             <Image
               src={'/myLikePage.png'}
@@ -62,9 +61,8 @@ const PostLike = () => {
           <div className="text-[#4D4D4D] font-KR mt-[46px] ml-[53px] mr-[52px] flex justify-center w-[215px] gap-0 tracking-[-1.8px]">
             아직 좋아요를 한 스타일이 없어요
           </div>
-
           <Link href={'/list'}>
-            <button className="myPage-style-text myStyle-button flex justify-center items-center mx-auto p-3 rounded-lg mt-[50px] w-[232px]">
+            <button className="myPage-style-text myStyle-button flex justify-center items-center mx-auto p-3 rounded-lg mt-[50px] w-[232px] hover:bg-[#5EB0FF] transition-colors duration-300">
               스타일 보러 가기
             </button>
           </Link>
