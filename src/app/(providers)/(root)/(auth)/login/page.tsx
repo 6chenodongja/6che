@@ -31,9 +31,6 @@ function LoginPage() {
       <div className="bg-[#FAFAFA] w-full h-auto">
         <Header />
         <LoginForm />
-        <Link href="/find-id" passHref>
-          아이디/비밀번호 찾기
-        </Link>
         <Footer />
       </div>
     </main>

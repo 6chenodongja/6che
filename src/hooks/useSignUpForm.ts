@@ -10,7 +10,7 @@ export const useSignUpForm = () => {
   const [customEmailDomain, setCustomEmailDomain] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [passwordConfirm, setPasswordConfirm] = useState<string>('');
-  const [isOver14, setIsOver14] = useState<boolean>(false);
+  const [isOver, setIsOver] = useState<boolean>(false);
   const [error, setError] = useState<ErrorState>({
     nickname: '',
     email: '',
@@ -27,23 +27,19 @@ export const useSignUpForm = () => {
       if (nickname.trim() === '') {
         setError((prevState) => ({
           ...prevState,
-          nickname: '닉네임을 입력해주세요.',
+          nickname: '최대 10글자.',
         }));
         setNicknameMessage('');
         return;
       }
-
-      setIsLoading(true);
       const isAvailable = await checkNicknameDuplication(nickname);
-      setIsLoading(false);
-
       if (!isAvailable) {
         setError((prevState) => ({
           ...prevState,
           nickname: '사용 불가능한 닉네임입니다.',
         }));
         setIsNicknameValid(false);
-        setNicknameMessage(''); // 사용 불가능할 때 메시지 비우기
+        setNicknameMessage('');
       } else {
         setError((prevState) => ({
           ...prevState,
@@ -53,7 +49,7 @@ export const useSignUpForm = () => {
         setNicknameMessage('사용 가능한 닉네임입니다.');
       }
       setIsNicknameChecked(true);
-    }, 500),
+    }, 200),
     []
   );
 
@@ -70,7 +66,6 @@ export const useSignUpForm = () => {
         debounceCheckNickname(value);
         break;
       case 'email':
-        // '@' 문자의 입력을 막는 로직 추가
         if (!value.includes('@')) {
           setEmailId(value);
         }
@@ -100,7 +95,7 @@ export const useSignUpForm = () => {
     }
     handleChange('email')({
       target: {
-        value: `${emailId}@${value}`,
+        value: emailId,
       },
     } as React.ChangeEvent<HTMLInputElement>);
   };
@@ -109,7 +104,7 @@ export const useSignUpForm = () => {
     setIsNicknameValid(nickname.length > 0 && error.nickname === '');
   }, [nickname, error.nickname]);
 
-  const isFormValid = isNicknameChecked && error.nickname === '' && emailId !== '' && (emailDomain !== '직접 입력' || customEmailDomain !== '') && password !== '' && passwordConfirm !== '' && password === passwordConfirm && isOver14;
+  const isFormValid = isNicknameChecked && error.nickname === '' && emailId !== '' && (emailDomain !== '직접 입력' || customEmailDomain !== '') && password !== '' && passwordConfirm !== '' && password === passwordConfirm && isOver;
 
   return {
     nickname,
@@ -118,7 +113,7 @@ export const useSignUpForm = () => {
     customEmailDomain,
     password,
     passwordConfirm,
-    isOver14,
+    isOver,
     error,
     isNicknameValid,
     isNicknameChecked,
@@ -127,7 +122,7 @@ export const useSignUpForm = () => {
     setEmailId,
     setEmailDomain,
     setCustomEmailDomain,
-    setIsOver14,
+    setIsOver,
     handleChange,
     handleEmailDomainChange,
     checkNickname: debounceCheckNickname,

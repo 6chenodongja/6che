@@ -1,4 +1,5 @@
-import { supabase } from '@/utils/supabase/client';
+import { supabase } from "@/supabase/client";
+
 
 export const updateUserProfile = async (updates: Record<string, any>, userId: string) => {
   const { data, error } = await supabase

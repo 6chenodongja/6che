@@ -8,8 +8,7 @@ export async function POST(request: NextRequest) {
 
   const supabase = createClient();
   
-  // 사용자 로그인
-  const { error, data} = await supabase.auth.signInWithPassword({
+  const { error, data } = await supabase.auth.signInWithPassword({
     email,
     password,
   });
@@ -25,7 +24,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       id,
       email,
-      nickname: user_metadata.nickname,
+      nickname: user_metadata.name,
     });
   }
 
