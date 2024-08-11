@@ -32,11 +32,7 @@ export const useSignUpForm = () => {
         setNicknameMessage('');
         return;
       }
-
-      // setIsLoading(true);
       const isAvailable = await checkNicknameDuplication(nickname);
-      // setIsLoading(false);
-
       if (!isAvailable) {
         setError((prevState) => ({
           ...prevState,
