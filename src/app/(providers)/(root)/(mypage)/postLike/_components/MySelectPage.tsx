@@ -1,39 +1,34 @@
 'use client';
 import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { Tables } from '../../../../../../../types/supabase';
-import { createClient } from '@/supabase/client';
+import { supabase } from '@/supabase/client';
 import MyLikeFilter from './MyLikeFilter';
-
-type PostItem = Tables<'posts'> & { users: Tables<'users'> | null };
+import { PostItemType } from '../../../../../../../types/post';
 
 function MySelectPage() {
-  const [posts, setPosts] = useState<PostItem[]>([]);
+  const [posts, setPosts] = useState<PostItemType[]>([]);
   const [latest, setLatest] = useState('latest');
-  const [filteredPosts, setFilteredPosts] = useState<PostItem[]>([]);
+  const [filteredPosts, setFilteredPosts] = useState<PostItemType[]>([]);
   const [selectedOptions, setSelectedOptions] = useState<{
     [key: string]: string[];
   }>({});
   const [selectedTab, setSelectedTab] = useState<string>('유형');
-  const supabase = createClient();
 
   // 포스트 리스트 가져오기
-  const fetchPosts = useCallback(
-    async (order: string) => {
-      const orderColumn = order === 'latest' ? 'created_at' : 'like';
-      const { data: postList, error } = await supabase
-        .from('posts')
-        .select('*, users(*)')
-        .order(orderColumn, { ascending: false });
+  const fetchPosts = useCallback(async (order: string) => {
+    const orderColumn = order === 'latest' ? 'created_at' : 'like';
+    const { data: postList, error } = await supabase
+      .from('posts')
+      .select('*, users(*)')
+      .order(orderColumn, { ascending: false });
 
-      if (error) {
-        console.error(error);
-      } else {
-        setPosts(postList);
-        setFilteredPosts(postList);
-      }
-    },
-    [supabase],
-  );
+    if (error) {
+      console.error(error);
+    } else {
+      setPosts(postList);
+      setFilteredPosts(postList);
+    }
+  }, []);
 
   useEffect(() => {
     fetchPosts(latest);
@@ -44,7 +39,7 @@ function MySelectPage() {
   };
 
   const filterPosts = useCallback(() => {
-    let filtered: PostItem[] = [...posts];
+    let filtered: PostItemType[] = [...posts];
 
     Object.keys(selectedOptions).forEach((key) => {
       if (selectedOptions[key].length > 0) {
@@ -121,7 +116,7 @@ function MySelectPage() {
 
   return (
     <div>
-      <div className="mt-6">
+      <div className="mt-2">
         <MyLikeFilter
           handleSortChange={handleSortChange}
           selectedOptions={selectedOptions}

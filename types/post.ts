@@ -9,3 +9,4 @@ export type postLikedItemType = Tables<'post_likes'> & { users: Tables<'users'> 
 export type postLikedItem = Tables<'post_likes'> & {
     posts: (Tables<'posts'> & { users: Tables<'users'> | null }) | null;
   };
+export type PostDetailItem = Tables<'posts'> & { users: Tables<'users'> | null };
