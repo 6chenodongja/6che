@@ -52,7 +52,7 @@ function LoginForm() {
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
-          redirectTo: `${process.env.NEXT_PUBLIC_BASE_URL}/auth/callback`,
+          redirectTo: `${process.env.NEXT_PUBLIC_BASE_URL}/auth/social/callback`,
           queryParams: {
             access_type: 'offline',
             prompt: provider === 'google' ? 'consent' : 'select_account',

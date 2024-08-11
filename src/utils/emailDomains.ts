@@ -1,1 +1,1 @@
-export const emailDomains = ['naver.com', 'gmail.com', 'daum.net','kakao.com' , 'hanmail.net', 'icloud.com', 'nate.com', '직접 입력'];
+export const emailDomains = ['gmail.com', 'naver.com', 'daum.net', 'nate.com', 'icloud.com', 'hanmail.net', '직접 입력'];

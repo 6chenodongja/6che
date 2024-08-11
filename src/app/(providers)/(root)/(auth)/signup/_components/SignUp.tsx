@@ -77,7 +77,7 @@ function SingUp() {
     }
 
     if (error) {
-      return alert(error.message);
+      return alert('이미 가입한 계정의 이메일이에요');
     }
 
     alert('회원가입이 완료 되었습니다.');
@@ -151,12 +151,11 @@ function SingUp() {
                 value={emailDomain}
                 className="w-40 h-10 px-3 rounded-r-lg border border-gray-300"
               >
-                {emailDomains.map((domain) => (
-                  <option key={domain} value={domain}>
+                {emailDomains.map((domain, index) => (
+                  <option key={domain} value={index}>
                     {domain}
                   </option>
                 ))}
-                {/* <option value="직접 입력">직접 입력</option> */}
               </select>
             )}
           </div>
