@@ -3,7 +3,7 @@ import ProfileForm from './_components/ProfileForm';
 
 function ProfileFormPage() {
   return (
-    <main className="">
+    <main className="container bg-neutral-50">
       <ProfileForm />
     </main>
   );

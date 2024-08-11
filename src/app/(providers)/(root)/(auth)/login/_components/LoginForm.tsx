@@ -18,11 +18,6 @@ function LoginForm() {
     e.preventDefault();
     const email = emailRef.current?.value;
     const password = passwordRef.current?.value;
-
-    if (!email || !password) {
-      alert('모든 항목을 입력해 주세요.');
-      return;
-    }
     try {
       const res = await axios.post('/api/auth/email/login', {
         email,
@@ -67,66 +62,64 @@ function LoginForm() {
   };
 
   return (
-    <main className="flex">
-      <form onSubmit={onSubmit} className="h-auto justify-center m-auto">
-        <h1 className="text-center text-[20px] font-bold leading-[26px] tracking-[-0.4px] text-[#121212] font-['Noto_Sans_KR']">
+    <main className="mt-[64px] flex items-center space-x-2 rounded-full bg-white bg-opacity-30 py-1 px-4">
+      <form onSubmit={onSubmit} className="">
+        <h1 className="text-[20px] text-center text-[#121212] font-bold leading-[130%] tracking-[-0.4px] mb-5">
           로그인
         </h1>
         {/* 이메일 input */}
-        <div className="bg-slate-50 flex flex-col text-[#4D4D4D]">
+        <div className="mb-[6px]">
           <label
             htmlFor="email"
-            className="text-[16px] font-bold text-left  mb-1 ml-1 flex"
+            className="w-[39px] h-[21px] text-[14px] leading-[150%] ml-[2px] "
           >
-            이메일
+            아이디
           </label>
           <input
             type="email"
             id="email"
-            placeholder="이메일을 입력해 주세요."
             ref={emailRef}
-            className="flex justify-start items-center flex-grow relative gap-2 px-4 py-3 rounded-xl border-[1px] w-[288px] border-[#4D4D4D]"
+            className="w-[288px] h-[48px] border-1 border-black-500 rounded-lg hover:border-blue-500 focus:border-blue-500 focus:outline-none pl-4"
           />
         </div>
         {/* 비밀번호 input */}
         <div className="mt-2 text-[#4D4D4D]">
-          <label className="text-[16px] font-bold text-left text-black-500 mb-1 ml-1 flex">
+          <label className="w-[39px] h-[21px] text-[14px] leading-[150%] ">
             비밀번호
           </label>
           <input
             type="password"
             ref={passwordRef}
             id="password"
-            placeholder="비밀번호를 입력해 주세요."
-            className="flex justify-start items-center flex-grow relative gap-2 px-4 py-3 rounded-xl border-[1px] w-[288px] border-[#808080]"
+            className="w-[288px] h-[48px] border-1 border-black-500 rounded-lg hover:border-blue-500 focus:border-blue-500 focus:outline-none pl-4"
           />
         </div>
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 mt-[33px]">
           <div className="flex flex-row w-full">
-            <button className="bg-black text-[#fff] rounded-xl px-4 py-3 w-[288px] font-bold">
+            <button className="bg-[#121212] hover:bg-blue-400 text-[#fff] rounded-xl px-4 py-3 w-[288px] font-bold">
               로그인
             </button>
           </div>
           <Link href={'/signup'} passHref>
-            <button className="bg-white border-2 border-[#808080] text-[#4d4d4d] rounded-xl px-4 py-3 w-[288px] font-bold">
+            <button className="bg-white border-1 border-[#808080] text-[#4d4d4d] rounded-xl px-4 py-3 w-[288px] font-medium hover:bg-[#FFF7D4] hover:border-[#ffc22975] focus:bg-[#ffd75e59]">
               이메일로 회원가입
             </button>
           </Link>
         </div>
-        <div className="flex-grow-0 flex-shrink-0 text-sm text-right text-[#4d4d4d]">
+        <button className="text-sm mt-2 text-[#4d4d4d] rounded-lg hover:bg-gray-100 p-2">
           {/* 은겸 - 아이디 비밀번호 찾기 이동 기능 추가 */}
           <Link href={'/find-id'} passHref>
             아이디/비밀번호 찾기
           </Link>
-        </div>
-        <div className="flex justify-start items-center w-72 relative gap-3 m-auto">
+        </button>
+        {/* <div className="flex justify-start items-center w-72 relative gap-3 m-auto">
           <div className="flex-grow h-px bg-[#d9d9d9]" />
           <p className="flex-grow-0 flex-shrink-0 text-base text-left text-black">
             or
           </p>
           <div className="flex-grow h-px bg-[#d9d9d9]" />
-        </div>
-        <div className="flex flex-col gap-2">
+        </div> */}
+        {/* <div className="flex flex-col gap-2">
           <button
             onClick={() => handleSocialLogin('google')}
             className="bg-white border-1 hover:bg-[#ccc] hover:bg-opacity-70 border-[#121212] text-[#4D4D4D] font-bold w-[288px] h-[52px] rounded-xl"
@@ -139,7 +132,7 @@ function LoginForm() {
           >
             카카오로 시작하기
           </button>
-        </div>
+        </div> */}
       </form>
     </main>
   );

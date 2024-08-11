@@ -12,8 +12,8 @@ function SingUpDone() {
         <div className="text-center mb-[20px]">
           <div>
             <p>{user?.nickname}</p>님! 환영합니다.
+            <p>이메일로 발송된 이메일 주소 확인을 완료해주세요</p>
           </div>
-          <p>이메일로 발송된 이메일 주소 확인을 완료해주세요</p>
         </div>
         <div className="mb-5"></div>
         <div className="flex justify-center items-center">
