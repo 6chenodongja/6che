@@ -22,8 +22,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body className={inter.className}>{children}</body>
-      <KakaoScript />
+      <link rel="icon" href="/favicon.ico?v=1" />
+      <body className={inter.className}>
+        {children}
+        <KakaoScript />
+      </body>
     </html>
   );
 }
