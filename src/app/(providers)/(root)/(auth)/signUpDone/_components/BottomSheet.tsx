@@ -44,7 +44,7 @@ const BottomSheet = () => {
       .update({ avatar: profileImage })
       .eq('id', userId)
       .single();
-    console.log('확인용', data);
+
     if (error) {
       console.error('선택한 프로필이 수정되지 않았어요.', error);
       return;
