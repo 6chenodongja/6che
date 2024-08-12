@@ -380,7 +380,7 @@ const MainPage = () => {
     [updateWeatherData],
   );
 
-  // 초기 로드 시 날씨 데이터를 가져옴
+  // 초기 로드 시 날씨 데이터를 가져옴!
   useEffect(() => {
     fetchWeatherData();
   }, [fetchWeatherData]);
