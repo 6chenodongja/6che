@@ -20,6 +20,7 @@ const Header = () => {
     setIsMenuOpen(!isMenuOpen);
   };
   const supabase = createBrowserSupabaseClient();
+
   useEffect(() => {
     const getUser = async () => {
       const {

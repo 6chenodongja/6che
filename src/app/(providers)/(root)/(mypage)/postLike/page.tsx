@@ -11,7 +11,6 @@ import { postLikedItem } from '../../../../../../types/post';
 import MyListPage from './_components/MyListPage';
 import { useCallback } from 'react';
 import MyNotStyleHeader from '../myStyle/_components/MyNotStyleHeader';
-import MyNotLikeHeader from './_components/MyNotLikeHeader';
 
 const PostLike = () => {
   const [posts, setPosts] = useState<postLikedItem[]>([]);
