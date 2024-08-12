@@ -24,7 +24,15 @@ function LoginForm() {
         password,
       });
       if (res.data) {
+        setUser({
+          id: res.data.id,
+          nickname: res.data.nickname,
+          email: res.data.email,
+          provider: '',
+          profileImage: res.data.avatar,
+        });
         setIsLoggedIn(true);
+        window.location.href = '/';
       } else {
         alert('로그인 실패');
       }
@@ -33,39 +41,7 @@ function LoginForm() {
       alert('아이디 또는 비밀번호는 다시 입력해주세요!');
     }
   };
-  // useEffect(() => {
-  //   const getUser = async () => {
-  //     const {
-  //       data: { user },
-  //     } = await supabase.auth.getUser();
 
-  //     if (!user) return;
-
-  //     const { data, error } = await supabase
-  //       .from('users')
-  //       .select()
-  //       .eq('id', user.id)
-  //       .single();
-
-  //     if (error) {
-  //       console.error('유저 데이터 받아오기 실패:', error);
-  //       return;
-  //     }
-
-  //     setUser({
-  //       id: user.id,
-  //       nickname: data.nick_name || '',
-  //       email: data.email,
-  //       provider: user.app_metadata.provider || '',
-  //       profileImage: data.avatar || '',
-  //     });
-  //     router.replace('/');
-  //   };
-
-  //   if (isLoggedIn) {
-  //     getUser();
-  //   }
-  // }, [isLoggedIn]);
   const handleSocialLogin = async (provider: 'google' | 'kakao') => {
     try {
       const { data, error } = await supabase.auth.signInWithOAuth({

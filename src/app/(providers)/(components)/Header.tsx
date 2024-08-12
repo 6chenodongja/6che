@@ -14,12 +14,41 @@ import { createClient } from '@/supabase/client';
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const { user, isLoggedIn } = useUserStore();
+  const { user, setUser, isLoggedIn } = useUserStore();
   const router = useRouter();
 
   const handleMenuToggle = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+
+  useEffect(() => {
+    const getUser = async () => {
+      const response = await fetch('/api/auth/user');
+      const user = await response.json();
+      if (!user) return;
+      console.log({ user });
+      const { data, error } = await createClient()
+        .from('users')
+        .select('*')
+        .eq('id', user.id)
+        .single();
+
+      if (error) {
+        console.error('유저 데이터 받아오기 실패:', error);
+        return;
+      }
+
+      setUser({
+        id: user.id,
+        nickname: data.nick_name || '',
+        email: data.email,
+        provider: user.app_metadata.provider || '',
+        profileImage: data.avatar || '',
+      });
+    };
+
+    getUser();
+  }, [setUser]);
 
   const handleLogoClick = () => {
     // 메인화면에서 로고 클릭 시 새로고침
