@@ -43,18 +43,17 @@ const Header = () => {
 
   return (
     <header className="w-full max-w-[320px] bg-white shadow-md py-4 flex justify-between items-center px-4 fixed top-0 z-50 h-[60px]">
-      <div className="w-1/3 flex justify-start">
+      <div className="flex-1 flex justify-start">
         <button title="button" onClick={handleMenuToggle}>
           <Image src="/images/menu.png" alt="메뉴" width={24} height={24} />
         </button>
       </div>
-      <div
-        className="w-1/3 flex justify-center cursor-pointer" // 여기 cursor-pointer 클래스 추가
-        onClick={handleLogoClick}
-      >
-        <LogoText className="w-24 h-8" />
+      <div className="flex-1 flex justify-center">
+        <div className="cursor-pointer" onClick={handleLogoClick}>
+          <LogoText className="w-24 h-8" />
+        </div>
       </div>
-      <div className="w-1/3 flex justify-end">
+      <div className="flex-1 flex justify-end">
         {user ? (
           <>
             <LoginDropdown />
