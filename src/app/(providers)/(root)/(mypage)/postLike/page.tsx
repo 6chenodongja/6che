@@ -25,7 +25,6 @@ const PostLike = () => {
         .from('post_likes')
         .select('*, posts(*, users(*)) ')
         .eq('user_id', user?.id);
-      console.log(data);
       if (!data) {
         return;
       }

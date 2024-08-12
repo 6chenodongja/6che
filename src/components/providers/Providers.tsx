@@ -10,8 +10,8 @@ const Providers = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     const getUser = async () => {
       const {
-        data: { session },
-      } = await supabase.auth.getSession();
+        data: { user },
+      } = await supabase.auth.getUser();
 
       if (!user) return;
 
@@ -30,7 +30,7 @@ const Providers = ({ children }: { children: React.ReactNode }) => {
         id: user.id,
         nickname: data.nick_name || '',
         email: data.email,
-        provider: '',
+        provider: user.app_metadata.provider || '',
         profileImage: data.avatar || '',
       });
     };
