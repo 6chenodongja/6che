@@ -55,32 +55,32 @@ function LoginDropdown() {
                       <span className="text-black-600 text-[16px]">님</span>
                     </p>
                   </li>
-                  <li className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-xl">
+                  <li className="flex items-center px-4 py-2 text-sm text-[#4d4d4d] hover:bg-gray-100 rounded-xl">
                     <Link href={'/mypage'} className="flex">
                       <Image
                         src="/images/auth/setting.svg"
                         alt="설정 아이콘"
-                        width={16}
-                        height={15}
-                        className="mr-1"
+                        width={20}
+                        height={20}
+                        className="mr-2"
                       />
                       마이페이지
                     </Link>
                   </li>
-                  <li className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-xl">
+                  <li className="flex items-center px-4 py-2 text-sm text-[#4d4d4d] hover:bg-gray-100 rounded-xl">
                     <Link href={'/postLike'} className="flex">
                       <Image
                         src="/images/auth/blackHeart.svg"
                         alt="좋아요 아이콘"
-                        width={16}
-                        height={14}
-                        className="mr-1"
+                        width={20}
+                        height={20}
+                        className="mr-2"
                       />
                       좋아요
                     </Link>
                   </li>
                   <li className="flex justify-center items-center">
-                    <LogoutButton />
+                    <LogoutButton className="w-[74px] h-[28px] font-[400] text-[12px] leading-[15.6px] text-[#4d4d4d] tracking-[-0.02em] hover:bg-gray-100 rounded-lg" />
                   </li>
                 </ul>
               </div>

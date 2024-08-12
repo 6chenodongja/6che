@@ -63,13 +63,12 @@ function SingUp() {
       options: {
         data: {
           name: nickname,
-          avatar: '/images/Weather/sun.svg',
         },
       },
     });
     if (data.user) {
       setUser({
-        id: '',
+        id: data.user.id,
         nickname: data.user.user_metadata.name,
         email: '',
         provider: '',
@@ -113,10 +112,10 @@ function SingUp() {
             </button> */}
           </div>
           {error.nickname && (
-            <p className="text-red-950 mt-2">{error.nickname}</p>
+            <p className="text-red-500 mt-2">{error.nickname}</p>
           )}
           {!error.nickname && isNicknameChecked && (
-            <p className="text-red-950 mt-2">{nicknameMessage}</p>
+            <p className="red-500 mt-2">{nicknameMessage}</p>
           )}
           {!error.nickname && !isNicknameChecked && (
             <p className="text-black-700 mt-[7px] text-[12px] flex">

@@ -6,13 +6,14 @@ import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import React, { useRef } from 'react';
 import Image from 'next/image';
+import { useUserStore } from '@/zustand/store/useUserStore';
 
 function LoginForm() {
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const supabase = createClient();
   const router = useRouter();
-
+  const { setIsLoggedIn } = useUserStore();
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const email = emailRef.current?.value;
@@ -23,6 +24,7 @@ function LoginForm() {
         password,
       });
       if (res.data) {
+        setIsLoggedIn(true);
         router.replace('/');
       } else {
         alert('로그인 실패');
@@ -53,7 +55,7 @@ function LoginForm() {
   };
 
   return (
-    <main className="flex items-center space-x-2 rounded-full bg-white bg-opacity-30 py-1 px-4">
+    <main className="flex items-center space-x-2 rounded-full  py-1 px-4">
       <form onSubmit={onSubmit} className="mt-[64px] h-[568px]">
         <h1 className="text-[20px] text-center text-[#121212] font-bold leading-[130%] tracking-[-0.4px] mb-5">
           로그인

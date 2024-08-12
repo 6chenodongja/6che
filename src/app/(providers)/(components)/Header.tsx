@@ -14,7 +14,7 @@ import { createBrowserSupabaseClient } from '@/supabase/client';
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const { user, setUser } = useUserStore();
+  const { user, setUser, isLoggedIn } = useUserStore();
   const router = useRouter();
   const handleMenuToggle = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -84,7 +84,7 @@ const Header = () => {
         </div>
       </div>
       <div className="flex-1 flex justify-end">
-        {user ? (
+        {isLoggedIn && user ? (
           <>
             <LoginDropdown />
           </>

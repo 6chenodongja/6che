@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { debounce } from 'lodash';
 import { useUserStore } from '@/zustand/store/useUserStore';
 import { supabase } from '@/supabase/client';
 import { checkNicknameDuplication } from '@/utils/verification';
@@ -35,19 +36,23 @@ const ProfileForm: React.FC = () => {
     '/images/Weather/rain.svg',
   ];
 
-  const handleCheckNickname = async () => {
-    const isAvailable = await checkNicknameDuplication(nickname);
-    setNicknameAvailable(isAvailable);
-    alert(
-      isAvailable
-        ? '사용 가능한 닉네임 입니다.'
-        : '이미 사용하고 있는 닉네임 입니다.',
-    );
-  };
+  const debounceCheckNickname = useCallback(
+    debounce(async (nickname: string) => {
+      if (nickname.trim() === '') {
+        setNicknameAvailable(true);
+        return;
+      }
+      const isAvailable = await checkNicknameDuplication(nickname);
+      setNicknameAvailable(isAvailable);
+    }, 200),
+    [],
+  );
 
   const handleNicknameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.value.length <= 8) {
-      setNickname(e.target.value);
+    const newNickname = e.target.value;
+    if (newNickname.length <= 8) {
+      setNickname(newNickname);
+      debounceCheckNickname(newNickname);
     }
   };
 
@@ -94,7 +99,7 @@ const ProfileForm: React.FC = () => {
     <main className="">
       <section className="flex flex-col justify-start items-start w-72 gap-1.5 py-1.5">
         <header className="flex justify-between items-center w-80 h-14 px-4 py-1.5 bg-white/50 shadow-xl">
-          <h1 className="flex-grow-0 flex-shrink-0 text-base font-black text-left text-black text-[16px] leading-[20.8px] tracking-[-0.02em] font-noto-sans-kr">
+          <h1 className="flex-grow-0 flex-shrink-0 font-black text-left text-black text-[16px] leading-[20.8px] tracking-[-0.02em]">
             닉네임 / 프로필 수정
           </h1>
           <div className="">
@@ -115,25 +120,21 @@ const ProfileForm: React.FC = () => {
               </h1>
             </header>
             <div className="flex justify-start items-start self-stretch flex-grow-0 flex-shrink-0 gap-1">
-              <div className="flex justify-start items-center flex-grow overflow-hidden gap-2 px-4 py-3 rounded-lg bg-white/50 border border-[#808080]">
+              <div className="flex justify-start items-center flex-grow overflow-hidden rounded-lg bg-white/50 border border-[#808080]">
                 <input
                   type="text"
                   value={nickname}
                   onChange={handleNicknameChange}
-                  className="flex-grow w-[196px] text-base text-left text-[#b3b3b3]"
+                  className="flex-grow w-[288px] h-[48px] text-left text-[#b3b3b3] pl-3"
                   placeholder="최대 8글자"
                 />
               </div>
-              <div className="flex justify-center items-center self-stretch flex-grow-0 flex-shrink-0 w-14 overflow-hidden gap-1 p-1.5 rounded-lg bg-[#e6e6e6]/60 hover:bg-[#5EB0FF]">
-                <button
-                  onClick={handleCheckNickname}
-                  className="flex-grow-0 flex-shrink-0 text-xs text-left text-[#b3b3b3] hover:text-white"
-                  disabled={!nickname}
-                >
-                  중복확인
-                </button>
-              </div>
             </div>
+            {!nicknameAvailable && nickname && (
+              <p className="text-red-500 mt-2">
+                이미 사용하고 있는 닉네임입니다.
+              </p>
+            )}
           </div>
         </div>
 

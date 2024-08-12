@@ -10,17 +10,22 @@ import Modal from '@/components/Modal/Modal';
 import LogoutButton from '@/components/LogoutButton/LogoutButton';
 
 function MyPageContent() {
-  const { user } = useUserStore();
+  const { user, clearUser } = useUserStore();
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const notify = () => {
+    alert('준비 중인 서비스 입니다!');
+  };
   const handlerDelete = async () => {
     try {
       const res = await axios.delete('/api/auth/deletUserId', {
         data: { userId: user?.id },
       });
-      alert('회원 탈퇴 성공 하셨습니다.');
-      router.replace('/');
+      if (res.data) {
+        clearUser();
+        alert('회원 탈퇴 성공 하셨습니다.');
+        router.replace('/');
+      }
     } catch (error) {
       console.error('회원탈퇴 실패:', error);
       alert('회원 탈퇴가 실패 되었어요.');
@@ -38,13 +43,15 @@ function MyPageContent() {
         <div className="flex flex-col justify-start items-start self-stretch flex-grow-0 flex-shrink-0 gap-3 px-4 py-5 rounded-[14px] bg-white">
           <div className="flex justify-between items-center self-stretch flex-grow-0 flex-shrink-0 pb-2">
             <div className="flex justify-start items-center flex-grow-0 flex-shrink-0 w-[32px] h-[32px] gap-2">
-              <Image
-                src={user?.profileImage || '/images/Weather/sun.svg'}
-                alt="profile-icon"
-                width={24}
-                height={24}
-                className="flex-grow-0 flex-shrink-0 w-8 h-8 rounded-lg shadow-[0_0_4px_0_rgba(18,18,18,0.1)]"
-              />
+              {user?.profileImage && (
+                <Image
+                  src={user.profileImage}
+                  alt="profile-icon"
+                  width={24}
+                  height={24}
+                  className="flex-grow-0 flex-shrink-0 w-8 h-8 rounded-lg shadow-[0_0_4px_0_rgba(18,18,18,0.1)]"
+                />
+              )}
               <div className="flex justify-start items-center self-stretch flex-grow-0 flex-shrink-0 gap-0.5">
                 <p className="flex-grow-0 flex-shrink-0 text-lg font-medium text-left text-[#121212]">
                   {user?.nickname}
@@ -109,7 +116,8 @@ function MyPageContent() {
           </div>
           <nav className="flex flex-col justify-start items-start self-stretch flex-grow-0 flex-shrink-0 gap-1">
             <Link
-              href={'/ResetPasswordPage'}
+              href={'/mypage'}
+              onClick={notify}
               className="flex justify-between items-center self-stretch flex-grow-0 flex-shrink-0 px-1.5 py-2.5 rounded-lg bg-white hover:bg-gray-200/75"
             >
               <p className="flex-grow-0 flex-shrink-0 text-sm text-left text-[#4d4d4d] focus:text-blue-400">
@@ -129,7 +137,7 @@ function MyPageContent() {
                 className="flex justify-between items-center self-stretch flex-grow-0 flex-shrink-0 hover:bg-gray-200/75 px-1.5 py-2.5 rounded-lg"
               >
                 <p className="flex-grow-0 flex-shrink-0 text-sm text-left text-[#4d4d4d]">
-                  <LogoutButton />
+                  <LogoutButton className="" />
                 </p>
                 <Image
                   src="/images/Thermometer/arrow_right.svg"
