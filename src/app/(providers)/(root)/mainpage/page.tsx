@@ -552,22 +552,20 @@ const MainPage = () => {
             style={{ top: '-15px' }}
           >
             <div
-              className={`absolute top-0 left-0 ${textColor} text-[63.6px] font-[400] tracking-[0] leading-[63.6px] whitespace-nowrap z-10`}
+              className={`absolute top-0 left-0 ${textColor} flex items-start`}
             >
-              {weather && weather.Temperature && weather.Temperature.Metric ? (
-                <>
-                  {Math.round(weather.Temperature.Metric.Value)}
-                  <span
-                    style={{
-                      position: 'relative',
-                      top: '-15px', // ° 기호를 위로 올리기 위해 top 속성 사용
-                    }}
-                  >
-                    °
-                  </span>
-                </>
-              ) : (
-                'N/A'
+              <span className="text-[63.6px] font-[400] leading-[63.6px] tracking-[0] whitespace-nowrap">
+                {weather && weather.Temperature && weather.Temperature.Metric
+                  ? Math.round(weather.Temperature.Metric.Value)
+                  : 'N/A'}
+              </span>
+              {weather && weather.Temperature && weather.Temperature.Metric && (
+                <span
+                  className="text-[63.6px] font-[400] leading-[63.6px] tracking-[0] whitespace-nowrap"
+                  style={{ marginTop: '-16px', marginLeft: '2px' }} // ° 기호 위치 조정
+                >
+                  °
+                </span>
               )}
             </div>
           </div>
@@ -725,7 +723,7 @@ const MainPage = () => {
                               <div className="w-3 h-3 relative" />
                             </div>
                           </div>
-                          <div className="text-black text-sm font-normal font-['Varela'] leading-[18.20px]">
+                          <div className=" text-black text-sm font-normal font-varela leading-[18.20px]">
                             {postTemperature}°
                           </div>
                         </div>
