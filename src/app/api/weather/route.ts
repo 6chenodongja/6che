@@ -84,7 +84,7 @@ async function getWeather(locationKey: string) {
 
 async function getWeeklyWeather(locationKey: string) {
     try {
-        // const apiKey = 'U8AuE7Glix0G2AZ76oRKO1yPSW0gg5WR'; // AccuWeather API 키
+        const apiKey = 'U8AuE7Glix0G2AZ76oRKO1yPSW0gg5WR'; // AccuWeather API 키
 
         const weeklyWeatherResponse = await axios.get(
             `https://dataservice.accuweather.com/forecasts/v1/daily/5day/${locationKey}`,
