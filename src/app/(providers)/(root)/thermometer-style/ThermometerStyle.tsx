@@ -11,8 +11,9 @@ import React, {
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
-interface OutfitImages {
-  [key: string]: string[];
+interface Outfit {
+  imageSrc: string;
+  label: string;
 }
 
 interface TemperatureRange {
@@ -21,62 +22,56 @@ interface TemperatureRange {
   display: string;
 }
 
-const outfits: OutfitImages = {
+const outfits: { [key: string]: Outfit[] } = {
   '28° 이상': [
-    '/images/Weather2/sleeveless.svg',
-    '/images/Weather2/short_sleeve_t_shirt.svg',
-    '/images/Weather2/shorts.svg',
-    '/images/Weather2/short_skirt.svg',
-    '/images/Weather2/linen_clothes.svg',
-    '/images/Weather2/Box1.svg',
-    '/images/Weather2/Box2.svg',
-    '/images/Weather2/Box3.svg',
+    { imageSrc: '/images/Weather2/sleeveless.svg', label: '민소매' },
+    { imageSrc: '/images/Weather2/short_sleeve_t-shirt.svg', label: '반팔티' },
+    { imageSrc: '/images/Weather2/shorts.svg', label: '반바지' },
+    { imageSrc: '/images/Weather2/short_skirt.svg', label: '짧은 치마' },
+    { imageSrc: '/images/Weather2/linen.svg', label: '린넨 옷' },
   ],
   '23° - 27°': [
-    '/images/Weather2/short_sleeve_t_shirt.svg',
-    '/images/Weather2/shorts.svg',
-    '/images/Weather2/thin_shirt.svg',
-    '/images/Weather2/cotton_pants.svg',
+    { imageSrc: '/images/Weather2/short_sleeve_t-shirt.svg', label: '반팔티' },
+    { imageSrc: '/images/Weather2/shorts.svg', label: '반바지' },
+    { imageSrc: '/images/Weather2/thin_shirt.svg', label: '얇은 셔츠' },
+    { imageSrc: '/images/Weather2/cotton_pants.svg', label: '면바지' },
   ],
   '20° - 22°': [
-    '/images/Weather2/Long_sleeve_t_shirt.svg',
-    '/images/Weather2/blouse.svg',
-    '/images/Weather2/slacks.svg',
-    '/images/Weather2/cotton_pants.svg',
+    { imageSrc: '/images/Weather2/long_sleeve_tee.svg', label: '긴팔 티' },
+    { imageSrc: '/images/Weather2/blouse.svg', label: '블라우스' },
+    { imageSrc: '/images/Weather2/slacks.svg', label: '슬랙스' },
+    { imageSrc: '/images/Weather2/cotton_pants.svg', label: '면바지' },
   ],
   '17° - 19°': [
-    '/images/Weather2/Cardigan.svg',
-    '/images/Weather2/man_to_man.svg',
-    '/images/Weather2/Hood.svg',
-    '/images/Weather2/hose.svg',
+    { imageSrc: '/images/Weather2/cardigan.svg', label: '가디건' },
+    { imageSrc: '/images/Weather2/man_to_man.svg', label: '맨투맨' },
+    { imageSrc: '/images/Weather2/hood.svg', label: '후드' },
+    { imageSrc: '/images/Weather2/hose.svg', label: '긴 바지' },
   ],
   '12° - 16°': [
-    '/images/Weather2/Cardigan.svg',
-    '/images/Weather2/knit.svg',
-    '/images/Weather2/jacket.svg',
-    '/images/Weather2/denim_jacket.svg',
-    '/images/Weather2/jeans.svg',
-    '/images/Weather2/Box1.svg',
-    '/images/Weather2/Box2.svg',
-    '/images/Weather2/Box3.svg',
+    { imageSrc: '/images/Weather2/cardigan.svg', label: '가디건' },
+    { imageSrc: '/images/Weather2/knit.svg', label: '니트' },
+    { imageSrc: '/images/Weather2/jacket.svg', label: '자켓' },
+    { imageSrc: '/images/Weather2/denim_jacket.svg', label: '청자켓' },
+    { imageSrc: '/images/Weather2/jeans.svg', label: '청바지' },
   ],
   '9° - 11°': [
-    '/images/Weather2/jumper.svg',
-    '/images/Weather2/nocturnal.svg',
-    '/images/Weather2/trench_coat.svg',
-    '/images/Weather2/brushed_pants.svg',
+    { imageSrc: '/images/Weather2/jumper.svg', label: '점퍼' },
+    { imageSrc: '/images/Weather2/nocturnal.svg', label: '야상' },
+    { imageSrc: '/images/Weather2/trench_coat.svg', label: '트렌치코트' },
+    { imageSrc: '/images/Weather2/brushed_pants.svg', label: '기모바지' },
   ],
   '5° - 8°': [
-    '/images/Weather2/wool_coat.svg',
-    '/images/Weather2/heattech.svg',
-    '/images/Weather2/leather_clothes.svg',
-    '/images/Weather2/brushed.svg',
+    { imageSrc: '/images/Weather2/wool_coat.svg', label: '울 코트' },
+    { imageSrc: '/images/Weather2/heattech.svg', label: '히트텍' },
+    { imageSrc: '/images/Weather2/leather_clothes.svg', label: '가죽 옷' },
+    { imageSrc: '/images/Weather2/brushed.svg', label: '기모' },
   ],
   '4° 이하': [
-    '/images/Weather2/padding.svg',
-    '/images/Weather2/thick_coat.svg',
-    '/images/Weather2/muffler.svg',
-    '/images/Weather2/Gloves.svg',
+    { imageSrc: '/images/Weather2/padding.svg', label: '패딩' },
+    { imageSrc: '/images/Weather2/thick_coat.svg', label: '두꺼운 코트' },
+    { imageSrc: '/images/Weather2/muffler.svg', label: '머플러' },
+    { imageSrc: '/images/Weather2/gloves.svg', label: '장갑' },
   ],
 };
 
@@ -107,7 +102,7 @@ const ThermometerStyle: React.FC = () => {
     useState<number>(temperatureIndex);
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [initialView, setInitialView] = useState<boolean>(true);
-  const [animationsEnabled, setAnimationsEnabled] = useState<boolean>(false); // 애니메이션 활성화 상태
+  const [animationsEnabled, setAnimationsEnabled] = useState<boolean>(false);
   const sliderRef = useRef<HTMLDivElement | null>(null);
   const handleRef = useRef<HTMLDivElement | null>(null);
   const textContainerRef = useRef<HTMLDivElement | null>(null);
@@ -119,7 +114,7 @@ const ThermometerStyle: React.FC = () => {
       setTemperatureIndex(newIndex);
       setInitialView(false);
       setCurrentOutfitIndex(0);
-      setAnimationsEnabled(true); // 핸들 이동 시 애니메이션 활성화
+      setAnimationsEnabled(true);
     }
   };
 
@@ -143,7 +138,7 @@ const ThermometerStyle: React.FC = () => {
     const sliderRect = sliderRef.current.getBoundingClientRect();
     const handleWidth = handleRef.current.offsetWidth;
 
-    const thermometerPadding = 0; // 구역의 비율에 맞게 조정
+    const thermometerPadding = 0;
     const thermometerWidth =
       sliderRect.width - handleWidth - 2 * thermometerPadding;
 
@@ -152,10 +147,8 @@ const ThermometerStyle: React.FC = () => {
         ? e.clientX - sliderRect.left
         : e.touches[0]?.clientX - sliderRect.left;
 
-    // x 좌표를 제한된 범위 내로 조정
     x = Math.max(0, Math.min(x, thermometerWidth));
 
-    // 비율에 맞게 핸들의 위치 계산
     const segmentWidth = thermometerWidth / (temperatureRanges.length - 1);
     const newIndex = Math.round((x - thermometerPadding) / segmentWidth);
     const left =
@@ -195,12 +188,11 @@ const ThermometerStyle: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    // 슬라이더와 핸들이 렌더링된 후 핸들의 초기 위치를 온도에 맞춰 설정
     if (sliderRef.current && handleRef.current) {
       const sliderRect = sliderRef.current.getBoundingClientRect();
       const handleWidth = handleRef.current.offsetWidth;
 
-      const thermometerPadding = 0; // 구역의 비율에 맞게 조정
+      const thermometerPadding = 0;
       const thermometerWidth =
         sliderRect.width - handleWidth - 2 * thermometerPadding;
 
@@ -233,15 +225,14 @@ const ThermometerStyle: React.FC = () => {
     }
   }, [temperatureIndex, prevTemperatureIndex, animationsEnabled]);
 
-  const getOutfitsForTemperature = (tempDisplay: string): string[] => {
-    const outfitKeys = Object.keys(outfits);
-    const matchedKey = outfitKeys.find((key) => key === tempDisplay);
+  const getOutfitsForTemperature = (tempDisplay: string): Outfit[] => {
+    const matchedKey = Object.keys(outfits).find((key) => key === tempDisplay);
     return matchedKey ? outfits[matchedKey] : [];
   };
 
   const currentOutfits =
     initialView && temperatureIndex === Math.floor(temperatureRanges.length / 2)
-      ? defaultImages
+      ? defaultImages.map((src) => ({ imageSrc: src, label: '' }))
       : getOutfitsForTemperature(temperatureRanges[temperatureIndex].display);
 
   const handleNext = () => {
@@ -259,7 +250,7 @@ const ThermometerStyle: React.FC = () => {
           className="relative mb-4 mt-10 temperature-display-container"
           style={{
             marginTop: '-40px',
-            overflow: 'hidden', // 슬라이드 애니메이션을 위한 overflow 숨김
+            overflow: 'hidden',
           }}
         >
           <Image
@@ -278,22 +269,44 @@ const ThermometerStyle: React.FC = () => {
           </div>
         </div>
 
-        <div className="relative w-full grid grid-cols-2 px-[15px] py-[25px] ml-[9px]">
+        <div className="relative w-full grid grid-cols-2 gap-[8px] px-[40px] py-[25px]">
           {currentOutfits
             .slice(currentOutfitIndex, currentOutfitIndex + 4)
-            .map((src: string, index: number) => (
+            .map((outfit, index) => (
               <div
                 key={index}
-                className={`relative ${
-                  index % 2 === 0 ? 'col-start-1' : 'col-start-4'
-                } w-[159px] h-[140px]`}
+                className={`relative w-[115px] h-[130px] bg-white/40 rounded-2xl shadow border border-white backdrop-blur-[20px] flex flex-col items-center justify-center`}
               >
-                <Image
-                  src={src}
-                  alt={`Outfit ${index + 1}`}
-                  layout="fill"
-                  objectFit="cover"
-                />
+                <div className="w-[66px] h-[66px] mb-2">
+                  {' '}
+                  {/* 이미지 크기 조절 */}
+                  <Image
+                    src={outfit.imageSrc}
+                    alt={outfit.label}
+                    style={{
+                      maxWidth: '115px',
+                      maxHeight: '91px',
+                      transform: 'translateY(35px)',
+                    }} // 최대 크기 제한 및 아래로 이동
+                    layout="fill"
+                    objectFit="contain"
+                  />
+                </div>
+                <div className="absolute top-0 left-0.8 w-full text-center pt-2">
+                  <span
+                    className="text-sm font-medium"
+                    style={{
+                      fontFamily: 'Noto Sans KR',
+                      fontSize: '12px',
+                      letterSpacing: '-0.24px',
+                      fontWeight: 400,
+                      fontStyle: 'normal',
+                      color: 'var(--Box-text, rgba(18, 18, 18, 0.70))',
+                    }}
+                  >
+                    {outfit.label}
+                  </span>
+                </div>
               </div>
             ))}
           {/* 왼쪽 버튼 */}
@@ -371,7 +384,7 @@ const ThermometerStyle: React.FC = () => {
             left: `${(sliderRef.current?.getBoundingClientRect().width || 0) / 10}px`,
             top: '50%',
             transform: 'translate(-0%, -50%) translateY(-10px)',
-            transition: animationsEnabled ? 'left 0.2s' : 'none', // 애니메이션 제어
+            transition: animationsEnabled ? 'left 0.2s' : 'none',
           }}
         >
           <div
