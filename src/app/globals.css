@@ -759,7 +759,6 @@ h6 {
 
 /* 링크 스타일 */
 a {
-  color: #007bff; /* 링크 기본 색상 */
   text-decoration: none; /* 링크 밑줄 제거 */
 }
 
