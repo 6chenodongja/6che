@@ -218,7 +218,7 @@ const LocationInput = ({
 
   return (
     <>
-      <div
+      {/* <div
         className="absolute"
         style={{
           top: '-86px',
@@ -235,7 +235,7 @@ const LocationInput = ({
           width={94}
           height={94}
         />
-      </div>
+      </div> */}
 
       <div
         className="h-[26px] px-2 py-1 bg-white/40 rounded-full shadow border border-white/50 linear-gradient(37deg, rgba(255,255,255,0.5018601190476191) 0%, rgba(255,255,255,0) 100%) background: rgb(255,255,255) backdrop-blur-[20px] justify-center items-center inline-flex"
@@ -512,7 +512,7 @@ const MainPage = () => {
             />
           </div>
 
-          <div
+          {/* <div
             className="absolute"
             style={{
               top: '-27px', // 구름 이미지의 위치 조정
@@ -529,7 +529,7 @@ const MainPage = () => {
               width={146}
               height={86}
             />
-          </div>
+          </div> */}
 
           <div
             className="absolute"
