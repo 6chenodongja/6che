@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState, useCallback } from 'react';
-import { useRouter } from 'next/navigation'; // next/router 대신 next/navigation 사용
+import { useRouter } from 'next/navigation'; // next/router 대신 next/navigation 사용!
 import Head from 'next/head';
 import '../../../../app/globals.css';
 import 'swiper/css';
