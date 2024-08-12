@@ -3,13 +3,13 @@ import React, { useCallback } from 'react';
 import _ from 'lodash';
 import Header from 'app/(providers)/(components)/Header';
 import Footer from 'app/(providers)/(components)/Footer';
-import MyStyleHeader from '../../myStyle/_components/MyStyleHeader';
 import { postLikedItem } from '../../../../../../../types/post';
 import { supabase } from '@/supabase/client';
 import { useUserStore } from '@/zustand/store/useUserStore';
 import MyListPostItem from './MyListPostItem';
 import ScrollButtons from 'app/(providers)/(root)/(post)/list/_components/ScrollButtons';
 import MySelectPage from './MySelectPage';
+import MyLikeHeader from './MyLikeHeader';
 
 interface PostsProps {
   posts: postLikedItem[];
@@ -81,7 +81,7 @@ function MyListPage({ posts, setPosts }: PostsProps) {
   return (
     <div className="container mx-auto h-auto bg-[#FAFAFA]">
       <Header />
-      <MyStyleHeader />
+      <MyLikeHeader />
       <MySelectPage />
       <div className="grid grid-cols-2 gap-y-2 gap-x-2 w-[288px] mx-auto">
         {posts.map((post) => (

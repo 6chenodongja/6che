@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
-import { LogoText } from '../../..//icons/LogoText';
+import { LogoText } from '../../../icons/LogoText';
 import { IconLogin } from '../../../icons/IconLogin';
 import LoadingScreen from '../(components)/LoadingScreen'; // LoadingScreen 컴포넌트를 불러옵니다.
 import LoginDropdown from '@/components/LoginDropdown/LoginDropdown';
@@ -64,22 +64,26 @@ const Header = () => {
     setTimeout(() => {
       setIsLoading(false);
       router.push(url);
-    }, 5000); // 5초 동안 로딩 화면을 보여줍니다.
+    }, 2300); // 2.3초 동안 로딩 화면을 보여줍니다.
   };
 
   if (isLoading) {
     return <LoadingScreen />; // 로딩 중일 때 LoadingScreen 컴포넌트를 보여줍니다.
   }
-  // fixed 밑에 header className 에 추가해야함 그래야 헤더 고정됌
+
   return (
-    <header className="w-[320px] bg-white shadow-md py-4 flex justify-between items-center px-4 fixed top-0 z-50 h-[60px]">
-      <button title="button" onClick={handleMenuToggle}>
-        <Image src="/images/menu.png" alt="메뉴" width={24} height={24} />
-      </button>
-      <div onClick={handleLogoClick} className="cursor-pointer">
-        <LogoText className="w-24 h-8" />
+    <header className="w-full max-w-[320px] bg-white shadow-md py-4 flex justify-between items-center px-4 fixed top-0 z-50 h-[60px]">
+      <div className="flex-1 flex justify-start">
+        <button title="button" onClick={handleMenuToggle}>
+          <Image src="/images/menu.png" alt="메뉴" width={24} height={24} />
+        </button>
       </div>
-      <div>
+      <div className="flex-1 flex justify-center">
+        <div className="cursor-pointer" onClick={handleLogoClick}>
+          <LogoText className="w-24 h-8" />
+        </div>
+      </div>
+      <div className="flex-1 flex justify-end">
         {user ? (
           <>
             <LoginDropdown />

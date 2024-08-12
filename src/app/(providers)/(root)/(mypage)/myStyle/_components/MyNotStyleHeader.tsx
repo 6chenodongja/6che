@@ -1,6 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import Link from 'next/link';
 
 function MyNotStyleHeader() {
   const [isOpen, setIsOpen] = useState(false);
@@ -13,7 +14,7 @@ function MyNotStyleHeader() {
     <div className="relative">
       <div className="my-style-page-header px-[4px] py-[16px] w-[288px] mx-auto mt-[16px] rounded-lg shadow-md bg-white">
         <header className="myPage-Liked-style flex px-2 items-center self-stretch pt-1 w-full justify-between font-bold">
-          좋아요한 코디
+          <Link href={'/myStyle'}>내 코디</Link>
           <svg
             onClick={toggleDropdown}
             xmlns="http://www.w3.org/2000/svg"
@@ -39,8 +40,8 @@ function MyNotStyleHeader() {
             transition={{ duration: 0.3 }}
             className="overflow-hidden absolute left-0 w-full bg-white shadow-lg rounded-b-lg"
           >
-            <div className="myPage-style flex px-2 py-4 items-center self-stretch gap-2">
-              내 코디
+            <div className="myPage-style flex px-3 py-4 items-center self-stretch gap-2">
+              <Link href={'/postLike'}>좋아요한 코디</Link>
             </div>
           </motion.div>
         )}
