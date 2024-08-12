@@ -708,8 +708,8 @@
   letter-spacing: -0.32px;
 }
 
-/* 메인 */
-.temperature {
+/* 메인 페이지 전용 스타일 */
+.mainpage-temperature {
   font-size: 64px;
   font-weight: 400;
   line-height: 64px;
@@ -717,7 +717,7 @@
   align-items: center;
 }
 
-.temperature .degree-symbol {
+.mainpage-temperature .mainpage-degree-symbol {
   font-size: 64px;
   line-height: 64px;
   position: relative;
@@ -725,12 +725,12 @@
   margin-left: 2px;
 }
 
-body {
+.mainpage-body {
   overflow-x: hidden;
 }
 
 /* 기본 전역 폰트, 폰트 크기, 색상 설정 */
-body {
+.mainpage-body {
   font-family: 'Noto Sans KR', sans-serif; /* 기본 폰트 패밀리 */
   font-size: 16px; /* 기본 폰트 크기 */
   color: #121212; /* 기본 폰트 색상 */
@@ -738,45 +738,46 @@ body {
 }
 
 /* 기본 폰트 스타일 */
-p,
-span,
-div {
+.mainpage-text,
+.mainpage-span,
+.mainpage-div {
   font-size: 16px; /* 기본 텍스트 크기 */
   color: #121212; /* 기본 텍스트 색상 */
 }
 
 /* 제목 스타일 */
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
+.mainpage-title,
+.mainpage-subtitle,
+.mainpage-heading,
+.mainpage-subheading,
+.mainpage-heading-small,
+.mainpage-heading-large {
   font-family: 'Varela', sans-serif; /* 제목에 사용할 폰트 패밀리 */
   color: #121212; /* 제목 기본 색상 */
   font-weight: bold; /* 제목에 굵은 글꼴 적용 */
 }
 
 /* 링크 스타일 */
-a {
-  color: #007bff; /* 링크 기본 색상 */
-  text-decoration: none; /* 링크 밑줄 제거 */
+.mainpage-link {
+  color: #4d4d4d;
+  text-decoration: none;
 }
 
-a:hover {
-  text-decoration: underline; /* 링크 호버 시 밑줄 표시 */
+.mainpage-link:hover {
+  text-decoration: underline;
 }
 
 /* 버튼 스타일 */
-button {
+.mainpage-button {
   font-family: 'Noto Sans KR', sans-serif;
-  font-size: 16px; /* 버튼 폰트 크기 */
-  color: #ffffff; /* 버튼 텍스트 색상 */
+  font-size: 16px;
+  color: #ffffff;
   border: none;
+  padding: 10px 20px;
   border-radius: 5px;
   cursor: pointer;
 }
-/* 메인 */
+/* 메인 페이지 전용 스타일 */
 
 /* 토스트 알림 스타일-1 */
 .label-style {
