@@ -88,7 +88,7 @@ function MyStylePage() {
               아직 등록한 코디가 없어요
             </div>
             <Link href={'/postform'}>
-              <button className="myPage-style-text myStyle-button mx-auto h-[49px] rounded-lg mt-[26px]">
+              <button className="myPage-style-text myStyle-button mx-auto h-[49px] rounded-lg mt-[26px] hover:bg-[#5EB0FF] transition-colors duration-300">
                 코디 등록하기
               </button>
             </Link>
