@@ -22,6 +22,7 @@ function PostDetail({ params }: { params: { id: string } }) {
   const [temperature, setTemperature] = useState<string | null>(null);
   const [weatherIcon, setWeatherIcon] = useState<string | null>(null); // weatherIcon 추가
   const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [userCreatePost, setUserCreatePost] = useState<string[]>([]);
 
   const router = useRouter();
 
@@ -87,7 +88,7 @@ function PostDetail({ params }: { params: { id: string } }) {
           data.locations
             ? data.locations
                 .split(',')
-                .map((location: string) => `#${location}`)
+                .map((location: string) => ` #${location}`)
             : [],
         );
       }
@@ -107,11 +108,35 @@ function PostDetail({ params }: { params: { id: string } }) {
       }
     };
 
+    const fetchUserCreate = async () => {
+      const { data, error } = await supabase
+        .from('posts')
+        .select('created_at')
+        .eq('id', params.id)
+        .single();
+
+      if (error) {
+        console.error(error);
+      } else {
+        if (data.created_at) {
+          const createdAt = new Date(data.created_at);
+          const year = createdAt.getFullYear();
+          const month = String(createdAt.getMonth() + 1).padStart(2, '0');
+          const day = String(createdAt.getDate()).padStart(2, '0');
+          const formattedDate = `${year}.${month}.${day}`;
+          setUserCreatePost([formattedDate]);
+        } else {
+          setUserCreatePost([]);
+        }
+      }
+    };
+
     const fetchData = async () => {
       await fetchPostDetail();
       await fetchPostComments();
       await fetchPostLocations();
       await fetchUserLiked();
+      await fetchUserCreate();
     };
 
     fetchData();
@@ -172,7 +197,7 @@ function PostDetail({ params }: { params: { id: string } }) {
     <div>
       <div className="w-80 h-[747px] relative overflow-hidden bg-[#FAFAFA] container mx-auto">
         <div>
-          <header className="mt-2 ml-3 flex pb-[6px]">
+          <header className="mt-[-50px] ml-3 flex pb-[6px]">
             <Link
               href={'/list'}
               className="w-[42px] flex justify-center items-center object-cover"
@@ -328,7 +353,7 @@ function PostDetail({ params }: { params: { id: string } }) {
                 </svg>
                 <div>
                   {/* 유저 닉네임 */}
-                  <p className="flex-grow-0 flex-shrink-0 text-lg font-medium text-left text-black">
+                  <p className="flex-grow-0 flex-shrink-0 font-semibold text-[#333] text-[18px] leading-[23.4px] tracking-[-0.36px]">
                     {DetailList?.users?.nick_name}
                   </p>
                 </div>
@@ -417,9 +442,9 @@ function PostDetail({ params }: { params: { id: string } }) {
                     {userLiked}
                   </p>
                 </div>
-                <div className="flex justify-start items-start flex-grow-0 flex-shrink-0 w-8 h-8">
+                <div className="flex justify-start items-start flex-grow-0 flex-shrink-0">
                   <div
-                    className="flex justify-center items-center flex-grow-0 flex-shrink-0 overflow-hidden gap-2 p-1 rounded-[1000px]"
+                    className="flex justify-center items-center flex-grow-0 flex-shrink-0 overflow-hidden gap-2 rounded-[1000px]"
                     style={{
                       filter: 'drop-shadow(0px 0px 4px rgba(0,0,0,0.08))',
                     }}
@@ -446,12 +471,17 @@ function PostDetail({ params }: { params: { id: string } }) {
                 </div>
               </div>
             </div>
-            <p className="self-stretch flex-grow-0 flex-shrink-0 w-72 text-base text-left text-black">
+            <p className="self-stretch flex-grow-0 flex-shrink-0 w-72 text-[#4D4D4D] font-KR text-[16px] font-[500]">
               {userComment}
             </p>
-            <div className="flex justify-start items-center self-stretch flex-grow-0 flex-shrink-0 relative gap-1">
-              <p className="flex-grow-0 flex-shrink-0 text-sm text-left text-black">
+            <div className="flex justify-start items-center self-stretch flex-grow-0 flex-shrink-0">
+              <p className="flex-grow-0 flex-shrink-0 text-[#4D4D4D] font-KR text-[14px] font-medium">
                 {userLocations}
+              </p>
+            </div>
+            <div>
+              <p className="text-[#4D4D4D] text-[14px] font-normal leading-[-18.2px] font-varela">
+                {userCreatePost}
               </p>
             </div>
           </div>
@@ -461,10 +491,10 @@ function PostDetail({ params }: { params: { id: string } }) {
 
       {modalOpen && (
         <div className="flex inset-0 bg-black/10 z-50 fixed justify-center items-center ">
-          <div className="flex flex-col background w-[273px] h-[455px] rounded-2xl box-shadow backdrop-filter">
+          <div className="flex flex-col background w-[273px] h-[455px] rounded-2xl box-shadow backdrop-filter p-2">
             <button
               onClick={clickModal}
-              className="text-white p-2 w-fit ml-auto gap-2"
+              className="text-white w-fit ml-auto gap-2 p-2"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -528,7 +558,7 @@ function PostDetail({ params }: { params: { id: string } }) {
                     />
                   </svg>
                 </button>
-                <span className=" mt-1 text">카카오톡</span>
+                <span className="mt-[7px] text">카카오톡</span>
               </div>
 
               {/* 이메일 공유*/}
@@ -541,7 +571,7 @@ function PostDetail({ params }: { params: { id: string } }) {
                       height="16"
                       viewBox="0 0 18 16"
                       fill="none"
-                      className="ml-[11px]"
+                      className="ml-[11px] object-cover"
                     >
                       <path
                         fillRule="evenodd"
@@ -558,7 +588,7 @@ function PostDetail({ params }: { params: { id: string } }) {
                     </svg>
                   </button>
                 </Link>
-                <span className=" mt-1 text">메일</span>
+                <span className="text">메일</span>
               </div>
 
               {/* 링크복사 */}
@@ -605,7 +635,7 @@ function PostDetail({ params }: { params: { id: string } }) {
                     />
                   </svg>
                 </button>
-                <span className="mt-1 text">링크복사</span>
+                <span className="mt-[7px] text">링크복사</span>
               </div>
             </div>
           </div>
