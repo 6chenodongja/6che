@@ -22,6 +22,7 @@ function PostDetail({ params }: { params: { id: string } }) {
   const [temperature, setTemperature] = useState<string | null>(null);
   const [weatherIcon, setWeatherIcon] = useState<string | null>(null); // weatherIcon 추가
   const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [userCreatePost, setUserCreatePost] = useState<string[]>([]);
 
   const router = useRouter();
 
@@ -87,7 +88,7 @@ function PostDetail({ params }: { params: { id: string } }) {
           data.locations
             ? data.locations
                 .split(',')
-                .map((location: string) => `#${location}`)
+                .map((location: string) => ` #${location}`)
             : [],
         );
       }
@@ -107,11 +108,35 @@ function PostDetail({ params }: { params: { id: string } }) {
       }
     };
 
+    const fetchUserCreate = async () => {
+      const { data, error } = await supabase
+        .from('posts')
+        .select('created_at')
+        .eq('id', params.id)
+        .single();
+
+      if (error) {
+        console.error(error);
+      } else {
+        if (data.created_at) {
+          const createdAt = new Date(data.created_at);
+          const year = createdAt.getFullYear();
+          const month = String(createdAt.getMonth() + 1).padStart(2, '0');
+          const day = String(createdAt.getDate()).padStart(2, '0');
+          const formattedDate = `${year}.${month}.${day}`;
+          setUserCreatePost([formattedDate]);
+        } else {
+          setUserCreatePost([]);
+        }
+      }
+    };
+
     const fetchData = async () => {
       await fetchPostDetail();
       await fetchPostComments();
       await fetchPostLocations();
       await fetchUserLiked();
+      await fetchUserCreate();
     };
 
     fetchData();
@@ -328,7 +353,7 @@ function PostDetail({ params }: { params: { id: string } }) {
                 </svg>
                 <div>
                   {/* 유저 닉네임 */}
-                  <p className="flex-grow-0 flex-shrink-0 text-lg font-medium text-left text-black">
+                  <p className="flex-grow-0 flex-shrink-0 font-semibold text-[#333] text-[18px] leading-[23.4px] tracking-[-0.36px]">
                     {DetailList?.users?.nick_name}
                   </p>
                 </div>
@@ -446,12 +471,17 @@ function PostDetail({ params }: { params: { id: string } }) {
                 </div>
               </div>
             </div>
-            <p className="self-stretch flex-grow-0 flex-shrink-0 w-72 text-base text-left text-black">
+            <p className="self-stretch flex-grow-0 flex-shrink-0 w-72 text-[#4D4D4D] font-KR text-[16px] font-[500]">
               {userComment}
             </p>
-            <div className="flex justify-start items-center self-stretch flex-grow-0 flex-shrink-0 relative gap-1">
-              <p className="flex-grow-0 flex-shrink-0 text-sm text-left text-black">
+            <div className="flex justify-start items-center self-stretch flex-grow-0 flex-shrink-0">
+              <p className="flex-grow-0 flex-shrink-0 text-[#4D4D4D] font-KR text-[14px] font-medium gap-[4px]">
                 {userLocations}
+              </p>
+            </div>
+            <div>
+              <p className="text-[#4D4D4D] text-[14px] font-normal leading-[-18.2px] font-varela">
+                {userCreatePost}
               </p>
             </div>
           </div>
