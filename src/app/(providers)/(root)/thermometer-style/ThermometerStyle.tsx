@@ -12,7 +12,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
 interface Outfit {
-  imageSrc: string;
+  imageSrc?: string;
   label: string;
 }
 
@@ -29,6 +29,9 @@ const outfits: { [key: string]: Outfit[] } = {
     { imageSrc: '/images/Weather2/shorts.svg', label: '반바지' },
     { imageSrc: '/images/Weather2/short_skirt.svg', label: '짧은 치마' },
     { imageSrc: '/images/Weather2/linen.svg', label: '린넨 옷' },
+    { label: '' }, // 빈 div
+    { label: '' }, // 빈 div
+    { label: '' }, // 빈 div
   ],
   '23° - 27°': [
     { imageSrc: '/images/Weather2/short_sleeve_t-shirt.svg', label: '반팔티' },
@@ -54,6 +57,9 @@ const outfits: { [key: string]: Outfit[] } = {
     { imageSrc: '/images/Weather2/jacket.svg', label: '자켓' },
     { imageSrc: '/images/Weather2/denim_jacket.svg', label: '청자켓' },
     { imageSrc: '/images/Weather2/jeans.svg', label: '청바지' },
+    { label: '' }, // 빈 div
+    { label: '' }, // 빈 div
+    { label: '' }, // 빈 div
   ],
   '9° - 11°': [
     { imageSrc: '/images/Weather2/jumper.svg', label: '점퍼' },
@@ -268,8 +274,29 @@ const ThermometerStyle: React.FC = () => {
             {initialView ? '?' : temperatureRanges[temperatureIndex].display}
           </div>
         </div>
-
+        
+        {/* 여기에 추가합니다 */}
         <div className="relative w-full grid grid-cols-2 gap-[8px] px-[40px] py-[25px]">
+          {/* 왼쪽 상단 sun.svg 아이콘 */}
+          <div className="absolute left-[12px] top-[-5px]">
+            <Image
+              src="/images/Weather2/sun.svg"
+              alt="Sun Icon"
+              width={56}
+              height={46}
+            />
+          </div>
+          
+          {/* 오른쪽 하단 leaf.svg 아이콘 */}
+          <div className="absolute right-[25px] top-[135px] z-[3]">
+            <Image
+              src="/images/Weather2/leaf.svg"
+              alt="Leaf Icon"
+              width={46}
+              height={46}
+            />
+          </div>
+  
           {currentOutfits
             .slice(currentOutfitIndex, currentOutfitIndex + 4)
             .map((outfit, index) => (
@@ -277,21 +304,23 @@ const ThermometerStyle: React.FC = () => {
                 key={index}
                 className={`relative w-[115px] h-[130px] bg-white/40 rounded-2xl shadow border border-white backdrop-blur-[20px] flex flex-col items-center justify-center`}
               >
-                <div className="w-[66px] h-[66px] mb-2">
-                  {' '}
-                  {/* 이미지 크기 조절 */}
-                  <Image
-                    src={outfit.imageSrc}
-                    alt={outfit.label}
-                    style={{
-                      maxWidth: '115px',
-                      maxHeight: '91px',
-                      transform: 'translateY(35px)',
-                    }} // 최대 크기 제한 및 아래로 이동
-                    layout="fill"
-                    objectFit="contain"
-                  />
-                </div>
+                {outfit.imageSrc ? (
+                  <div className="w-[66px] h-[66px] mb-2">
+                    <Image
+                      src={outfit.imageSrc}
+                      alt={outfit.label}
+                      style={{
+                        maxWidth: '115px',
+                        maxHeight: '91px',
+                        transform: 'translateY(35px)',
+                      }} // 최대 크기 제한 및 아래로 이동
+                      layout="fill"
+                      objectFit="contain"
+                    />
+                  </div>
+                ) : (
+                  <div className="w-full h-full"></div> // 빈 div
+                )}
                 <div className="absolute top-0 left-0.8 w-full text-center pt-2">
                   <span
                     className="text-sm font-medium"
@@ -309,10 +338,11 @@ const ThermometerStyle: React.FC = () => {
                 </div>
               </div>
             ))}
+            
           {/* 왼쪽 버튼 */}
           {currentOutfitIndex > 0 && (
             <button
-              className="absolute left-[1px] top-[49%] transform -translate-y-1/2 flex items-start opacity-[var(--sds-size-stroke-border)] shadow-[0px_1px_2px_0px_rgba(0,0,0,0.10)] backdrop-filter backdrop-blur-[2px] rounded-full z-10"
+              className="absolute left-[8px] top-[50%] transform -translate-y-1/2 flex items-start opacity-[var(--sds-size-stroke-border)] shadow-[0px_1px_2px_0px_rgba(0,0,0,0.10)] backdrop-filter backdrop-blur-[2px] rounded-full z-10"
               onClick={handlePrev}
               style={{ padding: 0, border: 'none', background: 'transparent' }}
             >
@@ -329,7 +359,7 @@ const ThermometerStyle: React.FC = () => {
           {/* 오른쪽 버튼 */}
           {currentOutfitIndex + 4 < currentOutfits.length && (
             <button
-              className="absolute right-[9px] top-[48%] transform -translate-y-1/2 flex items-start opacity-[var(--sds-size-stroke-border)] shadow-[0px_1px_2px_0px_rgba(0,0,0,0.10)] backdrop-filter backdrop-blur-[2px] rounded-full z-10"
+              className="absolute right-[9px] top-[50%] transform -translate-y-1/2 flex items-start opacity-[var(--sds-size-stroke-border)] shadow-[0px_1px_2px_0px_rgba(0,0,0,0.10)] backdrop-filter backdrop-blur-[2px] rounded-full z-10"
               onClick={handleNext}
               style={{ padding: 0, border: 'none', background: 'transparent' }}
             >
@@ -344,7 +374,6 @@ const ThermometerStyle: React.FC = () => {
           )}
         </div>
       </div>
-
       <div
         ref={sliderRef}
         className="relative w-full mb-8"
@@ -414,7 +443,7 @@ const ThermometerStyle: React.FC = () => {
             src="/images/Weather2/Rbtn.svg"
             alt="Right Button"
             width={30}
-            height={22}
+            height={20}
             sizes="100vw"
           />
         </button>
