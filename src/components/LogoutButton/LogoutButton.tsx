@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useUserStore } from '@/zustand/store/useUserStore';
 
-function LogoutButton() {
+function LogoutButton({ className }: { className?: string }) {
   const router = useRouter();
   const { clearUser } = useUserStore();
   const handleLogout = async () => {
@@ -23,11 +23,7 @@ function LogoutButton() {
   };
 
   return (
-    <button
-      title="로그아웃 버튼"
-      onClick={handleLogout}
-      className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-xl"
-    >
+    <button title="로그아웃 버튼" onClick={handleLogout} className={className}>
       로그아웃
     </button>
   );

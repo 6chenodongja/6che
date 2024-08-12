@@ -27,7 +27,7 @@ export const useSignUpForm = () => {
       if (nickname.trim() === '') {
         setError((prevState) => ({
           ...prevState,
-          nickname: '최대 10글자.',
+          nickname: '',
         }));
         setNicknameMessage('');
         return;

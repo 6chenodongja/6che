@@ -1,7 +1,5 @@
 'use client';
 
-import { useState } from 'react';
-import Modal from '../Modal/Modal';
 import { useUserStore } from '@/zustand/store/useUserStore';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
@@ -18,11 +16,10 @@ function DeleteUser() {
       router.replace('/');
     } catch (error) {
       console.error('회원탈퇴 실패:', error);
-      alert('회원 탈퇴가 실패 되었어요.');
+      alert('회원 탈퇴를 실패 했어요.');
     }
   };
-  const test = () => {};
-  return <Modal isOpen={true} onConfirm={handlerDelete} onClose={test} />;
+  return <button onClick={handlerDelete}>회원탈퇴</button>;
 }
 
 export default DeleteUser;

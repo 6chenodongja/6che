@@ -66,7 +66,7 @@ export const checkNicknameDuplication = async (nickname: string): Promise<boolea
     .eq('nick_name', nickname);
 
   if (error) {
-    console.error('먼에러이묘:', error);
+    console.error('닉네임이 변경되지 않았어요.:', error);
     return false;
   }
 

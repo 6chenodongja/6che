@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -9,17 +9,47 @@ import { IconLogin } from '../../../icons/IconLogin';
 import LoadingScreen from '../(components)/LoadingScreen'; // LoadingScreen 컴포넌트를 불러옵니다.
 import LoginDropdown from '@/components/LoginDropdown/LoginDropdown';
 import { useUserStore } from '@/zustand/store/useUserStore';
+import { createBrowserSupabaseClient } from '@/supabase/client';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const { user } = useUserStore();
+  const { user, setUser, isLoggedIn } = useUserStore();
   const router = useRouter();
-
   const handleMenuToggle = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+  const supabase = createBrowserSupabaseClient();
+  useEffect(() => {
+    const getUser = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
 
+      if (!user) return;
+
+      const { data, error } = await supabase
+        .from('users')
+        .select()
+        .eq('id', user.id)
+        .single();
+
+      if (error) {
+        console.error('유저 데이터 받아오기 실패:', error);
+        return;
+      }
+
+      setUser({
+        id: user.id,
+        nickname: data.nick_name || '',
+        email: data.email,
+        provider: user.app_metadata.provider || '',
+        profileImage: data.avatar || '',
+      });
+    };
+
+    getUser();
+  }, []);
   const handleLogoClick = () => {
     // 메인화면에서 로고 클릭 시 새로고침
     if (window.location.pathname === '/') {
@@ -54,7 +84,7 @@ const Header = () => {
         </div>
       </div>
       <div className="flex-1 flex justify-end">
-        {user ? (
+        {isLoggedIn && user ? (
           <>
             <LoginDropdown />
           </>
