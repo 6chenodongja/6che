@@ -36,7 +36,7 @@ function LoginDropdown() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.2 }}
-              className="origin-top-right absolute right-0 top-[64px] rounded-2xl shadow-lg bg-white"
+              className="origin-top-right absolute right-0 top-[64px] rounded-2xl shadow-lg bg-white pb-4"
             >
               <div className="mt-[16px] flex">
                 <ul className="flex flex-col">
@@ -64,7 +64,7 @@ function LoginDropdown() {
                         height={15}
                         className="mr-1"
                       />
-                      설정
+                      마이페이지
                     </Link>
                   </li>
                   <li className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-xl">

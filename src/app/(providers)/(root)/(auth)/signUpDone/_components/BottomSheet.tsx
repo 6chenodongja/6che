@@ -48,8 +48,6 @@ const BottomSheet = () => {
       console.error('선택한 프로필이 수정되지 않았어요.', error);
       return;
     }
-
-    alert('선택하신 프로필로 변경되었어요!');
   };
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {

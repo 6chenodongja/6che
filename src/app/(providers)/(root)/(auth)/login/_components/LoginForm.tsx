@@ -53,8 +53,8 @@ function LoginForm() {
   };
 
   return (
-    <main className="mt-[64px] mb-[294px] flex items-center space-x-2 rounded-full bg-white bg-opacity-30 py-1 px-4">
-      <form onSubmit={onSubmit} className="">
+    <main className="flex items-center space-x-2 rounded-full bg-white bg-opacity-30 py-1 px-4">
+      <form onSubmit={onSubmit} className="mt-[64px] h-[568px]">
         <h1 className="text-[20px] text-center text-[#121212] font-bold leading-[130%] tracking-[-0.4px] mb-5">
           로그인
         </h1>

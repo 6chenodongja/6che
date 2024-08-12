@@ -69,11 +69,11 @@ function SingUp() {
     });
     if (data.user) {
       setUser({
-        id: data.user.id,
+        id: '',
         nickname: data.user.user_metadata.name,
-        email: data.user.user_metadata.email,
+        email: '',
         provider: '',
-        profileImage: data.user.user_metadata.avatar,
+        profileImage: '',
       });
     }
 
