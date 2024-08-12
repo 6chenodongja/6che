@@ -16,7 +16,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Header from '../../(components)/Header';
 import Footer from '../../(components)/Footer';
 import { supabase } from '@/supabase/client';
-import BottomSheet from './components/BottomSheet'; // 은겸: BottomSheet 컴포넌트 추가
+import BottomSheet from './components/BottomSheet';
 
 // Post 타입 정의
 interface Post {
@@ -286,7 +286,7 @@ const MainPage = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedWeatherElements, setSelectedWeatherElements] = useState<
     string[]
-  >([]); // 은겸: 선택된 날씨 요소들을 관리하는 상태 추가
+  >([]);
 
   const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -450,7 +450,6 @@ const MainPage = () => {
     setBackgroundStyle({ background: getBackgroundByTime(currentHours) });
   }, []);
 
-  // 은겸: 바텀시트에서 요소를 선택할 때 호출되는 함수 추가
   const handleElementSelection = (elements: string[]) => {
     setSelectedWeatherElements(elements);
   };
@@ -1025,10 +1024,10 @@ const MainPage = () => {
       <Footer />
 
       {showModal && (
-        <BottomSheet // 은겸 : BottomSheet 컴포넌트를 사용하여 바텀시트를 추가함
+        <BottomSheet
           onClose={() => setShowModal(false)}
-          onSelectElements={handleElementSelection} // 은겸 : 요소 선택 핸들러를 바텀시트에 전달함
-          selectedElements={selectedWeatherElements} // 은겸: 선택된 요소들을 전달함
+          onSelectElements={handleElementSelection}
+          selectedElements={selectedWeatherElements}
         />
       )}
     </div>
