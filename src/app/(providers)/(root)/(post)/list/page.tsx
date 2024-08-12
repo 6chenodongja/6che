@@ -263,6 +263,17 @@ function PostList() {
     [likedPosts, user],
   );
 
+  const handleOptionRemove = (key: string, option: string) => {
+    setSelectedOptions((prevOptions) => {
+      const newOptions = { ...prevOptions };
+      newOptions[key] = newOptions[key].filter((item) => item !== option);
+      if (newOptions[key].length === 0) {
+        delete newOptions[key];
+      }
+      return newOptions;
+    });
+  };
+
   return (
     <div className="container mx-auto h-auto bg-[#FAFAFA]">
       <Header />
@@ -287,9 +298,25 @@ function PostList() {
           options.map((option) => (
             <div
               key={`${key}-${option}`}
-              className=" mb-4 px-[10px] pt-[4px] pb-[6px] bg-black text-white rounded"
+              className="mb-[12px] flex items-center h-[32px] gap-[4px] rounded-xl bg-[#121212] text-white px-[12px] pt-[4px] pb-[6px] text-[14px] font-KR font-normal leading-[1.5px] tracking-[-0.28px]"
             >
               {option}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="17"
+                viewBox="0 0 16 17"
+                fill="none"
+                className="flex justify-center items-center w-[16px] h-[16px] cursor-pointer"
+                onClick={() => handleOptionRemove(key, option)}
+              >
+                <path
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                  d="M4.47132 4.02864C4.21097 3.76829 3.78886 3.76829 3.52851 4.02864C3.26816 4.28899 3.26816 4.7111 3.52851 4.97145L7.05711 8.50004L3.52851 12.0286C3.26816 12.289 3.26816 12.7111 3.52851 12.9714C3.78886 13.2318 4.21097 13.2318 4.47132 12.9714L7.99992 9.44285L11.5285 12.9714C11.7889 13.2318 12.211 13.2318 12.4713 12.9714C12.7317 12.7111 12.7317 12.289 12.4713 12.0286L8.94273 8.50004L12.4713 4.97145C12.7317 4.7111 12.7317 4.28899 12.4713 4.02864C12.211 3.76829 11.7889 3.76829 11.5285 4.02864L7.99992 7.55723L4.47132 4.02864Z"
+                  fill="#B3B3B3"
+                />
+              </svg>
             </div>
           )),
         )}

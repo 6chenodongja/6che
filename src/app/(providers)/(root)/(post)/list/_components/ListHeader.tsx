@@ -46,7 +46,7 @@ function ListHeader() {
       }}
     >
       <div className="flex justify-start items-center flex-grow-0 flex-shrink-0 relative gap-0.5 px-1.5">
-        <p className="flex-grow-0 flex-shrink-0 text-xs text-left text-black">
+        <p className="flex-grow-0 flex-shrink-0 font-KR font-normal text-[14px] text-[#666] leading-[21px] tacking-[-0.28px]">
           현재
         </p>
         <div className="flex justify-start items-center flex-grow-0 flex-shrink-0 relative gap-1.5">
