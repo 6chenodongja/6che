@@ -11,11 +11,10 @@ import { postLikedItem } from '../../../../../../types/post';
 import MyListPage from './_components/MyListPage';
 import { useCallback } from 'react';
 import MyNotStyleHeader from '../myStyle/_components/MyNotStyleHeader';
-import MyNotLikeHeader from './_components/MyNotLikeHeader';
 
 const PostLike = () => {
   const [posts, setPosts] = useState<postLikedItem[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const { user } = useUserStore();
 
   const fetchLikedPosts = useCallback(async () => {
@@ -26,7 +25,6 @@ const PostLike = () => {
         .from('post_likes')
         .select('*, posts(*, users(*)) ')
         .eq('user_id', user?.id);
-
       if (!data) {
         return;
       }
@@ -40,7 +38,7 @@ const PostLike = () => {
 
   useEffect(() => {
     fetchLikedPosts();
-  }, [user, fetchLikedPosts]);
+  }, [fetchLikedPosts]);
 
   return (
     <AnimatePresence>
