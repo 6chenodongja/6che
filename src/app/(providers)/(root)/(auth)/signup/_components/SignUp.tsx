@@ -69,10 +69,10 @@ function SingUp() {
     if (data.user) {
       setUser({
         id: data.user.id,
-        nickname: data.user.user_metadata.name,
-        email: '',
+        nickname: data.user.user_metadata.nickname,
+        email: data.user.user_metadata.email,
         provider: '',
-        profileImage: '',
+        profileImage: data.user.user_metadata.avatar,
       });
     }
 
