@@ -197,7 +197,7 @@ function PostDetail({ params }: { params: { id: string } }) {
     <div>
       <div className="w-80 h-[747px] relative overflow-hidden bg-[#FAFAFA] container mx-auto">
         <div>
-          <header className="mt-2 ml-3 flex pb-[6px]">
+          <header className="mt-[-50px] ml-3 flex pb-[6px]">
             <Link
               href={'/list'}
               className="w-[42px] flex justify-center items-center object-cover"
@@ -442,9 +442,9 @@ function PostDetail({ params }: { params: { id: string } }) {
                     {userLiked}
                   </p>
                 </div>
-                <div className="flex justify-start items-start flex-grow-0 flex-shrink-0 w-8 h-8">
+                <div className="flex justify-start items-start flex-grow-0 flex-shrink-0">
                   <div
-                    className="flex justify-center items-center flex-grow-0 flex-shrink-0 overflow-hidden gap-2 p-1 rounded-[1000px]"
+                    className="flex justify-center items-center flex-grow-0 flex-shrink-0 overflow-hidden gap-2 rounded-[1000px]"
                     style={{
                       filter: 'drop-shadow(0px 0px 4px rgba(0,0,0,0.08))',
                     }}
@@ -475,7 +475,7 @@ function PostDetail({ params }: { params: { id: string } }) {
               {userComment}
             </p>
             <div className="flex justify-start items-center self-stretch flex-grow-0 flex-shrink-0">
-              <p className="flex-grow-0 flex-shrink-0 text-[#4D4D4D] font-KR text-[14px] font-medium gap-[4px]">
+              <p className="flex-grow-0 flex-shrink-0 text-[#4D4D4D] font-KR text-[14px] font-medium">
                 {userLocations}
               </p>
             </div>
@@ -491,10 +491,10 @@ function PostDetail({ params }: { params: { id: string } }) {
 
       {modalOpen && (
         <div className="flex inset-0 bg-black/10 z-50 fixed justify-center items-center ">
-          <div className="flex flex-col background w-[273px] h-[455px] rounded-2xl box-shadow backdrop-filter">
+          <div className="flex flex-col background w-[273px] h-[455px] rounded-2xl box-shadow backdrop-filter p-2">
             <button
               onClick={clickModal}
-              className="text-white p-2 w-fit ml-auto gap-2"
+              className="text-white w-fit ml-auto gap-2 p-2"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -558,7 +558,7 @@ function PostDetail({ params }: { params: { id: string } }) {
                     />
                   </svg>
                 </button>
-                <span className=" mt-1 text">카카오톡</span>
+                <span className="mt-[7px] text">카카오톡</span>
               </div>
 
               {/* 이메일 공유*/}
@@ -571,7 +571,7 @@ function PostDetail({ params }: { params: { id: string } }) {
                       height="16"
                       viewBox="0 0 18 16"
                       fill="none"
-                      className="ml-[11px]"
+                      className="ml-[11px] object-cover"
                     >
                       <path
                         fillRule="evenodd"
@@ -588,7 +588,7 @@ function PostDetail({ params }: { params: { id: string } }) {
                     </svg>
                   </button>
                 </Link>
-                <span className=" mt-1 text">메일</span>
+                <span className="text">메일</span>
               </div>
 
               {/* 링크복사 */}
@@ -635,7 +635,7 @@ function PostDetail({ params }: { params: { id: string } }) {
                     />
                   </svg>
                 </button>
-                <span className="mt-1 text">링크복사</span>
+                <span className="mt-[7px] text">링크복사</span>
               </div>
             </div>
           </div>
