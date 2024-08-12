@@ -5,14 +5,13 @@ import Link from 'next/link';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import React, { useRef } from 'react';
-import { useUserStore } from '@/zustand/store/useUserStore';
+import Image from 'next/image';
 
 function LoginForm() {
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const supabase = createClient();
   const router = useRouter();
-  const { setUser } = useUserStore();
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -24,14 +23,6 @@ function LoginForm() {
         password,
       });
       if (res.data) {
-        setUser({
-          id: res.data.id,
-          nickname: res.data.nickname,
-          email: res.data.email,
-          provider: '',
-          profileImage: '',
-        });
-
         router.replace('/');
       } else {
         alert('로그인 실패');
@@ -62,7 +53,7 @@ function LoginForm() {
   };
 
   return (
-    <main className="mt-[64px] flex items-center space-x-2 rounded-full bg-white bg-opacity-30 py-1 px-4">
+    <main className="mt-[64px] mb-[294px] flex items-center space-x-2 rounded-full bg-white bg-opacity-30 py-1 px-4">
       <form onSubmit={onSubmit} className="">
         <h1 className="text-[20px] text-center text-[#121212] font-bold leading-[130%] tracking-[-0.4px] mb-5">
           로그인
@@ -106,12 +97,22 @@ function LoginForm() {
             </button>
           </Link>
         </div>
-        <button className="text-sm mt-2 text-[#4d4d4d] rounded-lg hover:bg-gray-100 p-2">
-          {/* 은겸 - 아이디 비밀번호 찾기 이동 기능 추가 */}
-          <Link href={'/find-id'} passHref>
-            아이디/비밀번호 찾기
-          </Link>
-        </button>
+        <div className="flex justify-end">
+          <button className="text-sm mt-2 text-[#4d4d4d] rounded-lg hover:bg-gray-100 p-2">
+            {/* 은겸 - 아이디 비밀번호 찾기 이동 기능 추가 */}
+
+            <Link href={'/find-id'} className="w-full h-full flex" passHref>
+              아이디/비밀번호 찾기
+              <Image
+                src="images/Thermometer/arrow_right.svg"
+                alt="오호"
+                width={18}
+                height={18}
+              />
+            </Link>
+          </button>
+        </div>
+
         {/* <div className="flex justify-start items-center w-72 relative gap-3 m-auto">
           <div className="flex-grow h-px bg-[#d9d9d9]" />
           <p className="flex-grow-0 flex-shrink-0 text-base text-left text-black">

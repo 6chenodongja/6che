@@ -28,7 +28,7 @@ function LoginPage() {
   return (
     <main className="container flex flex-col justify-between items-center w-full min-h-screen bg-neutral-50">
       <Header />
-      <div className="flex-grow flex flex-col justify-center items-center w-full">
+      <div className="flex-grow flex flex-col justify-center items-center w-full ">
         <LoginForm />
       </div>
       <Footer />

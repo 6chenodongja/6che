@@ -10,60 +10,85 @@ function LoginDropdown() {
   const { user } = useUserStore();
   const toggleDropdown = () => setIsOpen(!isOpen);
   return (
-    <div className="inline-block text-left">
-      <button
-        title="프로필 아이콘"
-        onClick={toggleDropdown}
-        className="flex items-center justify-between bg-white rounded-lg shadow-sm"
-      >
-        {user?.profileImage && (
-          <Image
-            src={user.profileImage}
-            alt="프로필 이미지"
-            width={24}
-            height={24}
-            className="rounded-full"
-          />
-        )}
-      </button>
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.2 }}
-            className="origin-top-right absolute right-0 top-[80px] w-44 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5"
+    <main className="">
+      <div className="inline-block ">
+        <div className="w-[40px] h-[40px] shadow-[0_0_10px_0_rgba(0,0,0,0.08),0_2px_20px_0_rgba(18,18,18,0.15)] rounded-lg">
+          <button
+            title="프로필 아이콘"
+            onClick={toggleDropdown}
+            className="flex items-center justify-between bg-white rounded-md p-[7px]"
           >
-            <div className="py-1">
-              <ul className="flex flex-col">
-                <li>
-                  {user?.profileImage && (
-                    <Image
-                      src={user.profileImage}
-                      alt="프로필 이미지"
-                      width={24}
-                      height={24}
-                      className="rounded-full"
-                    />
-                  )}
-                  <span>{user?.nickname}님</span>
-                </li>
-                <li className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-xl">
-                  <Link href={'/mypage'}>설정</Link>
-                </li>
-                <li className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-xl">
-                  <Link href={'/postLike'}>좋아요</Link>
-                </li>
-                <li className="flex items-center">
-                  <LogoutButton />
-                </li>
-              </ul>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
+            {user?.profileImage && (
+              <Image
+                src={user.profileImage}
+                alt="프로필 이미지"
+                width={24}
+                height={24}
+                className=""
+              />
+            )}
+          </button>
+        </div>
+        <AnimatePresence>
+          {isOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.2 }}
+              className="origin-top-right absolute right-0 top-[64px] rounded-2xl shadow-lg bg-white"
+            >
+              <div className="mt-[16px] flex">
+                <ul className="flex flex-col">
+                  <li className="flex p-2">
+                    {user?.profileImage && (
+                      <Image
+                        src={user.profileImage}
+                        alt="프로필 이미지"
+                        width={24}
+                        height={24}
+                        className="rounded-md shadow-[0_0_4px_0_rgba(18,18,18,0.1)]"
+                      />
+                    )}
+                    <p className="flex">
+                      <span className="pl-3 text-[16px]">{user?.nickname}</span>
+                      <span className="text-black-600 text-[16px]">님</span>
+                    </p>
+                  </li>
+                  <li className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-xl">
+                    <Link href={'/mypage'} className="flex">
+                      <Image
+                        src="/images/auth/setting.svg"
+                        alt="설정 아이콘"
+                        width={16}
+                        height={15}
+                        className="mr-1"
+                      />
+                      설정
+                    </Link>
+                  </li>
+                  <li className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-xl">
+                    <Link href={'/postLike'} className="flex">
+                      <Image
+                        src="/images/auth/blackHeart.svg"
+                        alt="좋아요 아이콘"
+                        width={16}
+                        height={14}
+                        className="mr-1"
+                      />
+                      좋아요
+                    </Link>
+                  </li>
+                  <li className="flex justify-center items-center">
+                    <LogoutButton />
+                  </li>
+                </ul>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </main>
   );
 }
 

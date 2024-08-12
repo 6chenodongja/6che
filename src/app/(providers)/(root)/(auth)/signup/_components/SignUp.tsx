@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { emailDomains } from '@/utils/emailDomains';
 import { useSignUpForm } from 'hooks/useSignUpForm';
 import { useUserStore } from '@/zustand/store/useUserStore';
+import Image from 'next/image';
 
 function SingUp() {
   const {
@@ -93,7 +94,7 @@ function SingUp() {
         </h1>
         <div className="">
           <div className="grid grid-cols-3 gap-2">
-            <label className="col-span-2 text-[14px] leading-[150%] ml-[2px] text-red-500">
+            <label className="col-span-2 text-[14px] leading-[150%] ml-[2px] text-[#4D4D4D]">
               닉네임
             </label>
             <input
@@ -101,28 +102,39 @@ function SingUp() {
               maxLength={10}
               onChange={handleChange('nickname')}
               value={nickname}
-              className="col-span-2 w-[228px] h-[48px] border border-red-500 rounded-lg hover:border-blue-500 focus:border-blue-500 focus:outline-none pl-4"
+              className="col-span-2 w-[288px] h-[48px] border border-black-500 rounded-lg hover:border-blue-500 focus:border-blue-500 focus:outline-none pl-4"
             />
-            <button
+            {/* <button
               type="button"
               onClick={() => checkNickname(nickname)}
-              className={`col-span-1 w-[56px] h-[48px] text-[12px] bg-[#E6E6E6] text-center text-[#B3B3B3] rounded-lg ml-[35px]  ${isNicknameValid ? 'bg-[#121212]' : 'bg-red-950'}`}
+              className={`col-span-1 w-[56px] h-[48px] text-[12px]  text-center text-[#B3B3B3] rounded-lg ml-[35px]  ${isNicknameValid ? 'bg-[#121212] text-white' : 'bg-[#E6E6E6]'}`}
             >
               {isNicknameValid ? '재확인' : '중복확인'}
-            </button>
+            </button> */}
           </div>
           {error.nickname && (
             <p className="text-red-950 mt-2">{error.nickname}</p>
           )}
           {!error.nickname && isNicknameChecked && (
-            <p className="text-black-700 mt-2">{nicknameMessage}</p>
+            <p className="text-red-950 mt-2">{nicknameMessage}</p>
           )}
           {!error.nickname && !isNicknameChecked && (
-            <p className="text-gray-500 mt-[7px] text-[12px]">최대 10글자</p>
+            <p className="text-black-700 mt-[7px] text-[12px] flex">
+              <Image
+                src="images/ExclamationMarks/ExclamationMarks.svg"
+                alt=""
+                width={12}
+                height={12}
+                className="mr-[3px]"
+              />
+              최대 10글자
+            </p>
           )}
         </div>
         <div className="">
-          <label className="">이메일</label>
+          <label className="font-medium text-sm leading-[21px] tracking-[-0.02em] text-[#4d4d4d]">
+            이메일
+          </label>
           <div className="">
             <input
               type="text"
@@ -131,7 +143,7 @@ function SingUp() {
                 handleChange('email')(e);
               }}
               value={emailId}
-              className="w-[141px] h-[48px] p-2 border-1 border-black-500 rounded-lg hover:border-blue-500 focus:border-blue-500 focus:outline-none pl-4"
+              className="w-[141px] h-[48px] p-2 border-1 border-black-500 rounded-lg hover:border-blue-500 focus:border-blue-500 focus:outline-none pl-4 mr-[6px]"
             />
             {emailDomain === '직접 입력' ? (
               <input
@@ -141,7 +153,6 @@ function SingUp() {
                   handleChange('email')(e);
                 }}
                 value={customEmailDomain}
-                placeholder="도메인 입력"
                 className="w-[141px] h-[48px] p-2 border-1 border-black-500 rounded-lg font-[16px] hover:border-blue-500 focus:border-blue-500 focus:outline-none"
               />
             ) : (
@@ -149,7 +160,7 @@ function SingUp() {
                 title="email select"
                 onChange={handleEmailDomainChange}
                 value={emailDomain}
-                className="w-[141px] h-[48px] p-2 border-1 border-black-500 rounded-lg font-[16px] hover:border-blue-500 focus:border-blue-500 focus:outline-none"
+                className="w-[141px] h-[48px] p-2 border-1 border-black-500 text-bl rounded-lg font-[16px] hover:border-blue-500 focus:border-blue-500 focus:outline-none"
               >
                 {emailDomains.map((domain) => (
                   <option key={domain} value={domain}>
@@ -183,11 +194,11 @@ function SingUp() {
             onChange={handleChange('passwordConfirm')}
             className="w-[288px] h-[48px] border-1 border-black-500 rounded-lg hover:border-blue-500 focus:border-blue-500 focus:outline-none pl-4"
           />
-          {/* {error.passwordConfirm && (
+          {error.passwordConfirm && (
             <p className="text-red-500 mt-2">{error.passwordConfirm}</p>
-          )} */}
+          )}
         </div>
-        <div className="mt-[49px] mb-[10px]">
+        <div className="mt-[49px] mb-[10px] flex">
           <input
             type="checkbox"
             id="over14"
