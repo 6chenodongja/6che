@@ -87,36 +87,43 @@ const ResultPage: React.FC = () => {
           </button>
         </div>
         <div className="grid grid-cols-2 gap-4 mb-4">
-          {posts.map((post, index) => (
-            <div
-              key={post.id}
-              className="w-[142px] h-[200px] bg-gray-200 rounded-lg flex items-center justify-center relative"
-            >
-              <Image
-                src={post.image_url}
-                alt={`Post ${post.id}`}
-                layout="fill"
-                objectFit="cover"
-                className="rounded-lg"
-                quality={100}
-              />
-              <button
-                className="absolute bottom-2 right-2 text-xl backdrop-filter: blur(2px)"
-                onClick={() => handleLikeClick(index)}
+          {posts.map((post, index) => {
+            const imageUrls = post.image_url.split(',');
+
+            return (
+              <div
+                key={post.id}
+                className="w-[142px] h-[200px] bg-gray-200 rounded-lg flex items-center justify-center relative"
               >
-                <Image
-                  src={
-                    likes[index]
-                      ? '/images/icons/redhaert.svg'
-                      : '/images/icons/whitehaert.svg'
-                  }
-                  alt="Like button"
-                  width={24}
-                  height={24}
-                />
-              </button>
-            </div>
-          ))}
+                {imageUrls.map((url, imgIndex) => (
+                  <Image
+                    key={imgIndex}
+                    src={url}
+                    alt={`Post ${post.id} - Image ${imgIndex + 1}`}
+                    layout="fill"
+                    objectFit="cover"
+                    className="rounded-lg"
+                    quality={100}
+                  />
+                ))}
+                <button
+                  className="absolute bottom-2 right-2 text-xl backdrop-filter: blur(2px)"
+                  onClick={() => handleLikeClick(index)}
+                >
+                  <Image
+                    src={
+                      likes[index]
+                        ? '/images/icons/redhaert.svg'
+                        : '/images/icons/whitehaert.svg'
+                    }
+                    alt="Like button"
+                    width={24}
+                    height={24}
+                  />
+                </button>
+              </div>
+            );
+          })}
         </div>
         <div className="flex flex-col items-center space-y-1">
           <h2 className="text-sm text-center text-[#121212]">

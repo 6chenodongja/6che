@@ -7,7 +7,7 @@ import { LogoText } from '../../../icons/LogoText';
 
 const Footer = () => {
   return (
-    <footer className="w-full bg-white py-4 flex flex-col items-start mt-8">
+    <footer className="w-full bg-white py-4 flex flex-col items-start mt-0">
       <nav className="flex flex-col items-start space-y-2 mb-4">
         <LogoText className="w-24 h-8 mb-4" />
         <Link
