@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useEffect, useState, useCallback } from 'react';
-import { useRouter } from 'next/navigation'; // next/router 대신 next/navigation 사용
+import { useRouter } from 'next/navigation'; // next/router 대신 next/navigation 사용!
+import Head from 'next/head';
 import '../../../../app/globals.css';
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -380,7 +381,7 @@ const MainPage = () => {
     [updateWeatherData],
   );
 
-  // 초기 로드 시 날씨 데이터를 가져옴
+  // 초기 로드 시 날씨 데이터를 가져옴!
   useEffect(() => {
     fetchWeatherData();
   }, [fetchWeatherData]);
@@ -456,6 +457,9 @@ const MainPage = () => {
 
   return (
     <div className="container bg-neutral-50 flex flex-col justify-center items-center w-full">
+      <Head>
+        <title>온코디</title>
+      </Head>
       <Header />
 
       <nav className={`navbar ${isMenuOpen ? 'open' : ''}`}>

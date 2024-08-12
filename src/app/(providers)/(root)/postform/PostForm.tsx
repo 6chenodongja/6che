@@ -207,7 +207,7 @@ const PostFormPage = () => {
           </button>
         </div>,
         {
-          autoClose: 5000,
+          autoClose: 2500,
           icon: false,
           closeButton: false,
           className: 'custom-toast',
@@ -217,7 +217,7 @@ const PostFormPage = () => {
         if (!sessionStorage.getItem('redirectToMyStyle')) {
           router.push('/list');
         }
-      }, 5000);
+      }, 2500);
     }
 
     setImages([]);
@@ -595,7 +595,7 @@ const PostFormPage = () => {
       </div>
       <ToastContainer
         position="bottom-center"
-        autoClose={5000}
+        autoClose={2500}
         hideProgressBar
         newestOnTop
         closeOnClick
