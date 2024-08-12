@@ -536,7 +536,7 @@ const PostFormPage = () => {
           </div>
         )}
       </div>
-
+      {/* 활동 선택 섹션 */}
       <div className="mb-8">
         <div className="flex items-center justify-between">
           <div className="flex items-baseline">
