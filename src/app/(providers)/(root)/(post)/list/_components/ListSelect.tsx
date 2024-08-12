@@ -42,8 +42,8 @@ function ListSelects({
 
   return (
     <div className="relative z-10">
-      <div className="w-[320px] h-[50px] relative pt-[8px] pb-[9px] px-[14px]">
-        <div className="flex justify-center items-start w-[75px] absolute left-3.5 top-2">
+      <div className="list-header flex justify-start items-center shrink-0">
+        <div className="flex justify-center items-start w-[75px] shrink-0">
           <div className="flex justify-center items-center flex-grow-0 flex-shrink-0 relative overflow-hidden px-1 py-1.5 rounded-lg]">
             <p className="flex-grow-0 flex-shrink-0 text-sm text-left text-[#121212]">
               <select onChange={handleSortChange} className="bg-[#FAFAFA]">
@@ -122,7 +122,7 @@ function ListSelects({
           </div>
         </div>
         {showDropdown && (
-          <div className="absolute w-[288px] h-[165px] bg-white rounded-lg border border-opacity-50 top-[50px] left-3.5 flex flex-col items-start p-2 z-20">
+          <div className="absolute w-[288px] h-[165px] bg-white rounded-lg border border-opacity-50 top-[50px] left-[16px] flex flex-col items-start p-2 z-20">
             <div className="flex flex-wrap gap-1 border-b border-gray-300 pb-1 mb-2">
               {['유형', '날씨', '계절', '스타일', '장소'].map((item) => (
                 <button
@@ -265,7 +265,7 @@ function ListSelects({
           </div>
         )}
         {showSearchDropdown && (
-          <div className="absolute w-[310px] p-4 top-[50px] left-3.5 bg-white rounded-lg border border-opacity-50 shadow-md backdrop-blur-sm">
+          <div className="absolute w-[290px] p-4 top-[50px] left-3.5 bg-white rounded-lg border border-opacity-50 shadow-md backdrop-blur-sm">
             <div className="flex items-center justify-left mb-2">
               <svg
                 width={24}
@@ -293,9 +293,12 @@ function ListSelects({
               />
             </div>
             <div className="border-b border-black mb-2"></div>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-[6px]">
               {['#봄패션', '#스트릿패션', '#데이트', '#야외'].map((tag) => (
-                <span key={tag} className="text-[#121212]">
+                <span
+                  key={tag}
+                  className="text-[#4D4D4D] text-[12px] font-KR font-normal"
+                >
                   {tag}
                 </span>
               ))}

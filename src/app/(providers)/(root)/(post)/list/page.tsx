@@ -7,23 +7,21 @@ import React, {
   useCallback,
 } from 'react';
 import { supabase } from '@/supabase/client';
-import Image from 'next/image';
-import Link from 'next/link';
 import ListHeader from './_components/ListHeader';
 import ListSelects from './_components/ListSelect';
-import ScrollButtons from './_components/ScrollButtons';
 import _ from 'lodash';
-import { useUserStore } from '@/zustand/store/useUserStore';
-import { Tables } from '../../../../../../types/supabase';
 import Header from 'app/(providers)/(components)/Header';
 import Footer from 'app/(providers)/(components)/Footer';
+import { useUserStore } from '@/zustand/store/useUserStore';
+import { PostItemType, postListLikedType } from '../../../../../../types/post';
+import PostItem from './_components/PostItem';
+import ScrollButtons from './_components/ScrollButtons';
 
 function PostList() {
-  const [liked, setLiked] = useState<{ [key: string]: boolean }>({});
-  const [posts, setPosts] = useState<Tables<'posts'>[]>([]);
-  const [users, setUsers] = useState<Tables<'users'>[]>([]);
+  const [likedPosts, setLikedPosts] = useState<postListLikedType[]>([]);
+  const [posts, setPosts] = useState<PostItemType[]>([]);
   const [latest, setLatest] = useState('latest');
-  const [filteredPosts, setFilteredPosts] = useState<Tables<'posts'>[]>([]);
+  const [filteredPosts, setFilteredPosts] = useState<PostItemType[]>([]);
   const [selectedOptions, setSelectedOptions] = useState<{
     [key: string]: string[];
   }>({});
@@ -32,130 +30,54 @@ function PostList() {
   const [searchInput, setSearchInput] = useState<string>('');
   const [showSearchDropdown, setShowSearchDropdown] = useState<boolean>(false);
 
-  const User = useUserStore();
+  const { user } = useUserStore();
 
-  const handleLike = useCallback(
-    async (postId: string, userId: string) => {
-      try {
-        const isLiked = liked[postId];
+  // 포스트 리스트 가져오기
+  const fetchPosts = useCallback(
+    async (order: string) => {
+      const orderColumn = order === 'latest' ? 'created_at' : 'like';
+      const { data: postList, error } = await supabase
+        .from('posts')
+        .select('*, users(*)')
+        .order(orderColumn, { ascending: false });
 
-        if (isLiked) {
-          await supabase
-            .from('post_likes')
-            .delete()
-            .eq('post_id', postId)
-            .eq('user_id', userId);
-
-          const { data: postData, error: postFetchError } = await supabase
-            .from('posts')
-            .select('like')
-            .eq('id', postId)
-            .single();
-
-          if (postFetchError) {
-            console.log(
-              '해당 포스트의 좋아요 수 가져오기 오류',
-              postFetchError,
-            );
-          }
-          const newLikeCount = (postData?.like || 0) - 1;
-          await supabase
-            .from('posts')
-            .update({ like: newLikeCount })
-            .eq('id', postId);
-
-          setPosts((prevPosts) =>
-            prevPosts.map((post) =>
-              post.id === postId ? { ...post, like: newLikeCount } : post,
-            ),
-          );
-        } else {
-          await supabase
-            .from('post_likes')
-            .insert({ post_id: postId, user_id: userId });
-
-          const { data: postData, error: postFetchError } = await supabase
-            .from('posts')
-            .select('like')
-            .eq('id', postId)
-            .single();
-
-          if (postFetchError) {
-            console.log(
-              '해당 포스트의 좋아요 수 가져오기 실패..',
-              postFetchError,
-            );
-          }
-          const newLikeCount = (postData?.like || 0) + 1;
-          await supabase
-            .from('posts')
-            .update({ like: newLikeCount })
-            .eq('id', postId);
-
-          setPosts((prevPosts) =>
-            prevPosts.map((post) =>
-              post.id === postId ? { ...post, like: newLikeCount } : post,
-            ),
-          );
-        }
-
-        setLiked((prevLiked) => ({
-          ...prevLiked,
-          [postId]: !isLiked,
-        }));
-      } catch (error) {
+      if (error) {
         console.error(error);
+      } else {
+        setPosts(postList);
+        setFilteredPosts(postList);
       }
     },
-    [liked],
+    [], // 'user'를 의존성 배열에서 제거했습니다.
   );
 
-  const debouncedHandleLike = _.debounce(handleLike, 500);
+  // post_likes 테이블에 좋아요 유저 정보
+  const fetchUserLiked = useCallback(async () => {
+    if (!user) return;
 
-  const fetchUsers = useCallback(async () => {
-    const { data } = await supabase.from('users').select('*').eq('id', User);
-    if (data) {
-      setUsers(data);
-    }
-  }, [User]);
-
-  useEffect(() => {
-    fetchUsers();
-  }, [fetchUsers]);
-
-  const getNickName = useCallback(
-    (userId: string) => {
-      const user = users.find((user) => user.id === userId);
-      return user ? user.nick_name : 'Unknown';
-    },
-    [users],
-  );
-
-  const fetchPosts = useCallback(async (order: string) => {
-    const orderColumn = order === 'latest' ? 'created_at' : 'like';
-    const { data, error } = await supabase
-      .from('posts')
-      .select('*')
-      .order(orderColumn, { ascending: false });
+    const { data: isLikes, error } = await supabase
+      .from('post_likes')
+      .select('post_id')
+      .eq('user_id', user?.id);
 
     if (error) {
-      console.error(error);
+      console.error('좋아요 누른 유저가 없다:', error);
     } else {
-      setPosts(data);
-      setFilteredPosts(data);
+      setLikedPosts(isLikes);
     }
-  }, []);
+  }, [user]); // user를 의존성 배열에 추가
 
   useEffect(() => {
     fetchPosts(latest);
-  }, [latest, fetchPosts]);
+    fetchUserLiked(); // 'fetchUserLiked'를 의존성 배열에 추가했습니다.
+  }, [latest, fetchPosts, fetchUserLiked]);
 
   const handleSortChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setLatest(e.target.value);
   };
 
   const filterPosts = useCallback(() => {
-    let filtered: Tables<'posts'>[] = [...posts];
+    let filtered: PostItemType[] = [...posts];
 
     Object.keys(selectedOptions).forEach((key) => {
       if (selectedOptions[key].length > 0) {
@@ -241,7 +163,7 @@ function PostList() {
       } else {
         newOptions[selectedTab].push(option);
       }
-      console.log('Selected options:', newOptions);
+      console.log('Selected options:', newOptions); // newOptions가 2개가 동시에 찍힌다 그래서 클릭이 안되는 것 처럼 보인다.
       return newOptions;
     });
   };
@@ -262,7 +184,95 @@ function PostList() {
     setSearchInput(e.target.value);
   };
 
-  console.log(User);
+  const handleLike = useCallback(
+    async (postId: string) => {
+      if (!user) return;
+
+      const isLiked = likedPosts.some(
+        (likedPost) => likedPost.post_id === postId,
+      );
+
+      try {
+        if (isLiked) {
+          await supabase
+            .from('post_likes')
+            .delete()
+            .eq('post_id', postId)
+            .eq('user_id', user?.id);
+
+          const { data: postData, error: postFetchError } = await supabase
+            .from('posts')
+            .select('like')
+            .eq('id', postId)
+            .single();
+
+          if (postFetchError) {
+            console.log(
+              '해당 포스트의 좋아요 수 가져오기 오류',
+              postFetchError,
+            );
+          }
+          const newLikeCount = (postData?.like || 0) - 1;
+          await supabase
+            .from('posts')
+            .update({ like: newLikeCount })
+            .eq('id', postId);
+
+          setPosts((prevPosts) =>
+            prevPosts.map((post) =>
+              post.id === postId ? { ...post, like: newLikeCount } : post,
+            ),
+          );
+          setLikedPosts((prev) =>
+            prev.filter((post) => post.post_id !== postId),
+          );
+        } else {
+          await supabase
+            .from('post_likes')
+            .insert({ post_id: postId, user_id: user.id });
+
+          const { data: postData, error: postFetchError } = await supabase
+            .from('posts')
+            .select('like')
+            .eq('id', postId)
+            .single();
+
+          if (postFetchError) {
+            console.log(
+              '해당 포스트의 좋아요 수 가져오기 실패..',
+              postFetchError,
+            );
+          }
+          const newLikeCount = (postData?.like || 0) + 1;
+          await supabase
+            .from('posts')
+            .update({ like: newLikeCount })
+            .eq('id', postId);
+
+          setPosts((prevPosts) =>
+            prevPosts.map((post) =>
+              post.id === postId ? { ...post, like: newLikeCount } : post,
+            ),
+          );
+          setLikedPosts((prev) => [...prev, { post_id: postId }]);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    [likedPosts, user],
+  );
+
+  const handleOptionRemove = (key: string, option: string) => {
+    setSelectedOptions((prevOptions) => {
+      const newOptions = { ...prevOptions };
+      newOptions[key] = newOptions[key].filter((item) => item !== option);
+      if (newOptions[key].length === 0) {
+        delete newOptions[key];
+      }
+      return newOptions;
+    });
+  };
 
   return (
     <div className="container mx-auto h-auto bg-[#FAFAFA]">
@@ -288,408 +298,39 @@ function PostList() {
           options.map((option) => (
             <div
               key={`${key}-${option}`}
-              className=" mb-4 px-[10px] pt-[4px] pb-[6px] bg-black text-white rounded"
+              className="mb-[12px] flex items-center h-[32px] gap-[4px] rounded-xl bg-[#121212] text-white px-[12px] pt-[4px] pb-[6px] text-[14px] font-KR font-normal leading-[1.5px] tracking-[-0.28px]"
             >
               {option}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="17"
+                viewBox="0 0 16 17"
+                fill="none"
+                className="flex justify-center items-center w-[16px] h-[16px] cursor-pointer"
+                onClick={() => handleOptionRemove(key, option)}
+              >
+                <path
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                  d="M4.47132 4.02864C4.21097 3.76829 3.78886 3.76829 3.52851 4.02864C3.26816 4.28899 3.26816 4.7111 3.52851 4.97145L7.05711 8.50004L3.52851 12.0286C3.26816 12.289 3.26816 12.7111 3.52851 12.9714C3.78886 13.2318 4.21097 13.2318 4.47132 12.9714L7.99992 9.44285L11.5285 12.9714C11.7889 13.2318 12.211 13.2318 12.4713 12.9714C12.7317 12.7111 12.7317 12.289 12.4713 12.0286L8.94273 8.50004L12.4713 4.97145C12.7317 4.7111 12.7317 4.28899 12.4713 4.02864C12.211 3.76829 11.7889 3.76829 11.5285 4.02864L7.99992 7.55723L4.47132 4.02864Z"
+                  fill="#B3B3B3"
+                />
+              </svg>
             </div>
           )),
         )}
       </div>
-
-      <div className="grid grid-cols-2 gap-y-2 gap-x-2 w-[288px] mx-auto">
+      <div className="grid grid-cols-2 gap-y-2.5 gap-x-2 w-[288px] mx-auto">
         {filteredPosts.map((post) => (
-          <div key={post.id} className="relative w-[140px] object-cover">
-            <Link
-              href={`/detail/${post.id}`}
-              className="w-[140px] h-[200px] block"
-            >
-              {post.image_url && (
-                <Image
-                  src={post.image_url.split(',')[0]}
-                  alt="alt"
-                  width={100}
-                  height={100}
-                  className="w-[140px] h-[200px] object-cover rounded-lg"
-                  priority
-                />
-              )}
-              <div className="absolute top-2 left-2 icon-box p-[4px] text-[#4D4D4D] flex flex-row justify-center items-center gap-2">
-                <div className="list-icon">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="15"
-                    height="12"
-                    viewBox="0 0 15 12"
-                    fill="none"
-                  >
-                    <g filter="url(#filter0_f_4483_794)">
-                      <path
-                        fillRule="evenodd"
-                        clipRule="evenodd"
-                        d="M12.9841 4.95572C13.0627 4.77247 12.8324 4.62728 12.6523 4.713C12.3889 4.83844 12.0941 4.90865 11.7828 4.90865C10.6644 4.90865 9.75772 4.00195 9.75772 2.88348C9.75772 2.57235 9.82788 2.27761 9.95323 2.01422C10.0389 1.83418 9.89371 1.60385 9.71047 1.68247C8.82216 2.06362 8.19995 2.9462 8.19995 3.97411C8.19995 5.35069 9.31586 6.46663 10.6924 6.46663C11.7204 6.46663 12.6031 5.84424 12.9841 4.95572Z"
-                        fill="#FFC329"
-                        fillOpacity="0.8"
-                      />
-                    </g>
-                    <g filter="url(#filter1_d_4483_794)">
-                      <path
-                        fillRule="evenodd"
-                        clipRule="evenodd"
-                        d="M12.9841 4.95572C13.0627 4.77247 12.8324 4.62728 12.6523 4.713C12.3889 4.83844 12.0941 4.90865 11.7828 4.90865C10.6644 4.90865 9.75772 4.00195 9.75772 2.88348C9.75772 2.57235 9.82788 2.27761 9.95323 2.01422C10.0389 1.83418 9.89371 1.60385 9.71047 1.68247C8.82216 2.06362 8.19995 2.9462 8.19995 3.97411C8.19995 5.35069 9.31586 6.46663 10.6924 6.46663C11.7204 6.46663 12.6031 5.84424 12.9841 4.95572Z"
-                        fill="#FFC329"
-                        fillOpacity="0.8"
-                        shapeRendering="crispEdges"
-                      />
-                    </g>
-                    <g filter="url(#filter2_bd_4483_794)">
-                      <path
-                        d="M9.82353 11.2667C11.5778 11.2667 13 10.0578 13 8.56668C13 7.15712 11.7293 5.99984 10.1084 5.87739C9.78628 4.50271 8.35901 3.46667 6.64706 3.46667C4.69782 3.46667 3.11765 4.80982 3.11765 6.46668C3.11765 6.49187 3.11801 6.517 3.11874 6.54205C1.90038 6.80815 1 7.74804 1 8.86668C1 10.1922 2.26414 11.2667 3.82353 11.2667H9.82353Z"
-                        fill="#CCCCCC"
-                        fillOpacity="0.7"
-                        shapeRendering="crispEdges"
-                      />
-                    </g>
-                    <defs>
-                      <filter
-                        id="filter0_f_4483_794"
-                        x="7.19995"
-                        y="0.666626"
-                        width="6.80005"
-                        height="6.80005"
-                        filterUnits="userSpaceOnUse"
-                        colorInterpolationFilters="sRGB"
-                      >
-                        <feFlood floodOpacity="0" result="BackgroundImageFix" />
-                        <feBlend
-                          mode="normal"
-                          in="SourceGraphic"
-                          in2="BackgroundImageFix"
-                          result="shape"
-                        />
-                        <feGaussianBlur
-                          stdDeviation="0.5"
-                          result="effect1_foregroundBlur_4483_794"
-                        />
-                      </filter>
-                      <filter
-                        id="filter1_d_4483_794"
-                        x="7.69995"
-                        y="1.16663"
-                        width="6.80005"
-                        height="6.80005"
-                        filterUnits="userSpaceOnUse"
-                        colorInterpolationFilters="sRGB"
-                      >
-                        <feFlood floodOpacity="0" result="BackgroundImageFix" />
-                        <feColorMatrix
-                          in="SourceAlpha"
-                          type="matrix"
-                          values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-                          result="hardAlpha"
-                        />
-                        <feOffset dx="0.5" dy="0.5" />
-                        <feGaussianBlur stdDeviation="0.5" />
-                        <feComposite in2="hardAlpha" operator="out" />
-                        <feColorMatrix
-                          type="matrix"
-                          values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.06 0"
-                        />
-                        <feBlend
-                          mode="normal"
-                          in2="BackgroundImageFix"
-                          result="effect1_dropShadow_4483_794"
-                        />
-                        <feBlend
-                          mode="normal"
-                          in="SourceGraphic"
-                          in2="effect1_dropShadow_4483_794"
-                          result="shape"
-                        />
-                      </filter>
-                      <filter
-                        id="filter2_bd_4483_794"
-                        x="-1"
-                        y="1.46667"
-                        width="16"
-                        height="11.8"
-                        filterUnits="userSpaceOnUse"
-                        colorInterpolationFilters="sRGB"
-                      >
-                        <feFlood floodOpacity="0" result="BackgroundImageFix" />
-                        <feGaussianBlur
-                          in="BackgroundImageFix"
-                          stdDeviation="1"
-                        />
-                        <feComposite
-                          in2="SourceAlpha"
-                          operator="in"
-                          result="effect1_backgroundBlur_4483_794"
-                        />
-                        <feColorMatrix
-                          in="SourceAlpha"
-                          type="matrix"
-                          values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-                          result="hardAlpha"
-                        />
-                        <feOffset dx="0.5" dy="-0.5" />
-                        <feGaussianBlur stdDeviation="0.5" />
-                        <feComposite in2="hardAlpha" operator="out" />
-                        <feColorMatrix
-                          type="matrix"
-                          values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.05 0"
-                        />
-                        <feBlend
-                          mode="normal"
-                          in2="effect1_backgroundBlur_4483_794"
-                          result="effect2_dropShadow_4483_794"
-                        />
-                        <feBlend
-                          mode="normal"
-                          in="SourceGraphic"
-                          in2="effect2_dropShadow_4483_794"
-                          result="shape"
-                        />
-                      </filter>
-                    </defs>
-                  </svg>
-                </div>
-                26°
-              </div>
-            </Link>
-
-            {/* 좋아요 부분 */}
-            <div
-              className={`absolute bottom-6 right-0  bg-opacity-50 p-1 m-1 text-sm rounded-lg cursor-pointer  ${
-                liked[post.id] ? 'text-red-500' : ''
-              }`}
-              onClick={() => debouncedHandleLike(post.id, post.user_id)}
-            >
-              {liked[post.id] ? (
-                <svg
-                  width={24}
-                  height={24}
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  className=" relative"
-                  preserveAspectRatio="xMidYMid meet"
-                >
-                  <g filter="url(#filter0_b_2350_1039)">
-                    <path
-                      d="M9.46702 18.6916C9.31172 18.6061 9.1021 18.4874 8.85564 18.3396C8.37314 18.0502 7.70013 17.6199 7 17.0801C6.32882 16.5625 5.46297 15.8156 4.72066 14.8617C4.03396 13.9792 3 12.3407 3 10.1404C3 7.30146 5.23858 5 8 5C9.6356 5 11.0878 5.8074 12 7.05568C12.9122 5.8074 14.3644 5 16 5C18.7614 5 21 7.30146 21 10.1404C21 12.3407 19.966 13.9792 19.2793 14.8617C18.537 15.8156 17.6712 16.5625 17 17.0801C16.2999 17.6199 15.6269 18.0502 15.1444 18.3396C14.8979 18.4874 14.6883 18.6061 14.533 18.6916L13.8357 19.0518C12.6842 19.6466 11.3158 19.6466 10.1643 19.0518L9.46702 18.6916Z"
-                      fill="#FF4732"
-                      fillOpacity="0.85"
-                    />
-                  </g>
-                  <defs>
-                    <filter
-                      id="filter0_b_2350_1039"
-                      x={1}
-                      y={3}
-                      width={22}
-                      height="18.4978"
-                      filterUnits="userSpaceOnUse"
-                      colorInterpolationFilters="sRGB"
-                    >
-                      <feFlood floodOpacity={0} result="BackgroundImageFix" />
-                      <feGaussianBlur
-                        in="BackgroundImageFix"
-                        stdDeviation={1}
-                      />
-                      <feComposite
-                        in2="SourceAlpha"
-                        operator="in"
-                        result="effect1_backgroundBlur_2350_1039"
-                      />
-                      <feBlend
-                        mode="normal"
-                        in="SourceGraphic"
-                        in2="effect1_backgroundBlur_2350_1039"
-                        result="shape"
-                      />
-                    </filter>
-                  </defs>
-                </svg>
-              ) : (
-                <svg
-                  width={24}
-                  height={24}
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-6 h-6 relative"
-                  preserveAspectRatio="xMidYMid meet"
-                >
-                  <g filter="url(#filter0_b_2350_1040)">
-                    <path
-                      d="M9.46702 18.6916C9.31172 18.6061 9.1021 18.4874 8.85564 18.3396C8.37314 18.0502 7.70013 17.6199 7 17.0801C6.32882 16.5625 5.46297 15.8156 4.72066 14.8617C4.03396 13.9792 3 12.3407 3 10.1404C3 7.30146 5.23858 5 8 5C9.6356 5 11.0878 5.8074 12 7.05568C12.9122 5.8074 14.3644 5 16 5C18.7614 5 21 7.30146 21 10.1404C21 12.3407 19.966 13.9792 19.2793 14.8617C18.537 15.8156 17.6712 16.5625 17 17.0801C16.2999 17.6199 15.6269 18.0502 15.1444 18.3396C14.8979 18.4874 14.6883 18.6061 14.533 18.6916L13.8357 19.0518C12.6842 19.6466 11.3158 19.6466 10.1643 19.0518L9.46702 18.6916Z"
-                      fill="#CCCCCC"
-                      fillOpacity="0.7"
-                    />
-                  </g>
-                  <defs>
-                    <filter
-                      id="filter0_b_2350_1040"
-                      x={-1}
-                      y={1}
-                      width={26}
-                      height="22.4978"
-                      filterUnits="userSpaceOnUse"
-                      colorInterpolationFilters="sRGB"
-                    >
-                      <feFlood floodOpacity={0} result="BackgroundImageFix" />
-                      <feGaussianBlur
-                        in="BackgroundImageFix"
-                        stdDeviation={2}
-                      />
-                      <feComposite
-                        in2="SourceAlpha"
-                        operator="in"
-                        result="effect1_backgroundBlur_2350_1040"
-                      />
-                      <feBlend
-                        mode="normal"
-                        in="SourceGraphic"
-                        in2="effect1_backgroundBlur_2350_1040"
-                        result="shape"
-                      />
-                    </filter>
-                  </defs>
-                </svg>
-              )}
-            </div>
-            <div className="mt-2">
-              <div className="text-sm">
-                <span className="flex justify-between">
-                  {/* 날짜이모지와 닉네임  */}
-                  <span className="font-bold text-[14px] flex flex-row gap-[4px]">
-                    <div className="w-[20px] h-[20px] p-[1px] flex justify-center items-center icon">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="16"
-                        height="12"
-                        viewBox="0 0 16 12"
-                        fill="none"
-                      >
-                        <path
-                          d="M8.33088 5.5C6.9055 5.5 5.75 4.68636 5.75 3.68269C5.75 2.73395 6.78248 1.95501 8.09942 1.87259C8.36115 0.947331 9.52081 0.25 10.9118 0.25C12.4955 0.25 13.7794 1.15404 13.7794 2.26923C13.7794 2.28619 13.7791 2.3031 13.7785 2.31996C14.7684 2.49907 15.5 3.13169 15.5 3.88462C15.5 4.77677 14.4729 5.5 13.2059 5.5H8.33088Z"
-                          fill="#B3B3B3"
-                        />
-                        <g filter="url(#filter0_bd_4322_3812)">
-                          <path
-                            d="M10.4265 10.75C12.4001 10.75 14 9.47143 14 7.89423C14 6.40335 12.5704 5.17931 10.747 5.04979C10.3846 3.59581 8.77888 2.5 6.85294 2.5C4.66005 2.5 2.88235 3.92063 2.88235 5.67308C2.88235 5.69973 2.88276 5.7263 2.88358 5.7528C1.51292 6.03425 0.5 7.02836 0.5 8.21154C0.5 9.61349 1.92215 10.75 3.67647 10.75H10.4265Z"
-                            fill="#CCCCCC"
-                            fillOpacity="0.7"
-                            shapeRendering="crispEdges"
-                          />
-                        </g>
-                        <defs>
-                          <filter
-                            id="filter0_bd_4322_3812"
-                            x="-1.5"
-                            y="0.5"
-                            width="17.5"
-                            height="12.25"
-                            filterUnits="userSpaceOnUse"
-                            colorInterpolationFilters="sRGB"
-                          >
-                            <feFlood
-                              floodOpacity="0"
-                              result="BackgroundImageFix"
-                            />
-                            <feGaussianBlur
-                              in="BackgroundImageFix"
-                              stdDeviation="1"
-                            />
-                            <feComposite
-                              in2="SourceAlpha"
-                              operator="in"
-                              result="effect1_backgroundBlur_4322_3812"
-                            />
-                            <feColorMatrix
-                              in="SourceAlpha"
-                              type="matrix"
-                              values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-                              result="hardAlpha"
-                            />
-                            <feOffset dx="0.5" dy="-0.5" />
-                            <feGaussianBlur stdDeviation="0.5" />
-                            <feComposite in2="hardAlpha" operator="out" />
-                            <feColorMatrix
-                              type="matrix"
-                              values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.06 0"
-                            />
-                            <feBlend
-                              mode="normal"
-                              in2="effect1_backgroundBlur_4322_3812"
-                              result="effect2_dropShadow_4322_3812"
-                            />
-                            <feBlend
-                              mode="normal"
-                              in="SourceGraphic"
-                              in2="effect2_dropShadow_4322_3812"
-                              result="shape"
-                            />
-                          </filter>
-                        </defs>
-                      </svg>
-                    </div>
-                    {getNickName(post.user_id)}
-                  </span>
-                  <span className="flex flex-row text-[12px]  justify-center items-center">
-                    <svg
-                      width={16}
-                      height={17}
-                      viewBox="0 0 16 17"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="flex-grow-0 flex-shrink-0 w-4 h-4 relative"
-                      preserveAspectRatio="xMidYMid meet"
-                    >
-                      <g filter="url(#filter0_b_2959_4387)">
-                        <path
-                          d="M6.31135 12.961C6.20782 12.904 6.06807 12.8249 5.90376 12.7263C5.58209 12.5334 5.13342 12.2465 4.66667 11.8866C4.21921 11.5416 3.64198 11.0437 3.1471 10.4077C2.68931 9.81938 2 8.72707 2 7.26022C2 5.36756 3.49238 3.83325 5.33333 3.83325C6.42373 3.83325 7.39185 4.37152 8 5.2037C8.60815 4.37152 9.57627 3.83325 10.6667 3.83325C12.5076 3.83325 14 5.36756 14 7.26022C14 8.72707 13.3107 9.81938 12.8529 10.4077C12.358 11.0437 11.7808 11.5416 11.3333 11.8866C10.8666 12.2465 10.4179 12.5334 10.0962 12.7263C9.93193 12.8249 9.79218 12.904 9.68865 12.961C8.62937 13.5082 7.37063 13.5082 6.31135 12.961Z"
-                          fill="#121212"
-                        />
-                      </g>
-                      <defs>
-                        <filter
-                          id="filter0_b_2959_4387"
-                          x={0}
-                          y="1.83325"
-                          width={16}
-                          height="13.5381"
-                          filterUnits="userSpaceOnUse"
-                          colorInterpolationFilters="sRGB"
-                        >
-                          <feFlood
-                            floodOpacity={0}
-                            result="BackgroundImageFix"
-                          />
-                          <feGaussianBlur
-                            in="BackgroundImageFix"
-                            stdDeviation={1}
-                          />
-                          <feComposite
-                            in2="SourceAlpha"
-                            operator="in"
-                            result="effect1_backgroundBlur_2959_4387"
-                          />
-                          <feBlend
-                            mode="normal"
-                            in="SourceGraphic"
-                            in2="effect1_backgroundBlur_2959_4387"
-                            result="shape"
-                          />
-                        </filter>
-                      </defs>
-                    </svg>
-                    {post.like}
-                  </span>
-                </span>
-              </div>
-            </div>
-          </div>
+          <PostItem
+            post={post}
+            key={post.id}
+            isLiked={likedPosts.some(
+              (likedPost) => likedPost.post_id === post.id,
+            )}
+            handleLike={handleLike}
+          />
         ))}
         <ScrollButtons />
       </div>
@@ -697,5 +338,4 @@ function PostList() {
     </div>
   );
 }
-
 export default PostList;

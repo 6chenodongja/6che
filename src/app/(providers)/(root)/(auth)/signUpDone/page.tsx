@@ -1,13 +1,21 @@
-import Link from 'next/link';
+// 파일 경로: signUpDone/page.tsx
 import React from 'react';
+import Header from 'app/(providers)/(components)/Header';
+import Footer from 'app/(providers)/(components)/Footer';
+import SingUpDone from './_components/SingUpDone';
+import BottomSheet from './_components/BottomSheet'; // 추가
 
-function SingUpDone() {
+function SignUpDonePage() {
   return (
-    <main>
-      <h1>회원가입 완료</h1>
-      <Link href={'/login'}>로그인 홈페이지로 이동</Link>
+    <main className="container bg-neutral-50 flex flex-col justify-center items-center w-full">
+      <div className="bg-[#FAFAFA] w-full">
+        <Header />
+        <SingUpDone />
+        <BottomSheet />
+        <Footer />
+      </div>
     </main>
   );
 }
 
-export default SingUpDone;
+export default SignUpDonePage;
