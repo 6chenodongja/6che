@@ -70,9 +70,9 @@ const PostLike = () => {
               <div className="text-[#4D4D4D] font-KR mt-[46px] ml-[53px] mr-[52px] flex justify-center w-[215px] gap-0 tracking-[-1.8px]">
                 아직 좋아요를 한 스타일이 없어요
               </div>
-
+              {/* ! */}
               <Link href={'/list'}>
-                <button className="myPage-style-text myStyle-button flex justify-center items-center mx-auto p-3 rounded-lg mt-[50px] w-[232px]">
+                <button className="myPage-style-text myStyle-button flex justify-center items-center mx-auto p-3 rounded-lg mt-[50px] w-[232px] hover:bg-[#5EB0FF] transition-colors duration-300">
                   스타일 보러 가기
                 </button>
               </Link>
