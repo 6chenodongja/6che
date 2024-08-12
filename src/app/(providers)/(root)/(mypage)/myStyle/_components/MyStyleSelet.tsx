@@ -125,7 +125,7 @@ function MyStyleSelect({
 
   return (
     <div>
-      <div className="mt-2">
+      <div className="mt-7">
         <MyStyleFilter
           selectedOptions={selectedOptions}
           handleOptionClick={handleOptionClick}

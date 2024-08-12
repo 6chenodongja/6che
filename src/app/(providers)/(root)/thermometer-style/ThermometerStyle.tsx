@@ -28,7 +28,7 @@ const outfits: { [key: string]: Outfit[] } = {
     { imageSrc: '/images/Weather2/short_sleeve_t-shirt.svg', label: '반팔티' },
     { imageSrc: '/images/Weather2/shorts.svg', label: '반바지' },
     { imageSrc: '/images/Weather2/short_skirt.svg', label: '짧은 치마' },
-    { imageSrc: '/images/Weather2/linen.svg', label: '린넨 옷' },      
+    { imageSrc: '/images/Weather2/linen.svg', label: '린넨 옷' },
   ],
   '23° - 27°': [
     { imageSrc: '/images/Weather2/short_sleeve_t-shirt.svg', label: '반팔티' },
