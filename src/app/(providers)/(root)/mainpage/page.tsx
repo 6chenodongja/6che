@@ -16,7 +16,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Header from '../../(components)/Header';
 import Footer from '../../(components)/Footer';
 import { supabase } from '@/supabase/client';
-import BottomSheet from './components/BottomSheet'; // 은겸: BottomSheet 컴포넌트 추가
+import BottomSheet from './components/BottomSheet';
 
 // Post 타입 정의
 interface Post {
@@ -286,7 +286,7 @@ const MainPage = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedWeatherElements, setSelectedWeatherElements] = useState<
     string[]
-  >([]); // 은겸: 선택된 날씨 요소들을 관리하는 상태 추가
+  >([]);
 
   const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -422,31 +422,34 @@ const MainPage = () => {
     });
   };
 
-  // 시간대에 따른 배경색을 반환하는 함수
-  const getBackgroundByTime = (hours: number) => {
-    if (hours >= 7 && hours < 9) {
-      return 'linear-gradient(180deg, rgba(41,140,255,1) 0%, rgba(95,163,243,0.6) 34%, rgba(255,149,24,0.3) 69%, rgba(255,205,30,0.1) 100%)';
-    } else if (hours >= 9 && hours < 13) {
-      return 'linear-gradient(180deg, rgba(41,140,255,0.8) 0%, rgba(95,163,243,0.5) 34%, rgba(156,190,229,0.2) 69%, rgba(255,255,255,0) 100%)';
-    } else if (hours >= 13 && hours < 16) {
-      return 'linear-gradient(180deg, rgba(41,140,255,1) 0%, rgba(81,158,248,0.7) 34%, rgba(95,163,243,0.3) 69%, rgba(95,163,243,0) 100%)';
-    } else if (hours >= 16 && hours < 18) {
-      return 'linear-gradient(180deg, rgba(41,140,255,1) 0%, rgba(81,108,248,0.6) 34%, rgba(255,149,24,0.3) 69%, rgba(255,205,30,0.1) 100%)';
-    } else if (hours >= 18 && hours < 20) {
-      return 'linear-gradient(180deg, rgba(7,39,122,1) 0%, rgba(20,80,183,0.6) 47%, rgba(183,25,34,0.3) 87%, rgba(255,178,30,0.1) 100%)';
-    } else {
-      return 'linear-gradient(180deg, rgba(17,25,47,1) 0%, rgba(26,35,66,0.6) 60%, rgba(34,45,92,0) 100%)';
-    }
-  };
+  // 클라이언트에서 시간대에 따른 배경색과 텍스트 색상 설정을 관리하는 부분
+  const [backgroundStyle, setBackgroundStyle] = useState({});
+  const [textColor, setTextColor] = useState('text-[#121212]');
 
-  const currentHours = new Date().getHours();
-  const backgroundStyle = { background: getBackgroundByTime(currentHours) };
+  useEffect(() => {
+    const currentHours = new Date().getHours();
 
-  // 텍스트 색상 시간에 따라 동적으로 설정
-  const isNightTime = currentHours >= 18 || currentHours < 7;
-  const textColor = isNightTime ? 'text-white' : 'text-[#121212]';
+    const getBackgroundByTime = (hours: number) => {
+      if (hours >= 7 && hours < 9) {
+        return 'linear-gradient(180deg, rgba(41,140,255,1) 0%, rgba(95,163,243,0.6) 34%, rgba(255,149,24,0.3) 69%, rgba(255,205,30,0.1) 100%)';
+      } else if (hours >= 9 && hours < 13) {
+        return 'linear-gradient(180deg, rgba(41,140,255,0.8) 0%, rgba(95,163,243,0.5) 34%, rgba(156,190,229,0.2) 69%, rgba(255,255,255,0) 100%)';
+      } else if (hours >= 13 && hours < 16) {
+        return 'linear-gradient(180deg, rgba(41,140,255,1) 0%, rgba(81,158,248,0.7) 34%, rgba(95,163,243,0.3) 69%, rgba(95,163,243,0) 100%)';
+      } else if (hours >= 16 && hours < 18) {
+        return 'linear-gradient(180deg, rgba(41,140,255,1) 0%, rgba(81,108,248,0.6) 34%, rgba(255,149,24,0.3) 69%, rgba(255,205,30,0.1) 100%)';
+      } else if (hours >= 18 && hours < 20) {
+        return 'linear-gradient(180deg, rgba(7,39,122,1) 0%, rgba(20,80,183,0.6) 47%, rgba(183,25,34,0.3) 87%, rgba(255,178,30,0.1) 100%)';
+      } else {
+        return 'linear-gradient(180deg, rgba(17,25,47,1) 0%, rgba(26,35,66,0.6) 60%, rgba(34,45,92,0) 100%)';
+      }
+    };
 
-  // 은겸: 바텀시트에서 요소를 선택할 때 호출되는 함수 추가
+    const isNightTime = currentHours >= 18 || currentHours < 7;
+    setTextColor(isNightTime ? 'text-white' : 'text-[#121212]');
+    setBackgroundStyle({ background: getBackgroundByTime(currentHours) });
+  }, []);
+
   const handleElementSelection = (elements: string[]) => {
     setSelectedWeatherElements(elements);
   };
@@ -1021,10 +1024,10 @@ const MainPage = () => {
       <Footer />
 
       {showModal && (
-        <BottomSheet // 은겸 : BottomSheet 컴포넌트를 사용하여 바텀시트를 추가함
+        <BottomSheet
           onClose={() => setShowModal(false)}
-          onSelectElements={handleElementSelection} // 은겸 : 요소 선택 핸들러를 바텀시트에 전달함
-          selectedElements={selectedWeatherElements} // 은겸: 선택된 요소들을 전달함
+          onSelectElements={handleElementSelection}
+          selectedElements={selectedWeatherElements}
         />
       )}
     </div>

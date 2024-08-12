@@ -43,7 +43,7 @@ const outfits: { [key: string]: Outfit[] } = {
     { imageSrc: '/images/Weather2/cotton_pants.svg', label: '면바지' },
   ],
   '17° - 19°': [
-    { imageSrc: '/images/Weather2/cardigan.svg', label: '가디건' },
+    { imageSrc: '/images/Weather2/Cardigan.svg', label: '가디건' },
     { imageSrc: '/images/Weather2/man_to_man.svg', label: '맨투맨' },
     { imageSrc: '/images/Weather2/hood.svg', label: '후드' },
     { imageSrc: '/images/Weather2/hose.svg', label: '긴 바지' },
