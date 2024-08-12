@@ -73,10 +73,19 @@ const PostFormPage = () => {
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const filesArray = Array.from(e.target.files);
+
+      // webp 형식의 파일 업로드 한건지 확인
+      const isWebp = filesArray.some((file) => file.type === 'image/webp');
+      if (isWebp) {
+        toast.error('webp 형식의 이미지는 업로드할 수 없습니다.');
+        return;
+      }
+
       if (images.length + filesArray.length > 3) {
         setImageError(true);
         return;
       }
+
       setImages((prevImages) => [...prevImages, ...filesArray]);
     }
   };
@@ -108,8 +117,33 @@ const PostFormPage = () => {
   };
 
   const handleSubmit = async () => {
+    // 필수 필드 체크
     if (images.length === 0) {
-      setImageError(true);
+      toast.error('최소 1개 이미지를 업로드해야 합니다.');
+      return;
+    }
+    if (!description.trim()) {
+      toast.error('글 작성을 해야 합니다.');
+      return;
+    }
+    if (!gender) {
+      toast.error('유형을 선택해야 합니다.');
+      return;
+    }
+    if (!weatherIcon || !temperature) {
+      toast.error('날씨와 기온을 선택해야 합니다.');
+      return;
+    }
+    if (seasons.length === 0) {
+      toast.error('계절을 선택해야 합니다.');
+      return;
+    }
+    if (style.length === 0) {
+      toast.error('스타일을 선택해야 합니다.');
+      return;
+    }
+    if (locations.length === 0) {
+      toast.error('활동을 선택해야 합니다.');
       return;
     }
 
@@ -128,6 +162,8 @@ const PostFormPage = () => {
 
       const imageUrl = supabase.storage.from('images').getPublicUrl(data.path)
         .data.publicUrl;
+
+      console.log('Uploaded Image URL:', imageUrl);
       uploadedImageUrls.push(imageUrl);
     }
 
@@ -161,22 +197,27 @@ const PostFormPage = () => {
     } else {
       console.log('Data inserted successfully');
       toast.success(
-        <div>
-          등록이 완료 되었습니다
+        <div className="toast-message">
+          <span>게시 완료되었습니다</span>
           <button
             onClick={() => router.push('/myStyle')}
-            className="ml-2 text-blue-500 underline"
+            className="text-[#4d4d4d] font-caption font-normal text-xs no-underline"
           >
             내 코디
           </button>
         </div>,
-        { autoClose: 3000 },
+        {
+          autoClose: 5000,
+          icon: false,
+          closeButton: false,
+          className: 'custom-toast',
+        },
       );
       setTimeout(() => {
         if (!sessionStorage.getItem('redirectToMyStyle')) {
           router.push('/list');
         }
-      }, 3000);
+      }, 5000);
     }
 
     setImages([]);
@@ -271,7 +312,6 @@ const PostFormPage = () => {
           />
         </button>
         <div className="flex-grow text-center">
-          {/* <h2 className="text-xl font-bold flex-grow font-subtitle-KR-medium"> */}
           <h2 className="font-subtitle-KR-medium font-medium text-base leading-130 tracking--0.32 text-black opacity-sds-size-stroke-border">
             코디 등록
           </h2>
@@ -384,7 +424,6 @@ const PostFormPage = () => {
               key={genderItem}
               type="button"
               onClick={() => setGender(genderItem)}
-              // className={buttonClass(gender === genderItem)}
               className={`px-2 py-0.5 border-2 cursor-pointer rounded ${
                 gender.includes(genderItem)
                   ? 'border-black bg-black text-white'
@@ -422,7 +461,6 @@ const PostFormPage = () => {
               key={season}
               type="button"
               onClick={() => handleSeasonClick(season)}
-              // className={buttonClass(seasons.includes(season))}
               className={`px-2 py-0.5 border-2 cursor-pointer rounded ${
                 seasons.includes(season)
                   ? 'border-black bg-black text-white'
@@ -466,8 +504,6 @@ const PostFormPage = () => {
               key={index}
               type="button"
               onClick={() => handleStyleClick(styleItem)}
-              // className={buttonClass(style.includes(styleItem))}
-
               className={`px-2 py-0.5 border-2 cursor-pointer rounded ${
                 style.includes(styleItem)
                   ? 'border-black bg-black text-white'
@@ -525,7 +561,6 @@ const PostFormPage = () => {
               key={index}
               type="button"
               onClick={() => handleLocationClick(locationItem)}
-              // className={buttonClass(locations.includes(locationItem))}
               className={`px-2 py-0.5 border-2 cursor-pointer rounded ${
                 locations.includes(locationItem)
                   ? 'border-black bg-black text-white'
@@ -560,7 +595,7 @@ const PostFormPage = () => {
       </div>
       <ToastContainer
         position="bottom-center"
-        autoClose={3000}
+        autoClose={5000}
         hideProgressBar
         newestOnTop
         closeOnClick
