@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState, useCallback } from 'react';
-import { useRouter } from 'next/navigation'; // next/router 대신 next/navigation 사용!
+import { useRouter } from 'next/navigation';
 import Head from 'next/head';
 import '../../../../app/globals.css';
 import 'swiper/css';
@@ -93,6 +93,29 @@ const formatDate = (dateString: string): string => {
 // 화씨 온도를 섭씨로 변환하는 함수
 const convertFahrenheitToCelsius = (fahrenheit: number) => {
   return ((fahrenheit - 32) * 5) / 9;
+};
+
+// weather 아이콘을 반환하는 함수
+const getWeatherIconUrl = (weatherCode: string): string => {
+  console.log(`Received weather code: ${weatherCode}`);
+
+  // weatherCode에서 파일 이름만 추출
+  const parsedCode = weatherCode.split(' ')[0];
+  console.log(`Parsed weather code: ${parsedCode}`);
+
+  const iconMap: Record<string, string> = {
+    '/sun.svg': '/images/Weather/sun.svg',
+    '/blur.svg': '/images/Weather/blur.svg',
+    '/rain.svg': '/images/Weather/rain.svg',
+    '/wind.svg': '/images/Weather/wind.svg',
+    '/thunderstorm.svg': '/images/Weather/thunderstorm.svg',
+    '/snow.svg': '/images/Weather/snow.svg',
+    '/sleet.svg': '/images/Weather/sleet.svg',
+  };
+
+  const url = iconMap[parsedCode] || '/icons/default.svg';
+  console.log(`Weather icon URL: ${url}`);
+  return url;
 };
 
 // 게시글 데이터를 가져오고 필터링하는 함수
@@ -210,25 +233,6 @@ const LocationInput = ({
 
   return (
     <>
-      {/* <div
-        className="absolute"
-        style={{
-          top: '-86px',
-          right: '-44px',
-          width: '94px',
-          height: '94px',
-          zIndex: 0, // Sun.svg의 z-index를 0으로 설정하여 뒤로 보냄
-        }}
-      >
-        <Image
-          src="/images/Sun.svg"
-          alt="Sun"
-          className="object-contain"
-          width={94}
-          height={94}
-        />
-      </div> */}
-
       <div
         className="h-[26px] px-2 py-1 bg-white/40 rounded-full shadow border border-white/50 linear-gradient(37deg, rgba(255,255,255,0.5018601190476191) 0%, rgba(255,255,255,0) 100%) background: rgb(255,255,255) backdrop-blur-[20px] justify-center items-center inline-flex"
         style={{ zIndex: 1, cursor: 'pointer' }} // 위치 박스 z-index를 1로 설정하여 앞으로 보냄 및 cursor 속성 추가
@@ -490,8 +494,8 @@ const MainPage = () => {
       <main
         className="container flex flex-col items-center w-full text-white py-8 px-4"
         style={{
-          ...backgroundStyle, // 기존 배경 스타일을 유지하고
-          paddingTop: '64px', // 헤더 높이만큼 패딩을 추가
+          ...backgroundStyle,
+          marginTop: '-4px',
         }}
       >
         <LocationInput setWeather={updateWeatherData} />
@@ -548,8 +552,8 @@ const MainPage = () => {
                   </span>
 
                   <span
-                    className="text-[63.6px] font-[400] leading-[63.6px] tracking-[0] whitespace-nowrap font-['Varela']"
-                    style={{ marginTop: '-16px', marginLeft: '2px' }}
+                    className="text-[50px] font-[400] leading-[50px] tracking-[0] whitespace-nowrap font-['Varela']"
+                    style={{ marginTop: '-10px', marginLeft: '-10px' }}
                   >
                     °
                   </span>
@@ -566,7 +570,7 @@ const MainPage = () => {
           style={{ top: '12px', zIndex: 10, marginBottom: '24px' }}
         >
           {weather ? (
-            <span className="text-[#121212] text-sm font-normal font-['Noto Sans KR'] leading-[18.20px]">
+            <span className="text-[#121212] text-sm font-medium font-['Noto Sans KR'] leading-[18.20px]">
               {difference !== null ? (
                 Math.abs(difference) <= 0.9 ? (
                   '어제 기온과 비슷해요'
@@ -697,7 +701,6 @@ const MainPage = () => {
                 >
                   {filteredPosts.map((post, index) => {
                     const validImageUrl = isValidImageUrl(post.image_url);
-
                     const imageUrl = validImageUrl
                       ? post.image_url
                       : '/images/default_image.png';
@@ -706,6 +709,10 @@ const MainPage = () => {
                     const postTemperature = postTempMatch
                       ? parseInt(postTempMatch[1], 10)
                       : 'N/A';
+
+                    const weatherIcon = post.weather
+                      ? getWeatherIconUrl(post.weather)
+                      : null;
 
                     return (
                       <SwiperSlide key={index}>
@@ -720,14 +727,24 @@ const MainPage = () => {
                             width={113.6}
                             height={160}
                           />
-                          <div className="w-6 h-6 left-[84px] top-[132px] absolute justify-center items-center inline-flex">
-                            <div className="w-6 h-6 relative backdrop-blur-[20px] flex-col justify-start items-start flex" />
-                          </div>
+
                           <div className="px-1 py-px left-[10px] top-[10px] absolute bg-white/50 rounded border border-white/60 justify-start items-center gap-0.5 inline-flex">
                             <div className="w-4 h-4 bg-white rounded-sm backdrop-blur-[20px] justify-center items-center flex">
-                              <div className="w-4 h-4 p-0.5 bg-white/60 rounded justify-center items-center inline-flex">
-                                <div className="w-3 h-3 relative" />
-                              </div>
+                              {weatherIcon && weatherIcon !== 'undefined' ? (
+                                <Image
+                                  src={weatherIcon}
+                                  alt="Weather Icon"
+                                  width={16}
+                                  height={16}
+                                />
+                              ) : (
+                                <Image
+                                  src="/images/default_image.png" // 기본 이미지 아이콘으로 대체
+                                  alt="Default Icon"
+                                  width={16}
+                                  height={16}
+                                />
+                              )}
                             </div>
                             <div className=" text-black text-sm font-normal font-varela leading-[18.20px]">
                               {postTemperature}°
