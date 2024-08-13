@@ -99,16 +99,36 @@ const Header = () => {
         <div className="navbar-close" onClick={handleMenuToggle}>
           &times;
         </div>
+        <style jsx>{`
+          .menu-item {
+            display: block;
+            padding: 10px 20px;
+            text-align: center;
+            border-radius: 20px;
+            transition: background-color 0.3s ease;
+          }
+
+          .menu-item:hover {
+            background-color: black !important;
+            color: white !important;
+          }
+
+          .navbar ul li:first-child a {
+            background-color: transparent !important;
+            color: #4d4d4d !important;
+          }
+        `}</style>
+
         <ul>
           <li>
-            <Link href="/" onClick={handleMenuToggle}>
+            <Link href="/" onClick={handleMenuToggle} className="menu-item">
               홈
             </Link>
           </li>
           <li>
             <a
               onClick={() => handleNavigation('/list')}
-              className="cursor-pointer"
+              className="cursor-pointer menu-item"
             >
               스타일
             </a>
@@ -116,13 +136,15 @@ const Header = () => {
           <li>
             <a
               onClick={() => handleNavigation('/list')}
-              className="cursor-pointer"
+              className="cursor-pointer menu-item"
             >
               옷차림
             </a>
           </li>
           <li>
-            <Link href="/survey">취향 코디</Link>
+            <Link href="/survey" className="menu-item">
+              취향 코디
+            </Link>
           </li>
         </ul>
       </nav>

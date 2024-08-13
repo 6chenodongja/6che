@@ -522,8 +522,8 @@ const MainPage = () => {
           <div
             className="absolute"
             style={{
-              top: '35px', // 새로운 구름 이미지의 위치 조정
-              right: '9px', // 새로운 구름 이미지의 위치 조정
+              top: '35px',
+              right: '9px',
               width: '189px',
               height: '115px',
               zIndex: 1, // 뒤쪽에 배치
@@ -535,6 +535,23 @@ const MainPage = () => {
               className="object-contain"
               width={143}
               height={83}
+            />
+          </div>
+
+          <div
+            className="absolute"
+            style={{
+              top: '-23px', // 새로운 이미지의 위치 조정
+              right: '-124px', // 새로운 이미지의 위치 조정
+              zIndex: 0, // 뒤쪽에 배치
+            }}
+          >
+            <Image
+              src="/images/up_cloud.svg"
+              alt="Up Cloud"
+              className="object-contain"
+              width={113}
+              height={53}
             />
           </div>
 
@@ -553,7 +570,7 @@ const MainPage = () => {
 
                   <span
                     className="text-[50px] font-[400] leading-[50px] tracking-[0] whitespace-nowrap font-['Varela']"
-                    style={{ marginTop: '-10px', marginLeft: '-10px' }}
+                    style={{ marginTop: '-8px', marginLeft: '-2px' }}
                   >
                     °
                   </span>
@@ -615,8 +632,8 @@ const MainPage = () => {
                         src="/images/tshirt.svg"
                         alt="반팔티"
                         className="object-contain"
-                        width={53.04}
-                        height={55}
+                        width={54}
+                        height={56}
                       />
                     </div>
                   </div>
@@ -624,16 +641,16 @@ const MainPage = () => {
 
                 <div className="w-[88px] h-[100px] px-[17px] py-2.5 bg-white/40 rounded-2xl shadow border border-white linear-gradient(37deg, rgba(255,255,255,0.5018601190476191) 0%, rgba(255,255,255,0) 100%) background: rgb(255,255,255) backdrop-blur-[20px] flex-col justify-center items-center gap-2 inline-flex">
                   <div className="text-center text-[#121212]/70 text-xs font-normal font-['Noto Sans KR'] leading-none">
-                    반바지
+                    민소매
                   </div>
                   <div className="w-[54px] h-14 relative flex-col justify-start items-start flex">
                     <div className="w-[53.04px] h-[55px] relative">
                       <Image
-                        src="/images/shorts.svg"
-                        alt="반바지"
+                        src="/images/Box.svg"
+                        alt="민소매"
                         className="object-contain"
-                        width={53.04}
-                        height={55}
+                        width={54}
+                        height={56}
                       />
                     </div>
                   </div>
@@ -649,8 +666,8 @@ const MainPage = () => {
                         src="/images/shirt.svg"
                         alt="셔츠"
                         className="object-contain"
-                        width={55}
-                        height={55}
+                        width={56.22}
+                        height={64.82}
                       />
                     </div>
                   </div>
