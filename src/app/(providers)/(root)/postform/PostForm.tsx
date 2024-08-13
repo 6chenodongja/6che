@@ -31,6 +31,8 @@ const PostFormPage = () => {
   const [styleError, setStyleError] = useState(false);
   const [locationError, setLocationError] = useState(false);
   const [imageError, setImageError] = useState(false);
+  const [addStyleError, setAddStyleError] = useState(false);
+  const [addLocationError, setAddLocationError] = useState(false);
   const { user } = useUserStore();
 
   const initialStyles = [
@@ -68,9 +70,20 @@ const PostFormPage = () => {
     if (locationError)
       timers.push(setTimeout(() => setLocationError(false), 1000));
     if (imageError) timers.push(setTimeout(() => setImageError(false), 1000));
+    if (addStyleError)
+      timers.push(setTimeout(() => setAddStyleError(false), 1000));
+    if (addLocationError)
+      timers.push(setTimeout(() => setAddLocationError(false), 1000));
 
     return () => timers.forEach(clearTimeout);
-  }, [seasonError, styleError, locationError, imageError]);
+  }, [
+    seasonError,
+    styleError,
+    locationError,
+    imageError,
+    addStyleError,
+    addLocationError,
+  ]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -270,18 +283,22 @@ const PostFormPage = () => {
   };
 
   const handleAddStyle = () => {
-    if (newStyle && !styles.includes(newStyle)) {
+    if (newStyle && styles.length - initialStyles.length < 5) {
       setStyles((prevStyles) => [...prevStyles, newStyle]);
       setNewStyle('');
       setShowStyleInput(false);
+    } else {
+      setAddStyleError(true);
     }
   };
 
   const handleAddLocation = () => {
-    if (newLocation && !locationsList.includes(newLocation)) {
+    if (newLocation && locationsList.length - initialLocations.length < 5) {
       setLocationsList((prevLocations) => [...prevLocations, newLocation]);
       setNewLocation('');
       setShowLocationInput(false);
+    } else {
+      setAddLocationError(true);
     }
   };
 
@@ -322,6 +339,7 @@ const PostFormPage = () => {
           완료
         </button>
       </div>
+
       <div className="mb-4 flex flex-col items-start">
         <Swiper
           spaceBetween={5}
@@ -409,6 +427,7 @@ const PostFormPage = () => {
         </div>
         <div className="border-b border-black-100 pb-2"></div>
       </div>
+
       <div className="mb-8">
         <div className="text-[#4d4d4d]  font-subtitle-KR-small text-sm not-italic font-bold  leading-[150%] tracking-[-0.28px]">
           유형
@@ -430,6 +449,7 @@ const PostFormPage = () => {
           ))}
         </div>
       </div>
+
       <div className="mb-8">
         <div className="text-[#4d4d4d] font-subtitle-KR-small text-sm not-italic font-bold  leading-[150%] tracking-[-0.28px]">
           날씨
@@ -439,6 +459,7 @@ const PostFormPage = () => {
           setTemperature={setTemperature}
         />
       </div>
+
       <div className="mb-8">
         <div className="flex items-baseline">
           <div className="text-[#4d4d4d] font-subtitle-KR-small text-sm not-italic font-bold  leading-[150%] tracking-[-0.28px]">
@@ -470,6 +491,7 @@ const PostFormPage = () => {
           </div>
         )}
       </div>
+
       <div className="mb-8">
         <div className="flex items-center justify-between">
           <div className="flex items-baseline">
@@ -523,11 +545,17 @@ const PostFormPage = () => {
           )}
         </div>
         {styleError && (
-          <div className="text-red-500 text-sm mt-1">
+          <div className="text-sm mt-1" style={{ color: 'red' }}>
             최대 2개의 스타일을 선택할 수 있습니다.
           </div>
         )}
+        {addStyleError && (
+          <div className="text-sm mt-1" style={{ color: 'red' }}>
+            최대 5개의 스타일을 추가할 수 있습니다.
+          </div>
+        )}
       </div>
+
       <div className="mb-8">
         <div className="flex items-center justify-between">
           <div className="flex items-baseline">
@@ -581,8 +609,13 @@ const PostFormPage = () => {
           )}
         </div>
         {locationError && (
-          <div className="text-red-500 text-sm mt-1">
+          <div className="text-sm mt-1" style={{ color: 'red' }}>
             최대 2개의 장소를 선택할 수 있습니다.
+          </div>
+        )}
+        {addLocationError && (
+          <div className="text-sm mt-1" style={{ color: 'red' }}>
+            최대 5개의 활동을 추가할 수 있습니다.
           </div>
         )}
       </div>
