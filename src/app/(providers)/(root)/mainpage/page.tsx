@@ -570,7 +570,9 @@ const MainPage = () => {
           style={{ top: '12px', zIndex: 10, marginBottom: '24px' }}
         >
           {weather ? (
-            <span className="text-[#121212] text-sm font-medium font-['Noto Sans KR'] leading-[18.20px]">
+            <span
+              className={`${textColor} text-sm font-medium font-['Noto Sans KR'] leading-[18.20px]`}
+            >
               {difference !== null ? (
                 Math.abs(difference) <= 0.9 ? (
                   '어제 기온과 비슷해요'
