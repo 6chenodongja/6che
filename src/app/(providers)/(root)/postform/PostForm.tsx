@@ -9,8 +9,10 @@ import WeatherDropdown from './components/WeatherDropdown';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/swiper-bundle.css';
 import { useUserStore } from '@/zustand/store/useUserStore';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import {
+  ToastComponent,
+  showToast,
+} from '../../../(providers)/(components)/Toast';
 
 const PostFormPage = () => {
   const [images, setImages] = useState<File[]>([]);
@@ -77,7 +79,7 @@ const PostFormPage = () => {
       // webp 형식의 파일 업로드 한건지 확인
       const isWebp = filesArray.some((file) => file.type === 'image/webp');
       if (isWebp) {
-        toast.error('webp 형식의 이미지는 업로드할 수 없습니다.');
+        showToast('webp 형식의 이미지는 업로드할 수 없습니다.', 'error');
         return;
       }
 
@@ -119,31 +121,31 @@ const PostFormPage = () => {
   const handleSubmit = async () => {
     // 필수 필드 체크
     if (images.length === 0) {
-      toast.error('최소 1개 이미지를 업로드해야 합니다.');
+      showToast('최소 1개 이미지를 업로드해야 합니다.', 'error');
       return;
     }
     if (!description.trim()) {
-      toast.error('글 작성을 해야 합니다.');
+      showToast('글 작성을 해야 합니다.', 'error');
       return;
     }
     if (!gender) {
-      toast.error('유형을 선택해야 합니다.');
+      showToast('유형을 선택해야 합니다.', 'error');
       return;
     }
     if (!weatherIcon || !temperature) {
-      toast.error('날씨와 기온을 선택해야 합니다.');
+      showToast('날씨와 기온을 선택해야 합니다.', 'error');
       return;
     }
     if (seasons.length === 0) {
-      toast.error('계절을 선택해야 합니다.');
+      showToast('계절을 선택해야 합니다.', 'error');
       return;
     }
     if (style.length === 0) {
-      toast.error('스타일을 선택해야 합니다.');
+      showToast('스타일을 선택해야 합니다.', 'error');
       return;
     }
     if (locations.length === 0) {
-      toast.error('활동을 선택해야 합니다.');
+      showToast('활동을 선택해야 합니다.', 'error');
       return;
     }
 
@@ -196,7 +198,7 @@ const PostFormPage = () => {
       console.error('Error inserting data:', postError);
     } else {
       console.log('Data inserted successfully');
-      toast.success(
+      showToast(
         <div className="toast-message">
           <span>게시 완료되었습니다</span>
           <button
@@ -206,12 +208,7 @@ const PostFormPage = () => {
             내 코디
           </button>
         </div>,
-        {
-          autoClose: 2500,
-          icon: false,
-          closeButton: false,
-          className: 'custom-toast',
-        },
+        'success',
       );
       setTimeout(() => {
         if (!sessionStorage.getItem('redirectToMyStyle')) {
@@ -297,6 +294,7 @@ const PostFormPage = () => {
 
   return (
     <div className="w-full max-w-[320px] mx-auto flex flex-col min-h-[636px] bg-[#fafafa] mt-10 px-4">
+      <ToastComponent />
       <div className="flex items-center justify-between mb-4 pb-2 border-b">
         <button
           type="button"
@@ -324,7 +322,6 @@ const PostFormPage = () => {
           완료
         </button>
       </div>
-
       <div className="mb-4 flex flex-col items-start">
         <Swiper
           spaceBetween={5}
@@ -397,7 +394,6 @@ const PostFormPage = () => {
           최대 3개의 이미지만 업로드할 수 있습니다.
         </div>
       )}
-
       <div className="mb-4">
         <div className="border-t border-black-100 pt-2"></div>
         <textarea
@@ -413,7 +409,6 @@ const PostFormPage = () => {
         </div>
         <div className="border-b border-black-100 pb-2"></div>
       </div>
-
       <div className="mb-8">
         <div className="text-[#4d4d4d]  font-subtitle-KR-small text-sm not-italic font-bold  leading-[150%] tracking-[-0.28px]">
           유형
@@ -435,7 +430,6 @@ const PostFormPage = () => {
           ))}
         </div>
       </div>
-
       <div className="mb-8">
         <div className="text-[#4d4d4d] font-subtitle-KR-small text-sm not-italic font-bold  leading-[150%] tracking-[-0.28px]">
           날씨
@@ -445,7 +439,6 @@ const PostFormPage = () => {
           setTemperature={setTemperature}
         />
       </div>
-
       <div className="mb-8">
         <div className="flex items-baseline">
           <div className="text-[#4d4d4d] font-subtitle-KR-small text-sm not-italic font-bold  leading-[150%] tracking-[-0.28px]">
@@ -477,7 +470,6 @@ const PostFormPage = () => {
           </div>
         )}
       </div>
-
       <div className="mb-8">
         <div className="flex items-center justify-between">
           <div className="flex items-baseline">
@@ -536,7 +528,6 @@ const PostFormPage = () => {
           </div>
         )}
       </div>
-
       <div className="mb-8">
         <div className="flex items-center justify-between">
           <div className="flex items-baseline">
@@ -595,17 +586,6 @@ const PostFormPage = () => {
           </div>
         )}
       </div>
-      <ToastContainer
-        position="bottom-center"
-        autoClose={2500}
-        hideProgressBar
-        newestOnTop
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
     </div>
   );
 };

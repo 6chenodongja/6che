@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/supabase/client';
-import { Toaster, toast } from 'react-hot-toast';
+import { ToastComponent, showToast } from '../../../../(components)/Toast';
 
 const ResetPasswordForm = () => {
   const [password, setPassword] = useState('');
@@ -31,7 +31,7 @@ const ResetPasswordForm = () => {
         refresh_token: refreshToken,
       });
     } else {
-      toast.error('유효하지 않은 토큰입니다.');
+      showToast('유효하지 않은 토큰입니다.', 'error');
       setTimeout(() => router.push('/'), 2000);
     }
   }, [router]);
@@ -64,17 +64,17 @@ const ResetPasswordForm = () => {
     event.preventDefault();
 
     if (password !== confirmPassword) {
-      toast.error('비밀번호가 일치하지 않습니다.');
+      showToast('비밀번호가 일치하지 않습니다.', 'error');
       return;
     }
 
     if (passwordMessage) {
-      toast.error(passwordMessage);
+      showToast(passwordMessage, 'error');
       return;
     }
 
     if (!token) {
-      toast.error('유효하지 않은 토큰입니다.');
+      showToast('유효하지 않은 토큰입니다.', 'error');
       return;
     }
 
@@ -82,16 +82,16 @@ const ResetPasswordForm = () => {
 
     if (error) {
       console.error('비밀번호 업데이트 오류:', error);
-      toast.error('현재 비밀번호와 신규 비밀번호가 동일합니다.');
+      showToast('현재 비밀번호와 신규 비밀번호가 동일합니다.', 'error');
     } else {
-      toast.success('비밀번호가 성공적으로 업데이트되었습니다.');
+      showToast('비밀번호가 성공적으로 업데이트되었습니다.', 'success');
       setTimeout(() => router.push('/login'), 2000);
     }
   };
 
   return (
     <div className="w-full max-w-[320px] mx-auto flex flex-col items-center min-h-[636px] bg-white px-4">
-      <Toaster position="bottom-center" reverseOrder={false} />
+      <ToastComponent />
       <div className="w-full">
         <h2 className="font-headline-04 font-bold text-xl text-center mt-[97px] mb-[80px]">
           비밀번호 재설정

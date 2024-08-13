@@ -115,7 +115,11 @@ const FindIdForm = () => {
           </div>
           <button
             type="submit"
-            className={`w-full py-2 rounded-lg ${email && domain !== 'select' ? 'bg-black text-white hover:bg-blue-500' : 'bg-black-100 text-black-300'}`}
+            className={`w-full py-2 rounded-lg ${
+              email && domain !== 'select'
+                ? 'bg-black text-white hover:bg-blue-500'
+                : 'bg-black-100 text-black-300'
+            }`}
             disabled={!email || domain === 'select'}
           >
             계정 확인

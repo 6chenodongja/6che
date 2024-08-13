@@ -821,3 +821,14 @@
 .no-underline {
   text-decoration: none; /* 밑줄 제거 */
 }
+
+.toast-message span {
+  margin-right: auto; /* 텍스트와 버튼 사이의 여백 설정 */
+}
+
+.toast-message button {
+  margin-left: 16px; /* 버튼의 왼쪽 여백을 텍스트와 균등하게 설정 */
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
