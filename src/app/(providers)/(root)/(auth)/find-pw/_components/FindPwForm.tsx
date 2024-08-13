@@ -72,7 +72,7 @@ const FindPwForm = () => {
         <h2 className="text-xl text-center font-headline-04  text-[20px] mb-[40px] font-bold">
           아이디 비밀번호 찾기
         </h2>
-        <div
+        {/* <div
           className="flex justify-center p-4 bg-[#fafafa] border-1 border-black-200 rounded-lg mb-[37px] space-x-4 shadow-sm"
           style={{
             borderRadius: '8px',
@@ -89,7 +89,7 @@ const FindPwForm = () => {
         >
           <button
             type="button"
-            className="w-1/2 py-2 bg-white text-text-default rounded-lg text-[14px] font-KR-button"
+            className="w-[141px] h-[44px] py-1 bg-white text-text-default rounded-lg text-[14px] font-KR-button hover:bg-black-100 hover:text-semantic-color-bg-brand-b active:bg-[#E0E0E0] active:text-blue-400"
             onClick={() => router.push('/find-id')}
           >
             아이디
@@ -101,7 +101,47 @@ const FindPwForm = () => {
           >
             비밀번호
           </button>
+        </div> */}
+
+        <div
+          className="flex justify-center p-1 bg-[#fafafa] border-1 border-black-200 rounded-lg mb-[37px] shadow-sm"
+          style={{
+            borderRadius: '8px',
+            background: 'var(--text-box, rgba(255, 255, 255, 0.50))',
+            boxShadow:
+              '0px 0px 1px 0px rgba(0, 0, 0, 0.10), 0px 2px 10px 0px rgba(0, 0, 0, 0.05)',
+            width: '288px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '4px',
+          }}
+        >
+          <button
+            type="button"
+            className="w-[141px] h-[44px] bg-white text-text-default rounded-lg text-[14px] font-KR-button hover:bg-black-100 hover:text-semantic-color-bg-brand-b active:bg-[#E0E0E0] active:text-blue-400"
+            style={{
+              margin: 0,
+              padding: 0,
+              boxSizing: 'border-box',
+            }}
+            onClick={() => router.push('/find-id')}
+          >
+            아이디
+          </button>
+          <button
+            type="button"
+            className="w-[141px] h-[44px] bg-black text-white rounded-lg text-[14px] font-KR-button"
+            style={{
+              margin: 0,
+              padding: 0,
+              boxSizing: 'border-box',
+            }}
+            onClick={() => router.push('/find-pw')}
+          >
+            비밀번호
+          </button>
         </div>
+
         <div className="mb-1.5">
           <h3 className="not-italic font-medium lineHeight-130% font-subtitle-KR-medium text-base ">
             비밀번호 찾기

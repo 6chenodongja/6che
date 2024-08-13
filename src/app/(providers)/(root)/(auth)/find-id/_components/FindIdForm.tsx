@@ -45,29 +45,38 @@ const FindIdForm = () => {
           아이디 비밀번호 찾기
         </h2>
         <div
-          className="flex justify-center p-4 bg-[#fafafa] border border-gray-300 rounded-lg mb-[37px] space-x-4 shadow-sm"
+          className="flex justify-center p-1 bg-[#fafafa] border border-gray-300 rounded-lg mb-[37px] shadow-sm"
           style={{
             borderRadius: '8px',
-            opacity: 'var(--sds-size-stroke-border)',
             background: 'var(--text-box, rgba(255, 255, 255, 0.50))',
             boxShadow:
               '0px 0px 1px 0px rgba(0, 0, 0, 0.10), 0px 2px 10px 0px rgba(0, 0, 0, 0.05)',
-            display: 'flex',
             width: '288px',
-            padding: '4px',
+            display: 'flex',
             alignItems: 'center',
             gap: '4px',
           }}
         >
           <button
             type="button"
-            className="w-[141px] h-[44px] py-2 bg-black text-white rounded-lg text-[14px] font-KR-button"
+            className="w-[141px] h-[44px] bg-black text-white rounded-lg text-[14px] font-KR-button"
+            style={{
+              margin: 0,
+              padding: 0,
+              boxSizing: 'border-box',
+            }}
           >
             아이디
           </button>
+
           <button
             type="button"
-            className="w-1/2 py-2 bg-white text-text-default rounded-lg text-[14px] font-KR-button"
+            className="w-[141px] h-[44px] bg-white text-text-default rounded-lg text-[14px] font-KR-button hover:bg-black-100 hover:text-semantic-color-bg-brand-b active:bg-[#E0E0E0] active:text-blue-400"
+            style={{
+              margin: 0,
+              padding: 0,
+              boxSizing: 'border-box',
+            }}
             onClick={() => router.push('/find-pw')}
           >
             비밀번호
