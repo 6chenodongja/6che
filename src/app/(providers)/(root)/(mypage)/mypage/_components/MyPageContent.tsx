@@ -142,7 +142,6 @@ function MyPageContent() {
                 height={18}
                 className="flex-grow-0 flex-shrink-0 w-[18px] h-[18px]"
               />
-              {/* </Link> */}
             </div>
             <div className="flex flex-col justify-start items-start self-stretch flex-grow-0 flex-shrink-0 gap-1">
               <div
