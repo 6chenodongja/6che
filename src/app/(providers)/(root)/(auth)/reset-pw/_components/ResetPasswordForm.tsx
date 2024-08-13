@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/supabase/client';
@@ -84,8 +84,9 @@ const ResetPasswordForm = () => {
       console.error('비밀번호 업데이트 오류:', error);
       showToast('현재 비밀번호와 신규 비밀번호가 동일합니다.', 'error');
     } else {
-      showToast('비밀번호가 성공적으로 업데이트되었습니다.', 'success');
-      setTimeout(() => router.push('/login'), 2000);
+      showToast('비밀번호가 재설정 되었습니다.', 'success', '로그인', () =>
+        router.push('/login'),
+      );
     }
   };
 

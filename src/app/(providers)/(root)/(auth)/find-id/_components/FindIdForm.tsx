@@ -83,7 +83,7 @@ const FindIdForm = () => {
           </button>
         </div>
         <div className="mb-1.5">
-          <h3 className="not-italic font-medium lineHeight-130% font-subtitle-KR-medium text-base ">
+          <h3 className="not-italic font-semibold lineHeight-130% font-subtitle-KR-medium text-base ">
             아이디 찾기
           </h3>
           <p className="text-gray-600 mb-9 font-body-KR-small text-[14px]">
