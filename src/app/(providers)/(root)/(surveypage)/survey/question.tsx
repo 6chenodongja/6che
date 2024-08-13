@@ -318,7 +318,7 @@ const QuestionPage: React.FC = () => {
                           className={`flex justify-center items-center w-[140px] h-[140px] relative overflow-hidden gap-2 p-3 rounded-lg cursor-pointer ${
                             selectedOptions[currentQuestionIndex] === option
                               ? 'bg-[#fff7d4] border border-[#ffc329]/80'
-                              : 'bg-white/50 border border-[#808080] backdrop-blur-[10px] hover:bg-[#FFF7D4] hover:border-[rgba(255,214,94,0.80)]'
+                              : 'bg-white/50 border border-[#808080] backdrop-blur-[10px]'
                           }`}
                           onClick={() => handleOptionClick(option)}
                         >
@@ -342,7 +342,7 @@ const QuestionPage: React.FC = () => {
                       className={`flex justify-center items-center w-72 relative overflow-hidden gap-2 p-3 rounded-lg cursor-pointer ${
                         selectedOptions[currentQuestionIndex] === '선택 안함'
                           ? 'bg-[#fff7d4] border border-[#ffc329]/80'
-                          : 'bg-white/50 border border-[#808080] backdrop-blur-[10px] hover:bg-[#FFF7D4] hover:border-[rgba(255,214,94,0.80)]'
+                          : 'bg-white/50 border border-[#808080] backdrop-blur-[10px] '
                       }`}
                       onClick={() => handleOptionClick('선택 안함')}
                     >
@@ -379,7 +379,7 @@ const QuestionPage: React.FC = () => {
                             selectedFourthQuestionOptions.includes(option)) ||
                           selectedOptions[currentQuestionIndex] === option
                             ? 'bg-[#fff7d4] border border-[#ffc329]/80'
-                            : 'bg-white/50 border border-[#808080] backdrop-blur-[10px] hover:bg-[#FFF7D4] hover:border-[rgba(255,214,94,0.80)]'
+                            : 'bg-white/50 border border-[#808080] backdrop-blur-[10px] '
                         }`}
                         onClick={() => handleOptionClick(option)}
                       >
