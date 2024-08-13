@@ -16,7 +16,6 @@ function MyStylePage() {
   const [isLoading, setIsLoading] = useState(true);
   const [posts, setPosts] = useState<Tables<'posts'>[]>([]);
   const [likedPosts, setLikedPosts] = useState<postListLikedType[]>([]);
-
   const { user } = useUserStore();
 
   //내가 올린 게시물 가져오기
