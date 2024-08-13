@@ -253,14 +253,20 @@ const ThermometerStyle: React.FC = () => {
     <div className="w-full max-w-md mx-auto flex flex-col min-h-screen bg-[#FFFFF]">
       <div className="flex flex-col items-center mt-5 mb-8">
         <div
-          className="relative mb-4 mt-10 temperature-display-container"
+          className="relative mb-3 mt-15 temperature-display-container"
           style={{
-            marginTop: '-40px',
+            marginTop: '-41px',
             overflow: 'hidden',
+            display: 'flex',
+            height: '60px',
+            padding: '9px 0px 9px 0px',
+            justifyContent: 'flex-end',
+            alignItems: 'center',
+            flexShrink: 0,
           }}
         >
           <Image
-            src="/images/Thermometer/temperature-box.svg"
+            src="/images/Weather2/temparature_box.svg"
             alt="Temperature Box"
             width={146}
             height={48}
@@ -269,15 +275,36 @@ const ThermometerStyle: React.FC = () => {
           />
           <div
             ref={textContainerRef}
-            className="absolute inset-0 flex items-center justify-center text-lg font-bold temperature-display-text"
+            className="absolute inset-0 flex items-center justify-center text-lg font-medium temperature-display-text"
+            style={{
+              fontFamily: 'Varela',
+              color: '#000',
+              fontSize: '20px',
+            }}
           >
-            {initialView ? '?' : temperatureRanges[temperatureIndex].display}
+            {initialView
+              ? "?"
+              : temperatureRanges[temperatureIndex].display
+                  .split(" - ")
+                  .map((text, i) => (
+                    <React.Fragment key={i}>
+                      {i > 0 && (
+                        <Image
+                          src="/images/Weather2/bar2.svg"
+                          alt="Separator"
+                          width={15} // 원하는 크기
+                          height={10} // 원하는 크기
+                          style={{ margin: "0 5px" }}
+                        />
+                      )}
+                      {text}
+                    </React.Fragment>
+                  ))}
           </div>
         </div>
-        
-        {/* 여기에 추가합니다 */}
+
         <div className="relative w-full grid grid-cols-2 gap-[8px] px-[40px] py-[25px]">
-          {/* 왼쪽 상단 sun.svg 아이콘 */}
+          {/* 상단 sun.svg 아이콘 */}
           <div className="absolute left-[12px] top-[-5px]">
             <Image
               src="/images/Weather2/sun.svg"
@@ -286,23 +313,43 @@ const ThermometerStyle: React.FC = () => {
               height={46}
             />
           </div>
-          
-          {/* 오른쪽 하단 leaf.svg 아이콘 */}
-          <div className="absolute right-[25px] top-[135px] z-[3]">
+
+          {/* 나뭇잎 leaf.svg 아이콘 */}
+          <div
+            className="absolute right-[25px] top-[134px] z-10"
+            style={{
+              flexShrink: 0,
+              opacity: 1,
+            }}
+          >
             <Image
               src="/images/Weather2/leaf.svg"
               alt="Leaf Icon"
-              width={46}
+              width={50}
               height={46}
+              style={{
+                display: 'block',
+                margin: 0,
+                padding: 1,
+                filter: 'drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))',
+              }}
             />
           </div>
-  
+
+          {/* 옷 이미지 */}
           {currentOutfits
             .slice(currentOutfitIndex, currentOutfitIndex + 4)
             .map((outfit, index) => (
               <div
                 key={index}
                 className={`relative w-[115px] h-[130px] bg-white/40 rounded-2xl shadow border border-white backdrop-blur-[20px] flex flex-col items-center justify-center`}
+                style={{
+                  zIndex: index === 1 ? 4 : index === 3 ? 10 : 6,
+                  opacity: 1, // 모든 박스의 투명도를 1로 설정
+                  backdropFilter: 'blur(10px)', // 모든 박스에 blur(20px) 적용
+                  boxShadow:
+                    '0px 0px 1.797px 0px rgba(0, 0, 0, 0.05), 3.595px 3.595px var(--Blur-20, 20px) 0px rgba(0, 0, 0, 0.05)', // 모든 박스에 동일한 box-shadow 적용
+                }}
               >
                 {outfit.imageSrc ? (
                   <div className="w-[66px] h-[66px] mb-2">
@@ -338,13 +385,19 @@ const ThermometerStyle: React.FC = () => {
                 </div>
               </div>
             ))}
-            
-          {/* 왼쪽 버튼 */}
+
+          {/* 이미지 왼쪽 버튼 */}
           {currentOutfitIndex > 0 && (
             <button
               className="absolute left-[8px] top-[50%] transform -translate-y-1/2 flex items-start opacity-[var(--sds-size-stroke-border)] shadow-[0px_1px_2px_0px_rgba(0,0,0,0.10)] backdrop-filter backdrop-blur-[2px] rounded-full z-10"
               onClick={handlePrev}
-              style={{ padding: 0, border: 'none', background: 'transparent' }}
+              style={{
+                padding: 0,
+                border: 'none',
+                background: 'transparent',
+                boxShadow: '0px 1px 2px 0px rgba(0,0,0,0.10)',
+                backdropFilter: 'blur(2px)',
+              }}
             >
               <Image
                 src="/images/Thermometer/skip(512h-png).png"
@@ -356,12 +409,18 @@ const ThermometerStyle: React.FC = () => {
               />
             </button>
           )}
-          {/* 오른쪽 버튼 */}
+          {/* 이미지 오른쪽 버튼 */}
           {currentOutfitIndex + 4 < currentOutfits.length && (
             <button
               className="absolute right-[9px] top-[50%] transform -translate-y-1/2 flex items-start opacity-[var(--sds-size-stroke-border)] shadow-[0px_1px_2px_0px_rgba(0,0,0,0.10)] backdrop-filter backdrop-blur-[2px] rounded-full z-10"
               onClick={handleNext}
-              style={{ padding: 0, border: 'none', background: 'transparent' }}
+              style={{
+                padding: 0,
+                border: 'none',
+                boxShadow: '0px 0px 1px 0px rgba(0,0,0,0.15)',
+                backdropFilter: 'blur(4px)',
+                opacity: 1,
+              }}
             >
               <Image
                 src="/images/Thermometer/skip(512h-png).png"
@@ -384,7 +443,7 @@ const ThermometerStyle: React.FC = () => {
       >
         {/* 왼쪽 버튼 */}
         <button
-          className="absolute left-[35px] top-[41.5%] transform -translate-y-1/2 flex items-center justify-center z-10"
+          className="absolute left-[35px] top-[41.5%] transform -translate-y-1/2 flex items-center justify-center z-1"
           onClick={handleLeftClick}
           style={{ padding: 0, border: 'none', background: 'transparent' }}
         >
@@ -435,7 +494,7 @@ const ThermometerStyle: React.FC = () => {
 
         {/* 오른쪽 버튼 */}
         <button
-          className="absolute right-[35px] top-[41.5%] transform -translate-y-1/2 flex items-center justify-center z-10"
+          className="absolute right-[35px] top-[41.5%] transform -translate-y-1/2 flex items-center justify-center z-1"
           onClick={handleRightClick}
           style={{ padding: 0, border: 'none', background: 'transparent' }}
         >
