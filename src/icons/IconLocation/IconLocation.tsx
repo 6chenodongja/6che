@@ -1,15 +1,11 @@
-/*
-We're constantly improving the code you see. 
-Please share your feedback here: https://form.asana.com/?k=uvp-HPgd3_hyoXRBw1IcNg&d=1152665201300829
-*/
-
-import React from "react";
+import React from 'react';
 
 interface Props {
-  className: any;
+  className?: string;
+  onClick?: () => void;
 }
 
-export const IconLocation = ({ className }: Props): JSX.Element => {
+export const IconLocation = ({ className, onClick }: Props): JSX.Element => {
   return (
     <svg
       className={`${className}`}
@@ -18,6 +14,7 @@ export const IconLocation = ({ className }: Props): JSX.Element => {
       viewBox="0 0 16 16"
       width="16"
       xmlns="http://www.w3.org/2000/svg"
+      onClick={onClick} // onClick 속성을 추가합니다
     >
       <path
         clipRule="evenodd"
@@ -28,3 +25,5 @@ export const IconLocation = ({ className }: Props): JSX.Element => {
     </svg>
   );
 };
+
+export default IconLocation;

@@ -7,7 +7,7 @@ import { LogoText } from '../../../icons/LogoText';
 
 const Footer = () => {
   return (
-    <footer className="w-full bg-white py-4 flex flex-col items-start mt-8">
+    <footer className="w-full bg-white py-4 flex flex-col items-start mt-0">
       <nav className="flex flex-col items-start space-y-2 mb-4">
         <LogoText className="w-24 h-8 mb-4" />
         <Link
@@ -92,7 +92,7 @@ const Footer = () => {
             석재영
           </span>
           <span className="ml-2 text-sm font-normal text-[#4d4d4d] leading-[14px] font-['Noto Sans KR']">
-            한소영
+            한소영.
           </span>
           <br />
           <span className="text-sm font-normal text-[#4d4d4d] leading-[14px] font-['Noto Sans KR']">

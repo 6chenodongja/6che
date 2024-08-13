@@ -1,20 +1,16 @@
 'use client';
 
 import React from 'react';
-import PostFormPage from './PostForm';
-import Header from 'app/(providers)/(components)/Header';
-import Footer from 'app/(providers)/(components)/Footer';
+import PostForm from './PostForm';
 
-function Page() {
+function PostFormPage() {
   return (
-    <div className="container bg-neutral-50 flex flex-col justify-center  items-center w-full min-h-screen">
-      <Header />
-      <main className="container bg-neutral-50 flex flex-col justify-center  items-center w-full min-h-screen">
-        <PostFormPage />
+    <div className="bg-[#fafafa] flex flex-col justify-center items-center w-full min-h-screen p-0 m-0">
+      <main className="bg-[#fafafa] flex flex-col justify-center items-center w-full min-h-screen p-0 m-0">
+        <PostForm />
       </main>
-      <Footer />
     </div>
   );
 }
 
-export default Page;
+export default PostFormPage;
