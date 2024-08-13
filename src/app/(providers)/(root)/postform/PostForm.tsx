@@ -312,7 +312,7 @@ const PostFormPage = () => {
           />
         </button>
         <div className="flex-grow text-center">
-          <h2 className="font-subtitle-KR-medium font-medium text-base leading-130 tracking--0.32 text-black opacity-sds-size-stroke-border">
+          <h2 className="font-subtitle-KR-medium font-bold text-[16px] leading-130 tracking--0.32 text-black opacity-sds-size-stroke-border">
             코디 등록
           </h2>
         </div>
@@ -335,7 +335,7 @@ const PostFormPage = () => {
           {images.length < 3 && (
             <SwiperSlide className="!w-auto">
               <div
-                className="w-24 h-32 bg-black flex flex-col justify-center items-center border border-gray-300 cursor-pointer flex-shrink-0 rounded-md mt-[33px]"
+                className="w-24 h-32 bg-black flex flex-col justify-center items-center cursor-pointer flex-shrink-0 rounded-md mt-[33px]"
                 onClick={(e) => {
                   e.stopPropagation();
                   fileInputRef.current?.click();
@@ -415,7 +415,7 @@ const PostFormPage = () => {
       </div>
 
       <div className="mb-8">
-        <div className="text-[#4d4d4d]  font-subtitle-KR-small text-sm not-italic font-medium  leading-[150%] tracking-[-0.28px]">
+        <div className="text-[#4d4d4d]  font-subtitle-KR-small text-sm not-italic font-bold  leading-[150%] tracking-[-0.28px]">
           유형
         </div>
         <div className="flex gap-2 mt-1 font-body-KR-small text-sm font-normal -text--text">
@@ -437,7 +437,7 @@ const PostFormPage = () => {
       </div>
 
       <div className="mb-8">
-        <div className="text-[#4d4d4d] font-subtitle-KR-small text-sm not-italic font-medium  leading-[150%] tracking-[-0.28px]">
+        <div className="text-[#4d4d4d] font-subtitle-KR-small text-sm not-italic font-bold  leading-[150%] tracking-[-0.28px]">
           날씨
         </div>
         <WeatherDropdown
@@ -448,10 +448,10 @@ const PostFormPage = () => {
 
       <div className="mb-8">
         <div className="flex items-baseline">
-          <div className="text-[#4d4d4d] font-subtitle-KR-small text-sm not-italic font-medium  leading-[150%] tracking-[-0.28px]">
+          <div className="text-[#4d4d4d] font-subtitle-KR-small text-sm not-italic font-bold  leading-[150%] tracking-[-0.28px]">
             계절
           </div>
-          <div className="ml-2 text-[#4d4d4d] font-normal text-sm not-italic leading-[150%] tracking-[-0.28px]">
+          <div className="ml-2 text-[#4d4d4d] font-medium text-sm not-italic leading-[150%] tracking-[-0.28px]">
             (최대 2개)
           </div>
         </div>
@@ -481,10 +481,10 @@ const PostFormPage = () => {
       <div className="mb-8">
         <div className="flex items-center justify-between">
           <div className="flex items-baseline">
-            <div className="text-[#4d4d4d] font-subtitle-KR-small text-sm not-italic font-medium  leading-[150%] tracking-[-0.28px]">
+            <div className="text-[#4d4d4d] font-subtitle-KR-small text-sm not-italic font-bold  leading-[150%] tracking-[-0.28px]">
               스타일
             </div>
-            <div className="ml-2 text-sm text-[#4d4d4d] font-normal not-italic leading-[150%] tracking-[-0.28px]">
+            <div className="ml-2 text-sm text-[#4d4d4d] font-medium not-italic leading-[150%] tracking-[-0.28px]">
               (최대 2개)
             </div>
           </div>
@@ -540,10 +540,12 @@ const PostFormPage = () => {
       <div className="mb-8">
         <div className="flex items-center justify-between">
           <div className="flex items-baseline">
-            <div className="text-[#4d4d4d] font-subtitle-KR-small text-sm not-italic font-medium leading-[150%] tracking-[-0.28px]">
+            <div className="text-[#4d4d4d] font-subtitle-KR-small text-sm not-italic font-bold leading-[150%] tracking-[-0.28px]">
               활동
             </div>
-            <div className="ml-1 text-[#4d4d4d] text-sm">(최대 2개)</div>
+            <div className="ml-1 text-[#4d4d4d] text-sm font-medium">
+              (최대 2개)
+            </div>
           </div>
           <div className="flex gap-2">
             <button
@@ -603,6 +605,8 @@ const PostFormPage = () => {
         pauseOnFocusLoss
         draggable
         pauseOnHover
+
+        // 은겸 수정
       />
     </div>
   );
