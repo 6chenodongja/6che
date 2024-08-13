@@ -16,6 +16,7 @@ import { useUserStore } from '@/zustand/store/useUserStore';
 import { PostItemType, postListLikedType } from '../../../../../../types/post';
 import PostItem from './_components/PostItem';
 import ScrollButtons from './_components/ScrollButtons';
+import { useRouter } from 'next/navigation';
 
 function PostList() {
   const [likedPosts, setLikedPosts] = useState<postListLikedType[]>([]);
@@ -29,6 +30,7 @@ function PostList() {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [searchInput, setSearchInput] = useState<string>('');
   const [showSearchDropdown, setShowSearchDropdown] = useState<boolean>(false);
+  const router = useRouter();
 
   const { user } = useUserStore();
 
@@ -186,7 +188,11 @@ function PostList() {
 
   const handleLike = useCallback(
     async (postId: string) => {
-      if (!user) return;
+      if (!user) {
+        alert('로그인이 되어있지 않습니다');
+        router.replace('/login');
+        return;
+      }
 
       const isLiked = likedPosts.some(
         (likedPost) => likedPost.post_id === postId,
@@ -229,7 +235,7 @@ function PostList() {
         } else {
           await supabase
             .from('post_likes')
-            .insert({ post_id: postId, user_id: user.id });
+            .insert({ post_id: postId, user_id: user?.id });
 
           const { data: postData, error: postFetchError } = await supabase
             .from('posts')
