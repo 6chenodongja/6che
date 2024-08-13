@@ -139,7 +139,7 @@ function MyStyleSelect({
         />
       </div>
 
-      <div className="flex justify-start items-center gap-[4px] ml-4">
+      <div className="flex justify-start items-center gap-[4px] ml-4 flex-wrap">
         {Object.entries(selectedOptions).map(([key, options]) =>
           options.map((option) => (
             <div

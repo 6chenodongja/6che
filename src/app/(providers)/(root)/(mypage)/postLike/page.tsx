@@ -9,7 +9,6 @@ import { useUserStore } from '@/zustand/store/useUserStore';
 import Header from 'app/(providers)/(components)/Header';
 import { postLikedItem } from '../../../../../../types/post';
 import MyListPage from './_components/MyListPage';
-import { useCallback } from 'react';
 import MyNotStyleHeader from '../myStyle/_components/MyNotStyleHeader';
 
 const PostLike = () => {

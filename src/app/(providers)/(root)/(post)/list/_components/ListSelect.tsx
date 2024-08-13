@@ -122,12 +122,12 @@ function ListSelects({
           </div>
         </div>
         {showDropdown && (
-          <div className="absolute w-[288px] h-[165px] bg-white rounded-lg border border-opacity-50 top-[50px] left-[16px] flex flex-col items-start p-2 z-20">
+          <div className="absolute w-[288px] h-[165px] bg-white rounded-lg border border-opacity-50 top-[50px] left-[16px] flex flex-col items-start p-2 z-20 flex-wrap">
             <div className="flex flex-wrap gap-1 border-b border-gray-300 pb-1 mb-2">
               {['유형', '날씨', '계절', '스타일', '장소'].map((item) => (
                 <button
                   key={item}
-                  className={`w-[50px] h-[33px] flex justify-center items-center rounded-lg text-[#121212] relative ${
+                  className={`w-[50px] h-[33px] flex justify-center items-center rounded-lg text-[#121212] relative  ${
                     selectedTab === item ? 'font-bold' : ''
                   }`}
                   onClick={() => handleTabClick(item)}

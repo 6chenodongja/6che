@@ -38,9 +38,9 @@ function MyNotLikeHeader() {
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="overflow-hidden absolute left-0 w-full bg-white shadow-lg rounded-b-lg"
+            className="absolute overflow-hidden left-0 bg-white shadow-lg rounded-b-lg"
           >
-            <div className="myPage-style flex px-3 py-4 items-center self-stretch gap-2 ">
+            <div className="myPage-style flex px-3 py-4 items-center self-stretch gap-2 w-full">
               <Link href={'/myStyle'}>내 코디</Link>
             </div>
           </motion.div>
