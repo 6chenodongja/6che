@@ -31,7 +31,7 @@ interface Post {
   weather: string | null;
 }
 
-// Weather 타입 정의
+// Weather 타입 정의!
 type Weather = {
   Date: string;
   Temperature: {
