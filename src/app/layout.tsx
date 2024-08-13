@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import KakaoScript from './(providers)/(root)/common/KakaoScript';
+
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
@@ -22,8 +23,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body className={inter.className}>{children}</body>
-      <KakaoScript />
+      <link rel="icon" href="/favicon.ico?v=1" />
+      <body className={inter.className}>
+        {children}
+        <KakaoScript />
+      </body>
     </html>
   );
 }
