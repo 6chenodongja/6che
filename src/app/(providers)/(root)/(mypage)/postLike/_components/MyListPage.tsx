@@ -28,9 +28,6 @@ function MyListPage({ posts, setPosts }: PostsProps) {
         return;
       }
 
-      console.log(likedPosts);
-      console.log(postId);
-
       const isLiked = likedPosts.some(
         (likedPost) => likedPost.post_id === postId,
       );
