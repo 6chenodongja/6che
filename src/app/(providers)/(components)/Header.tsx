@@ -113,13 +113,8 @@ const Header = () => {
               스타일
             </a>
           </li>
-          <li>
-            <a
-              onClick={() => handleNavigation('/list')}
-              className="cursor-pointer"
-            >
-              옷차림
-            </a>
+          <li>            
+              <Link href="/thermometer-style">옷 차림</Link>            
           </li>
           <li>
             <Link href="/survey">취향 코디</Link>
