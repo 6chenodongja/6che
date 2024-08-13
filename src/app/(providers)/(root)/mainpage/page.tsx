@@ -240,34 +240,19 @@ const LocationInput = ({
 
       <div
         className="h-[26px] px-2 py-1 bg-white/40 rounded-full shadow border border-white/50 linear-gradient(37deg, rgba(255,255,255,0.5018601190476191) 0%, rgba(255,255,255,0) 100%) background: rgb(255,255,255) backdrop-blur-[20px] justify-center items-center inline-flex"
-        style={{ zIndex: 1 }} // 위치 박스 z-index를 1로 설정하여 앞으로 보냄
+        style={{ zIndex: 1, cursor: 'pointer' }} // 위치 박스 z-index를 1로 설정하여 앞으로 보냄 및 cursor 속성 추가
+        onClick={handleLocationClick} // 박스 전체에 클릭 이벤트를 추가하여 위치 변경
       >
         <div className="justify-start items-center gap-0.5 flex">
-          {isEditing ? (
-            <input
-              type="text"
-              value={location}
-              onChange={handleInputChange}
-              onBlur={handleBlur}
-              autoFocus
-              className="text-[#121212] text-xs font-normal font-['Noto Sans KR'] leading-none bg-transparent border-none outline-none"
-              style={{ whiteSpace: 'nowrap', lineHeight: '1' }}
-            />
-          ) : (
-            <span
-              className="text-[#121212] text-xs font-normal font-['Noto Sans KR'] leading-none"
-              onClick={handleEditClick}
-              style={{ whiteSpace: 'nowrap', lineHeight: '1' }}
-            >
-              {location}
-            </span>
-          )}
+          <span
+            className="text-[#121212] text-xs font-normal font-['Noto Sans KR'] leading-none"
+            style={{ whiteSpace: 'nowrap', lineHeight: '1' }}
+          >
+            {location}
+          </span>
         </div>
         <div className="w-[18px] h-[18px] p-px justify-center items-center flex">
-          <IconLocation
-            className="w-4 h-4 cursor-pointer"
-            onClick={handleLocationClick}
-          />
+          <IconLocation className="w-4 h-4" />
         </div>
       </div>
     </>
