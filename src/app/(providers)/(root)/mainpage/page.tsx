@@ -134,18 +134,6 @@ const LocationInput = ({
   const [isEditing, setIsEditing] = useState(false);
   const [location, setLocation] = useState('서울시 동작구');
 
-  const handleEditClick = () => {
-    setIsEditing(true);
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setLocation(e.target.value);
-  };
-
-  const handleBlur = () => {
-    setIsEditing(false);
-  };
-
   type GeocodeAddressComponent = {
     long_name: string;
     short_name: string;
@@ -199,8 +187,8 @@ const LocationInput = ({
     }
   };
 
-  // 위치 정보를 가져오는 함수
-  const handleLocationClick = () => {
+  // 위치 정보를 자동으로 가져오는 함수
+  useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -209,13 +197,16 @@ const LocationInput = ({
         },
         (error) => {
           console.error('Error getting location', error);
-          alert('위치를 가져올 수 없습니다. 위치 권한을 확인해주세요.');
+          // 초기 위치로 설정 (예: 서울시 동작구)
+          setLocation('서울시 동작구');
         },
       );
     } else {
-      alert('현재 브라우저에서 위치 정보를 사용할 수 없습니다.');
+      console.error('현재 브라우저에서 위치 정보를 사용할 수 없습니다.');
+      // 초기 위치로 설정 (예: 서울시 동작구)
+      setLocation('서울시 동작구');
     }
-  };
+  }, []);
 
   return (
     <>
@@ -241,7 +232,6 @@ const LocationInput = ({
       <div
         className="h-[26px] px-2 py-1 bg-white/40 rounded-full shadow border border-white/50 linear-gradient(37deg, rgba(255,255,255,0.5018601190476191) 0%, rgba(255,255,255,0) 100%) background: rgb(255,255,255) backdrop-blur-[20px] justify-center items-center inline-flex"
         style={{ zIndex: 1, cursor: 'pointer' }} // 위치 박스 z-index를 1로 설정하여 앞으로 보냄 및 cursor 속성 추가
-        onClick={handleLocationClick} // 박스 전체에 클릭 이벤트를 추가하여 위치 변경
       >
         <div className="justify-start items-center gap-0.5 flex">
           <span
@@ -553,12 +543,13 @@ const MainPage = () => {
             >
               {weather && weather.Temperature && weather.Temperature.Metric ? (
                 <>
-                  <span className="text-[63.6px] font-[400] leading-[63.6px] tracking-[0] whitespace-nowrap">
+                  <span className="text-[63.6px] font-[400] leading-[63.6px] tracking-[0] whitespace-nowrap font-['Varela']">
                     {Math.round(weather.Temperature.Metric.Value)}
                   </span>
+
                   <span
-                    className="text-[63.6px] font-[400] leading-[63.6px] tracking-[0] whitespace-nowrap"
-                    style={{ marginTop: '-16px', marginLeft: '2px' }} // ° 기호 위치 조정
+                    className="text-[63.6px] font-[400] leading-[63.6px] tracking-[0] whitespace-nowrap font-['Varela']"
+                    style={{ marginTop: '-16px', marginLeft: '2px' }}
                   >
                     °
                   </span>
@@ -575,16 +566,23 @@ const MainPage = () => {
           style={{ top: '12px', zIndex: 10, marginBottom: '24px' }}
         >
           {weather ? (
-            <span
-              className={`${textColor} text-sm font-semibold font-['Noto Sans KR'] leading-[18.20px]`}
-            >
-              {difference !== null
-                ? Math.abs(difference) <= 0.9
-                  ? '어제 기온과 비슷해요'
-                  : `어제 기온보다 ${Math.round(Math.abs(difference))}° ${
-                      difference > 0 ? '높아요' : '낮아요'
-                    }`
-                : '정보 없음'}
+            <span className="text-[#121212] text-sm font-normal font-['Noto Sans KR'] leading-[18.20px]">
+              {difference !== null ? (
+                Math.abs(difference) <= 0.9 ? (
+                  '어제 기온과 비슷해요'
+                ) : (
+                  <>
+                    어제보다{' '}
+                    <span className="font-normal font-['Varela']">
+                      {Math.round(Math.abs(difference))}
+                    </span>
+                    <span className="font-normal font-['Varela']">°</span>{' '}
+                    낮아요
+                  </>
+                )
+              ) : (
+                '정보 없음'
+              )}
             </span>
           ) : (
             <SkeletonLoader type="difference" />
