@@ -54,7 +54,7 @@ export async function updateSession(request: NextRequest) {
   } else {
     if (request.nextUrl.pathname.startsWith('/postform')) {
       const url = request.nextUrl.clone()
-      url.pathname = '/list'
+      url.pathname = '/login'
       return NextResponse.redirect(url)
     }
   }

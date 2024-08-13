@@ -26,7 +26,6 @@ const Header = () => {
       const response = await fetch('/api/auth/user');
       const user = await response.json();
       if (!user) return;
-      console.log({ user });
       const { data, error } = await createClient()
         .from('users')
         .select('*')
