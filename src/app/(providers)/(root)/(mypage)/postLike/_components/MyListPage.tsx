@@ -96,7 +96,9 @@ function MyListPage({ posts, setPosts }: PostsProps) {
         ))}
         <ScrollButtons />
       </div>
-      <Footer />
+      <div>
+        <Footer />
+      </div>
     </div>
   );
 }
