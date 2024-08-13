@@ -18,7 +18,7 @@ function MyPageContent() {
   };
   const handlerDelete = async () => {
     try {
-      const res = await axios.delete('/api/auth/deletUserId', {
+      const res = await axios.delete('/api/auth/deleteUserId', {
         data: { userId: user?.id },
       });
       if (res.data) {
@@ -132,21 +132,21 @@ function MyPageContent() {
               />
             </Link>
             <div className="flex flex-col justify-start items-start self-stretch flex-grow-0 flex-shrink-0 gap-1">
-              <Link
+              {/* <Link
                 href={'/myStyle'}
                 className="flex justify-between items-center self-stretch flex-grow-0 flex-shrink-0 hover:bg-gray-200/75 px-1.5 py-2.5 rounded-lg"
-              >
-                <p className="flex-grow-0 flex-shrink-0 text-sm text-left text-[#4d4d4d]">
-                  <LogoutButton className="" />
-                </p>
-                <Image
-                  src="/images/Thermometer/arrow_right.svg"
-                  alt="arrow-icon"
-                  width={18}
-                  height={18}
-                  className="flex-grow-0 flex-shrink-0 w-[18px] h-[18px]"
-                />
-              </Link>
+              > */}
+              <p className="flex-grow-0 flex-shrink-0 text-sm text-left text-[#4d4d4d]">
+                <LogoutButton className="" />
+              </p>
+              <Image
+                src="/images/Thermometer/arrow_right.svg"
+                alt="arrow-icon"
+                width={18}
+                height={18}
+                className="flex-grow-0 flex-shrink-0 w-[18px] h-[18px]"
+              />
+              {/* </Link> */}
             </div>
             <div className="flex flex-col justify-start items-start self-stretch flex-grow-0 flex-shrink-0 gap-1">
               <div
