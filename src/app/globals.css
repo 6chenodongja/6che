@@ -779,7 +779,8 @@
 }
 /* 메인 페이지 전용 스타일 */
 
-토스트 알림 스타일-1 .label-style {
+/* 토스트 알림 스타일-1  */
+.label-style {
   color: #4d4d4d;
   font-family: 'Noto Sans KR', sans-serif;
   font-size: 14px;

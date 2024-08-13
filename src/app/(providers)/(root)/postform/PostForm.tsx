@@ -605,8 +605,6 @@ const PostFormPage = () => {
         pauseOnFocusLoss
         draggable
         pauseOnHover
-
-        // 은겸 수정
       />
     </div>
   );
