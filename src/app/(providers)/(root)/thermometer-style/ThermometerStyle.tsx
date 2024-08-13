@@ -48,11 +48,11 @@ const outfits: { [key: string]: Outfit[] } = {
   '17° - 19°': [
     { imageSrc: '/images/Weather2/Cardigan.svg', label: '가디건' },
     { imageSrc: '/images/Weather2/man_to_man.svg', label: '맨투맨' },
-    { imageSrc: '/images/Weather2/hood.svg', label: '후드' },
+    { imageSrc: '/images/Weather2/Hood.svg', label: '후드' },
     { imageSrc: '/images/Weather2/hose.svg', label: '긴 바지' },
   ],
   '12° - 16°': [
-    { imageSrc: '/images/Weather2/cardigan.svg', label: '가디건' },
+    { imageSrc: '/images/Weather2/Cardigan.svg', label: '가디건' },
     { imageSrc: '/images/Weather2/knit.svg', label: '니트' },
     { imageSrc: '/images/Weather2/jacket.svg', label: '자켓' },
     { imageSrc: '/images/Weather2/denim_jacket.svg', label: '청자켓' },
@@ -77,7 +77,7 @@ const outfits: { [key: string]: Outfit[] } = {
     { imageSrc: '/images/Weather2/padding.svg', label: '패딩' },
     { imageSrc: '/images/Weather2/thick_coat.svg', label: '두꺼운 코트' },
     { imageSrc: '/images/Weather2/muffler.svg', label: '머플러' },
-    { imageSrc: '/images/Weather2/gloves.svg', label: '장갑' },
+    { imageSrc: '/images/Weather2/Gloves.svg', label: '장갑' },
   ],
 };
 
