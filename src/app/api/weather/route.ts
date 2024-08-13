@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import axios from 'axios';
 
 async function getLocationKey(lat: string, lon: string) {
-    const apiKey = 'U8AuE7Glix0G2AZ76oRKO1yPSW0gg5WR'; // AccuWeather API 키
+    // const apiKey = 'U8AuE7Glix0G2AZ76oRKO1yPSW0gg5WR'; // AccuWeather API 키
     const response = await axios.get(
         `https://dataservice.accuweather.com/locations/v1/cities/geoposition/search`,
         {

@@ -87,7 +87,6 @@ const ProfileForm: React.FC = () => {
       updates['avatar'] = profileIcon;
     }
     if (!user) return;
-    console.log(updates, user);
     setUser({
       ...user,
       nickname: updates.nick_name || user.nickname,

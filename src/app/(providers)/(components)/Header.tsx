@@ -89,7 +89,10 @@ const Header = () => {
           </>
         ) : (
           <>
-            <Link href={'/login'}>
+            <Link
+              href={'/login'}
+              className="hover:bg-black-100 p-1 rounded-full focus:bg-black-200"
+            >
               <IconLogin className="w-6 h-6" />
             </Link>
           </>

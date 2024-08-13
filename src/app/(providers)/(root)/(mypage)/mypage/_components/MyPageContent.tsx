@@ -18,7 +18,7 @@ function MyPageContent() {
   };
   const handlerDelete = async () => {
     try {
-      const res = await axios.delete('/api/auth/deletUserId', {
+      const res = await axios.delete('/api/auth/deletesUserId', {
         data: { userId: user?.id },
       });
       if (res.data) {
@@ -135,13 +135,6 @@ function MyPageContent() {
               <div className="flex justify-start items-center gap-1">
                 <LogoutButton />
               </div>
-              <Image
-                src="/images/Thermometer/arrow_right.svg"
-                alt="arrow-icon"
-                width={18}
-                height={18}
-                className="flex-grow-0 flex-shrink-0 w-[18px] h-[18px]"
-              />
             </div>
             <div className="flex flex-col justify-start items-start self-stretch flex-grow-0 flex-shrink-0 gap-1">
               <div
@@ -151,13 +144,6 @@ function MyPageContent() {
                 <button className="flex-grow-0 flex-shrink-0 text-sm text-left text-[#4d4d4d]">
                   회원탈퇴
                 </button>
-                <Image
-                  src="/images/Thermometer/arrow_right.svg"
-                  alt="arrow-icon"
-                  width={18}
-                  height={18}
-                  className="flex-grow-0 flex-shrink-0 w-[18px] h-[18px]"
-                />
               </div>
             </div>
           </nav>

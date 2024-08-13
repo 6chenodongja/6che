@@ -122,17 +122,17 @@ function LoginForm() {
           </button>
         </div>
 
-        {/* <div className="flex justify-start items-center w-72 relative gap-3 m-auto">
+        <div className="flex justify-start items-center w-72 relative gap-3 m-auto">
           <div className="flex-grow h-px bg-[#d9d9d9]" />
           <p className="flex-grow-0 flex-shrink-0 text-base text-left text-black">
             or
           </p>
           <div className="flex-grow h-px bg-[#d9d9d9]" />
-        </div> */}
-        {/* <div className="flex flex-col gap-2">
+        </div>
+        <div className="flex flex-col gap-2 justify-center items-center">
           <button
             onClick={() => handleSocialLogin('google')}
-            className="bg-white border-1 hover:bg-[#ccc] hover:bg-opacity-70 border-[#121212] text-[#4D4D4D] font-bold w-[288px] h-[52px] rounded-xl"
+            className="bg-white border-1 hover:bg-[#ccc] hover:bg-opacity-70 border-[#121212]/15 text-[#4D4D4D] font-bold w-[288px] h-[52px] rounded-xl"
           >
             구글로 시작하기
           </button>
@@ -142,7 +142,7 @@ function LoginForm() {
           >
             카카오로 시작하기
           </button>
-        </div> */}
+        </div>
       </form>
     </main>
   );
