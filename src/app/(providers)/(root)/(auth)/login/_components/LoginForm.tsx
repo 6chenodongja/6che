@@ -4,7 +4,7 @@ import { createClient } from '@/supabase/client';
 import Link from 'next/link';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { useUserStore } from '@/zustand/store/useUserStore';
 
@@ -13,7 +13,7 @@ function LoginForm() {
   const passwordRef = useRef<HTMLInputElement>(null);
   const supabase = createClient();
   const router = useRouter();
-  const { setIsLoggedIn } = useUserStore();
+  const { setIsLoggedIn, setUser, isLoggedIn } = useUserStore();
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const email = emailRef.current?.value;
@@ -24,8 +24,15 @@ function LoginForm() {
         password,
       });
       if (res.data) {
+        setUser({
+          id: res.data.id,
+          nickname: res.data.nickname,
+          email: res.data.email,
+          provider: '',
+          profileImage: res.data.avatar,
+        });
         setIsLoggedIn(true);
-        router.replace('/');
+        window.location.href = '/';
       } else {
         alert('로그인 실패');
       }

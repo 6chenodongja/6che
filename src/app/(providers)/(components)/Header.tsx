@@ -9,29 +9,27 @@ import { IconLogin } from '../../../icons/IconLogin';
 import LoadingScreen from '../(components)/LoadingScreen'; // LoadingScreen 컴포넌트를 불러옵니다.
 import LoginDropdown from '@/components/LoginDropdown/LoginDropdown';
 import { useUserStore } from '@/zustand/store/useUserStore';
-import { createBrowserSupabaseClient } from '@/supabase/client';
+import { createClient } from '@/supabase/client';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { user, setUser, isLoggedIn } = useUserStore();
   const router = useRouter();
+
   const handleMenuToggle = () => {
     setIsMenuOpen(!isMenuOpen);
   };
-  const supabase = createBrowserSupabaseClient();
 
   useEffect(() => {
     const getUser = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-
+      const response = await fetch('/api/auth/user');
+      const user = await response.json();
       if (!user) return;
-
-      const { data, error } = await supabase
+      console.log({ user });
+      const { data, error } = await createClient()
         .from('users')
-        .select()
+        .select('*')
         .eq('id', user.id)
         .single();
 
@@ -50,7 +48,8 @@ const Header = () => {
     };
 
     getUser();
-  }, []);
+  }, [setUser]);
+
   const handleLogoClick = () => {
     // 메인화면에서 로고 클릭 시 새로고침
     if (window.location.pathname === '/') {

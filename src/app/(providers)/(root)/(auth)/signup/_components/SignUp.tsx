@@ -70,9 +70,9 @@ function SingUp() {
       setUser({
         id: data.user.id,
         nickname: data.user.user_metadata.name,
-        email: '',
+        email: data.user.user_metadata.email,
         provider: '',
-        profileImage: '',
+        profileImage: data.user.user_metadata.avatar,
       });
     }
 
