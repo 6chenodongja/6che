@@ -18,7 +18,7 @@ function MyPageContent() {
   };
   const handlerDelete = async () => {
     try {
-      const res = await axios.delete('/api/auth/deleteUserId', {
+      const res = await axios.delete('/api/auth/deletUserId', {
         data: { userId: user?.id },
       });
       if (res.data) {
