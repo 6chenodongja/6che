@@ -31,7 +31,7 @@ interface Post {
   weather: string | null;
 }
 
-// Weather 타입 정의!
+// Weather 타입 정의
 type Weather = {
   Date: string;
   Temperature: {
@@ -272,6 +272,30 @@ const LocationInput = ({
       </div>
     </>
   );
+};
+
+// 스켈레톤 로딩 컴포넌트 추가
+const SkeletonLoader = ({ type }: { type: string }) => {
+  switch (type) {
+    case 'temperature':
+      return (
+        <div className="w-[75px] h-[64px] mt-[15px] bg-gray-300 animate-pulse rounded-2xl" />
+      );
+    case 'difference':
+      return (
+        <div className="w-[200px] h-[18px] bg-gray-300 animate-pulse rounded-2xl" />
+      );
+    case 'outfit':
+      return (
+        <div className="w-[88px] h-[100px] bg-gray-300 animate-pulse rounded-2xl" />
+      );
+    case 'recommendation':
+      return (
+        <div className="w-[288px] h-[297px] bg-gray-300 animate-pulse rounded-2xl" />
+      );
+    default:
+      return null;
+  }
 };
 
 // MainPage 컴포넌트
@@ -516,25 +540,6 @@ const MainPage = () => {
             />
           </div>
 
-          {/* <div
-            className="absolute"
-            style={{
-              top: '-27px', // 구름 이미지의 위치 조정
-              right: '-208px', // 구름 이미지의 위치 조정
-              width: '200px',
-              height: '120px',
-              zIndex: 1, // 구름 이미지의 z-index를 1로 설정하여 Sun.svg보다 앞에 위치
-            }}
-          >
-            <Image
-              src="/images/up_cloud.svg"
-              alt="Cloud"
-              className="object-contain"
-              width={146}
-              height={86}
-            />
-          </div> */}
-
           <div
             className="absolute"
             style={{
@@ -561,18 +566,20 @@ const MainPage = () => {
             <div
               className={`absolute top-0 left-0 ${textColor} flex items-start`}
             >
-              <span className="text-[63.6px] font-[400] leading-[63.6px] tracking-[0] whitespace-nowrap">
-                {weather && weather.Temperature && weather.Temperature.Metric
-                  ? Math.round(weather.Temperature.Metric.Value)
-                  : 'N/A'}
-              </span>
-              {weather && weather.Temperature && weather.Temperature.Metric && (
-                <span
-                  className="text-[63.6px] font-[400] leading-[63.6px] tracking-[0] whitespace-nowrap"
-                  style={{ marginTop: '-16px', marginLeft: '2px' }} // ° 기호 위치 조정
-                >
-                  °
-                </span>
+              {weather && weather.Temperature && weather.Temperature.Metric ? (
+                <>
+                  <span className="text-[63.6px] font-[400] leading-[63.6px] tracking-[0] whitespace-nowrap">
+                    {Math.round(weather.Temperature.Metric.Value)}
+                  </span>
+                  <span
+                    className="text-[63.6px] font-[400] leading-[63.6px] tracking-[0] whitespace-nowrap"
+                    style={{ marginTop: '-16px', marginLeft: '2px' }} // ° 기호 위치 조정
+                  >
+                    °
+                  </span>
+                </>
+              ) : (
+                <SkeletonLoader type="temperature" />
               )}
             </div>
           </div>
@@ -595,9 +602,7 @@ const MainPage = () => {
                 : '정보 없음'}
             </span>
           ) : (
-            <div className="text-center text-red-500">
-              날씨 정보를 불러오는데 실패했습니다. 나중에 다시 시도해주세요.
-            </div>
+            <SkeletonLoader type="difference" />
           )}
         </div>
 
@@ -609,147 +614,161 @@ const MainPage = () => {
 
         <section className="w-full mt-3.5">
           <div className="flex justify-between items-center mb-4">
-            <div className="w-[88px] h-[100px] px-[17px] py-2.5 bg-white/40 rounded-2xl shadow border border-white linear-gradient(37deg, rgba(255,255,255,0.5018601190476191) 0%, rgba(255,255,255,0) 100%) background: rgb(255,255,255) backdrop-blur-[20px] flex-col justify-center items-center gap-2 inline-flex">
-              <div className="text-center text-[#121212]/70 text-xs font-normal font-['Noto Sans KR'] leading-none">
-                반팔티
-              </div>
-              <div className="w-[54px] h-14 relative flex-col justify-start items-start flex">
-                <div className="w-[53.04px] h-[55px] relative">
-                  <Image
-                    src="/images/tshirt.svg"
-                    alt="반팔티"
-                    className="object-contain"
-                    width={53.04}
-                    height={55}
-                  />
+            {weather ? (
+              <>
+                <div className="w-[88px] h-[100px] px-[17px] py-2.5 bg-white/40 rounded-2xl shadow border border-white linear-gradient(37deg, rgba(255,255,255,0.5018601190476191) 0%, rgba(255,255,255,0) 100%) background: rgb(255,255,255) backdrop-blur-[20px] flex-col justify-center items-center gap-2 inline-flex">
+                  <div className="text-center text-[#121212]/70 text-xs font-normal font-['Noto Sans KR'] leading-none">
+                    반팔티
+                  </div>
+                  <div className="w-[54px] h-14 relative flex-col justify-start items-start flex">
+                    <div className="w-[53.04px] h-[55px] relative">
+                      <Image
+                        src="/images/tshirt.svg"
+                        alt="반팔티"
+                        className="object-contain"
+                        width={53.04}
+                        height={55}
+                      />
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
 
-            <div className="w-[88px] h-[100px] px-[17px] py-2.5 bg-white/40 rounded-2xl shadow border border-white linear-gradient(37deg, rgba(255,255,255,0.5018601190476191) 0%, rgba(255,255,255,0) 100%) background: rgb(255,255,255) backdrop-blur-[20px] flex-col justify-center items-center gap-2 inline-flex">
-              <div className="text-center text-[#121212]/70 text-xs font-normal font-['Noto Sans KR'] leading-none">
-                반바지
-              </div>
-              <div className="w-[54px] h-14 relative flex-col justify-start items-start flex">
-                <div className="w-[53.04px] h-[55px] relative">
-                  <Image
-                    src="/images/shorts.svg"
-                    alt="반바지"
-                    className="object-contain"
-                    width={53.04}
-                    height={55}
-                  />
+                <div className="w-[88px] h-[100px] px-[17px] py-2.5 bg-white/40 rounded-2xl shadow border border-white linear-gradient(37deg, rgba(255,255,255,0.5018601190476191) 0%, rgba(255,255,255,0) 100%) background: rgb(255,255,255) backdrop-blur-[20px] flex-col justify-center items-center gap-2 inline-flex">
+                  <div className="text-center text-[#121212]/70 text-xs font-normal font-['Noto Sans KR'] leading-none">
+                    반바지
+                  </div>
+                  <div className="w-[54px] h-14 relative flex-col justify-start items-start flex">
+                    <div className="w-[53.04px] h-[55px] relative">
+                      <Image
+                        src="/images/shorts.svg"
+                        alt="반바지"
+                        className="object-contain"
+                        width={53.04}
+                        height={55}
+                      />
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
 
-            <div className="w-[88px] h-[100px] px-[17px] py-2.5 bg-white/40 rounded-2xl shadow border border-white linear-gradient(37deg, rgba(255,255,255,0.5018601190476191) 0%, rgba(255,255,255,0) 100%) background: rgb(255,255,255) backdrop-blur-[20px] flex-col justify-center items-center gap-2 inline-flex">
-              <div className="text-center text-[#121212]/70 text-xs font-normal font-['Noto Sans KR'] leading-none">
-                셔츠
-              </div>
-              <div className="w-[54px] h-14 relative flex-col justify-start items-start flex">
-                <div className="w-[53.04px] h-[55px] relative">
-                  <Image
-                    src="/images/shirt.svg"
-                    alt="셔츠"
-                    className="object-contain"
-                    width={55}
-                    height={55}
-                  />
+                <div className="w-[88px] h-[100px] px-[17px] py-2.5 bg-white/40 rounded-2xl shadow border border-white linear-gradient(37deg, rgba(255,255,255,0.5018601190476191) 0%, rgba(255,255,255,0) 100%) background: rgb(255,255,255) backdrop-blur-[20px] flex-col justify-center items-center gap-2 inline-flex">
+                  <div className="text-center text-[#121212]/70 text-xs font-normal font-['Noto Sans KR'] leading-none">
+                    셔츠
+                  </div>
+                  <div className="w-[54px] h-14 relative flex-col justify-start items-start flex">
+                    <div className="w-[53.04px] h-[55px] relative">
+                      <Image
+                        src="/images/shirt.svg"
+                        alt="셔츠"
+                        className="object-contain"
+                        width={55}
+                        height={55}
+                      />
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
+              </>
+            ) : (
+              <>
+                <SkeletonLoader type="outfit" />
+                <SkeletonLoader type="outfit" />
+                <SkeletonLoader type="outfit" />
+              </>
+            )}
           </div>
         </section>
 
         <section className="w-full mt-[5px]">
-          <div className="w-full max-w-[320px] h-[297px] px-4 pt-4 pb-5 bg-white/40 rounded-2xl shadow border border-white linear-gradient(37deg, rgba(255,255,255,0.5018601190476191) 0%, rgba(255,255,255,0) 100%) background: rgb(255,255,255) backdrop-blur-[20px] flex-col justify-start items-start gap-3.5 inline-flex">
-            <div className="self-stretch justify-between items-center inline-flex">
-              <div className="h-[21px] px-2 justify-center items-center gap-[129px] flex">
-                <div className="text-[#121212] text-base font-semibold font-['NotoSansKR'] leading-tight">
-                  추천 코디
+          {filteredPosts.length > 0 ? (
+            <div className="w-full max-w-[320px] h-[297px] px-4 pt-4 pb-5 bg-white/40 rounded-2xl shadow border border-white linear-gradient(37deg, rgba(255,255,255,0.5018601190476191) 0%, rgba(255,255,255,0) 100%) background: rgb(255,255,255) backdrop-blur-[20px] flex-col justify-start items-start gap-3.5 inline-flex">
+              <div className="self-stretch justify-between items-center inline-flex">
+                <div className="h-[21px] px-2 justify-center items-center gap-[129px] flex">
+                  <div className="text-[#121212] text-base font-semibold font-['NotoSansKR'] leading-tight">
+                    추천 코디
+                  </div>
+                </div>
+                <div
+                  className="p-1.5 rounded-lg justify-center items-center gap-1 flex cursor-pointer"
+                  onClick={() => router.push('/list')}
+                >
+                  <div className="text-[#4d4d4d] text-xs font-normal font-['Noto Sans KR'] leading-none">
+                    더보기
+                  </div>
+                  <div className="w-4 h-4 justify-center items-center flex">
+                    <Image
+                      src="/images/arrow_right.png"
+                      alt="더보기"
+                      className="w-4 h-4"
+                      width={16}
+                      height={16}
+                    />
+                  </div>
                 </div>
               </div>
-              <div
-                className="p-1.5 rounded-lg justify-center items-center gap-1 flex cursor-pointer"
-                onClick={() => router.push('/list')}
-              >
-                <div className="text-[#4d4d4d] text-xs font-normal font-['Noto Sans KR'] leading-none">
-                  더보기
-                </div>
-                <div className="w-4 h-4 justify-center items-center flex">
-                  <Image
-                    src="/images/arrow_right.png"
-                    alt="더보기"
-                    className="w-4 h-4"
-                    width={16}
-                    height={16}
-                  />
-                </div>
-              </div>
-            </div>
 
-            <div className="self-stretch rounded-lg justify-start items-start gap-2 inline-flex">
-              <Swiper
-                spaceBetween={8}
-                slidesPerView={2}
-                pagination={{ clickable: true }}
-                navigation={false} // 스와이퍼 네비게이션 화살표 제거
-              >
-                {filteredPosts.map((post, index) => {
-                  const validImageUrl = isValidImageUrl(post.image_url);
+              <div className="self-stretch rounded-lg justify-start items-start gap-2 inline-flex">
+                <Swiper
+                  spaceBetween={8}
+                  slidesPerView={2}
+                  pagination={{ clickable: true }}
+                  navigation={false} // 스와이퍼 네비게이션 화살표 제거
+                >
+                  {filteredPosts.map((post, index) => {
+                    const validImageUrl = isValidImageUrl(post.image_url);
 
-                  const imageUrl = validImageUrl
-                    ? post.image_url
-                    : '/images/default_image.png';
+                    const imageUrl = validImageUrl
+                      ? post.image_url
+                      : '/images/default_image.png';
 
-                  const postTempMatch = post.weather?.match(/(\d+)(?=°C)/);
-                  const postTemperature = postTempMatch
-                    ? parseInt(postTempMatch[1], 10)
-                    : 'N/A';
+                    const postTempMatch = post.weather?.match(/(\d+)(?=°C)/);
+                    const postTemperature = postTempMatch
+                      ? parseInt(postTempMatch[1], 10)
+                      : 'N/A';
 
-                  return (
-                    <SwiperSlide key={index}>
-                      <div
-                        className="w-28 h-40 relative rounded-lg overflow-hidden cursor-pointer linear-gradient(37deg, rgba(255,255,255,0.5018601190476191) 0%, rgba(255,255,255,0) 100%) background: rgb(255,255,255)"
-                        onClick={() => router.push(`/detail/${post.id}`)}
-                      >
-                        <Image
-                          src={imageUrl as string}
-                          alt={`추천 코디 ${index + 1}`}
-                          className="w-[113.60px] h-40 left-0 top-0 absolute object-cover"
-                          width={113.6}
-                          height={160}
-                        />
-                        <div className="w-6 h-6 left-[84px] top-[132px] absolute justify-center items-center inline-flex">
-                          <div className="w-6 h-6 relative backdrop-blur-[20px] flex-col justify-start items-start flex" />
-                        </div>
-                        <div className="px-1 py-px left-[10px] top-[10px] absolute bg-white/50 rounded border border-white/60 justify-start items-center gap-0.5 inline-flex">
-                          <div className="w-4 h-4 bg-white rounded-sm backdrop-blur-[20px] justify-center items-center flex">
-                            <div className="w-4 h-4 p-0.5 bg-white/60 rounded justify-center items-center inline-flex">
-                              <div className="w-3 h-3 relative" />
+                    return (
+                      <SwiperSlide key={index}>
+                        <div
+                          className="w-28 h-40 relative rounded-lg overflow-hidden cursor-pointer linear-gradient(37deg, rgba(255,255,255,0.5018601190476191) 0%, rgba(255,255,255,0) 100%) background: rgb(255,255,255)"
+                          onClick={() => router.push(`/detail/${post.id}`)}
+                        >
+                          <Image
+                            src={imageUrl as string}
+                            alt={`추천 코디 ${index + 1}`}
+                            className="w-[113.60px] h-40 left-0 top-0 absolute object-cover"
+                            width={113.6}
+                            height={160}
+                          />
+                          <div className="w-6 h-6 left-[84px] top-[132px] absolute justify-center items-center inline-flex">
+                            <div className="w-6 h-6 relative backdrop-blur-[20px] flex-col justify-start items-start flex" />
+                          </div>
+                          <div className="px-1 py-px left-[10px] top-[10px] absolute bg-white/50 rounded border border-white/60 justify-start items-center gap-0.5 inline-flex">
+                            <div className="w-4 h-4 bg-white rounded-sm backdrop-blur-[20px] justify-center items-center flex">
+                              <div className="w-4 h-4 p-0.5 bg-white/60 rounded justify-center items-center inline-flex">
+                                <div className="w-3 h-3 relative" />
+                              </div>
+                            </div>
+                            <div className=" text-black text-sm font-normal font-varela leading-[18.20px]">
+                              {postTemperature}°
                             </div>
                           </div>
-                          <div className=" text-black text-sm font-normal font-varela leading-[18.20px]">
-                            {postTemperature}°
-                          </div>
                         </div>
-                      </div>
-                    </SwiperSlide>
-                  );
-                })}
-              </Swiper>
-            </div>
-
-            <button
-              onClick={handleCodiClick}
-              className="self-stretch p-3 bg-[#121212] rounded-lg justify-center items-center gap-2 inline-flex"
-            >
-              <div className="text-white text-base font-medium font-['Noto Sans KR'] leading-tight">
-                취향 코디 찾기
+                      </SwiperSlide>
+                    );
+                  })}
+                </Swiper>
               </div>
-            </button>
-          </div>
+
+              <button
+                onClick={handleCodiClick}
+                className="self-stretch p-3 bg-[#121212] rounded-lg justify-center items-center gap-2 inline-flex"
+              >
+                <div className="text-white text-base font-medium font-['Noto Sans KR'] leading-tight">
+                  취향 코디 찾기
+                </div>
+              </button>
+            </div>
+          ) : (
+            <SkeletonLoader type="recommendation" />
+          )}
         </section>
 
         <section className="w-full mt-[58px]">
