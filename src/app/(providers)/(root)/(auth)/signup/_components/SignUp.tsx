@@ -9,7 +9,7 @@ import Image from 'next/image';
 import { useState } from 'react';
 
 function SingUp() {
-  const [domain, setDomain] = useState('');
+  const [domain, setDomain] = useState<string>('');
   const {
     nickname,
     emailId,
@@ -60,9 +60,9 @@ function SingUp() {
     }
 
     const selectedEmailDomain =
-      emailDomain === '직접 입력' ? customEmailDomain : emailDomain;
+      domain === '직접 입력' ? customEmailDomain : domain;
     const email = `${emailId}@${selectedEmailDomain}`;
-
+    console.log('@@', domain);
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
@@ -93,7 +93,7 @@ function SingUp() {
   };
 
   return (
-    <main className=" ">
+    <main className="">
       <form onSubmit={onSubmit} className="flex flex-col">
         <h1 className="text-[20px] text-center text-[#121212] font-bold leading-[130%] tracking-[-0.4px] mb-5">
           회원가입
@@ -111,9 +111,9 @@ function SingUp() {
             maxLength={10}
             onChange={handleChange('nickname')}
             value={nickname}
-            className={`w-[288px] h-[48px] border ${
+            className={`w-[288px] h-[48px] border hover:border-blue-500 ${
               error.nickname ? 'border-[#FF4732]/85' : 'border-[#808080]'
-            } rounded-lg hover:border-blue-500 focus:outline-none pl-4`}
+            } rounded-lg focus:outline-none pl-4`}
           />
         </div>
         {error.nickname && (

@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Noto_Sans_KR } from '@next/font/google';
 import './globals.css';
 import KakaoScript from './(providers)/(root)/common/KakaoScript';
 
-const inter = Inter({ subsets: ['latin'] });
+const notoSansKR = Noto_Sans_KR({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: '온코디',
@@ -24,7 +24,7 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <link rel="icon" href="/favicon.ico?v=1" />
-      <body className={inter.className}>
+      <body className={notoSansKR.className}>
         {children}
         <KakaoScript />
       </body>
