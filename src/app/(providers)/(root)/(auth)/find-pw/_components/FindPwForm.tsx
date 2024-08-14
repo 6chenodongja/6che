@@ -89,7 +89,7 @@ const FindPwForm = () => {
         >
           <button
             type="button"
-            className="w-[141px] h-[44px] bg-white text-text-default rounded-lg text-[14px] font-KR-button hover:bg-black-100 hover:text-semantic-color-bg-brand-b active:bg-[#E0E0E0] active:text-blue-400"
+            className="w-[141px] h-[44px] bg-white text-text-default rounded-lg font-normal text-[14px] font-KR-button hover:bg-black-100 hover:text-semantic-color-bg-brand-b active:bg-[#E0E0E0] active:text-blue-400"
             style={{
               margin: 0,
               padding: 0,
@@ -101,7 +101,7 @@ const FindPwForm = () => {
           </button>
           <button
             type="button"
-            className="w-[141px] h-[44px] bg-black text-white rounded-lg text-[14px] font-KR-button"
+            className="w-[141px] h-[44px] bg-black text-white rounded-lg font-normal text-[14px] font-KR-button"
             style={{
               margin: 0,
               padding: 0,
@@ -114,10 +114,10 @@ const FindPwForm = () => {
         </div>
 
         <div className="mb-1.5">
-          <h3 className="not-italic font-semibold lineHeight-130% font-subtitle-KR-medium text-base ">
+          <h3 className="not-italic font-bold lineHeight-130% font-subtitle-KR-medium text-base ">
             비밀번호 찾기
           </h3>
-          <p className="text-gray-600 mb-9 font-body-KR-small text-[14px]">
+          <p className="text-gray-600 mb-9 font-body-KR-small text-[14px] mt-1.5">
             가입된 이메일로 비밀번호 재설정 링크를 보내드립니다
           </p>
         </div>
@@ -125,7 +125,7 @@ const FindPwForm = () => {
           <div className="mb-4">
             <label
               htmlFor="email"
-              className="block text-text-default font-subtitle-KR-small mb-1.5 font-medium not-italic text-sm leading-5 tracking-tight"
+              className="block text-text-default font-subtitle-KR-small mb-1.5 font-semibold not-italic text-sm leading-5 tracking-tight"
             >
               이메일
             </label>
@@ -153,14 +153,16 @@ const FindPwForm = () => {
               </select>
             </div>
           </div>
+
           <button
             type="submit"
-            className={`w-full py-2 rounded-lg ${
+            className={`w-full py-2 rounded-lg font-button ${
               email && domain !== 'select'
-                ? 'bg-black text-white hover:bg-blue-500'
+                ? 'bg-black text-white hover:bg-blue-400 active:bg-[#73aee7]'
                 : 'bg-black-100 text-black-300'
             }`}
             disabled={!email || domain === 'select'}
+            style={{ width: '288px', height: '49px' }}
           >
             링크 보내기
           </button>
