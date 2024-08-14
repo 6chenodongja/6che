@@ -231,7 +231,7 @@ function ListHeader() {
           href={'/postform'}
           className="flex-grow-0 flex-shrink-0 text-sm text-left text-white"
         >
-          스타일
+          코디 등록
         </Link>
         <svg
           width={18}

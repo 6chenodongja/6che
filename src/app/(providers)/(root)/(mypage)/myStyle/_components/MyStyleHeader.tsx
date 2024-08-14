@@ -43,7 +43,7 @@ function MyStyleHeader() {
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="overflow-hidden absolute left-0 w-full bg-white shadow-lg rounded-b-lg z-10"
+            className="overflow-hidden absolute left-0  bg-white shadow-lg rounded-b-lg z-10 w-full"
           >
             <button
               className="myPage-style flex px-3 py-4 items-center self-stretch gap-2"

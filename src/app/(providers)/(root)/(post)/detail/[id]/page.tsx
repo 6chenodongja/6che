@@ -255,7 +255,7 @@ function PostDetail({ params }: { params: { id: string } }) {
                     className="w-[288px] h-[412px] rounded-xl flex justify-center items-center mx-auto"
                   />
                 )}
-                <div className="absolute top-3 left-6 bg-white bg-opacity-50 p-1 m-1 font-[18px] rounded-lg flex flex-row gap-2 justify-center items-center">
+                <div className="absolute top-2 left-6 bg-white bg-opacity-50 p-1 m-1 font-[18px] rounded-lg flex flex-row gap-2 justify-center items-center">
                   {weatherIcon && (
                     <div className="detail-icon">
                       <Image
@@ -490,7 +490,7 @@ function PostDetail({ params }: { params: { id: string } }) {
       {/* 모달 부분 */}
 
       {modalOpen && (
-        <div className="flex inset-0 bg-black/10 z-50 fixed justify-center items-center ">
+        <div className="flex inset-0 bg-black/20 z-50 fixed justify-center items-center ">
           <div className="flex flex-col background w-[273px] h-[455px] rounded-2xl box-shadow backdrop-filter p-2">
             <button
               onClick={clickModal}

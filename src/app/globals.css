@@ -404,7 +404,7 @@
 /* listPage 스타일 */
 
 .list-icon {
-  border-radius: 2px;
+  border-radius: 4px;
   background: #fff;
   backdrop-filter: blur(10px);
 }
