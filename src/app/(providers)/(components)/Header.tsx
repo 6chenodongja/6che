@@ -74,7 +74,13 @@ const Header = () => {
     <header className="w-full max-w-[320px] bg-white shadow-md py-4 flex justify-between items-center px-4 fixed top-0 z-50 h-[60px]">
       <div className="flex-1 flex justify-start">
         <button title="button" onClick={handleMenuToggle}>
-          <Image src="/images/menu.png" alt="메뉴" width={24} height={24} />
+          <Image
+            src="/images/menu.png"
+            alt="메뉴"
+            width={24}
+            height={24}
+            className="hover:bg-black-100 rounded-full focus:bg-black-200"
+          />
         </button>
       </div>
       <div className="flex-1 flex justify-center">
@@ -83,7 +89,7 @@ const Header = () => {
         </div>
       </div>
       <div className="flex-1 flex justify-end">
-        {isLoggedIn && user ? (
+        {user ? (
           <>
             <LoginDropdown />
           </>

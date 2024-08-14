@@ -48,7 +48,7 @@ function SingUpDone() {
         </div>
         <div className="flex justify-center items-center z-10 relative">
           <button className="bg-black text-white rounded-lg w-[288px] h-[49px] hover:bg-blue-400 mb-[77px]">
-            <Link href={'/login'}>로그인 하기</Link>
+            <Link href={'/'}>홈으로</Link>
           </button>
         </div>
       </div>

@@ -15,7 +15,7 @@ function LoginForm() {
   const passwordRef = useRef<HTMLInputElement>(null);
   const supabase = createClient();
   const router = useRouter();
-  const { setIsLoggedIn, setUser, isLoggedIn } = useUserStore();
+  const { setUser } = useUserStore();
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -36,7 +36,6 @@ function LoginForm() {
           provider: '',
           profileImage: res.data.avatar,
         });
-        setIsLoggedIn(true);
 
         // 로그인 성공 Toast
         toast.success(
@@ -161,14 +160,14 @@ function LoginForm() {
           </button>
         </div>
 
-        <div className="flex justify-start items-center w-72 relative gap-3 m-auto">
+        <div className="flex justify-start items-center w-72 gap-3 m-auto my-[32px]">
           <div className="flex-grow h-px bg-[#d9d9d9]" />
           <p className="flex-grow-0 flex-shrink-0 text-base text-left text-black">
             or
           </p>
           <div className="flex-grow h-px bg-[#d9d9d9]" />
         </div>
-        <div className="flex flex-col gap-2 justify-center items-center">
+        <div className="flex flex-col gap-2 justify-center items-center mb-[100px]">
           <button
             onClick={() => handleSocialLogin('google')}
             className="bg-white border-1 hover:bg-[#ccc] hover:bg-opacity-70 border-[#121212]/15 text-[#4D4D4D] font-bold w-[288px] h-[52px] rounded-xl"

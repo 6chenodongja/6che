@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 interface LoginModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onConfirm: () => void;
 }
 
 const LoginModalProps = ({ isOpen, onClose }: LoginModalProps) => {
@@ -24,23 +25,23 @@ const LoginModalProps = ({ isOpen, onClose }: LoginModalProps) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-[9999]">
-      <div className="bg-white rounded-lg shadow-lg w-[281px] h-[206px] relative z-[10000]">
+      <div className="bg-white bg-opacity-70 rounded-2xl shadow-[0px_0px_2px_0px_rgba(0,0,0,0.05),4px_4px_20px_0px_rgba(0,0,0,0.05)] backdrop-blur-sm w-[281px] h-[160px] relative p-6">
         <button
           title="x-icon"
           onClick={onClose}
-          className="absolute top-4 right-4"
+          className="rounded-full hover:bg-[#4d4d4d]/50"
         >
           <Image src="/x.svg" alt="close" width={24} height={24} />
         </button>
-        <div className="p-4 text-center">
-          <h2 className="text-[18px] font-KR font-semibold text-[#4D4D4D] tracking-[-0.36px]">
-            로그인이 필요한 기능입니다.
+        <div className="flex flex-col text-center">
+          <h2 className="text-[18px] font-semibold leading-[130%] tracking-[-0.36px] font-[Noto Sans KR] text-black-700">
+            로그인이 필요한 기능입니다
           </h2>
         </div>
-        <div className="flex justify-center mt-[24px] space-x-4">
+        <div className="flex justify-center mt-[24px] gap-[11px]">
           <button
             onClick={handleSignupClick} // 회원가입 버튼 클릭 시
-            className="text-[#FFF] rounded-lg p-[14px] font-semibold w-[96px] h-[49px] bg-[#E6E6E6]/60 hover:bg-blue-300"
+            className="bg-black-100 text-[16px] font-semibold leading-[130%] tracking-[-0.32px] text-[#4D4D4D] font-noto-sans hover:bg-blue-300 rounded-lg my-[14px] ml-3"
           >
             회원가입
           </button>

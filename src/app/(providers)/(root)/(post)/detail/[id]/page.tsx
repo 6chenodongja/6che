@@ -275,7 +275,15 @@ function PostDetail({ params }: { params: { id: string } }) {
           <div className="flex flex-col justify-start items-start w-72 relative gap-2.5 mt-2 m-4">
             <div className="flex justify-between items-center self-stretch flex-grow-0 flex-shrink-0">
               <div className="flex justify-start items-center flex-grow-0 flex-shrink-0 relative gap-[5px]">
-                <svg
+                {user?.profileImage && (
+                  <Image
+                    src={user.profileImage}
+                    alt="프로필 이미지"
+                    width={24}
+                    height={24}
+                  />
+                )}
+                {/* <svg
                   width={32}
                   height={32}
                   viewBox="0 0 32 32"
@@ -350,7 +358,7 @@ function PostDetail({ params }: { params: { id: string } }) {
                       />
                     </filter>
                   </defs>
-                </svg>
+                </svg> */}
                 <div>
                   {/* 유저 닉네임 */}
                   <p className="flex-grow-0 flex-shrink-0 font-semibold text-[#333] text-[18px] leading-[23.4px] tracking-[-0.36px]">

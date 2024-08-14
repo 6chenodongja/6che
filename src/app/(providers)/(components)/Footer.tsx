@@ -9,16 +9,16 @@ import LoginModalProps from '@/components/Modal/LoginModal';
 import { useRouter } from 'next/navigation';
 
 const Footer = () => {
-  const { isLoggedIn } = useUserStore(); // 로그인 상태 확인
-  const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 관리
+  const { isLoggedIn } = useUserStore();
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const router = useRouter();
 
   const handleMypageClick = (
     e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
   ) => {
     if (!isLoggedIn) {
-      e.preventDefault(); // 링크 기본 동작 막기
-      setIsModalOpen(true); // 모달 열기
+      e.preventDefault();
+      setIsModalOpen(true);
     }
   };
 

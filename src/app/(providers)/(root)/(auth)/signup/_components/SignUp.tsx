@@ -9,7 +9,7 @@ import Image from 'next/image';
 import { useState } from 'react';
 
 function SingUp() {
-  const [domain, setDomain] = useState<string>('');
+  // const [domain, setDomain] = useState<string>('');
   const {
     nickname,
     emailId,
@@ -60,7 +60,7 @@ function SingUp() {
     }
 
     const selectedEmailDomain =
-      domain === '직접 입력' ? customEmailDomain : domain;
+      emailDomain === '직접 입력' ? customEmailDomain : emailDomain;
     const email = `${emailId}@${selectedEmailDomain}`;
     const { data, error } = await supabase.auth.signUp({
       email,
@@ -90,6 +90,7 @@ function SingUp() {
 
     router.replace('/signUpDone');
   };
+  console.log('@@', emailId);
 
   return (
     <main className="">
@@ -171,23 +172,23 @@ function SingUp() {
             ) : (
               <select
                 title="이메일 선택"
-                onChange={(e) => setDomain(e.target.value)}
-                value={domain}
+                onChange={(e) => setEmailDomain(e.target.value)}
+                value={emailDomain}
                 className="w-[160px] h-[48px] p-2 border-1 border-black-500 text-bl rounded-lg font-[16px] hover:border-blue-500 focus:border-blue-500 focus:outline-none cursor-pointer"
               >
-                <option value="@gmail.com" className="cursor-pointer">
+                <option value="gmail.com" className="cursor-pointer">
                   @gmail.com
                 </option>
-                <option value="@naver.com" className="cursor-pointer">
+                <option value="naver.com" className="cursor-pointer">
                   @naver.com
                 </option>
-                <option value="@daum.net" className="cursor-pointer">
+                <option value="daum.net" className="cursor-pointer">
                   @daum.net
                 </option>
-                <option value="@nate.com" className="cursor-pointer">
+                <option value="nate.com" className="cursor-pointer">
                   @nate.com
                 </option>
-                <option value="@icloud.com" className="cursor-pointer">
+                <option value="icloud.com" className="cursor-pointer">
                   @icloud.com
                 </option>
                 <option value="hanmail.net" className="cursor-pointer">
@@ -213,8 +214,8 @@ function SingUp() {
             비밀번호
           </label>
           <input
-            type="text"
-            maxLength={10}
+            type="password"
+            // maxLength={10}
             onChange={handleChange('password')}
             value={password}
             className={`w-[288px] h-[48px] border hover:border-blue-500 ${
@@ -231,11 +232,11 @@ function SingUp() {
               height={12}
               className="mr-[3px]"
             />
-            {error.password}
+            {/* {error.password} */}
           </p>
         )}
         {!error.password && password && (
-          <p className="mt-2 text-[12px] text-black-700">{password}</p>
+          <p className="mt-2 text-[12px] text-black-700">{error.password}</p>
         )}
         {!error.password && !password && (
           <p className="text-black-700 mt-[7px] text-[12px] flex">
