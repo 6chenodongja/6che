@@ -10,8 +10,6 @@ import 'swiper/css/pagination';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { LogoText } from '../../../../icons/LogoText';
-import { IconLogin } from '../../../../icons/IconLogin';
 import { IconLocation } from '../../../../icons/IconLocation';
 import { motion, AnimatePresence } from 'framer-motion';
 import Header from '../../(components)/Header';
@@ -46,7 +44,7 @@ type Weather = {
 
 type WeatherData = Weather[];
 
-// 강수확률에 따른 이미지를 반환하는 함수!
+// 강수확률에 따른 이미지를 반환하는 함수
 const getPrecipitationImage = (probability: number) => {
   const precipitationValue = Math.min(Math.floor(probability / 10) * 10, 100);
   return `/images/Precipitation-probability/${precipitationValue}.svg`;
@@ -104,13 +102,13 @@ const getWeatherIconUrl = (weatherCode: string): string => {
   console.log(`Parsed weather code: ${parsedCode}`);
 
   const iconMap: Record<string, string> = {
-    '/sun.svg': '/images/Weather/sun.svg',
-    '/blur.svg': '/images/Weather/blur.svg',
-    '/rain.svg': '/images/Weather/rain.svg',
-    '/wind.svg': '/images/Weather/wind.svg',
-    '/thunderstorm.svg': '/images/Weather/thunderstorm.svg',
-    '/snow.svg': '/images/Weather/snow.svg',
-    '/sleet.svg': '/images/Weather/sleet.svg',
+    '/sun.svg': '/images/Weather/sun.png',
+    '/blur.svg': '/images/Weather/blur.png',
+    '/rain.svg': '/images/Weather/rain.png',
+    '/wind.svg': '/images/Weather/wind.png',
+    '/thunderstorm.svg': '/images/Weather/thunderstorm.png',
+    '/snow.svg': '/images/Weather/snow.png',
+    '/sleet.svg': '/images/Weather/sleet.png',
   };
 
   const url = iconMap[parsedCode] || '/icons/default.svg';
@@ -159,7 +157,7 @@ const LocationInput = ({
 
   type GeocodeAddressComponent = {
     long_name: string;
-    short_name: string;
+    short_name: string[];
     types: string[];
   };
 
@@ -305,7 +303,8 @@ const MainPage = () => {
 
   // 날씨 데이터를 업데이트하는 함수
   const updateWeatherData = useCallback((data: any) => {
-    console.log(data);
+    console.log('Weather Data:', data); // 전체 데이터 출력
+
     if (data && data.current) {
       setWeather(data.current);
 
@@ -322,6 +321,17 @@ const MainPage = () => {
       const uvIndex =
         data.current?.UVIndex ?? data.dailyForecasts?.[0]?.UVIndex ?? 'N/A';
       console.log('UV Index:', uvIndex);
+
+      const sunriseTime =
+        data.current.Sun?.Rise ?? data.dailyForecasts?.[0]?.Sun?.Rise ?? 'N/A';
+      const sunsetTime =
+        data.current.Sun?.Set ?? data.dailyForecasts?.[0]?.Sun?.Set ?? 'N/A';
+      console.log('Sunrise Time:', sunriseTime); // 일출 시간 출력
+      console.log('Sunset Time:', sunsetTime); // 일몰 시간 출력
+
+      // 풍속 데이터를 가져오고, 값이 없거나 0일 때 0으로 설정
+      const windSpeed = data.current.Wind?.Speed?.Metric?.Value ?? 0;
+      console.log('풍속', windSpeed, 'km/h');
 
       setExtraWeatherInfo([
         {
@@ -345,6 +355,26 @@ const MainPage = () => {
           label: '자외선',
           value: `${uvIndex !== 'N/A' ? uvIndex : 'N/A'}`,
           image: getUVIndexImage(uvIndex !== 'N/A' ? uvIndex : 0),
+        },
+        {
+          label: '일출 시간',
+          value: sunriseTime,
+          image: '/images/Sunrise.svg',
+        },
+        {
+          label: '일몰 시간',
+          value: sunsetTime,
+          image: '/images/Sunset.svg',
+        },
+        {
+          label: '풍속',
+          value: `${windSpeed} km/h`,
+          image: '/images/Wind.svg',
+        },
+        {
+          label: '작년 기온',
+          value: `${data.historical?.Temperature?.Metric?.Value || 'N/A'}°`,
+          image: '/images/HistoryTemp.svg',
         },
       ]);
     }
@@ -384,7 +414,7 @@ const MainPage = () => {
     [updateWeatherData],
   );
 
-  // 초기 로드 시 날씨 데이터를 가져옴!
+  // 초기 로드 시 날씨 데이터를 가져옴
   useEffect(() => {
     fetchWeatherData();
   }, [fetchWeatherData]);
@@ -459,7 +489,7 @@ const MainPage = () => {
   };
 
   return (
-    <div className="container bg-neutral-50 flex flex-col justify-center items-center w-full">
+    <div className="main-container bg-neutral-50 flex flex-col justify-center items-center w-full max-w-[1000px] mx-auto">
       <Head>
         <title>온코디</title>
       </Head>
@@ -492,7 +522,7 @@ const MainPage = () => {
       </nav>
 
       <main
-        className="container flex flex-col items-center w-full text-white py-8 px-4"
+        className="main-container flex flex-col items-center w-full text-white py-8 px-4"
         style={{
           ...backgroundStyle,
           marginTop: '-4px',
@@ -685,15 +715,15 @@ const MainPage = () => {
 
         <section className="w-full mt-[5px]">
           {filteredPosts.length > 0 ? (
-            <div className="w-full max-w-[320px] h-[297px] px-4 pt-4 pb-5 bg-white/40 rounded-2xl shadow border border-white linear-gradient(37deg, rgba(255,255,255,0.5018601190476191) 0%, rgba(255,255,255,0) 100%) background: rgb(255,255,255) backdrop-blur-[20px] flex-col justify-start items-start gap-3.5 inline-flex">
+            <div className="w-full h-auto px-4 pt-4 pb-5 bg-white/40 rounded-2xl shadow border border-white bg-gradient-to-r from-white/50 to-transparent backdrop-blur-[20px] flex flex-col justify-start items-start">
               <div className="self-stretch justify-between items-center inline-flex">
-                <div className="h-[21px] px-2 justify-center items-center gap-[129px] flex">
+                <div className="h-[21px] px-2 justify-center items-center flex">
                   <div className="text-[#121212] text-base font-semibold font-['NotoSansKR'] leading-tight">
                     추천 코디
                   </div>
                 </div>
                 <div
-                  className="p-1.5 rounded-lg justify-center items-center gap-1 flex cursor-pointer"
+                  className="p-1.5 rounded-lg justify-center items-center flex cursor-pointer"
                   onClick={() => router.push('/list')}
                 >
                   <div className="text-[#4d4d4d] text-xs font-normal font-['Noto Sans KR'] leading-none">
@@ -711,14 +741,18 @@ const MainPage = () => {
                 </div>
               </div>
 
-              <div className="self-stretch rounded-lg justify-start items-start gap-2 inline-flex">
+              <div className="self-stretch rounded-lg justify-start items-start inline-flex overflow-hidden mb-[14px]">
+                {' '}
+                {/* 여기에 14px 간격 추가 */}
                 <Swiper
-                  spaceBetween={8}
-                  slidesPerView={2}
+                  spaceBetween={4} // 슬라이드 간의 간격을 4px로 설정
+                  slidesPerView="auto" // 뷰포트에 맞게 슬라이드 개수를 자동으로 조정
+                  centeredSlides={false} // 슬라이드가 가운데 정렬되지 않도록 설정
                   pagination={{ clickable: true }}
                   navigation={false} // 스와이퍼 네비게이션 화살표 제거
+                  className="w-full" // 부모 컨테이너에 overflow-hidden 추가
                 >
-                  {filteredPosts.map((post, index) => {
+                  {filteredPosts.slice(0, 10).map((post, index) => {
                     const validImageUrl = isValidImageUrl(post.image_url);
                     const imageUrl = validImageUrl
                       ? post.image_url
@@ -734,15 +768,21 @@ const MainPage = () => {
                       : null;
 
                     return (
-                      <SwiperSlide key={index}>
+                      <SwiperSlide
+                        key={index}
+                        style={{
+                          width: '117.6px', // 슬라이드의 너비를 고정
+                          flexShrink: 0, // 모바일에서도 슬라이드가 줄어들지 않도록 설정
+                        }}
+                      >
                         <div
-                          className="w-28 h-40 relative rounded-lg overflow-hidden cursor-pointer linear-gradient(37deg, rgba(255,255,255,0.5018601190476191) 0%, rgba(255,255,255,0) 100%) background: rgb(255,255,255)"
+                          className="w-[113.6px] h-40 relative rounded-lg overflow-hidden cursor-pointer bg-gradient-to-r from-white/50 to-transparent backdrop-blur-[20px]"
                           onClick={() => router.push(`/detail/${post.id}`)}
                         >
                           <Image
                             src={imageUrl as string}
                             alt={`추천 코디 ${index + 1}`}
-                            className="w-[113.60px] h-40 left-0 top-0 absolute object-cover"
+                            className="w-[113.6px] h-40 object-cover"
                             width={113.6}
                             height={160}
                           />
@@ -765,7 +805,7 @@ const MainPage = () => {
                                 />
                               )}
                             </div>
-                            <div className=" text-black text-sm font-normal font-varela leading-[18.20px]">
+                            <div className="text-black text-sm font-normal font-varela leading-[18.20px]">
                               {postTemperature}°
                             </div>
                           </div>
@@ -800,7 +840,7 @@ const MainPage = () => {
             {extraWeatherInfo.map((info, index) => (
               <SwiperSlide key={index} className="weather-slide">
                 <div className="w-[88px] h-[100px] relative bg-white/40 rounded-2xl shadow border border-white linear-gradient(37deg, rgba(255,255,255,0.5018601190476191) 0%, rgba(255,255,255,0) 100%) background: rgb(255,255,255) backdrop-blur-[20px] flex flex-col justify-center items-center">
-                  <span className="text-center text-[#121212]/70 text-xs font-normal font-['Noto Sans KR'] leading-none">
+                  <span className=" text-center text-[#121212]/70 text-xs font-normal font-['Noto Sans KR'] leading-none">
                     {info.label}
                   </span>
                   <Image
@@ -830,7 +870,7 @@ const MainPage = () => {
         </section>
 
         <section className="w-full mt-[18px]">
-          <div className="w-full max-w-[320px] h-[148px] px-2 pt-4 pb-5 bg-white/40 rounded-2xl shadow border border-white/50 linear-gradient(37deg, rgba(255,255,255,0.5018601190476191) 0%, rgba(255,255,255,0) 100%) background: rgb(255,255,255) backdrop-blur-[20px] flex-col justify-start items-start gap-2 inline-flex">
+          <div className="w-full max-w-full h-[148px] px-2 pt-4 pb-5 bg-white/40 rounded-2xl shadow border border-white/50 linear-gradient(37deg, rgba(255,255,255,0.5018601190476191) 0%, rgba(255,255,255,0) 100%) background: rgb(255,255,255) backdrop-blur-[20px] flex-col justify-start items-start gap-2 inline-flex">
             <div className="px-2 justify-center items-center gap-2 inline-flex">
               <div className="text-center text-[#1a1a1a] text-xs font-normal font-['Noto Sans KR'] leading-none">
                 시간대별 날씨
@@ -845,60 +885,60 @@ const MainPage = () => {
                       case 2:
                       case 3:
                       case 30:
-                        return '/images/Weather/sun.svg';
+                        return '/images/Weather/sun.png';
                       case 4:
-                        return '/images/Weather/once_cloudy.svg';
+                        return '/images/Weather/once_cloudy.png';
                       case 5:
                       case 6:
-                        return '/images/Weather/thread_fog.svg';
+                        return '/images/Weather/thread_fog.png';
                       case 7:
                       case 8:
-                        return '/images/Weather/blur.svg';
+                        return '/images/Weather/blur.png';
                       case 11:
-                        return '/images/Weather/fog.svg';
+                        return '/images/Weather/fog.png';
                       case 12:
                       case 13:
                       case 14:
                       case 41:
                       case 42:
-                        return '/images/Weather/drizzling.svg';
+                        return '/images/Weather/drizzling.png';
                       case 15:
                       case 16:
                       case 17:
-                        return '/images/Weather/thunderstorm.svg';
+                        return '/images/Weather/thunderstorm.png';
                       case 18:
-                        return '/images/Weather/rain.svg';
+                        return '/images/Weather/rain.png';
                       case 19:
                       case 20:
                       case 21:
-                        return '/images/Weather/snow.svg';
+                        return '/images/Weather/snow.png';
                       case 22:
                       case 23:
                       case 43:
                       case 44:
-                        return '/images/Weather/heavy_snow.svg';
+                        return '/images/Weather/heavy_snow.png';
                       case 24:
                       case 25:
                       case 26:
                       case 29:
-                        return '/images/Weather/sleet.svg';
+                        return '/images/Weather/sleet.png';
                       case 31:
                       case 32:
-                        return '/images/Weather/wind.svg';
+                        return '/images/Weather/wind.png';
                       case 33:
                       case 34:
-                        return '/images/Weather/night.svg';
+                        return '/images/Weather/night.png';
                       case 35:
                       case 36:
-                        return '/images/Weather/once_cloudy_night.svg';
+                        return '/images/Weather/once_cloudy_night.png';
                       case 37:
                       case 38:
-                        return '/images/Weather/once_cloudy.svg';
+                        return '/images/Weather/once_cloudy.png';
                       case 39:
                       case 40:
-                        return '/images/Weather/drizzling_night.svg';
+                        return '/images/Weather/drizzling_night.png';
                       default:
-                        return '/images/Weather/default.svg'; // 기본 이미지
+                        return '/images/Weather/default.png'; // 기본 이미지
                     }
                   };
 

@@ -472,6 +472,15 @@
   box-sizing: border-box;
 }
 
+/* 메인페이지 주현우 */
+.main-container {
+  width: 100%;
+  max-width: 768px;
+  margin: 0 auto;
+  padding-top: 60px;
+  box-sizing: border-box;
+}
+
 .container {
   width: 320px;
   min-width: 320px;
@@ -482,11 +491,84 @@
 }
 
 /* 반응형 조정 */
-/* @media (min-width: 320px) and (max-width: 500px) {
+/* @media (max-width: 1000px) {
   .container {
     width: 100%;
+    padding: 0 16px;
   }
-} */
+
+  .navbar ul {
+    padding: 16px;
+  }
+
+  .w-[88px] {
+    width: 72px;
+    height: 82px;
+  }
+
+  .h-[100px] {
+    height: 82px;
+  }
+
+  .px-[17px] {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .py-2.5 {
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+
+  .px-4 {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .pt-4 {
+    padding-top: 16px;
+  }
+
+  .pb-5 {
+    padding-bottom: 20px;
+  }
+
+  .mt-8 {
+    margin-top: 32px;
+  }
+
+  .text-base {
+    font-size: 14px;
+  }
+
+  .text-sm {
+    font-size: 12px;
+  }
+
+  .text-[63.6px] {
+    font-size: 48px;
+  }
+
+  .text-[50px] {
+    font-size: 40px;
+  }
+
+  .text-[16px] {
+    font-size: 14px;
+  }
+
+  .text-[18.20px] {
+    font-size: 16px;
+  }
+
+  .swiper-slide {
+    width: calc(50% - 8px); /* 슬라이드 간의 간격을 고려한 너비 조정 */
+/* }
+
+  .swiper-container {
+    padding: 0 16px;
+  }
+/* } */
 
 /* detail 부분 */
 .deleteButton {
