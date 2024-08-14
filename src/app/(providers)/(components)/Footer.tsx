@@ -1,11 +1,36 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { LogoText } from '../../../icons/LogoText';
+import { useUserStore } from '@/zustand/store/useUserStore';
+import LoginModalProps from '@/components/Modal/LoginModal';
+import { useRouter } from 'next/navigation';
 
 const Footer = () => {
+  const { isLoggedIn } = useUserStore(); // 로그인 상태 확인
+  const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 관리
+  const router = useRouter();
+
+  const handleMypageClick = (
+    e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
+  ) => {
+    if (!isLoggedIn) {
+      e.preventDefault(); // 링크 기본 동작 막기
+      setIsModalOpen(true); // 모달 열기
+    }
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false); // 모달 닫기
+  };
+
+  const handleConfirm = () => {
+    closeModal();
+    router.push('/login'); // 로그인 페이지로 이동
+  };
+
   return (
     <footer className="w-full bg-white py-4 flex flex-col items-start mt-0">
       <nav className="flex flex-col items-start space-y-2 mb-4">
@@ -36,24 +61,27 @@ const Footer = () => {
         </Link>
         <Link
           href="/mypage"
+          onClick={handleMypageClick}
           className="text-[#4d4d4d] text-sm font-medium leading-[21px] font-['Noto Sans KR']"
         >
           마이페이지
         </Link>
         <Link
           href="/mypage"
+          onClick={handleMypageClick}
           className="text-[#4d4d4d] text-xs font-normal leading-none font-['Noto Sans KR']"
         >
           좋아요한 게시글
         </Link>
         <Link
           href="/mypage"
+          onClick={handleMypageClick}
           className="text-[#4d4d4d] text-xs font-normal leading-none font-['Noto Sans KR']"
         >
           내가 쓴 게시글
         </Link>
       </nav>
-      <hr className="w-full border-t border-[#e6e6e6] mb-4" />{' '}
+      <hr className="w-full border-t border-[#e6e6e6] mb-4" />
       <div className="flex flex-col items-start text-gray-500">
         <div
           className="flex items-center mb-2 cursor-pointer"
@@ -106,6 +134,15 @@ const Footer = () => {
           © 2024. 김윤하 all rights reserved.
         </p>
       </div>
+
+      {/* 로그인 모달 추가 */}
+      {isModalOpen && (
+        <LoginModalProps
+          isOpen={isModalOpen}
+          onConfirm={handleConfirm} // 로그인 버튼 클릭 시 동작
+          onClose={closeModal} // 모달 닫기
+        />
+      )}
     </footer>
   );
 };

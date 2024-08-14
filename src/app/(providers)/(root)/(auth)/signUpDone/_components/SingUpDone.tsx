@@ -9,7 +9,7 @@ function SingUpDone() {
 
   return (
     <main className="">
-      <div className="">
+      <div className="h-[1242px]">
         <div className="text-center mb-[20px]">
           <div className="absolute top-[-1]">
             <Image

@@ -99,7 +99,7 @@ const ProfileForm: React.FC = () => {
     <main className="">
       <section className="flex flex-col justify-start items-start w-72 gap-1.5 py-1.5">
         <header className="flex justify-between items-center w-80 h-14 px-4 py-1.5 bg-white/50 shadow-xl">
-          <h1 className="flex-grow-0 flex-shrink-0 font-black text-left text-black text-[16px] leading-[20.8px] tracking-[-0.02em]">
+          <h1 className="flex-grow-0 flex-shrink-0 font-semibold text-left text-black text-[16px] leading-[20.8px] tracking-[-0.02em]">
             닉네임 / 프로필 수정
           </h1>
           <div className="">
@@ -120,19 +120,24 @@ const ProfileForm: React.FC = () => {
               </h1>
             </header>
             <div className="flex justify-start items-start self-stretch flex-grow-0 flex-shrink-0 gap-1">
-              <div className="flex justify-start items-center flex-grow overflow-hidden rounded-lg bg-white/50 border border-[#808080]">
+              <div className="flex justify-start items-center flex-grow overflow-hidden bg-white/50">
                 <input
                   type="text"
                   value={nickname}
                   onChange={handleNicknameChange}
-                  className="flex-grow w-[288px] h-[48px] text-left text-[#b3b3b3] pl-3"
+                  className="flex-grow w-[288px] h-[48px] text-left text-[#b3b3b3] pl-3 border border-[#808080] rounded-lg hover:border-blue-500 focus:border-blue-500 focus:outline-none"
                   placeholder="최대 8글자"
                 />
               </div>
             </div>
             {!nicknameAvailable && nickname && (
-              <p className="text-red-500 mt-2">
+              <p className="text-red-500 text-[12px] ml-1 mt-2">
                 이미 사용하고 있는 닉네임입니다.
+              </p>
+            )}
+            {nicknameAvailable && nickname && (
+              <p className="text-red-500 text-[12px] ml-1 mt-2">
+                사용 가능한 닉네임이에요.
               </p>
             )}
           </div>
@@ -158,7 +163,7 @@ const ProfileForm: React.FC = () => {
             프로필
           </h2>
         </header>
-        <div className="grid grid-cols-5 gap-2.5 w-72 h-56 pl-[19px] pr-[19px] pt-[16px] pb-[16px] rounded-2xl bg-white shadow-[0_0_2px_0_rgba(0, 0, 0, 0.151),0_2px_20px_0_rgba(18, 18, 18, 0.178)]">
+        <div className="grid grid-cols-5 gap-2.5 w-72 h-56 pl-[19px] pr-[19px] pt-[16px] pb-[16px] rounded-2xl bg-white shadow-[0_0_2px_0_rgba(0, 0, 0, 0.151),0_2px_20px_0_rgba(18, 18, 18, 0.178)] cursor-pointer">
           {profileIcons.map((icon, index) => (
             <Image
               key={index}

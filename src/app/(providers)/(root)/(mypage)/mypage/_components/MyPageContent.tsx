@@ -6,8 +6,9 @@ import { useUserStore } from '@/zustand/store/useUserStore';
 import { useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
-import Modal from '@/components/Modal/Modal';
+
 import LogoutButton from '@/components/LogoutButton/LogoutButton';
+import DeletesUserIdModalProps from '@/components/Modal/DeletesUserIdModal';
 
 function MyPageContent() {
   const { user, clearUser } = useUserStore();
@@ -150,7 +151,7 @@ function MyPageContent() {
         </div>
       </div>
       {isModalOpen && (
-        <Modal
+        <DeletesUserIdModalProps
           isOpen={isModalOpen}
           onConfirm={handlerDelete}
           onClose={closeModal}

@@ -4,9 +4,11 @@ import { createClient } from '@/supabase/client';
 import Link from 'next/link';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import Image from 'next/image';
 import { useUserStore } from '@/zustand/store/useUserStore';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function LoginForm() {
   const emailRef = useRef<HTMLInputElement>(null);
@@ -14,15 +16,18 @@ function LoginForm() {
   const supabase = createClient();
   const router = useRouter();
   const { setIsLoggedIn, setUser, isLoggedIn } = useUserStore();
+
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const email = emailRef.current?.value;
     const password = passwordRef.current?.value;
+
     try {
       const res = await axios.post('/api/auth/email/login', {
         email,
         password,
       });
+
       if (res.data) {
         setUser({
           id: res.data.id,
@@ -32,13 +37,43 @@ function LoginForm() {
           profileImage: res.data.avatar,
         });
         setIsLoggedIn(true);
-        window.location.href = '/';
+
+        // 로그인 성공 Toast
+        toast.success(
+          <div className="toast-message">
+            <span>로그인을 하였어요!</span>
+          </div>,
+          {
+            autoClose: 2500,
+            icon: false,
+            closeButton: false,
+            className: 'custom-toast',
+          },
+        );
+
+        setTimeout(() => {
+          if (!sessionStorage.getItem('redirect')) {
+            router.push('/');
+          }
+        }, 2500);
       } else {
-        alert('로그인 실패');
+        toast.error('로그인 실패. 다시 시도해주세요.', {
+          position: 'bottom-center',
+          autoClose: 2500,
+          icon: false,
+          closeButton: false,
+          className: 'custom-toast',
+        });
       }
     } catch (error) {
       console.error('로그인 중 오류 발생:', error);
-      alert('아이디 또는 비밀번호는 다시 입력해주세요!');
+      toast.error('아이디 또는 비밀번호를 확인해주세요.', {
+        position: 'bottom-center',
+        autoClose: 2500,
+        icon: false,
+        closeButton: false,
+        className: 'custom-toast',
+      });
     }
   };
 
@@ -57,7 +92,13 @@ function LoginForm() {
       if (error) throw error;
     } catch (error) {
       console.error('소셜 로그인 중 오류 발생:', error);
-      alert('소셜 로그인 중 오류가 발생했습니다.');
+      toast.error('소셜 로그인 중 오류가 발생했습니다.', {
+        position: 'bottom-center',
+        autoClose: 2500,
+        icon: false,
+        closeButton: false,
+        className: 'custom-toast',
+      });
     }
   };
 
@@ -108,8 +149,6 @@ function LoginForm() {
         </div>
         <div className="flex justify-end">
           <button className="text-sm mt-2 text-[#4d4d4d] rounded-lg hover:bg-gray-100 p-2">
-            {/* 은겸 - 아이디 비밀번호 찾기 이동 기능 추가 */}
-
             <Link href={'/find-id'} className="w-full h-full flex" passHref>
               아이디/비밀번호 찾기
               <Image
@@ -143,6 +182,18 @@ function LoginForm() {
             카카오로 시작하기
           </button>
         </div>
+        <ToastContainer
+          position="bottom-center"
+          autoClose={2500}
+          hideProgressBar
+          newestOnTop
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          className="custom-toast"
+        />
       </form>
     </main>
   );

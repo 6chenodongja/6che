@@ -62,7 +62,6 @@ function SingUp() {
     const selectedEmailDomain =
       domain === '직접 입력' ? customEmailDomain : domain;
     const email = `${emailId}@${selectedEmailDomain}`;
-    console.log('@@', domain);
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
@@ -129,7 +128,7 @@ function SingUp() {
           </p>
         )}
         {!error.nickname && isNicknameChecked && (
-          <p className="text-[#45bb27] mt-2 text-[12px]">{nicknameMessage}</p>
+          <p className="mt-2 text-[12px] text-black-700">{nicknameMessage}</p>
         )}
         {!error.nickname && !isNicknameChecked && (
           <p className="text-black-700 mt-[7px] text-[12px] flex">
@@ -174,14 +173,26 @@ function SingUp() {
                 title="이메일 선택"
                 onChange={(e) => setDomain(e.target.value)}
                 value={domain}
-                className="w-[160px] h-[48px] p-2 border-1 border-black-500 text-bl rounded-lg font-[16px] hover:border-blue-500 focus:border-blue-500 focus:outline-none"
+                className="w-[160px] h-[48px] p-2 border-1 border-black-500 text-bl rounded-lg font-[16px] hover:border-blue-500 focus:border-blue-500 focus:outline-none cursor-pointer"
               >
-                <option value="@gmail.com">@gmail.com</option>
-                <option value="@naver.com">@naver.com</option>
-                <option value="@daum.net">@daum.net</option>
-                <option value="@nate.com">@nate.com</option>
-                <option value="@icloud.com">@icloud.com</option>
-                <option value="hanmail.net">@hanmail.net</option>
+                <option value="@gmail.com" className="cursor-pointer">
+                  @gmail.com
+                </option>
+                <option value="@naver.com" className="cursor-pointer">
+                  @naver.com
+                </option>
+                <option value="@daum.net" className="cursor-pointer">
+                  @daum.net
+                </option>
+                <option value="@nate.com" className="cursor-pointer">
+                  @nate.com
+                </option>
+                <option value="@icloud.com" className="cursor-pointer">
+                  @icloud.com
+                </option>
+                <option value="hanmail.net" className="cursor-pointer">
+                  @hanmail.net
+                </option>
                 <option value="직접 입력" className="">
                   직접 입력
                 </option>
@@ -193,34 +204,51 @@ function SingUp() {
           )}
         </div>
 
-        <div className="mt-2 text-[#4D4D4D]">
-          <label className="w-[39px] h-[21px] text-[14px] leading-[150%]">
+        <div className="">
+          <label
+            className={`text-[14px] leading-[150%] ml-[2px] ${
+              error.password ? 'text-[#FF4732]/85' : 'text-[#808080]'
+            }`}
+          >
             비밀번호
           </label>
           <input
-            type="password"
+            type="text"
+            maxLength={10}
             onChange={handleChange('password')}
             value={password}
-            className="w-[288px] h-[48px] border-1 border-black-500 rounded-lg hover:border-blue-500 focus:border-blue-500 focus:outline-none pl-4"
+            className={`w-[288px] h-[48px] border hover:border-blue-500 ${
+              error.password ? 'border-[#FF4732]/85' : 'border-[#808080]'
+            } rounded-lg focus:outline-none pl-4`}
           />
-          {error.password && (
-            <p className="text-[#FF4732]/85 text-[12px] mt-[7px]">
-              {error.password}
-            </p>
-          )}
-          {!error.password && !isNicknameChecked && (
-            <p className="text-black-700 mt-[7px] text-[12px] flex">
-              <Image
-                src="images/ExclamationMarks/ExclamationMarks.svg"
-                alt=""
-                width={12}
-                height={12}
-                className="mr-[3px]"
-              />
-              특수문자,대문자 포함 8자 이상
-            </p>
-          )}
         </div>
+        {error.password && (
+          <p className="mt-2 text-[12px] flex text-[#FF4732]/85">
+            <Image
+              src="images/ExclamationMarks/Unavailable.svg"
+              alt=""
+              width={12}
+              height={12}
+              className="mr-[3px]"
+            />
+            {error.password}
+          </p>
+        )}
+        {!error.password && password && (
+          <p className="mt-2 text-[12px] text-black-700">{password}</p>
+        )}
+        {!error.password && !password && (
+          <p className="text-black-700 mt-[7px] text-[12px] flex">
+            <Image
+              src="images/ExclamationMarks/ExclamationMarks.svg"
+              alt=""
+              width={12}
+              height={12}
+              className="mr-[3px]"
+            />
+            특수문자,대문자 포함 8자 이상
+          </p>
+        )}
         <div className="mt-2 text-[#4D4D4D]">
           <label className="w-[39px] h-[21px] text-[14px] leading-[150%]">
             비밀번호 확인
