@@ -651,58 +651,102 @@ const MainPage = () => {
         <section className="w-full mt-3.5">
           <div className="flex justify-between items-center mb-4">
             {weather ? (
-              <>
-                <div className="w-[88px] h-[100px] px-[17px] py-2.5 bg-white/40 rounded-2xl shadow border border-white linear-gradient(37deg, rgba(255,255,255,0.5018601190476191) 0%, rgba(255,255,255,0) 100%) background: rgb(255,255,255) backdrop-blur-[20px] flex-col justify-center items-center gap-2 inline-flex">
-                  <div className="text-center text-[#121212]/70 text-xs font-normal font-['Noto Sans KR'] leading-none">
-                    반팔티
-                  </div>
-                  <div className="w-[54px] h-14 relative flex-col justify-start items-start flex">
-                    <div className="w-[53.04px] h-[55px] relative">
-                      <Image
-                        src="/images/tshirt.svg"
-                        alt="반팔티"
-                        className="object-contain"
-                        width={54}
-                        height={56}
-                      />
+              <Swiper spaceBetween={4} slidesPerView={3}>
+                <SwiperSlide>
+                  <div className="w-[88px] h-[100px] px-[17px] py-2.5 bg-white/40 rounded-2xl shadow border border-white linear-gradient(37deg, rgba(255,255,255,0.5018601190476191) 0%, rgba(255,255,255,0) 100%) background: rgb(255,255,255) backdrop-blur-[20px] flex-col justify-center items-center gap-2 inline-flex">
+                    <div className="text-center text-[#121212]/70 text-xs font-normal font-['Noto Sans KR'] leading-none">
+                      반팔티
+                    </div>
+                    <div className="w-[54px] h-14 relative flex-col justify-start items-start flex">
+                      <div className="w-[53.04px] h-[55px] relative">
+                        <Image
+                          src="/images/tshirt.svg"
+                          alt="반팔티"
+                          className="object-contain"
+                          width={54}
+                          height={56}
+                        />
+                      </div>
                     </div>
                   </div>
-                </div>
+                </SwiperSlide>
 
-                <div className="w-[88px] h-[100px] px-[17px] py-2.5 bg-white/40 rounded-2xl shadow border border-white linear-gradient(37deg, rgba(255,255,255,0.5018601190476191) 0%, rgba(255,255,255,0) 100%) background: rgb(255,255,255) backdrop-blur-[20px] flex-col justify-center items-center gap-2 inline-flex">
-                  <div className="text-center text-[#121212]/70 text-xs font-normal font-['Noto Sans KR'] leading-none">
-                    민소매
-                  </div>
-                  <div className="w-[54px] h-14 relative flex-col justify-start items-start flex">
-                    <div className="w-[53.04px] h-[55px] relative">
-                      <Image
-                        src="/images/Box.svg"
-                        alt="민소매"
-                        className="object-contain"
-                        width={54}
-                        height={56}
-                      />
+                <SwiperSlide>
+                  <div className="w-[88px] h-[100px] px-[17px] py-2.5 bg-white/40 rounded-2xl shadow border border-white linear-gradient(37deg, rgba(255,255,255,0.5018601190476191) 0%, rgba(255,255,255,0) 100%) background: rgb(255,255,255) backdrop-blur-[20px] flex-col justify-center items-center gap-2 inline-flex">
+                    <div className="text-center text-[#121212]/70 text-xs font-normal font-['Noto Sans KR'] leading-none">
+                      민소매
+                    </div>
+                    <div className="w-[54px] h-14 relative flex-col justify-start items-start flex">
+                      <div className="w-[53.04px] h-[55px] relative">
+                        <Image
+                          src="/images/Box.svg"
+                          alt="민소매"
+                          className="object-contain"
+                          width={54}
+                          height={56}
+                        />
+                      </div>
                     </div>
                   </div>
-                </div>
+                </SwiperSlide>
 
-                <div className="w-[88px] h-[100px] px-[17px] py-2.5 bg-white/40 rounded-2xl shadow border border-white linear-gradient(37deg, rgba(255,255,255,0.5018601190476191) 0%, rgba(255,255,255,0) 100%) background: rgb(255,255,255) backdrop-blur-[20px] flex-col justify-center items-center gap-2 inline-flex">
-                  <div className="text-center text-[#121212]/70 text-xs font-normal font-['Noto Sans KR'] leading-none">
-                    셔츠
-                  </div>
-                  <div className="w-[54px] h-14 relative flex-col justify-start items-start flex">
-                    <div className="w-[53.04px] h-[55px] relative">
-                      <Image
-                        src="/images/shirt.svg"
-                        alt="셔츠"
-                        className="object-contain"
-                        width={56.22}
-                        height={64.82}
-                      />
+                <SwiperSlide>
+                  <div className="w-[88px] h-[100px] px-[17px] py-2.5 bg-white/40 rounded-2xl shadow border border-white linear-gradient(37deg, rgba(255,255,255,0.5018601190476191) 0%, rgba(255,255,255,0) 100%) background: rgb(255,255,255) backdrop-blur-[20px] flex-col justify-center items-center gap-2 inline-flex">
+                    <div className="text-center text-[#121212]/70 text-xs font-normal font-['Noto Sans KR'] leading-none">
+                      셔츠
+                    </div>
+                    <div className="w-[54px] h-14 relative flex-col justify-start items-start flex">
+                      <div className="w-[53.04px] h-[55px] relative">
+                        <Image
+                          src="/images/shirt.svg"
+                          alt="셔츠"
+                          className="object-contain"
+                          width={56.22}
+                          height={64.82}
+                        />
+                      </div>
                     </div>
                   </div>
-                </div>
-              </>
+                </SwiperSlide>
+
+                <SwiperSlide>
+                  <div className="w-[88px] h-[100px] px-[17px] py-2.5 bg-white/40 rounded-2xl shadow border border-white linear-gradient(37deg, rgba(255,255,255,0.5018601190476191) 0%, rgba(255,255,255,0) 100%) background: rgb(255,255,255) backdrop-blur-[20px] flex-col justify-center items-center gap-2 inline-flex">
+                    <div className="text-center text-[#121212]/70 text-xs font-normal font-['Noto Sans KR'] leading-none">
+                      선글라스
+                    </div>
+                    <div className="w-[54px] h-14 relative flex-col justify-start items-start flex">
+                      <div className="w-[66px] h-[66px] relative">
+                        <Image
+                          src="/images/선글라스.svg"
+                          alt="선글라스"
+                          className="object-contain"
+                          width={66}
+                          height={66}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </SwiperSlide>
+
+                <SwiperSlide>
+                  <div className="w-[88px] h-[100px] px-[17px] py-2.5 bg-white/40 rounded-2xl shadow border border-white linear-gradient(37deg, rgba(255,255,255,0.5018601190476191) 0%, rgba(255,255,255,0) 100%) background: rgb(255,255,255) backdrop-blur-[20px] flex-col justify-center items-center gap-2 inline-flex">
+                    <div className="text-center text-[#121212]/70 text-xs font-normal font-['Noto Sans KR'] leading-none">
+                      모자
+                    </div>
+                    <div className="w-[54px] h-14 relative flex-col justify-start items-start flex">
+                      <div className="w-[63.56px] h-[35.36px] relative">
+                        <Image
+                          src="/images/cap.svg"
+                          alt="모자"
+                          className="object-contain"
+                          width={63.56}
+                          height={35.36}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </SwiperSlide>
+              </Swiper>
             ) : (
               <>
                 <SkeletonLoader type="outfit" />
