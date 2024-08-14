@@ -375,7 +375,7 @@ const ThermometerStyle: React.FC = () => {
                       fontFamily: 'Noto Sans KR',
                       fontSize: '12px',
                       letterSpacing: '-0.24px',
-                      fontWeight: 400,
+                      fontWeight: 600,
                       fontStyle: 'normal',
                       color: 'var(--Box-text, rgba(18, 18, 18, 0.70))',
                     }}

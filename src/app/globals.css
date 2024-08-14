@@ -10,6 +10,7 @@
   }
 }
 
+
 :root {
   --sds-size-space-200: 8px;
   --Blur-10: 10px;
@@ -480,11 +481,21 @@
 }
 
 /* 반응형 조정 */
-/* @media (min-width: 320px) and (max-width: 500px) {
-  .container {
-    width: 100%;
+@media (min-width: 768px) {
+  .content {
+    width: 480px;
+    height: 724px;
+    background-color: #fff;
+    border-radius: 24px;
+    box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.05), 
+                4px 4px 20px 0px rgba(0, 0, 0, 0.05);
+    backdrop-filter: blur(5px);
+    margin-top: 46px; /* 헤더와의 간격 */
+    margin-bottom: 200px; /* 푸터와의 간격 */
+    margin-left: auto; /* 좌우 간격 */
+    margin-right: auto; /* 좌우 간격 */
   }
-} */
+}
 
 /* detail 부분 */
 .deleteButton {
@@ -685,6 +696,39 @@
   letter-spacing: var(--body-KR-large-letter-spacing); /* -0.36px */
   font-style: var(--body-KR-large-font-style); /* normal */
   color: var(--palette-black); /* Color for text */
+}
+
+/* 기본 설문 페이지 스타일 */
+.survey-container {
+  width: 100%;
+  max-width: 768px; /* 최대 너비를 768px로 설정 */
+  margin: 0 auto;
+  padding-top: 60px;
+  box-sizing: border-box;
+}
+
+/* 768px 이상 화면에서의 스타일 */
+@media (min-width: 768px) {
+  .survey-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 46px;
+    padding-bottom: 200px;
+  }
+
+  .survey-content {
+    width: 480px;
+    height: 724px;
+    border-radius: 24px;
+    box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    position: relative;
+    margin-top: 46px; /* 헤더와의 간격 */
+    margin-bottom: 200px; /* 푸터와의 간격 */
+    margin-left: 720px; /* 좌우 간격 */
+    margin-right: 720px; /* 좌우 간격 */
+  }
 }
 
 /* 온도 display 스타일 */

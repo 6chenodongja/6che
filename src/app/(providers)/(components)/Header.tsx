@@ -71,7 +71,12 @@ const Header = () => {
   }
 
   return (
-    <header className="w-full max-w-[320px] bg-white shadow-md py-4 flex justify-between items-center px-4 fixed top-0 z-50 h-[60px]">
+    <header className="w-full max-w-[320px]  py-4 flex justify-between items-center px-4 fixed top-0 z-50 h-[60px]"
+    style={{
+      background: 'varrgba(255, 255, 255, 0.70)',
+      boxShadow: '0px 2px 5px 0px rgba(0, 0, 0, 0.05)',
+    }}
+    >
       <div className="flex-1 flex justify-start">
         <button title="button" onClick={handleMenuToggle}>
           <Image src="/images/menu.png" alt="메뉴" width={24} height={24} />
@@ -106,15 +111,10 @@ const Header = () => {
             </Link>
           </li>
           <li>
-            <a
-              onClick={() => handleNavigation('/list')}
-              className="cursor-pointer"
-            >
-              스타일
-            </a>
+            <Link href="/list">스타일</Link>
           </li>
-          <li>            
-              <Link href="/thermometer-style">옷 차림</Link>            
+          <li>
+            <Link href="/thermometer-style">옷 차림</Link>
           </li>
           <li>
             <Link href="/survey">취향 코디</Link>
