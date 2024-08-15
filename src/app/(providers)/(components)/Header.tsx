@@ -6,7 +6,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { LogoText } from '../../../icons/LogoText';
 import { IconLogin } from '../../../icons/IconLogin';
-import LoadingScreen from '../(components)/LoadingScreen'; // LoadingScreen 컴포넌트를 불러옵니다.
+import LoadingScreen from '../(components)/LoadingScreen';
 import LoginDropdown from '@/components/LoginDropdown/LoginDropdown';
 import { useUserStore } from '@/zustand/store/useUserStore';
 import { createClient } from '@/supabase/client';
@@ -50,11 +50,10 @@ const Header = () => {
   }, [setUser]);
 
   const handleLogoClick = () => {
-    // 메인화면에서 로고 클릭 시 새로고침
     if (window.location.pathname === '/') {
-      window.location.reload(); // 메인화면에서는 새로고침
+      window.location.reload();
     } else {
-      router.push('/'); // 다른 페이지에서는 메인화면으로 이동
+      router.push('/');
     }
   };
 
@@ -63,39 +62,73 @@ const Header = () => {
     setTimeout(() => {
       setIsLoading(false);
       router.push(url);
-    }, 2300); // 2.3초 동안 로딩 화면을 보여줍니다.
+    }, 2300);
   };
 
   if (isLoading) {
-    return <LoadingScreen />; // 로딩 중일 때 LoadingScreen 컴포넌트를 보여줍니다.
+    return <LoadingScreen />;
   }
 
   return (
-    <header className="w-full max-w-[320px] bg-white shadow-md py-4 flex justify-between items-center px-4 fixed top-0 z-50 h-[60px]">
-      <div className="flex-1 flex justify-start">
-        <button title="button" onClick={handleMenuToggle}>
-          <Image src="/images/menu.png" alt="메뉴" width={24} height={24} />
-        </button>
-      </div>
-      <div className="flex-1 flex justify-center">
-        <div className="cursor-pointer" onClick={handleLogoClick}>
-          <LogoText className="w-24 h-8" />
+    <header className="w-full fixed top-0 z-50 h-[60px]">
+      <div
+        className="absolute w-full h-full bg-rgba(255, 255, 255, 0.70))"
+        style={{
+          boxShadow: '0px 2px 10px 0px rgba(0, 0, 0, 0.05)',
+          backdropFilter: 'blur(7px)',
+        }}
+      ></div>
+      <div className="relative w-full h-full flex items-center px-4">
+        <div className="flex-1 flex justify-start md:hidden">
+          <button title="button" onClick={handleMenuToggle}>
+            <Image src="/images/menu.png" alt="메뉴" width={24} height={24} />
+          </button>
         </div>
-      </div>
-      <div className="flex-1 flex justify-end">
-        {isLoggedIn && user ? (
-          <>
+        <div className="md:flex-1 flex justify-center md:justify-start">
+          <div className="cursor-pointer" onClick={handleLogoClick}>
+            <LogoText className="w-24 h-8" />
+          </div>
+        </div>
+        <div className="flex-1 flex justify-end">
+          {isLoggedIn && user ? (
             <LoginDropdown />
-          </>
-        ) : (
-          <>
+          ) : (
             <Link href={'/login'}>
               <IconLogin className="w-6 h-6" />
             </Link>
-          </>
-        )}
+          )}
+        </div>
+        <div className="hidden md:flex md:absolute md:left-1/2 md:transform md:-translate-x-1/2">
+          <ul className="flex space-x-8">
+            <li>
+              <Link href="/">홈</Link>
+            </li>
+            <li>
+              <Link href="/list">코디</Link>
+            </li>
+            <li>
+              <Link href="/thermometer-style">옷차림</Link>
+            </li>
+            <li>
+              <Link href="/survey">취향 코디</Link>
+            </li>
+          </ul>
+        </div>
       </div>
-      <nav className={`navbar ${isMenuOpen ? 'open' : ''}`}>
+
+      <nav
+        className={`navbar ${isMenuOpen ? 'open' : ''}`}
+        style={{
+          width: '100%',
+          height: '100%',
+          backdropFilter: 'blur(20px)',
+          backgroundColor: 'rgba(255, 255, 255, 0.70)',
+          transform: isMenuOpen
+            ? 'translate(-50%,0%)'
+            : 'translate(-50%, -100%)',
+          transition: 'transform 0.3s ease-in-out',
+        }}
+      >
         <div className="navbar-close" onClick={handleMenuToggle}>
           &times;
         </div>
@@ -106,20 +139,10 @@ const Header = () => {
             </Link>
           </li>
           <li>
-            <a
-              onClick={() => handleNavigation('/list')}
-              className="cursor-pointer"
-            >
-              스타일
-            </a>
+            <Link href="/list">스타일</Link>
           </li>
           <li>
-            <a
-              onClick={() => handleNavigation('/list')}
-              className="cursor-pointer"
-            >
-              옷차림
-            </a>
+            <Link href="/thermometer-style">옷 차림</Link>
           </li>
           <li>
             <Link href="/survey">취향 코디</Link>

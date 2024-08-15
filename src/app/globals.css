@@ -832,25 +832,3 @@
   border: none;
   cursor: pointer;
 }
-
-/* 768px 이하: 모바일 */
-@media (max-width: 768px) {
-  .postformmo-container {
-    width: 100%;
-    max-width: 486px;
-    margin: 0 auto;
-    padding-top: 60px;
-    box-sizing: border-box;
-  }
-}
-
-/* 768px 초과: 데스크탑 */
-@media (min-width: 769px) {
-  .postformpc-container {
-    width: 100%;
-    max-width: 768px;
-    margin: 0 auto;
-    padding-top: 60px;
-    box-sizing: border-box;
-  }
-}

@@ -7,9 +7,9 @@ import Footer from 'app/(providers)/(components)/Footer';
 
 function FindPwPage() {
   return (
-    <div className="container flex flex-col justify-between items-center w-full min-h-screen bg-neutral-50">
+    <div className="flex flex-col min-h-screen bg-neutral-50">
       <Header />
-      <main className="flex-grow flex flex-col justify-center items-center w-full">
+      <main className="flex-grow flex justify-center items-center w-full md:mt-[46px] md:mb-[199px]">
         <FindIdForm />
       </main>
       <Footer />
