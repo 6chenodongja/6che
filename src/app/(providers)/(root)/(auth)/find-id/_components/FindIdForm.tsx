@@ -21,21 +21,19 @@ const FindIdForm = () => {
         body: JSON.stringify({ email: fullEmail }),
       });
 
-      if (!response.ok) {
-        console.error('응답 오류:', response.status, response.statusText);
-        const errorText = await response.text();
-        console.error('오류 응답 내용:', errorText);
-        alert('서버 응답 중 오류가 발생했습니다.');
-        return;
-      }
-
       const result = await response.json();
 
-      router.push(
-        `/email-confirmation?email=${encodeURIComponent(fullEmail)}&status=registered`,
-      );
+      if (response.ok) {
+        router.push(
+          `/email-confirmation?email=${encodeURIComponent(fullEmail)}&status=registered`,
+        );
+      } else {
+        router.push(
+          `/email-confirmation?email=${encodeURIComponent(fullEmail)}&status=not_registered`,
+        );
+      }
     } catch (error) {
-      console.error('네트워크 또는 JSON 파싱 오류:', error);
+      console.error('Error:', error);
       alert('서버와의 통신 중 오류가 발생했습니다.');
     }
   };
