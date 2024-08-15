@@ -28,11 +28,11 @@ function MyLikeFilter({
   };
 
   return (
-    <div className="relative z-10">
-      <div className="list-header flex justify-start items-center shrink-0">
-        <div className="flex justify-center items-start w-[75px] shrink-0">
+    <div className="relative z-10 flex justify-center">
+      <div className="flex justify-center items-center shrink-0 gap-[175px] p-2">
+        <div className="flex justify-center items-center shrink-0">
           <div className="flex justify-center items-center flex-grow-0 flex-shrink-0 relative overflow-hidden px-1 py-1.5 rounded-lg]">
-            <p className="flex-grow-0 flex-shrink-0 text-sm text-left text-[#121212]">
+            <p className="flex-grow-0 flex-shrink-0 text-sm text-[#121212]">
               <select onChange={handleSortChange} className="bg-[#FAFAFA]">
                 <option value="latest">최신순</option>
                 <option value="likes">좋아요순</option>
@@ -40,7 +40,7 @@ function MyLikeFilter({
             </p>
           </div>
         </div>
-        <div className="flex justify-start items-center absolute left-[275px] top-[9px]">
+        <div className="flex justify-start items-center top-[9px]">
           <button
             className="flex justify-center items-center flex-grow-0 flex-shrink-0 relative overflow-hidden gap-2 p-1 rounded-[1000px]"
             style={{ filter: 'drop-shadow(0px 0px 4px rgba(0,0,0,0.08))' }}
@@ -84,7 +84,7 @@ function MyLikeFilter({
         </div>
       </div>
       {showDropdown && (
-        <div className="absolute w-[288px] h-[165px] bg-white rounded-lg border border-opacity-50 top-[50px] left-[16px] flex flex-col items-start p-2 z-20">
+        <div className="absolute w-[288px] h-[165px] bg-white rounded-lg border border-opacity-50 top-[48px] flex flex-col items-start p-2 z-20">
           <div className="flex flex-wrap gap-1 border-b border-gray-300 pb-1 mb-2">
             {['유형', '날씨', '계절', '스타일', '장소'].map((item) => (
               <button
@@ -115,7 +115,7 @@ function MyLikeFilter({
                     } ${
                       option === '선택 안함'
                         ? 'w-[74px] h-[32px]'
-                        : 'w-[46px] h-[32px]'
+                        : 'w-[59px] h-[32px]'
                     }`}
                   >
                     {option}

@@ -42,18 +42,16 @@ function ListSelects({
 
   return (
     <div className="relative z-10">
-      <div className="list-header flex justify-start items-center shrink-0">
-        <div className="flex justify-center items-start w-[75px] shrink-0">
-          <div className="flex justify-center items-center flex-grow-0 flex-shrink-0 relative overflow-hidden px-1 py-1.5 rounded-lg]">
-            <p className="flex-grow-0 flex-shrink-0 text-sm text-left text-[#121212]">
-              <select onChange={handleSortChange} className="bg-[#FAFAFA]">
-                <option value="latest">최신순</option>
-                <option value="likes">좋아요순</option>
-              </select>
-            </p>
-          </div>
+      <div className="flex justify-center items-center shrink-0 pt-[8px] pl-[12px] pb-[9px] pr-[14px] gap-[155px]">
+        <div className="flex justify-center items-center flex-grow-0 flex-shrink-0 overflow-hidden px-1 py-1.5 rounded-lg]">
+          <p className="flex-grow-0 flex-shrink-0 text-sm text-left text-[#121212]">
+            <select onChange={handleSortChange} className="bg-[#FAFAFA]">
+              <option value="latest">최신순</option>
+              <option value="likes">좋아요순</option>
+            </select>
+          </p>
         </div>
-        <div className="flex justify-start items-center absolute left-[250px] top-[9px]">
+        <div className="flex justify-start items-center top-[9px]">
           <div className="flex justify-start items-start flex-grow-0 flex-shrink-0 w-8 h-8">
             <button
               className="flex justify-center items-center flex-grow-0 flex-shrink-0 relative overflow-hidden gap-2 p-1 rounded-[1000px]"
@@ -96,7 +94,7 @@ function ListSelects({
               )}
             </button>
           </div>
-          <div className="flex justify-start items-start flex-grow-0 flex-shrink-0 w-8 h-8">
+          <div className="flex justify-start items-start flex-grow-0 flex-shrink-0 w-8 h-8 ">
             <button
               className="flex justify-center items-center flex-grow-0 flex-shrink-0 relative overflow-hidden gap-2 p-1 rounded-[1000px]"
               style={{ filter: 'drop-shadow(0px 0px 4px rgba(0,0,0,0.08))' }}
@@ -122,8 +120,8 @@ function ListSelects({
           </div>
         </div>
         {showDropdown && (
-          <div className="absolute w-[288px] h-[165px] bg-white rounded-lg border border-opacity-50 top-[50px] left-[16px] flex flex-col items-start p-2 z-20 flex-wrap">
-            <div className="flex flex-wrap gap-1 border-b border-gray-300 pb-1 mb-2">
+          <div className="absolute w-[288px] h-[175px] rounded-lg top-[49px] flex flex-col items-start z-20 flex-wrap backdrop-blur-[5px] bg-white bg-opacity-90">
+            <div className="flex flex-wrap gap-1 border-b border-gray-300 pb-1 mb-2 w-full p-2">
               {['유형', '날씨', '계절', '스타일', '장소'].map((item) => (
                 <button
                   key={item}
@@ -141,7 +139,7 @@ function ListSelects({
             </div>
             <div>
               {selectedTab === '유형' && (
-                <div className="flex flex-wrap gap-1">
+                <div className="flex flex-wrap gap-1 p-2">
                   {['남성', '여성', '선택 안함'].map((option) => (
                     <button
                       key={option}
@@ -153,7 +151,7 @@ function ListSelects({
                       } ${
                         option === '선택 안함'
                           ? 'w-[74px] h-[32px]'
-                          : 'w-[46px] h-[32px]'
+                          : 'w-[59px] h-[32px]'
                       }`}
                     >
                       {option}
@@ -164,7 +162,7 @@ function ListSelects({
             </div>
             <div>
               {selectedTab === '날씨' && (
-                <div className="flex flex-wrap gap-1">
+                <div className="flex flex-wrap gap-1 p-2">
                   {['맑음', '흐림', '비', '눈'].map((option) => (
                     <button
                       key={option}
@@ -183,7 +181,7 @@ function ListSelects({
             </div>
             <div>
               {selectedTab === '계절' && (
-                <div className="flex flex-wrap gap-1">
+                <div className="flex flex-wrap gap-1 p-2">
                   {['봄', '여름', '가을', '겨울'].map((option) => (
                     <button
                       key={option}
@@ -202,15 +200,16 @@ function ListSelects({
             </div>
             <div>
               {selectedTab === '스타일' && (
-                <div className="flex flex-wrap gap-1">
+                <div className="flex flex-wrap gap-1 p-2">
                   {[
-                    '미니멀',
-                    '아메카지',
-                    '시티보이',
+                    '스트릿',
                     '캐주얼',
-                    '비즈니스캐주얼',
-                    '스포츠',
                     '빈티지',
+                    '스포츠',
+                    '눔코어',
+                    '페미닌',
+                    '모던',
+                    '미니멀',
                   ].map((option) => (
                     <button
                       key={option}
@@ -235,7 +234,7 @@ function ListSelects({
             </div>
             <div>
               {selectedTab === '장소' && (
-                <div className="flex flex-wrap gap-1">
+                <div className="flex flex-wrap gap-1 p-2">
                   {[
                     '데이트',
                     '캠퍼스',
@@ -245,7 +244,6 @@ function ListSelects({
                     '바다',
                     '여행',
                     '데일리',
-                    '소개팅',
                   ].map((option) => (
                     <button
                       key={option}
@@ -265,7 +263,13 @@ function ListSelects({
           </div>
         )}
         {showSearchDropdown && (
-          <div className="absolute w-[290px] p-4 top-[50px] left-3.5 bg-white rounded-lg border border-opacity-50 shadow-md backdrop-blur-sm">
+          <div
+            className="absolute w-[290px] p-4 top-[49px] rounded-lg backdrop-blur-[5px] bg-white bg-opacity-90"
+            style={{
+              boxShadow:
+                '0px 0px 2px 0px rgba(0, 0, 0, 0.05), 4px 4px var(--Blur-20, 20px) 0px rgba(0, 0, 0, 0.05)',
+            }}
+          >
             <div className="flex items-center justify-left mb-2">
               <svg
                 width={24}

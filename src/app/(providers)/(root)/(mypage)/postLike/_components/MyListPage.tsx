@@ -76,7 +76,7 @@ function MyListPage({ posts, setPosts }: PostsProps) {
   );
 
   return (
-    <div className="container mx-auto h-auto bg-[#FAFAFA]">
+    <div className="mobile-container mx-auto bg-[#FAFAFA]">
       <Header />
       <MyLikeHeader />
       <MySelectPage />

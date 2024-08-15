@@ -36,21 +36,19 @@ function MyStyleFilter({
   const clickModal = () => setShowModal(!showModal);
 
   return (
-    <div className="relative z-10">
-      <div className="list-header flex justify-start items-center shrink-0">
-        <div className="flex justify-center items-start w-[75px] shrink-0">
-          <div className="flex justify-center items-center flex-grow-0 flex-shrink-0 relative overflow-hidden px-1 py-1.5 rounded-lg]">
-            <label className="flex items-center h-[33px] px-[4px] py-[8px] gap-[6px] rounded text-[14px] font-normal leading-[14px] tracking-[-0.28px] font-KR text-black-500 ml-4">
-              <input type="checkbox" onChange={allCheckHandler} />
-              모두 선택
-            </label>
-          </div>
+    <div className="relative z-10 flex justify-center">
+      <div className="flex justify-center items-center shrink-0 gap-[170px] p-2">
+        <div className="flex justify-center items-center flex-grow-0 flex-shrink-0 overflow-hidden px-1 py-1.5 rounded-lg m">
+          <label className="flex items-center justify-center py-[8px] gap-[6px] rounded text-[14px] font-normal leading-[14px] tracking-[-0.28px] font-KR text-black-500">
+            <input type="checkbox" onChange={allCheckHandler} />
+            모두 선택
+          </label>
         </div>
-        <div className="flex justify-start items-center absolute left-[255px] top-[9px]">
+        <div className="flex justify-center items-center top-[9px]">
           {checkItems.length === 0 ? (
-            <div className="ml-6">
+            <div>
               <button
-                className="flex justify-center items-center flex-grow-0 flex-shrink-0 relative overflow-hidden gap-2 p-1 rounded-[1000px]"
+                className="flex justify-center items-center flex-grow-0 flex-shrink-0 overflow-hidden gap-2 p-1 rounded-[1000px]"
                 style={{ filter: 'drop-shadow(0px 0px 4px rgba(0,0,0,0.08))' }}
                 onClick={handleFilterClick}
               >
@@ -93,7 +91,7 @@ function MyStyleFilter({
           ) : (
             <button
               onClick={clickModal}
-              className="rounded-lg px-[10px] py-[6px] flex justify-center items-center text-[#FFF] text-[14px] font-KR font-medium"
+              className="rounded-lg px-[10px] py-[6px] flex justify-center items-center text-[#FFF] text-[14px] font-KR font-medium mr-3"
               style={{ backgroundColor: 'rgba(255, 71, 50, 0.85)' }}
             >
               삭제
@@ -102,7 +100,7 @@ function MyStyleFilter({
         </div>
       </div>
       {showDropdown && (
-        <div className="absolute w-[288px] h-[165px] bg-white rounded-lg border border-opacity-50 top-[50px] left-[16px] flex flex-col items-start p-2 z-20">
+        <div className="absolute w-[288px] h-[165px] rounded-lg top-[55px] flex flex-col items-start p-2 z-20 backdrop-blur-[5px] bg-white bg-opacity-90">
           <div className="flex flex-wrap gap-1 border-b border-gray-300 pb-1 mb-2">
             {['유형', '날씨', '계절', '스타일', '장소'].map((item) => (
               <button

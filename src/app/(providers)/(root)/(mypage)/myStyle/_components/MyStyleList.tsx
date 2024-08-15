@@ -157,7 +157,7 @@ function MyStyleList({
   };
 
   return (
-    <div className="container mx-auto bg-[#FAFAFA]">
+    <div className="mobile-container mx-auto bg-[#FAFAFA]">
       <Header />
       <MyStyleHeader />
       <MyStyleSelect

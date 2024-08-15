@@ -8,8 +8,6 @@ import Image from 'next/image';
 function LoginDropdown() {
   const [isOpen, setIsOpen] = useState(false);
   const { user } = useUserStore();
-  // console.log('????', profileImage);
-  console.log('', user?.profileImage);
   const toggleDropdown = () => setIsOpen(!isOpen);
   return (
     <main className="">
