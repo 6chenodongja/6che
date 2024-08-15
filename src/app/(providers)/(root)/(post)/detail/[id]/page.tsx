@@ -12,6 +12,8 @@ import { useUserStore } from '@/zustand/store/useUserStore';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/supabase/client';
 import { PostDetailItem } from '../../../../../../../types/post';
+import DetailNicknameIcon from '../_components/icons/DetailNicknameIcon';
+import DetailLiveLIkeIcon from '../_components/icons/DetailLiveLIkeIcon';
 
 function PostDetail({ params }: { params: { id: string } }) {
   const [userComment, setUserComment] = useState<string[]>([]);
@@ -195,12 +197,9 @@ function PostDetail({ params }: { params: { id: string } }) {
 
   return (
     <div>
-      <div className="list-mobile-container relative overflow-hidden bg-[#FAFAFA] mx-auto">
-        <header className="mt-[-50px] ml-3 flex pb-[6px] justify-center">
-          <Link
-            href={'/list'}
-            className="flex items-center object-cover mr-[280px]"
-          >
+      <div className="detail-container overflow-hidden bg-[#FAFAFA]">
+        <header className="mt-[-50px] pb-[6px] flex  justify-center">
+          <Link href={'/list'} className="flex items-center object-cover">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="34"
@@ -233,120 +232,50 @@ function PostDetail({ params }: { params: { id: string } }) {
             </div>
           )}
         </header>
-        <Swiper
-          slidesPerView={1}
-          pagination={{ clickable: true }}
-          modules={[Pagination]}
-          loop={true}
-        >
-          {userPostImages.map((image, index) => (
-            <SwiperSlide
-              key={image}
-              className="w-[288px] h-[412px] object-cover"
-            >
-              {image && (
-                <Image
-                  src={image}
-                  alt={`이미지 ${index}`}
-                  width={200}
-                  height={100}
-                  sizes="100vw"
-                  className="w-[288px] h-[412px] rounded-xl flex justify-center items-center mx-auto"
-                />
-              )}
-              <div className="absolute top-2 left-[245px] bg-white bg-opacity-50 p-1 m-1 font-[18px] rounded-lg flex flex-row gap-2 justify-center items-center">
-                {weatherIcon && (
-                  <div className="detail-icon">
-                    <Image
-                      src={weatherIcon}
-                      alt="Weather Icon"
-                      width={21}
-                      height={16}
-                    />
-                  </div>
+        <div>
+          <Swiper
+            slidesPerView={1}
+            pagination={{ clickable: true }}
+            modules={[Pagination]}
+            loop={true}
+          >
+            {userPostImages.map((image, index) => (
+              <SwiperSlide
+                key={image}
+                className="w-[288px] h-[412px] object-cover"
+              >
+                {image && (
+                  <Image
+                    src={image}
+                    alt={`이미지 ${index}`}
+                    width={200}
+                    height={100}
+                    sizes="100vw"
+                    className="w-[288px] h-[412px] rounded-xl flex justify-center items-center mx-auto"
+                  />
                 )}
-                {temperature ? formatTemperature(temperature) : 'N/A'}{' '}
-              </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
+                <div className="absolute top-2 left-[245px] bg-white bg-opacity-50 p-1 m-1 font-[18px] rounded-lg flex flex-row gap-2 justify-center items-center">
+                  {weatherIcon && (
+                    <div className="detail-icon">
+                      <Image
+                        src={weatherIcon}
+                        alt="Weather Icon"
+                        width={21}
+                        height={16}
+                      />
+                    </div>
+                  )}
+                  {temperature ? formatTemperature(temperature) : 'N/A'}{' '}
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
 
         <div className="flex flex-col justify-center items-center relative gap-2.5 mt-2 m-4">
           <div className="flex justify-center items-center self-stretch flex-grow-0 flex-shrink-0 gap-[115px]">
             <div className="flex justify-start items-center flex-grow-0 flex-shrink-0 relative gap-[5px]">
-              <svg
-                width={32}
-                height={32}
-                viewBox="0 0 32 32"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                className="flex-grow-0 flex-shrink-0 w-8 h-8 relative"
-                preserveAspectRatio="xMidYMid meet"
-              >
-                <rect
-                  x={2}
-                  y={2}
-                  width={28}
-                  height={28}
-                  rx={4}
-                  fill="white"
-                  fillOpacity="0.6"
-                />
-                <path
-                  d="M16.5145 16C14.2973 16 12.4998 14.7344 12.4998 13.1731C12.4998 11.6973 14.1059 10.4856 16.1545 10.3574C16.5616 8.91811 18.3655 7.83337 20.5292 7.83337C22.9929 7.83337 24.99 9.23966 24.99 10.9744C24.99 11.0008 24.9896 11.0271 24.9887 11.0533C26.5285 11.3319 27.6665 12.316 27.6665 13.4872C27.6665 14.875 26.0688 16 24.0979 16H16.5145Z"
-                  fill="#B3B3B3"
-                />
-                <g filter="url(#filter0_bd_3033_4928)">
-                  <path
-                    d="M19.7744 24.1667C22.8445 24.1667 25.3333 22.1778 25.3333 19.7244C25.3333 17.4053 23.1094 15.5012 20.273 15.2997C19.7092 13.038 17.2115 11.3334 14.2156 11.3334C10.8044 11.3334 8.03913 13.5433 8.03913 16.2693C8.03913 16.3107 8.03977 16.3521 8.04105 16.3933C5.90891 16.8311 4.33325 18.3775 4.33325 20.218C4.33325 22.3988 6.54549 24.1667 9.27443 24.1667H19.7744Z"
-                    fill="#CCCCCC"
-                    fillOpacity="0.7"
-                    shapeRendering="crispEdges"
-                  />
-                </g>
-                <defs>
-                  <filter
-                    id="filter0_bd_3033_4928"
-                    x="2.33325"
-                    y="9.33337"
-                    width={25}
-                    height="16.8334"
-                    filterUnits="userSpaceOnUse"
-                    colorInterpolationFilters="sRGB"
-                  >
-                    <feFlood floodOpacity={0} result="BackgroundImageFix" />
-                    <feGaussianBlur in="BackgroundImageFix" stdDeviation={1} />
-                    <feComposite
-                      in2="SourceAlpha"
-                      operator="in"
-                      result="effect1_backgroundBlur_3033_4928"
-                    />
-                    <feColorMatrix
-                      in="SourceAlpha"
-                      type="matrix"
-                      values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0"
-                    />
-                    <feOffset dx="0.5" dy="-0.5" />
-                    <feGaussianBlur stdDeviation="0.5" />
-                    <feComposite in2="hardAlpha" operator="out" />
-                    <feColorMatrix
-                      type="matrix"
-                      values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0"
-                    />
-                    <feBlend
-                      mode="normal"
-                      in2="effect1_backgroundBlur_3033_4928"
-                      result="effect2_dropShadow_3033_4928"
-                    />
-                    <feBlend
-                      mode="normal"
-                      in="SourceGraphic"
-                      in2="effect2_dropShadow_3033_4928"
-                      result="shape"
-                    />
-                  </filter>
-                </defs>
-              </svg>
+              <DetailNicknameIcon />
               <div>
                 {/* 유저 닉네임 */}
                 <p className="flex-grow-0 flex-shrink-0 font-semibold text-[#333] text-[18px] leading-[23.4px] tracking-[-0.36px]">
@@ -356,84 +285,7 @@ function PostDetail({ params }: { params: { id: string } }) {
             </div>
             <div className="flex justify-start items-center flex-grow-0 flex-shrink-0">
               <div className="flex justify-start items-center flex-grow-0 flex-shrink-0 relative gap-0.5">
-                <svg
-                  width={28}
-                  height={28}
-                  viewBox="0 0 28 28"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="flex-grow-0 flex-shrink-0 w-7 h-7 relative"
-                  preserveAspectRatio="xMidYMid meet"
-                >
-                  <g filter="url(#filter0_b_3115_6844)">
-                    <g filter="url(#filter1_b_3115_6844)">
-                      <path
-                        d="M11.0449 21.807C10.8637 21.7072 10.6191 21.5687 10.3316 21.3963C9.76866 21.0587 8.98349 20.5566 8.16667 19.9268C7.38362 19.323 6.37347 18.4516 5.50743 17.3387C4.70629 16.3091 3.5 14.3976 3.5 11.8306C3.5 8.51841 6.11167 5.83337 9.33333 5.83337C11.2415 5.83337 12.9357 6.77534 14 8.23166C15.0643 6.77534 16.7585 5.83337 18.6667 5.83337C21.8883 5.83337 24.5 8.51841 24.5 11.8306C24.5 14.3976 23.2937 16.3091 22.4926 17.3387C21.6265 18.4516 20.6164 19.323 19.8333 19.9268C19.0165 20.5566 18.2313 21.0587 17.6684 21.3963C17.3809 21.5687 17.1363 21.7072 16.9551 21.807L15.8357 22.3852C14.6842 22.98 13.3158 22.98 12.1643 22.3852L11.0449 21.807Z"
-                        fill="white"
-                      />
-                      <path
-                        d="M11.0449 21.807C10.8637 21.7072 10.6191 21.5687 10.3316 21.3963C9.76866 21.0587 8.98349 20.5566 8.16667 19.9268C7.38362 19.323 6.37347 18.4516 5.50743 17.3387C4.70629 16.3091 3.5 14.3976 3.5 11.8306C3.5 8.51841 6.11167 5.83337 9.33333 5.83337C11.2415 5.83337 12.9357 6.77534 14 8.23166C15.0643 6.77534 16.7585 5.83337 18.6667 5.83337C21.8883 5.83337 24.5 8.51841 24.5 11.8306C24.5 14.3976 23.2937 16.3091 22.4926 17.3387C21.6265 18.4516 20.6164 19.323 19.8333 19.9268C19.0165 20.5566 18.2313 21.0587 17.6684 21.3963C17.3809 21.5687 17.1363 21.7072 16.9551 21.807L15.8357 22.3852C14.6842 22.98 13.3158 22.98 12.1643 22.3852L11.0449 21.807Z"
-                        stroke="#121212"
-                        strokeWidth={2}
-                        strokeLinecap="round"
-                      />
-                    </g>
-                  </g>
-                  <defs>
-                    <filter
-                      id="filter0_b_3115_6844"
-                      x={-20}
-                      y={-20}
-                      width={68}
-                      height={68}
-                      filterUnits="userSpaceOnUse"
-                      colorInterpolationFilters="sRGB"
-                    >
-                      <feFlood floodOpacity={0} result="BackgroundImageFix" />
-                      <feGaussianBlur
-                        in="BackgroundImageFix"
-                        stdDeviation={10}
-                      />
-                      <feComposite
-                        in2="SourceAlpha"
-                        operator="in"
-                        result="effect1_backgroundBlur_3115_6844"
-                      />
-                      <feBlend
-                        mode="normal"
-                        in="SourceGraphic"
-                        in2="effect1_backgroundBlur_3115_6844"
-                        result="shape"
-                      />
-                    </filter>
-                    <filter
-                      id="filter1_b_3115_6844"
-                      x="-1.5"
-                      y="0.833374"
-                      width={31}
-                      height="26.9979"
-                      filterUnits="userSpaceOnUse"
-                      colorInterpolationFilters="sRGB"
-                    >
-                      <feFlood floodOpacity={0} result="BackgroundImageFix" />
-                      <feGaussianBlur
-                        in="BackgroundImageFix"
-                        stdDeviation={2}
-                      />
-                      <feComposite
-                        in2="SourceAlpha"
-                        operator="in"
-                        result="effect1_backgroundBlur_3115_6844"
-                      />
-                      <feBlend
-                        mode="normal"
-                        in="SourceGraphic"
-                        in2="effect1_backgroundBlur_3115_6844"
-                        result="shape"
-                      />
-                    </filter>
-                  </defs>
-                </svg>
+                <DetailLiveLIkeIcon />
                 <p className="flex-grow-0 flex-shrink-0 text-sm text-left text-black">
                   {userLiked}
                 </p>
@@ -471,11 +323,11 @@ function PostDetail({ params }: { params: { id: string } }) {
             <p className="self-stretch flex-grow-0 flex-shrink-0 text-[#4D4D4D] font-KR text-[16px] font-[500]">
               {userComment}
             </p>
-            <div className="flex items-center self-stretch flex-grow-0 flex-shrink-0">
-              <p className="flex-grow-0 flex-shrink-0 text-[#4D4D4D] font-KR text-[14px] font-medium">
-                {userLocations}
-              </p>
-            </div>
+          </div>
+          <div className="flex items-center self-stretch flex-grow-0 flex-shrink-0 justify-center">
+            <p className="flex-grow-0 flex-shrink-0 text-[#4D4D4D] font-KR text-[14px] font-medium">
+              {userLocations}
+            </p>
           </div>
           <div>
             <p className="text-[#4D4D4D] text-[14px] font-normal leading-[-18.2px] font-varela flex justify-center mr-[190px]">
@@ -484,8 +336,8 @@ function PostDetail({ params }: { params: { id: string } }) {
           </div>
         </div>
       </div>
-      {/* 모달 부분 */}
 
+      {/* 모달 부분 */}
       {modalOpen && (
         <div className="flex inset-0 bg-black/20 z-50 fixed justify-center items-center ">
           <div className="flex flex-col background w-[273px] h-[455px] rounded-2xl box-shadow backdrop-filter p-2">

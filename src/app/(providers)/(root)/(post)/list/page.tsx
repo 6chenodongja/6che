@@ -281,10 +281,10 @@ function PostList() {
   };
 
   return (
-    <div className="list-container mx-auto h-auto bg-[#FAFAFA]">
+    <div className="list-container h-auto bg-[#FAFAFA] w-full">
       <Header />
       <ListHeader />
-      <div className="mt-6">
+      <div>
         <ListSelects
           handleSortChange={handleSortChange}
           selectedOptions={selectedOptions}
@@ -327,7 +327,7 @@ function PostList() {
           )),
         )}
       </div>
-      <div className="grid grid-cols-2 gap-y-2.5 gap-x-2 w-[288px] mx-auto">
+      <div className="list-grid gap-y-2.5 gap-x-2 w-[288px] mx-auto">
         {filteredPosts.map((post) => (
           <PostItem
             post={post}

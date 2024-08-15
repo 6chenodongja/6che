@@ -816,23 +816,172 @@
   text-decoration: none; /* 밑줄 제거 */
 }
 
-/* 성구 반응형 */
-
-/* 768px 이하 화면에서의 스타일 */
-.list-container {
-  width: 100%;
-  max-width: 768px;
-  margin: 0 auto;
-  padding-top: 60px;
-  box-sizing: border-box;
-}
-/* 768px 이상 화면에서의 스타일 */
-@media (min-width: 768px) {
+/* 320px~479px 이하 화면에서의 스타일 */
+@media (min-width: 320px) and (max-width: 480px) {
   .list-container {
-    display: flex;
+    width: 100%;
+    margin: 0 auto;
+    padding-top: 60px;
+    box-sizing: border-box;
+  }
+  .list-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     justify-content: center;
     align-items: center;
-    padding-top: 46px;
-    padding-bottom: 200px;
+  }
+  .list-header {
+    max-width: auto;
+    width: 288px;
+  }
+  .list-select {
+    max-width: auto;
+    width: 288px;
+    margin-top: 6px;
+  }
+}
+
+/* 480px~647px 이하 화면에서의 스타일 */
+@media (min-width: 480px) and (max-width: 647px) {
+  .list-container {
+    width: 100%;
+    margin: 0 auto;
+    padding-top: 60px;
+    box-sizing: border-box;
+  }
+  .list-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-content: center;
+    align-items: center;
+  }
+  .list-header {
+    max-width: auto;
+  }
+  .list-select {
+    max-width: auto;
+    margin-top: 6px;
+  }
+}
+
+/* 648px~767px 이하 화면에서의 스타일 */
+@media (min-width: 648px) and (max-width: 767px) {
+  .list-container {
+    width: 100%;
+    margin: 0 auto;
+    padding-top: 60px;
+    box-sizing: border-box;
+  }
+  .list-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    justify-content: center;
+    align-items: center;
+  }
+  .list-header {
+    max-width: auto;
+  }
+  .list-select {
+    max-width: auto;
+    margin-top: 6px;
+  }
+}
+
+/* 768px~860px 이상 화면에서의 스타일 */
+@media (min-width: 768px) and (max-width: 860px) {
+  .list-container {
+    width: 100%;
+    margin: 0 auto;
+    padding-top: 60px;
+    box-sizing: border-box;
+  }
+  .list-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    justify-content: center;
+    align-items: center;
+  }
+  .list-header {
+    max-width: auto;
+  }
+  .list-select {
+    max-width: auto;
+  }
+}
+/* 860px~950px 이상 화면에서의 스타일 */
+@media (min-width: 860px) and (max-width: 950px) {
+  .list-container {
+    width: 100%;
+    margin: 0 auto;
+    padding-top: 60px;
+    box-sizing: border-box;
+  }
+  .list-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    justify-content: center;
+    align-items: center;
+  }
+  .list-header {
+    max-width: auto;
+  }
+  .list-select {
+    max-width: auto;
+  }
+}
+/* 950px~1024px 이상 화면에서의 스타일 */
+@media (min-width: 950px) and (max-width: 1920px) {
+  .list-container {
+    width: 100%;
+    margin: 0 auto;
+    padding-top: 60px;
+    box-sizing: border-box;
+  }
+  .list-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    justify-content: center;
+    align-items: center;
+  }
+  .list-header {
+    width: 1024px;
+  }
+  .list-select {
+    width: 1024px;
+  }
+}
+
+@media (min-width: 320px) and (max-width: 768px) {
+  .detail-container {
+    width: 100%;
+    margin: 0 auto;
+    padding-top: 60px;
+    box-sizing: border-box;
+  }
+}
+@media (min-width: 768px) and (max-width: 1920px) {
+  .detail-container {
+    width: 100%;
+    margin: 0 auto;
+    padding-top: 60px;
+    box-sizing: border-box;
+  }
+}
+
+@media (min-width: 320px) and (max-width: 768px) {
+  .notPostLike-container {
+    width: 100%;
+    margin: 0 auto;
+    padding-top: 60px;
+    box-sizing: border-box;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1920px) {
+  .notPostLike-container {
+    width: 100%;
+    margin: 0 auto;
+    padding-top: 60px;
+    box-sizing: border-box;
   }
 }

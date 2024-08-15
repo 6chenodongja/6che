@@ -34,7 +34,7 @@ const PostLike = () => {
   }, [user]);
 
   return (
-    <div className="mobile-container mx-auto">
+    <div className="notPostLike-container mx-auto">
       {posts.length === 0 ? (
         <div>
           <Header />
