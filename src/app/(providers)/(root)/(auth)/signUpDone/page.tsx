@@ -7,13 +7,13 @@ import BottomSheet from './_components/BottomSheet'; // 추가
 
 function SignUpDonePage() {
   return (
-    <main className="container bg-neutral-50 flex flex-col justify-center items-center w-full">
-      <div className="bg-[#FAFAFA] w-full">
-        <Header />
+    <main className="container flex flex-col justify-between items-center w-full min-h-screen bg-neutral-50">
+      <Header />
+      <div className="flex-grow flex flex-col justify-center items-center w-full">
         <SingUpDone />
         <BottomSheet />
-        <Footer />
       </div>
+      <Footer />
     </main>
   );
 }

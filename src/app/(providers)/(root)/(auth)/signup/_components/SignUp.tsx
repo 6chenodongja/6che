@@ -70,7 +70,7 @@ function SingUp() {
       if (response.data) {
         setUser({
           id: '',
-          nickname: '',
+          nickname: response.data.nick_name,
           email: '',
           provider: '',
           profileImage: '',
@@ -85,8 +85,11 @@ function SingUp() {
   };
 
   return (
-    <main className="">
-      <form onSubmit={onSubmit} className="flex flex-col">
+    <main className="flex-grow flex flex-col items-center justify-between w-full max-w-md mx-auto">
+      <form
+        onSubmit={onSubmit}
+        className="w-80 mx-auto flex flex-col items-center justify-start p-4 relative gap-4"
+      >
         <h1 className="text-[20px] text-center text-[#121212] font-bold leading-[130%] tracking-[-0.4px] mb-5">
           회원가입
         </h1>

@@ -71,40 +71,65 @@ const Header = () => {
   }
 
   return (
-    <header className="w-full max-w-[320px] bg-white shadow-md py-4 flex justify-between items-center px-4 fixed top-0 z-50 h-[60px]">
-      <div className="flex-1 flex justify-start">
-        <button title="button" onClick={handleMenuToggle}>
-          <Image
-            src="/images/menu.png"
-            alt="메뉴"
-            width={24}
-            height={24}
-            className="hover:bg-black-100 rounded-full focus:bg-black-200"
-          />
-        </button>
-      </div>
-      <div className="flex-1 flex justify-center">
-        <div className="cursor-pointer" onClick={handleLogoClick}>
-          <LogoText className="w-24 h-8" />
+    <header className="w-full fixed top-0 z-50 h-[60px]">
+      <div
+        className="absolute w-full h-full bg-rgba(255, 255, 255, 0.70))"
+        style={{
+          boxShadow: '0px 2px 10px 0px rgba(0, 0, 0, 0.05)',
+          backdropFilter: 'blur(7px)',
+        }}
+      ></div>
+      <div className="relative w-full h-full flex items-center px-4">
+        <div className="flex-1 flex justify-start md:hidden">
+          <button title="button" onClick={handleMenuToggle}>
+            <Image src="/images/menu.png" alt="메뉴" width={24} height={24} />
+          </button>
         </div>
-      </div>
-      <div className="flex-1 flex justify-end">
-        {user ? (
-          <>
+        <div className="md:flex-1 flex justify-center md:justify-start">
+          <div className="cursor-pointer" onClick={handleLogoClick}>
+            <LogoText className="w-24 h-8" />
+          </div>
+        </div>
+        <div className="flex-1 flex justify-end">
+          {isLoggedIn && user ? (
             <LoginDropdown />
-          </>
-        ) : (
-          <>
-            <Link
-              href={'/login'}
-              className="hover:bg-black-100 p-1 rounded-full focus:bg-black-200"
-            >
+          ) : (
+            <Link href={'/login'}>
               <IconLogin className="w-6 h-6" />
             </Link>
-          </>
-        )}
+          )}
+        </div>
+        <div className="hidden md:flex md:absolute md:left-1/2 md:transform md:-translate-x-1/2">
+          <ul className="flex space-x-8">
+            <li>
+              <Link href="/">홈</Link>
+            </li>
+            <li>
+              <Link href="/list">코디</Link>
+            </li>
+            <li>
+              <Link href="/thermometer-style">옷차림</Link>
+            </li>
+            <li>
+              <Link href="/survey">취향 코디</Link>
+            </li>
+          </ul>
+        </div>
       </div>
-      <nav className={`navbar ${isMenuOpen ? 'open' : ''}`}>
+
+      <nav
+        className={`navbar ${isMenuOpen ? 'open' : ''}`}
+        style={{
+          width: '100%',
+          height: '100%',
+          backdropFilter: 'blur(20px)',
+          backgroundColor: 'rgba(255, 255, 255, 0.70)',
+          transform: isMenuOpen
+            ? 'translate(-50%, 0%)'
+            : 'translate(-50%, -100%)',
+          transition: 'transform 0.3s ease-in-out',
+        }}
+      >
         <div className="navbar-close" onClick={handleMenuToggle}>
           &times;
         </div>
@@ -115,20 +140,10 @@ const Header = () => {
             </Link>
           </li>
           <li>
-            <a
-              onClick={() => handleNavigation('/list')}
-              className="cursor-pointer"
-            >
-              스타일
-            </a>
+            <Link href="/list">스타일</Link>
           </li>
           <li>
-            <a
-              onClick={() => handleNavigation('/list')}
-              className="cursor-pointer"
-            >
-              옷차림
-            </a>
+            <Link href="/thermometer-style">옷 차림</Link>
           </li>
           <li>
             <Link href="/survey">취향 코디</Link>
