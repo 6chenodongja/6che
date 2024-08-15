@@ -1,6 +1,6 @@
 'use client';
 
-import { createClient } from '@/supabase/client';
+import { supabase } from '@/supabase/client';
 import Link from 'next/link';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
@@ -13,7 +13,7 @@ import 'react-toastify/dist/ReactToastify.css';
 function LoginForm() {
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
-  const supabase = createClient();
+
   const router = useRouter();
   const { setUser } = useUserStore();
 
@@ -29,6 +29,7 @@ function LoginForm() {
       });
 
       if (res.data) {
+        console.log('@@', res.data);
         setUser({
           id: res.data.id,
           nickname: res.data.nickname,
@@ -81,7 +82,7 @@ function LoginForm() {
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
-          redirectTo: `${process.env.NEXT_PUBLIC_BASE_URL}/auth/social/callback`,
+          redirectTo: `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/social/callback`,
           queryParams: {
             access_type: 'offline',
             prompt: provider === 'google' ? 'consent' : 'select_account',

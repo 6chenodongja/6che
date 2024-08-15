@@ -1,15 +1,11 @@
 'use client';
-
-import { createClient } from '@/supabase/client';
 import { useRouter } from 'next/navigation';
-import { emailDomains } from '@/utils/emailDomains';
 import { useSignUpForm } from 'hooks/useSignUpForm';
-import { useUserStore } from '@/zustand/store/useUserStore';
 import Image from 'next/image';
-import { useState } from 'react';
+import axios from 'axios';
+import { useUserStore } from '@/zustand/store/useUserStore';
 
 function SingUp() {
-  // const [domain, setDomain] = useState<string>('');
   const {
     nickname,
     emailId,
@@ -31,11 +27,8 @@ function SingUp() {
     checkNickname,
     isFormValid,
   } = useSignUpForm();
-
-  const supabase = createClient();
   const router = useRouter();
-  const { setUser } = useUserStore();
-
+  const { setUser, user } = useUserStore();
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -62,35 +55,34 @@ function SingUp() {
     const selectedEmailDomain =
       emailDomain === '직접 입력' ? customEmailDomain : emailDomain;
     const email = `${emailId}@${selectedEmailDomain}`;
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: {
-          name: nickname,
+
+    try {
+      const response = await axios.post('/api/auth/email/sign-up', {
+        email,
+        password,
+        options: {
+          data: {
+            name: nickname,
+          },
         },
-      },
-    });
-
-    if (data.user) {
-      setUser({
-        id: data.user.id,
-        nickname: data.user.user_metadata.name,
-        email: data.user.user_metadata.email,
-        provider: '',
-        profileImage: data.user.user_metadata.avatar,
       });
+
+      if (response.data) {
+        setUser({
+          id: '',
+          nickname: '',
+          email: '',
+          provider: '',
+          profileImage: '',
+        });
+        alert('회원가입이 완료 되었습니다.');
+        router.replace('/signUpDone');
+      }
+    } catch (error) {
+      console.error('회원가입을 실패 했어요', error);
+      alert('이미 가입한 계정의 이메일이에요');
     }
-
-    if (error) {
-      return alert('이미 가입한 계정의 이메일이에요');
-    }
-
-    alert('회원가입이 완료 되었습니다.');
-
-    router.replace('/signUpDone');
   };
-  console.log('@@', emailId);
 
   return (
     <main className="">

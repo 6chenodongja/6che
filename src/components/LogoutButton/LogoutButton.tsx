@@ -27,7 +27,6 @@ function LogoutButton({ className }: { className?: string }) {
             className: 'custom-toast',
           },
         );
-        console.log('@@', toast.success);
         setTimeout(() => {
           router.replace('/');
         }, 2500);
