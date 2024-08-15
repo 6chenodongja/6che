@@ -472,10 +472,21 @@
   box-sizing: border-box;
 }
 
-/* 메인페이지 주현우 */
-.main-container {
+/* 메인페이지 모바일 주현우 */
+.main-mobile-container {
   width: 100%;
+  min-width: 320px;
   max-width: 768px;
+  margin: 0 auto;
+  padding-top: 60px;
+  box-sizing: border-box;
+}
+
+/* 메인페이지 웹 주현우 */
+.main-web-container {
+  width: 100%;
+  min-width: 769px;
+  max-width: 1920px;
   margin: 0 auto;
   padding-top: 60px;
   box-sizing: border-box;
