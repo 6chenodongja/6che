@@ -153,7 +153,7 @@ const LocationInput = ({
   setWeather: (weatherData: any) => void;
 }) => {
   const [isEditing, setIsEditing] = useState(false);
-  const [location, setLocation] = useState('서울시 동작구');
+  const [location, setLocation] = useState('서울시');
 
   type GeocodeAddressComponent = {
     long_name: string;
@@ -218,33 +218,33 @@ const LocationInput = ({
         },
         (error) => {
           console.error('Error getting location', error);
-          // 초기 위치로 설정 (예: 서울시 동작구)
-          setLocation('서울시 동작구');
+          // 초기 위치로 설정 (예: 서울시)
+          setLocation('서울시');
         },
       );
     } else {
       console.error('현재 브라우저에서 위치 정보를 사용할 수 없습니다.');
-      // 초기 위치로 설정 (예: 서울시 동작구)
-      setLocation('서울시 동작구');
+      // 초기 위치로 설정 (예: 서울시)
+      setLocation('서울시');
     }
   }, []);
 
   return (
     <>
       <div
-        className="h-[26px] px-2 py-1 bg-white/40 rounded-full shadow border border-white/50 linear-gradient(37deg, rgba(255,255,255,0.5018601190476191) 0%, rgba(255,255,255,0) 100%) background: rgb(255,255,255) backdrop-blur-[20px] justify-center items-center inline-flex"
+        className="h-[26px] md:h-[32px] px-2 py-1 bg-white/40 rounded-full shadow border border-white/50 linear-gradient(37deg, rgba(255,255,255,0.5018601190476191) 0%, rgba(255,255,255,0) 100%) background: rgb(255,255,255) backdrop-blur-[20px] justify-center items-center inline-flex md:w-[138px]"
         style={{ zIndex: 1, cursor: 'pointer' }} // 위치 박스 z-index를 1로 설정하여 앞으로 보냄 및 cursor 속성 추가
       >
         <div className="justify-start items-center gap-0.5 flex">
           <span
-            className="text-[#121212] text-xs font-normal font-['Noto Sans KR'] leading-none"
+            className="text-[#121212] text-xs md:text-[16px] font-normal font-['Noto Sans KR'] leading-none"
             style={{ whiteSpace: 'nowrap', lineHeight: '1' }}
           >
             {location}
           </span>
         </div>
-        <div className="w-[18px] h-[18px] p-px justify-center items-center flex">
-          <IconLocation className="w-4 h-4" />
+        <div className="w-[18px] h-[18px] md:w-[24px] md:h-[24px] p-px justify-center items-center flex">
+          <IconLocation className="w-4 h-4 md:w-[24px] md:h-[24px]" />
         </div>
       </div>
     </>
@@ -665,7 +665,7 @@ const MainPage = () => {
                     <div className="text-center text-[#121212]/70 text-xs font-normal font-['Noto Sans KR'] leading-none">
                       반팔티
                     </div>
-                    <div className="w-full h-[64px] flex justify-center items-center">
+                    <div className="w-[54px] h-14 relative flex-col justify-start items-start flex">
                       <div className="w-[54px] h-[64px] relative">
                         <Image
                           src="/images/tshirt.svg"
@@ -737,7 +737,7 @@ const MainPage = () => {
                     <div className="text-center text-[#121212]/70 text-xs font-normal font-['Noto Sans KR'] leading-none">
                       모자
                     </div>
-                    <div className="w-full h-[70px] flex justify-center items-center">
+                    <div className="w-[54px] h-14 relative flex-col justify-start items-start flex">
                       <div className="relative w-[64px] h-[64px]">
                         <Image
                           src="/images/cap.svg"
