@@ -39,15 +39,14 @@ const Footer = () => {
   };
 
   return (
-    <footer className="w-full bg-white py-4 mt-0 md:py-8">
-      {/* Container for the content, centered within the footer */}
-      <div className="flex flex-col items-start md:items-start md:px-[320px] px-8 md:py-[40px]">
+    <footer className="w-full bg-#FFF py-4 mt-0 md:py-8">
+      <div className="flex flex-col items-start md:items-start md:py-[40px] md:px-[320px]">
         {/* 첫 번째 섹션: 로고와 네비게이션 */}
-        <div className="flex flex-col items-start w-full mb-4 md:flex-row md:items-start md:mb-8">
-          <LogoText className="w-24 h-10 mb-[10px] mt-10 md:mt-[-5px] md:mb-1" />
+        <div className="flex flex-col items-start w-full mb-4 pl-5 md:flex-row md:items-start md:mb-8">
+          <LogoText className="w-24 h-10 mb-[10px] ml-[-7px] mt-10 md:mt-[-7.5px] md:mb-1 md:ml-[-25px]" />
 
-          <nav className="ml-0 md:ml-[40px] pl-0">
-            <ul className="flex flex-col items-start space-y-2 md:flex-row md:space-y-0 md:space-x-[20px]">
+          <nav className="ml-0 md:ml-[48px] pl-0">
+            <ul className="flex flex-col items-start space-y-2 md:flex-row md:space-y-0 md:space-x-[18px]">
               <li>
                 <Link href="/" style={linkStyle}>
                   홈
@@ -79,7 +78,11 @@ const Footer = () => {
                     </Link>
                   </li>
                   <li>
-                    <Link href="/mypage" style={smallLinkStyle}>
+                    <Link
+                      href="/mypage"
+                      style={smallLinkStyle}
+                      className="mb-[32px]"
+                    >
                       내 코디
                     </Link>
                   </li>
@@ -89,17 +92,17 @@ const Footer = () => {
           </nav>
         </div>
 
-        <hr className="w-full h-[2px] my-4 bg-[rgba(230,230,230,0.60)] md:my-4" />
+        <hr className="w-full h-[2px] mt-0 mb-[32px] bg-[rgba(230,230,230,0.60)]" />
 
         {/* 두 번째 섹션: 6체노동자 정보 */}
-        <div className="flex flex-col items-start w-full text-gray-500">
-          <div className="flex items-center mb-2 md:mb-0">
+        <div className="flex flex-col items-start w-full text-gray-500 pl-5 md:pl-0 md:items-start mt-[1px]">
+          <div className="flex items-center mb-[8px] md:mb-[8px]">
             <Image
               src="/images/github.svg"
               alt="GitHub"
               width={24}
               height={24}
-              className="mr-2"
+              className="mr-[4px] md:mr-2"
             />
             <span
               className="text-base font-semibold"
@@ -109,7 +112,7 @@ const Footer = () => {
             </span>
           </div>
 
-          <ul className="text-xs mt-4 flex flex-col space-y-1 md:flex-row md:space-y-0 md:space-x-2">
+          <ul className="text-xs mt-[8px] flex flex-col md:flex-row md:space-y-0 md:space-x-2">
             <li className="flex items-start">
               <span
                 className="font-normal opacity-70"
@@ -117,22 +120,25 @@ const Footer = () => {
               >
                 개발:
               </span>
-              <span className="ml-2" style={lastlinkStyle}>
+              <span className="ml-[4px]" style={lastlinkStyle}>
                 주현우
               </span>
-              <span className="ml-2" style={lastlinkStyle}>
+              <span className="ml-[6px]" style={lastlinkStyle}>
                 전은겸
               </span>
-              <span className="ml-2" style={lastlinkStyle}>
+              <span className="ml-[6px]" style={lastlinkStyle}>
                 김성구
               </span>
-              <span className="ml-2" style={lastlinkStyle}>
+              <span className="ml-[6px]" style={lastlinkStyle}>
                 석재영
               </span>
-              <span className="ml-2" style={lastlinkStyle}>
+              <span className="ml-[6px]" style={lastlinkStyle}>
                 한소영
               </span>
             </li>
+          </ul>
+
+          <ul className="text-xs mt-[8px] flex flex-col space-y-1">
             <li className="flex items-start">
               <span
                 className="font-normal opacity-70"
@@ -145,15 +151,13 @@ const Footer = () => {
               </span>
             </li>
           </ul>
+          <p
+            className="text-left mt-3 text-sm font-normal text-[#4d4d4d] md:text-center md:mt-3"
+            style={{ ...lastlinkStyle, marginTop: '28px' }}
+          >
+            © 2024. 김윤하 all rights reserved.
+          </p>
         </div>
-
-        <p
-          className="text-left mt-5 text-sm font-normal text-[#4d4d4d] md:text-center md:mt-5"
-          style={lastlinkStyle}
-        >
-          © 2024. 김윤하 all rights reserved.
-        </p>
-        <br />
       </div>
     </footer>
   );
