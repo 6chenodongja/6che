@@ -19,6 +19,7 @@ export const useSignUpForm = () => {
   });
   const [isNicknameValid, setIsNicknameValid] = useState<boolean>(false);
   const [isNicknameChecked, setIsNicknameChecked] = useState<boolean>(false);
+  const [isEmailChecked, setIsEmailChecked] = useState()
   const [nicknameMessage, setNicknameMessage] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
 

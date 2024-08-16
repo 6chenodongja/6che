@@ -72,21 +72,16 @@ function SingUp() {
           email: user.email,
           provider: user.app_metadata.provider,
         });
-        alert('회원가입이 완료 되었습니다.');
         router.replace('/signUpDone');
       }
     } catch (error) {
       console.error('회원가입을 실패 했어요', error);
-      alert('이미 가입한 계정의 이메일이에요');
     }
   };
 
   return (
-    <main className="flex-grow flex flex-col items-center justify-between w-full max-w-md mx-auto">
-      <form
-        onSubmit={onSubmit}
-        className="w-80 mx-auto flex flex-col items-center justify-start p-4 relative gap-4"
-      >
+    <main className="">
+      <form onSubmit={onSubmit} className="">
         <h1 className="text-[20px] text-center text-[#121212] font-bold leading-[130%] tracking-[-0.4px] mb-5">
           회원가입
         </h1>
@@ -217,14 +212,7 @@ function SingUp() {
         </div>
         {error.password && (
           <p className="mt-2 text-[12px] flex text-[#FF4732]/85">
-            <Image
-              src="images/ExclamationMarks/Unavailable.svg"
-              alt=""
-              width={12}
-              height={12}
-              className="mr-[3px]"
-            />
-            {/* {error.password} */}
+            {error.password}
           </p>
         )}
         {!error.password && password && (
@@ -243,14 +231,18 @@ function SingUp() {
           </p>
         )}
         <div className="mt-2 text-[#4D4D4D]">
-          <label className="w-[39px] h-[21px] text-[14px] leading-[150%]">
+          <label
+            className={`text-[14px] leading-[150%] ml-[2px] ${error.passwordConfirm ? 'text-[#FF4732]/85' : 'text-[#808080]'}`}
+          >
             비밀번호 확인
           </label>
           <input
             type="password"
             value={passwordConfirm}
             onChange={handleChange('passwordConfirm')}
-            className="w-[288px] h-[48px] border-1 border-black-500 rounded-lg hover:border-blue-500 focus:border-blue-500 focus:outline-none pl-4"
+            className={`w-[288px] h-[48px] border hover:border-blue-500 ${
+              error.passwordConfirm ? 'border-[#FF4732]/85' : 'border-[#808080]'
+            } rounded-lg focus:outline-none pl-4`}
           />
           {error.passwordConfirm && (
             <p className="text-[#FF4732]/85 text-[12px] mt-[7px]">
