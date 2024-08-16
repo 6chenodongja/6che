@@ -11,9 +11,9 @@ function MyNotLikeHeader() {
   };
 
   return (
-    <div className="relative">
+    <div className="">
       <div className="my-style-page-header px-[4px] py-[16px] w-[288px] mx-auto mt-[16px] rounded-lg shadow-md bg-white">
-        <header className="myPage-Liked-style flex px-2 items-center self-stretch pt-1 w-full justify-between font-bold">
+        <header className="relative myPage-Liked-style flex px-2 items-center self-stretch pt-1 w-full justify-between font-bold">
           <Link href={'/postLike'}>좋아요한 코디</Link>
           <svg
             onClick={toggleDropdown}

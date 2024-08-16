@@ -59,9 +59,9 @@ function MyStylePage() {
   }, [user, fetchMyPosts, fetchUserLiked]);
 
   return (
-    <div className="mobile-container mx-auto">
+    <>
       {!isLoading && posts.length === 0 ? (
-        <div>
+        <div className="notMyStyle-container">
           <Header />
           <MyNotStyleHeader />
           <div className="mt-[60px] mr-[50px] ml-[42px]">
@@ -71,10 +71,10 @@ function MyStylePage() {
               width={200}
               height={100}
               sizes="100vw"
-              className="h-[220px] w-[238px]"
+              className="h-[220px] w-[238px] mx-auto"
             />
           </div>
-          <div className="text-[#4D4D4D] font-KR text-base font-medium leading-6 tracking-[-0.80px] ml-[69px] mr-[68px] ">
+          <div className="text-[#4D4D4D] font-KR text-base font-medium leading-6 tracking-[-0.80px] ml-[69px] mr-[68px] flex justify-center ">
             아직 등록한 코디가 없어요
           </div>
           <Link href={'/postform'}>
@@ -94,7 +94,7 @@ function MyStylePage() {
           setLikedPosts={setLikedPosts}
         />
       )}
-    </div>
+    </>
   );
 }
 

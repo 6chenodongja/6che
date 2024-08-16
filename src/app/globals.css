@@ -985,3 +985,21 @@
     box-sizing: border-box;
   }
 }
+
+@media (min-width: 320px) and (max-width: 768px) {
+  .notMyStyle-container {
+    width: 100%;
+    margin: 0 auto;
+    padding-top: 60px;
+    box-sizing: border-box;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1920px) {
+  .notMyStyle-container {
+    width: 100%;
+    margin: 0 auto;
+    padding-top: 60px;
+    box-sizing: border-box;
+  }
+}

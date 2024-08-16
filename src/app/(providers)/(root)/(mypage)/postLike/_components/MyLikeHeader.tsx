@@ -11,8 +11,8 @@ function MyLikeHeader() {
   };
 
   return (
-    <div className="relative">
-      <div className="my-style-page-header px-[4px] py-[16px] w-[288px] mx-auto mt-[-44px] rounded-lg shadow-md bg-white">
+    <div>
+      <div className="my-style-page-header px-[4px] py-[16px] w-[288px] mx-auto mt-[-44px] rounded-lg shadow-md bg-white relative">
         <header
           className="myPage-Liked-style flex px-2 items-center self-stretch pt-1 w-full justify-between font-bold"
           style={{

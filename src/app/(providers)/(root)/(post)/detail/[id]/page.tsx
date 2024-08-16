@@ -196,9 +196,9 @@ function PostDetail({ params }: { params: { id: string } }) {
   };
 
   return (
-    <div>
-      <div className="detail-container overflow-hidden bg-[#FAFAFA]">
-        <header className="mt-[-50px] pb-[6px] flex  justify-center">
+    <div className="detail-container overflow-hidden bg-[#FAFAFA]">
+      <div className="w-[288px] mx-auto">
+        <header className="mt-[-50px] pb-[6px] flex justify-between">
           <Link href={'/list'} className="flex items-center object-cover">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -251,10 +251,10 @@ function PostDetail({ params }: { params: { id: string } }) {
                     width={200}
                     height={100}
                     sizes="100vw"
-                    className="w-[288px] h-[412px] rounded-xl flex justify-center items-center mx-auto"
+                    className="w-[288px] h-[412px] rounded-xl flex justify-center items-center mx-auto relative"
                   />
                 )}
-                <div className="absolute top-2 left-[245px] bg-white bg-opacity-50 p-1 m-1 font-[18px] rounded-lg flex flex-row gap-2 justify-center items-center">
+                <div className="absolute top-1 left-1 bg-white bg-opacity-50 p-1 m-1 font-[18px] rounded-lg flex flex-row gap-2 justify-center items-center">
                   {weatherIcon && (
                     <div className="detail-icon">
                       <Image
@@ -272,9 +272,9 @@ function PostDetail({ params }: { params: { id: string } }) {
           </Swiper>
         </div>
 
-        <div className="flex flex-col justify-center items-center relative gap-2.5 mt-2 m-4">
-          <div className="flex justify-center items-center self-stretch flex-grow-0 flex-shrink-0 gap-[115px]">
-            <div className="flex justify-start items-center flex-grow-0 flex-shrink-0 relative gap-[5px]">
+        <div className="flex flex-col gap-2.5 mt-2 ml-auto">
+          <div className="flex justify-between items-center self-stretch flex-grow-0 flex-shrink-0">
+            <div className="flex justify-between items-center flex-grow-0 flex-shrink-0 gap-[5px]">
               <DetailNicknameIcon />
               <div>
                 {/* 유저 닉네임 */}
@@ -284,7 +284,7 @@ function PostDetail({ params }: { params: { id: string } }) {
               </div>
             </div>
             <div className="flex justify-start items-center flex-grow-0 flex-shrink-0">
-              <div className="flex justify-start items-center flex-grow-0 flex-shrink-0 relative gap-0.5">
+              <div className="flex justify-start items-center flex-grow-0 flex-shrink-0 gap-0.5">
                 <DetailLiveLIkeIcon />
                 <p className="flex-grow-0 flex-shrink-0 text-sm text-left text-black">
                   {userLiked}
@@ -319,21 +319,15 @@ function PostDetail({ params }: { params: { id: string } }) {
               </div>
             </div>
           </div>
-          <div>
-            <p className="self-stretch flex-grow-0 flex-shrink-0 text-[#4D4D4D] font-KR text-[16px] font-[500]">
-              {userComment}
-            </p>
-          </div>
-          <div className="flex items-center self-stretch flex-grow-0 flex-shrink-0 justify-center">
-            <p className="flex-grow-0 flex-shrink-0 text-[#4D4D4D] font-KR text-[14px] font-medium">
-              {userLocations}
-            </p>
-          </div>
-          <div>
-            <p className="text-[#4D4D4D] text-[14px] font-normal leading-[-18.2px] font-varela flex justify-center mr-[190px]">
-              {userCreatePost}
-            </p>
-          </div>
+          <p className="self-stretch flex-grow-0 flex-shrink-0 text-[#4D4D4D] font-KR text-[16px] font-[500] flex justify-start items-center">
+            {userComment}
+          </p>
+          <p className="flex-grow-0 flex-shrink-0 text-[#4D4D4D] font-KR text-[14px] font-medium flex justify-start items-center">
+            {userLocations}
+          </p>
+          <p className="text-[#4D4D4D] text-[14px] font-normal leading-[-18.2px] font-varela flex justify-start items-center">
+            {userCreatePost}
+          </p>
         </div>
       </div>
 
