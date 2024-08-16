@@ -6,8 +6,6 @@ import { createClient } from '@/supabase/client';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useTagStore } from '@/zustand/store/useTagStore';
-import Header from '../../../../../(providers)/(components)/Header';
-import Footer from '../../../../../(providers)/(components)/Footer';
 
 interface Post {
   id: string;
@@ -67,7 +65,6 @@ const ResultPage: React.FC = () => {
 
   return (
     <div className="container bg-neutral-50 flex flex-col justify-center items-center w-full min-h-screen">
-      <Header />
       <div
         className="flex-grow flex flex-col items-center justify-between w-full max-w-md mx-auto mt-7"
         style={{ height: '570px' }}
@@ -136,7 +133,6 @@ const ResultPage: React.FC = () => {
           </Link>
         </div>
       </div>
-      <Footer />
     </div>
   );
 };

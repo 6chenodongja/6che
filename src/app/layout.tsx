@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import KakaoScript from './(providers)/(root)/common/KakaoScript';
+import Header from './(providers)/(components)/Header';
+import Footer from './(providers)/(components)/Footer';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -24,8 +26,10 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <link rel="icon" href="/favicon.ico?v=1" />
-      <body className={inter.className}>
-        {children}
+      <body className={`${inter.className} min-h-screen flex flex-col`}>
+        <Header />
+        <main className="flex-grow">{children}</main>
+        <Footer />
         <KakaoScript />
       </body>
     </html>

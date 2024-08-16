@@ -2,8 +2,6 @@
 
 import React, { useState } from 'react';
 import QuestionPage from './question';
-import Header from '../../../../(providers)/(components)/Header';
-import Footer from '../../../../(providers)/(components)/Footer';
 import { Noto_Sans_KR } from 'next/font/google';
 
 // Noto Sans KR 폰트 설정
@@ -23,7 +21,6 @@ const SurveyLayout: React.FC = () => {
     <div
       className={`survey-container bg-neutral-50 flex flex-col justify-center items-center w-full min-h-screen ${notoSansKR.className}`}
     >
-      <Header />
       <div
         className="survey-content flex-grow flex flex-col items-center justify-between w-full max-w-md mx-auto"
         style={{ height: '650px' }}
@@ -108,7 +105,6 @@ const SurveyLayout: React.FC = () => {
           </>
         )}
       </div>
-      <Footer />
     </div>
   );
 };
