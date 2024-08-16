@@ -129,7 +129,7 @@ const Footer = () => {
             6체노동자
           </span>
         </div>
-        <div className="text-left flex flex-wrap md:flex-row md:space-x-4">
+        <div className="text-left flex flex-col items-start md:flex-row md:items-center md:space-x-4">
           <div className="flex items-center mb-2 md:mb-0">
             <span
               className="text-xs font-normal text-[#4d4d4d] font-['Noto Sans KR']"
