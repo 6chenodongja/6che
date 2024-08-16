@@ -476,6 +476,7 @@
 .main-mobile-container {
   width: 100%;
   min-width: 320px;
+  /* max-width: 2560px; */
   max-width: 1920px;
   margin: 0 auto;
   padding-top: 60px;
