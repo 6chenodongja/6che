@@ -1,6 +1,5 @@
 'use client';
 
-import { supabase } from '@/supabase/client';
 import Link from 'next/link';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
@@ -9,14 +8,14 @@ import Image from 'next/image';
 import { useUserStore } from '@/zustand/store/useUserStore';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { createAuthClient } from '@/supabase/client';
 
 function LoginForm() {
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
-
+  const supabase = createAuthClient();
   const router = useRouter();
   const { setUser } = useUserStore();
-
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const email = emailRef.current?.value;
@@ -82,7 +81,7 @@ function LoginForm() {
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
-          redirectTo: `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/social/callback`,
+          redirectTo: `${location.origin}/api/auth/social/callback`,
           queryParams: {
             access_type: 'offline',
             prompt: provider === 'google' ? 'consent' : 'select_account',
@@ -92,13 +91,7 @@ function LoginForm() {
       if (error) throw error;
     } catch (error) {
       console.error('소셜 로그인 중 오류 발생:', error);
-      toast.error('소셜 로그인 중 오류가 발생했습니다.', {
-        position: 'bottom-center',
-        autoClose: 2500,
-        icon: false,
-        closeButton: false,
-        className: 'custom-toast',
-      });
+      alert('소셜 로그인 중 오류가 발생했습니다.');
     }
   };
 

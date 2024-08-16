@@ -28,7 +28,7 @@ function SingUp() {
     isFormValid,
   } = useSignUpForm();
   const router = useRouter();
-  const { setUser, user } = useUserStore();
+  const { setUser } = useUserStore();
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -60,20 +60,17 @@ function SingUp() {
       const response = await axios.post('/api/auth/email/sign-up', {
         email,
         password,
-        options: {
-          data: {
-            name: nickname,
-          },
-        },
+        nickname,
       });
 
       if (response.data) {
+        const { user } = response.data;
+
         setUser({
-          id: '',
-          nickname: response.data.nick_name,
-          email: '',
-          provider: '',
-          profileImage: '',
+          id: user.id,
+          nickname: user.user_metadata.name,
+          email: user.email,
+          provider: user.app_metadata.provider,
         });
         alert('회원가입이 완료 되었습니다.');
         router.replace('/signUpDone');

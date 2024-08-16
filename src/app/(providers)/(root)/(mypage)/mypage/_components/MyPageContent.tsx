@@ -112,6 +112,22 @@ function MyPageContent() {
           <div className="flex flex-col items-left self-stretch flex-grow-0 pb-2">
             <h1 className="text-[18px]">계정</h1>
             <div className="bg-[#FAFAFA] rounded-md p-3 mt-2">
+              {user?.provider === 'google' && (
+                <Image
+                  src="/images/login/Logo_Google.svg"
+                  alt=""
+                  width={20}
+                  height={20}
+                />
+              )}
+              {user?.provider === 'kakao' && (
+                <Image
+                  src="/images/login/Logo_Kakao.svg"
+                  alt=""
+                  width={20}
+                  height={20}
+                />
+              )}
               {user?.email}
             </div>
           </div>

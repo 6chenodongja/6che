@@ -14,10 +14,10 @@ export async function POST(request: NextRequest) {
           },
         },
       });
-
+      
       if (error) {
         return NextResponse.json({error: error.message}, {status: 500});
       } else {
-        return NextResponse.json({message: data}, {status: 201});
+        return NextResponse.json(data, {status: 201});
       }
 }
