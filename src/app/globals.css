@@ -10,7 +10,6 @@
   }
 }
 
-
 :root {
   --sds-size-space-200: 8px;
   --Blur-10: 10px;
@@ -487,8 +486,9 @@
     height: 724px;
     background-color: #fff;
     border-radius: 24px;
-    box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.05), 
-                4px 4px 20px 0px rgba(0, 0, 0, 0.05);
+    box-shadow:
+      0px 0px 2px 0px rgba(0, 0, 0, 0.05),
+      4px 4px 20px 0px rgba(0, 0, 0, 0.05);
     backdrop-filter: blur(5px);
     margin-top: 46px; /* 헤더와의 간격 */
     margin-bottom: 200px; /* 푸터와의 간격 */
