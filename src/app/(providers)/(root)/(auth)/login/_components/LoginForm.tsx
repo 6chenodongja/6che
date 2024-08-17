@@ -1,28 +1,32 @@
 'use client';
 
-import { createClient } from '@/supabase/client';
 import Link from 'next/link';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import Image from 'next/image';
 import { useUserStore } from '@/zustand/store/useUserStore';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { createAuthClient } from '@/supabase/client';
 
 function LoginForm() {
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
-  const supabase = createClient();
+  const supabase = createAuthClient();
   const router = useRouter();
-  const { setIsLoggedIn, setUser, isLoggedIn } = useUserStore();
+  const { setUser } = useUserStore();
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const email = emailRef.current?.value;
     const password = passwordRef.current?.value;
+
     try {
       const res = await axios.post('/api/auth/email/login', {
         email,
         password,
       });
+
       if (res.data) {
         setUser({
           id: res.data.id,
@@ -31,14 +35,43 @@ function LoginForm() {
           provider: '',
           profileImage: res.data.avatar,
         });
-        setIsLoggedIn(true);
-        window.location.href = '/';
+
+        // 로그인 성공 Toast
+        toast.success(
+          <div className="toast-message">
+            <span>로그인을 하였어요!</span>
+          </div>,
+          {
+            autoClose: 2500,
+            icon: false,
+            closeButton: false,
+            className: 'custom-toast',
+          },
+        );
+
+        setTimeout(() => {
+          if (!sessionStorage.getItem('redirect')) {
+            router.push('/');
+          }
+        }, 2500);
       } else {
-        alert('로그인 실패');
+        toast.error('로그인 실패. 다시 시도해주세요.', {
+          position: 'bottom-center',
+          autoClose: 2500,
+          icon: false,
+          closeButton: false,
+          className: 'custom-toast',
+        });
       }
     } catch (error) {
       console.error('로그인 중 오류 발생:', error);
-      alert('아이디 또는 비밀번호는 다시 입력해주세요!');
+      toast.error('아이디 또는 비밀번호를 확인해주세요.', {
+        position: 'bottom-center',
+        autoClose: 2500,
+        icon: false,
+        closeButton: false,
+        className: 'custom-toast',
+      });
     }
   };
 
@@ -47,7 +80,7 @@ function LoginForm() {
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
-          redirectTo: `${process.env.NEXT_PUBLIC_BASE_URL}/auth/social/callback`,
+          redirectTo: `${location.origin}/api/auth/social/callback`,
           queryParams: {
             access_type: 'offline',
             prompt: provider === 'google' ? 'consent' : 'select_account',
@@ -62,7 +95,7 @@ function LoginForm() {
   };
 
   return (
-    <main className="flex items-center space-x-2 rounded-full  py-1 px-4">
+    <main className="flex items-center space-x-2 py-1 px-4">
       <form onSubmit={onSubmit} className="mt-[64px] h-[568px]">
         <h1 className="text-[20px] text-center text-[#121212] font-bold leading-[130%] tracking-[-0.4px] mb-5">
           로그인
@@ -108,8 +141,6 @@ function LoginForm() {
         </div>
         <div className="flex justify-end">
           <button className="text-sm mt-2 text-[#4d4d4d] rounded-lg hover:bg-gray-100 p-2">
-            {/* 은겸 - 아이디 비밀번호 찾기 이동 기능 추가 */}
-
             <Link href={'/find-id'} className="w-full h-full flex" passHref>
               아이디/비밀번호 찾기
               <Image
@@ -122,17 +153,17 @@ function LoginForm() {
           </button>
         </div>
 
-        {/* <div className="flex justify-start items-center w-72 relative gap-3 m-auto">
+        <div className="flex justify-start items-center w-72 gap-3 m-auto my-[32px]">
           <div className="flex-grow h-px bg-[#d9d9d9]" />
           <p className="flex-grow-0 flex-shrink-0 text-base text-left text-black">
             or
           </p>
           <div className="flex-grow h-px bg-[#d9d9d9]" />
-        </div> */}
-        {/* <div className="flex flex-col gap-2">
+        </div>
+        <div className="flex flex-col gap-2 justify-center items-center mb-[100px]">
           <button
             onClick={() => handleSocialLogin('google')}
-            className="bg-white border-1 hover:bg-[#ccc] hover:bg-opacity-70 border-[#121212] text-[#4D4D4D] font-bold w-[288px] h-[52px] rounded-xl"
+            className="bg-white border-1 hover:bg-[#ccc] hover:bg-opacity-70 border-[#121212]/15 text-[#4D4D4D] font-bold w-[288px] h-[52px] rounded-xl"
           >
             구글로 시작하기
           </button>
@@ -142,7 +173,19 @@ function LoginForm() {
           >
             카카오로 시작하기
           </button>
-        </div> */}
+        </div>
+        <ToastContainer
+          position="bottom-center"
+          autoClose={2500}
+          hideProgressBar
+          newestOnTop
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          className="custom-toast"
+        />
       </form>
     </main>
   );

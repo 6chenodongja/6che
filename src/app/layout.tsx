@@ -1,11 +1,11 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Noto_Sans_KR } from '@next/font/google';
 import './globals.css';
 import KakaoScript from './(providers)/(root)/common/KakaoScript';
 import Header from './(providers)/(components)/Header';
 import Footer from './(providers)/(components)/Footer';
 
-const inter = Inter({ subsets: ['latin'] });
+const notoSansKR = Noto_Sans_KR({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: '온코디',

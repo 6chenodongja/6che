@@ -83,7 +83,7 @@ const BottomSheet = () => {
         initial={{ y: '500%' }}
         animate={{ y: isClosing ? '500%' : 0 }}
         transition={{ type: 'spring', stiffness: 200, damping: 40 }}
-        className="flex flex-col justify-center rounded-t-2xl p-6 bg-white bg-opacity-70"
+        className="flex flex-col justify-center rounded-t-2xl p-6 bg-white/70 backdrop-blur-[10px]"
       >
         <div className="">
           <div className="text-center mt-[30px] mb-1">

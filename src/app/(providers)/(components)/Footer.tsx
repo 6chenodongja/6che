@@ -1,9 +1,12 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { LogoText } from '../../../icons/LogoText';
+import { useUserStore } from '@/zustand/store/useUserStore';
+import LoginModalProps from '@/components/Modal/LoginModal';
+import { useRouter } from 'next/navigation';
 
 const Footer = () => {
   const linkStyle = {
@@ -159,6 +162,15 @@ const Footer = () => {
           </p>
         </div>
       </div>
+
+      {/* 로그인 모달 추가 */}
+      {isModalOpen && (
+        <LoginModalProps
+          isOpen={isModalOpen}
+          onConfirm={handleConfirm} // 로그인 버튼 클릭 시 동작
+          onClose={closeModal} // 모달 닫기
+        />
+      )}
     </footer>
   );
 };
