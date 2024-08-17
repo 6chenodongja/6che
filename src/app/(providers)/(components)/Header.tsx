@@ -70,7 +70,7 @@ const Header = () => {
   }
 
   return (
-    <header className="w-full fixed top-0 z-50 h-[60px]">
+    <header className="w-full fixed  bg-#fff top-0 z-50 h-[60px]">
       <div
         className="absolute w-full h-full bg-rgba(255, 255, 255, 0.70))"
         style={{
@@ -114,7 +114,6 @@ const Header = () => {
           </ul>
         </div>
       </div>
-
       <nav
         className={`navbar ${isMenuOpen ? 'open' : ''}`}
         style={{

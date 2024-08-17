@@ -687,47 +687,447 @@
   padding-bottom: var(--sds-size-space-200);
 }
 
-/* 설문페이지 */
-.survey-text-style {
-  font-family: var(--body-KR-large-font-family); /* Noto Sans KR, Helvetica */
-  font-size: var(--body-KR-large-font-size); /* 18px */
-  font-weight: var(--body-KR-large-font-weight); /* 400 */
-  line-height: var(--body-KR-large-line-height); /* 150% */
-  letter-spacing: var(--body-KR-large-letter-spacing); /* -0.36px */
-  font-style: var(--body-KR-large-font-style); /* normal */
-  color: var(--palette-black); /* Color for text */
+/* 768px 이하 화면에서의 스타일 */
+@media (max-width: 767px) {
+  .survey-container {
+    width: 100%;
+    max-width: full;
+    margin: 0 auto;
+    padding-top: 70px;
+    box-sizing: border-box;
+    background-color: #fafafa;
+  }
+  .question-navigation {
+    position: absolute;
+    right: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: Varela;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 130%;
+    width: 31px;
+    margin-top: -20px;
+  }
+
+  .survey-content {
+    width: 100%;
+    padding: 20px; /* 내부 패딩 추가 */
+    margin-top: 80px; /* 상단 여백 조정 */
+    margin-bottom: 0px; /* 하단 여백 조정 */    
+    backdrop-filter: blur(5px);
+    background-color: #fafafa;
+  }
+
+  object {
+    width: 100%;
+    max-width: 288px;
+    height: auto;
+  }
+
+  .survey-text {
+    font-size: 16px; /* 320px에서의 폰트 크기 */
+    margin-top: 10px;
+    text-align: center;
+  }
+
+  .start-button {
+    width: 100%;
+    max-width: 288px; /* 320px에서의 버튼 너비 */
+    padding: 10px 12px;
+    margin-top: 15px;
+    border-radius: 8px;
+    background: var(--Black, #121212);
+    color: #fff;
+    text-align: center;
+  }
 }
 
-/* 기본 설문 페이지 스타일 */
-.survey-container {
-  width: 100%;
-  max-width: 768px; /* 최대 너비를 768px로 설정 */
-  margin: 0 auto;
-  padding-top: 60px;
-  box-sizing: border-box;
-}
-
-/* 768px 이상 화면에서의 스타일 */
+/* 768px 이상  설문 첫 화면에서의 스타일 */
 @media (min-width: 768px) {
   .survey-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding-top: 46px;
-    padding-bottom: 200px;
+    padding-top: 55px;
+    padding-bottom: 20px;
+    border-radius: 20px;
   }
 
   .survey-content {
     width: 480px;
     height: 724px;
-    border-radius: 24px;
     box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     position: relative;
-    margin-top: 46px; /* 헤더와의 간격 */
-    margin-bottom: 200px; /* 푸터와의 간격 */
-    margin-left: 720px; /* 좌우 간격 */
-    margin-right: 720px; /* 좌우 간격 */
+    margin-top: 32px;
+    margin-bottom: 210px;
+    border-radius: 20px;
+  }
+
+  .question-navigation {
+    position: absolute;
+    top: 20px;
+    left: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .back-button {
+    width: 32px;
+    height: 32px;
+    margin-left: -75px;
+  }
+  .survey-text {
+    font-size: 18px; 
+  }
+  .start-button {
+    width: 100%;
+    max-width: 400px;
+  }
+}
+/* 320px 이하 질문 화면에서의 스타일 */
+@media (max-width: 767px) {
+  /* Q와 헤더 간의 y 간격을 통일 */
+  .items2 {
+    margin-top: 20px; /* 헤더와 Q 간의 y 간격 */
+  }
+  .item {
+    margin-top: -20px;
+  }
+
+  .question-container {
+    width: 100%;
+    max-width: 320px;
+    margin: 0 auto;
+    padding-top: -20px;
+    padding-bottom: 0px; 
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; 
+    align-items: center; 
+  }
+
+  .question-container > div {
+    width: 100%;
+    max-width: 320px;
+    margin: 0 auto;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 0px; 
+  }
+
+  .question-navigation {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 16px;
+  }
+
+  .question-back-button {
+    margin-top: -510px;
+    margin-left: -170px;
+    width: 40px; 
+    height: 40px; 
+    position: absolute;
+  }
+
+  .question-number {
+    font-size: 18px;
+    color: #666;
+    margin-right: -315px;
+    margin-top: -510px;
+    position: absolute;
+  }
+
+  .question-container .w-80 {
+    width: 100%;
+    max-width: 320px;
+    margin: 0 auto;
+    display: grid;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    margin-top: -100px;
+  }
+
+  .question-container .w-80 > .question-navigation {
+    margin-bottom: 16px;
+  }
+
+  .question-container .w-80 > div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+  }
+
+  /* 320px에서의 Q, 질문과의 간격, 선택지 간 간격 설정 */
+  .items2 {
+    margin-top: 20px; /* 헤더와 Q 간의 y 간격 */
+  }
+
+  .items3,
+  .items4 {
+    margin-top: 50px; /* Q와 질문 간의 y 간격 */
+  }
+
+  .card-div {
+    margin-top: 16px; /* 질문과 선택지 간의 y 간격 */
+  }
+  .card-div2 {
+    margin-top: 55px; /* 질문과 선택지 간의 y 간격 */
+  }
+  .card-div3 {
+    margin-top: 70px; /* 질문과 선택지 간의 y 간격 */
+  }
+  .card-div4 {
+    margin-bottom: -53px;
+  }
+  .two-text {
+    position: relative;
+    top: -20px;
+  }
+  .card-div5 {
+    margin-bottom: 75px;
+  }
+  .div5-down {
+    position: relative; /* 다른 요소의 위치에 영향을 받지 않게 설정 */
+    top: 10px; 
+  }
+  .card-div6 {
+    margin-bottom: 47px;
+  }
+  .next-btn {
+    position: relative;
+    top: -50px; 
+  }
+  .result-btn {
+    position: relative; 
+    top: 100px; 
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px; /* 선택지 간 간격 */
+  }
+}
+
+/* 768px 이상 질문 화면에서의 스타일 */
+@media (min-width: 768px) {
+  .question-container {
+    display: flex;
+    justify-content: center;
+    padding-top: -30px;
+    padding-bottom: 20px;
+    margin: 0 auto;
+    border-radius: 20px;
+  }
+
+  .question-back-button {
+    margin-left: -115px;
+    position: relative;
+    top: -145px;
+    width: 40px;
+    height: 40px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .card-div {
+    margin-top: 69px; /* 질문과 선택지 간의 y 간격 */
+    position: relative;
+  }
+
+  .question-number {
+    font-size: 18px;
+    color: #666;
+    margin-right: -310px;
+    margin-top: -295px;
+    position: relative;
+  }
+
+  .items {
+    margin-top: -50px; /* Q와 질문 간의 y 간격을 통일 */
+  }
+  .text-1 {
+    position: relative; 
+    bottom: -24px; 
+  }
+
+  .items2 {
+    margin-top: 110px; /* Q와 질문 간의 y 간격을 통일 */
+    position: relative;
+  }
+
+  .text-2 {
+    position: relative; 
+    bottom: -24px; 
+  }
+
+  .items3 {
+    margin-top: 125px; 
+    position: relative;
+  }
+
+  .text-3 {
+    position: relative; 
+    bottom: -24px; 
+  }
+
+  .items4 {
+    margin-top: 52px; /* Q와 질문 간의 y 간격을 통일 */
+    position: relative;
+  }
+
+  .text-4 {
+    position: relative; 
+    bottom: -24px; 
+  }
+
+  .stext-4 {
+    position: relative; 
+    bottom: -27px; 
+  }
+
+  .items5 {
+    margin-top: 162px; /* Q와 질문 간의 y 간격을 통일 */
+    position: relative;
+  }
+  .text-5 {
+    position: relative; 
+    bottom: -24px; 
+  }
+  .text-6 {
+    position: relative; 
+    bottom: -24px; 
+  }
+
+  /* 768px 이상 화면에서 가로 한 줄로 표시 */
+  @media (min-width: 768px) {
+    .text-5 {
+      white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+      display: flex; 
+      justify-content: center; 
+      align-items: center; 
+      position: relative;
+    }
+  }
+
+  .div-down {
+    position: relative; 
+    top: -70px; 
+  }
+  .items6 {
+    margin-top: 128px; 
+    position: relative;
+  }
+  .div-up {
+    position: relative; 
+    top: -70px; 
+  }
+  .next-button {
+    width: 100%;
+    max-width: 400px;
+    position: relative;
+    top: 150px;
+  }
+  .item {
+    margin-top: 10px;
+  }
+}
+
+/* 결과 페이지 스타일 */
+@media (max-width: 767px) {
+  .result-container {
+    width: 100%;
+    max-width: full;
+    margin: 0 auto;
+    padding-top: 100px;
+    padding-bottom: 120px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #fafafa;
+  }
+  .result-content .grid > div {
+    width: 142px;
+    height: 200px;
+    border-radius: 20px;
+    bottom: -40px;
+  }
+  .text{
+    bottom: -82px;
+    position: relative;
+  }
+  .next-btn {
+    position: relative;
+    top: 74px;
+  }
+}
+
+/* 결과 페이지 스타일 */
+@media (min-width: 768px) {
+  .result-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 47px;
+    padding-bottom: 50px;
+  }
+
+  .result-content {
+    width: 651px;
+    height: 724px;
+    box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.1);
+    overflow: visible;
+    position: relative;
+    margin-top: 50px;
+    margin-bottom: 130px;
+    padding: 32px;
+    border-radius: 20px;
+  }
+
+  .result-container .grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 32px;
+  }
+
+  .result-content .grid > div {
+    width: 161px;
+    height: 230px;
+    border-radius: 20px;
+  }
+
+  .result-content .grid > div img {
+    border-radius: 8px;
+  }
+
+  .back-button {
+    width: 40px;
+    height: 40px;
+    margin-left: -40px;
+    top: -10px;
+    position: relative;
+  }
+  .next-btn {
+    position: relative;
+    top: 56px;
   }
 }
 
