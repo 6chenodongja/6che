@@ -328,8 +328,8 @@ const MainPage = () => {
       console.log('Full Weather Data:', JSON.stringify(data, null, 2));
 
       // Sun 객체가 없는 경우 undefined 처리 방지 및 로그 확인
-      const sunriseTime = data?.dailyForecasts?.[0]?.Sun?.Rise ?? 'N/A';
-      const sunsetTime = data?.dailyForecasts?.[0]?.Sun?.Set ?? 'N/A';
+      const sunriseTime = data?.dailyForecasts?.[0]?.Sun?.Rise ?? '준비 중';
+      const sunsetTime = data?.dailyForecasts?.[0]?.Sun?.Set ?? '준비 중';
       console.log('Sunrise Time:', sunriseTime); // 일출 시간 출력
       console.log('Sunset Time:', sunsetTime); // 일몰 시간 출력
 
@@ -544,6 +544,7 @@ const MainPage = () => {
               right: '-84px',
               width: '94px',
               height: '94px',
+              zIndex: 0, // 뒤쪽에 배치
             }}
           >
             <Image
@@ -840,12 +841,17 @@ const MainPage = () => {
 
               <div className="self-stretch rounded-lg justify-start items-start inline-flex overflow-hidden mb-[14px]">
                 <Swiper
-                  spaceBetween={4}
+                  spaceBetween={4} // 기본 간격을 4px로 설정
                   slidesPerView="auto"
                   centeredSlides={false}
                   pagination={{ clickable: true }}
                   navigation={false}
                   className="w-full"
+                  breakpoints={{
+                    769: {
+                      spaceBetween: 4, // 769px 이상일 때도 간격을 4px로 유지
+                    },
+                  }}
                 >
                   {filteredPosts.slice(0, 10).map((post, index) => {
                     const validImageUrl = isValidImageUrl(post.image_url);
@@ -866,22 +872,21 @@ const MainPage = () => {
                       <SwiperSlide
                         key={index}
                         style={{
-                          width: '117.6px',
+                          width: '117.6px', // 기본 크기
                           flexShrink: 0,
                         }}
+                        className="md:w-[186px]" // 768px 이상일 때 이미지 너비 186px로 설정
                       >
                         <div
-                          className="w-[113.6px] h-40 relative rounded-lg overflow-hidden cursor-pointer bg-gradient-to-r from-white/50 to-transparent backdrop-blur-[20px]"
+                          className="w-[113.6px] h-40 md:w-[186px] md:h-[260px] relative rounded-lg overflow-hidden cursor-pointer bg-gradient-to-r from-white/50 to-transparent backdrop-blur-[20px]"
                           onClick={() => router.push(`/detail/${post.id}`)}
                         >
                           <Image
                             src={imageUrl as string}
                             alt={`추천 코디 ${index + 1}`}
-                            className="w-[113.6px] h-40 object-cover"
-                            width={113.6}
-                            height={160}
+                            layout="fill" // 이미지의 크기를 부모의 크기에 맞게 조정
+                            objectFit="cover" // 이미지를 부모의 크기에 맞게 자르거나 맞춤
                           />
-
                           <div className="px-1 py-px left-[10px] top-[10px] absolute bg-white/50 rounded border border-white/60 justify-start items-center gap-0.5 inline-flex">
                             <div className="w-4 h-4 bg-white rounded-sm backdrop-blur-[20px] justify-center items-center flex">
                               {weatherIcon && weatherIcon !== 'undefined' ? (
@@ -911,7 +916,6 @@ const MainPage = () => {
                 </Swiper>
               </div>
 
-              {/* 769px 이상일 때 버튼 위치 조정 */}
               <button
                 onClick={handleCodiClick}
                 className="p-3 bg-[#121212] rounded-lg justify-center items-center gap-2 inline-flex self-stretch md:absolute md:w-[180px] md:h-[49px] md:bottom-[-62px] md:right-[0] md:self-auto"
