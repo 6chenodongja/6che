@@ -47,7 +47,7 @@ function ListHeader() {
     if (!isLoggedIn) {
       setIsModalOpen(true);
     } else {
-      router.push('/postform');
+      router.r('/postform');
     }
   };
   const closeModal = () => setIsModalOpen(false);
@@ -63,18 +63,18 @@ function ListHeader() {
           '0px 0px 2px 0px rgba(0, 0, 0, 0.05), 0px 2px var(--Blur-8, 8px) 0px rgba(0, 0, 0, 0.05)',
       }}
     >
-      <div className="flex justify-start items-center flex-grow-0 flex-shrink-0 relative gap-0.5 px-1.5">
+      <div className="flex justify-start items-center flex-grow-0 flex-shrink-0 gap-0.5 px-1.5">
         <p className="flex-grow-0 flex-shrink-0 font-KR font-normal text-[14px] text-[#666] leading-[21px] tacking-[-0.28px]">
           현재
         </p>
-        <div className="flex justify-start items-center flex-grow-0 flex-shrink-0 relative gap-1.5">
+        <div className="flex justify-start items-center flex-grow-0 flex-shrink-0 gap-1.5">
           <svg
             width={24}
             height={24}
             viewBox="0 0 24 24"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
-            className="flex-grow-0 flex-shrink-0 w-6 h-6 relative"
+            className="flex-grow-0 flex-shrink-0 w-6 h-6"
             preserveAspectRatio="xMidYMid meet"
           >
             <g filter="url(#filter0_b_3033_4449)">
@@ -244,7 +244,7 @@ function ListHeader() {
           </p>
         </div>
       </div>
-      <div className="flex justify-center items-center flex-grow-0 flex-shrink-0 relative overflow-hidden gap-1 p-2 rounded-lg bg-[#121212] z-[5000]">
+      <div className="flex justify-center items-center flex-shrink-0  gap-1 p-2 rounded-lg bg-[#121212]">
         <button
           onClick={openModal}
           className="flex-grow-0 flex-shrink-0 text-sm text-left text-white"
@@ -257,7 +257,7 @@ function ListHeader() {
           viewBox="0 0 18 18"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
-          className="flex-grow-0 flex-shrink-0 w-[18px] h-[18px] relative"
+          className="flex-grow-0 flex-shrink-0 w-[18px] h-[18px] "
           preserveAspectRatio="xMidYMid meet"
         >
           <path

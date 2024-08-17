@@ -28,7 +28,6 @@ function LoginForm() {
       });
 
       if (res.data) {
-        console.log('@@', res.data);
         setUser({
           id: res.data.id,
           nickname: res.data.nickname,
@@ -96,7 +95,7 @@ function LoginForm() {
   };
 
   return (
-    <main className="flex items-center space-x-2 rounded-full  py-1 px-4">
+    <main className="flex items-center space-x-2 py-1 px-4">
       <form onSubmit={onSubmit} className="mt-[64px] h-[568px]">
         <h1 className="text-[20px] text-center text-[#121212] font-bold leading-[130%] tracking-[-0.4px] mb-5">
           로그인

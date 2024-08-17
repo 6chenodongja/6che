@@ -1,4 +1,3 @@
-// 파일 경로: signUpDone/page.tsx
 import React from 'react';
 import Header from 'app/(providers)/(components)/Header';
 import Footer from 'app/(providers)/(components)/Footer';

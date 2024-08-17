@@ -282,7 +282,7 @@ function PostList() {
 
   return (
     <div className="container mx-auto h-auto bg-[#FAFAFA]">
-      <Header />
+      {/* <Header /> */}
       <ListHeader />
       <div className="mt-6">
         <ListSelects

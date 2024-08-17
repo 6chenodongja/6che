@@ -4,6 +4,7 @@ import LikeButton from './LikeButton';
 import ListNicknameIcon from './icons/ListNicknameIcon';
 import ListLiveLikedIcon from './icons/ListLiveLikedIcon';
 import { PostItemType } from '../../../../../../../types/post';
+import { useUserStore } from '@/zustand/store/useUserStore';
 
 interface PostProps {
   post: PostItemType;
@@ -32,6 +33,7 @@ function PostItem({ post, isLiked, handleLike }: PostProps) {
 
   // 닉네임 안전하게 처리
   const nickname = post.users?.nick_name || '';
+  const { user } = useUserStore();
 
   return (
     <div>
@@ -76,7 +78,15 @@ function PostItem({ post, isLiked, handleLike }: PostProps) {
               {/* 날짜이모지와 닉네임 유저가 선택한 프로필로 변경  */}
               <span className="font-bold text-[14px] flex flex-row gap-[4px]">
                 <div className="w-[20px] h-[20px] p-[1px] flex justify-center items-center icon">
-                  <ListNicknameIcon />
+                  {/* <ListNicknameIcon src={user?.profileImage} /> */}
+                  {user?.profileImage && (
+                    <Image
+                      src={user.profileImage}
+                      alt="profile-icon"
+                      width={24}
+                      height={24}
+                    />
+                  )}
                 </div>
                 <span
                   className="overflow-hidden whitespace-nowrap text-ellipsis"

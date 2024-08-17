@@ -14,9 +14,7 @@ function MyPageContent() {
   const { user, clearUser } = useUserStore();
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const notify = () => {
-    alert('준비 중인 서비스 입니다!');
-  };
+
   const handlerDelete = async () => {
     try {
       const res = await axios.delete('/api/auth/deletesUserId', {
@@ -42,7 +40,7 @@ function MyPageContent() {
     <div className="mt-3 mb-[287px]">
       <div className="flex flex-col justify-start items-start w-72 drop-shadow-lg">
         <div className="flex flex-col justify-start items-start self-stretch flex-grow-0 flex-shrink-0 gap-3 px-4 py-5 rounded-[14px] bg-white">
-          <div className="flex justify-between items-center self-stretch flex-grow-0 flex-shrink-0 pb-2">
+          <div className="flex justify-between items-center self-stretch flex-grow-0 flex-shrink-0 pb-[6px]">
             <div className="flex justify-start items-center flex-grow-0 flex-shrink-0 w-[32px] h-[32px] gap-2">
               {user?.profileImage && (
                 <Image
@@ -54,10 +52,10 @@ function MyPageContent() {
                 />
               )}
               <div className="flex justify-start items-center self-stretch flex-grow-0 flex-shrink-0 gap-0.5">
-                <p className="flex-grow-0 flex-shrink-0 text-lg font-medium text-left text-[#121212]">
+                <p className="flex-grow-0 flex-shrink-0 text-lg font-medium text-[18px] leading-[23.4px] tracking-[-0.36px] text-left text-[#121212]">
                   {user?.nickname}
                 </p>
-                <p className="flex-grow-0 flex-shrink-0 text-lg text-left text-[#121212]">
+                <p className="flex-grow-0 flex-shrink-0 text-lg text-left text-[18px] font-normal text-[#121212]">
                   님
                 </p>
               </div>
@@ -70,14 +68,13 @@ function MyPageContent() {
               </Link>
             </div>
           </div>
-          {/* Navigation Links */}
           <nav className="flex flex-col justify-start items-start self-stretch flex-grow-0 flex-shrink-0 gap-1">
             <Link
               href={'/postLike'}
               className="flex justify-between items-center self-stretch flex-grow-0 flex-shrink-0 px-1.5 py-2.5 rounded-lg bg-white hover:bg-gray-200/75"
             >
               <p className="flex-grow-0 flex-shrink-0 text-sm text-left text-[#4d4d4d] focus:text-blue-400">
-                좋아요한 게시글
+                좋아요한 코디
               </p>
               <Image
                 src="/images/Thermometer/arrow_right.svg"
@@ -93,7 +90,7 @@ function MyPageContent() {
                 className="flex justify-between items-center self-stretch flex-grow-0 flex-shrink-0 hover:bg-gray-200/75 px-1.5 py-2.5 rounded-lg"
               >
                 <p className="flex-grow-0 flex-shrink-0 text-sm text-left text-[#4d4d4d]">
-                  내 스타일
+                  내 코디
                 </p>
                 <Image
                   src="/images/Thermometer/arrow_right.svg"
@@ -109,45 +106,33 @@ function MyPageContent() {
       </div>
       <div className="flex flex-col justify-start items-start w-72 drop-shadow-lg mt-3">
         <div className="flex flex-col justify-start items-start self-stretch flex-grow-0 flex-shrink-0 gap-3 px-4 py-5 rounded-[14px] bg-white">
-          <div className="flex flex-col items-left self-stretch flex-grow-0 pb-2">
-            <h1 className="text-[18px]">계정</h1>
-            <div className="bg-[#FAFAFA] rounded-md p-3 mt-2">
+          <div className="flex flex-col items-left self-stretch flex-grow-0 gap-3">
+            <h1 className="text-[18px] font-medium leading-[130%] tracking-[-0.36px] pl-1">
+              계정
+            </h1>
+            <div className="bg-[#FAFAFA] rounded-md p-3 text-[16px] font-medium leading-[130%] tracking-[-0.32px]">
               {user?.provider === 'google' && (
                 <Image
                   src="/images/login/Logo_Google.svg"
                   alt=""
-                  width={20}
-                  height={20}
+                  width={22}
+                  height={22}
+                  className="flex items-center gap-2"
                 />
               )}
               {user?.provider === 'kakao' && (
                 <Image
                   src="/images/login/Logo_Kakao.svg"
                   alt=""
-                  width={20}
-                  height={20}
+                  width={22}
+                  height={22}
+                  className="flex items-center gap-2"
                 />
               )}
               {user?.email}
             </div>
           </div>
-          <nav className="flex flex-col justify-start items-start self-stretch flex-grow-0 flex-shrink-0 gap-1">
-            <Link
-              href={'/mypage'}
-              onClick={notify}
-              className="flex justify-between items-center self-stretch flex-grow-0 flex-shrink-0 px-1.5 py-2.5 rounded-lg bg-white hover:bg-gray-200/75"
-            >
-              <p className="flex-grow-0 flex-shrink-0 text-sm text-left text-[#4d4d4d] focus:text-blue-400">
-                비밀번호 변경
-              </p>
-              <Image
-                src="/images/Thermometer/arrow_right.svg"
-                alt="arrow-icon"
-                width={18}
-                height={18}
-                className="flex-grow-0 flex-shrink-0 w-[18px] h-[18px]"
-              />
-            </Link>
+          <nav className="flex flex-col justify-start items-start self-stretch flex-grow-0 flex-shrink-0 gap-2">
             <div className="text-sm text-left text-[#4d4d4d] flex justify-between items-center self-stretch flex-grow-0 flex-shrink-0 hover:bg-gray-200/75 focus:text-blue-400 px-1.5 py-2.5 rounded-lg cursor-pointer">
               <div className="flex justify-start items-center gap-1">
                 <LogoutButton />

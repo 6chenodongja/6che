@@ -10,44 +10,18 @@ import LoadingScreen from '../(components)/LoadingScreen'; // LoadingScreen 컴�
 import LoginDropdown from '@/components/LoginDropdown/LoginDropdown';
 import { useUserStore } from '@/zustand/store/useUserStore';
 import { supabase } from '@/supabase/client';
+import LoginPopup from '../(root)/(auth)/login/_components/LoginPopup';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const { user, setUser, isLoggedIn } = useUserStore();
+  const { user, setUser } = useUserStore();
+  const [loginModal, setLoginModal] = useState(false);
   const router = useRouter();
+  const handleLoginModal = () => setLoginModal(!loginModal);
   const handleMenuToggle = () => {
     setIsMenuOpen(!isMenuOpen);
   };
-
-  // useEffect(() => {
-  //   const getUser = async () => {
-  //     const response = await fetch('/api/auth/user');
-  //     const user = await response.json();
-  //     console.log(user);
-  //     if (!user) return;
-  //     const { data, error } = await createClient()
-  //       .from('users')
-  //       .select('*')
-  //       .eq('id', user.id)
-  //       .single();
-
-  //     if (error) {
-  //       console.error('유저 데이터 받아오기 실패:', error);
-  //       return;
-  //     }
-
-  //     setUser({
-  //       id: user.id,
-  //       nickname: data.nick_name || '',
-  //       email: data.email,
-  //       provider: user.app_metadata.provider || '',
-  //       profileImage: data.avatar || '',
-  //     });
-  //   };
-
-  //   getUser();
-  // }, [setUser]);
 
   useEffect(() => {
     const getUser = async () => {
@@ -101,86 +75,108 @@ const Header = () => {
   }
 
   return (
-    <header className="w-full fixed top-0 z-50 h-[60px]">
-      <div
-        className="absolute w-full h-full bg-rgba(255, 255, 255, 0.70))"
-        style={{
-          boxShadow: '0px 2px 10px 0px rgba(0, 0, 0, 0.05)',
-          backdropFilter: 'blur(7px)',
-        }}
-      ></div>
-      <div className="relative w-full h-full flex items-center px-4">
-        <div className="flex-1 flex justify-start md:hidden">
-          <button title="button" onClick={handleMenuToggle}>
-            <Image src="/images/menu.png" alt="메뉴" width={24} height={24} />
-          </button>
-        </div>
-        <div className="md:flex-1 flex justify-center md:justify-start">
-          <div className="cursor-pointer" onClick={handleLogoClick}>
-            <LogoText className="w-24 h-8" />
+    <>
+      <header className="w-full fixed top-0 z-50 h-[60px]">
+        <div
+          className="absolute w-full h-full bg-rgba(255, 255, 255, 0.70))"
+          style={{
+            boxShadow: '0px 2px 10px 0px rgba(0, 0, 0, 0.05)',
+            backdropFilter: 'blur(7px)',
+          }}
+        ></div>
+        <div className="relative w-full h-full flex items-center px-4">
+          <div className="flex-1 flex justify-start md:hidden">
+            <button title="button" onClick={handleMenuToggle}>
+              <Image src="/images/menu.png" alt="메뉴" width={24} height={24} />
+            </button>
+          </div>
+          <div className="md:flex-1 flex justify-center md:justify-start">
+            <div className="cursor-pointer" onClick={handleLogoClick}>
+              <LogoText className="w-24 h-8" />
+            </div>
+          </div>
+          <div className="hidden md:flex items-end">
+            {user ? (
+              <LoginDropdown />
+            ) : (
+              <div className="flex gap-1">
+                <button
+                  onClick={handleLoginModal}
+                  className="font-NotoSansKR tracking-[-0.28px] leading-[130%] py-[11px] text-[14px]  font-normal px-4 rounded-lg bg-[#298CFF]/80 text-white"
+                >
+                  로그인
+                </button>
+                <Link href={'/signup'} className="">
+                  <button className="font-NotoSansKR tracking-[-0.28px] leading-[130%] py-[11px] px-4 text-[14px] border-1 border-[#5EB0FF]/80 font-normal rounded-lg text-[#5EB0FF]/80">
+                    회원가입
+                  </button>
+                </Link>
+              </div>
+            )}
+          </div>
+          <div className="block md:hidden flex-1 flex justify-end">
+            {user ? (
+              <LoginDropdown />
+            ) : (
+              <Link href={'/login'}>
+                <IconLogin className="w-6 h-6" />
+              </Link>
+            )}
+          </div>
+          <div className="hidden md:flex md:absolute md:left-1/2 md:transform md:-translate-x-1/2">
+            <ul className="flex space-x-8">
+              <li>
+                <Link href="/">홈</Link>
+              </li>
+              <li>
+                <Link href="/list">코디</Link>
+              </li>
+              <li>
+                <Link href="/thermometer-style">옷차림</Link>
+              </li>
+              <li>
+                <Link href="/survey">취향 코디</Link>
+              </li>
+            </ul>
           </div>
         </div>
-        <div className="flex-1 flex justify-end">
-          {user ? (
-            <LoginDropdown />
-          ) : (
-            <Link href={'/login'}>
-              <IconLogin className="w-6 h-6" />
-            </Link>
-          )}
-        </div>
-        <div className="hidden md:flex md:absolute md:left-1/2 md:transform md:-translate-x-1/2">
-          <ul className="flex space-x-8">
+
+        <nav
+          className={`navbar ${isMenuOpen ? 'open' : ''}`}
+          style={{
+            width: '100%',
+            height: '100%',
+            backdropFilter: 'blur(20px)',
+            backgroundColor: 'rgba(255, 255, 255, 0.70)',
+            transform: isMenuOpen
+              ? 'translate(-50%, 0%)'
+              : 'translate(-50%, -100%)',
+            transition: 'transform 0.3s ease-in-out',
+          }}
+        >
+          <div className="navbar-close" onClick={handleMenuToggle}>
+            &times;
+          </div>
+          <ul>
             <li>
-              <Link href="/">홈</Link>
+              <Link href="/" onClick={handleMenuToggle}>
+                홈
+              </Link>
             </li>
             <li>
-              <Link href="/list">코디</Link>
+              <Link href="/list">스타일</Link>
             </li>
             <li>
-              <Link href="/thermometer-style">옷차림</Link>
+              <Link href="/thermometer-style">옷 차림</Link>
             </li>
             <li>
               <Link href="/survey">취향 코디</Link>
             </li>
           </ul>
-        </div>
-      </div>
-
-      <nav
-        className={`navbar ${isMenuOpen ? 'open' : ''}`}
-        style={{
-          width: '100%',
-          height: '100%',
-          backdropFilter: 'blur(20px)',
-          backgroundColor: 'rgba(255, 255, 255, 0.70)',
-          transform: isMenuOpen
-            ? 'translate(-50%, 0%)'
-            : 'translate(-50%, -100%)',
-          transition: 'transform 0.3s ease-in-out',
-        }}
-      >
-        <div className="navbar-close" onClick={handleMenuToggle}>
-          &times;
-        </div>
-        <ul>
-          <li>
-            <Link href="/" onClick={handleMenuToggle}>
-              홈
-            </Link>
-          </li>
-          <li>
-            <Link href="/list">스타일</Link>
-          </li>
-          <li>
-            <Link href="/thermometer-style">옷 차림</Link>
-          </li>
-          <li>
-            <Link href="/survey">취향 코디</Link>
-          </li>
-        </ul>
-      </nav>
-    </header>
+        </nav>
+      </header>
+      {/* <LoginPopup /> */}
+    </>
   );
 };
 

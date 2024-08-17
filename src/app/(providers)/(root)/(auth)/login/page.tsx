@@ -3,6 +3,7 @@
 import Header from 'app/(providers)/(components)/Header';
 import LoginForm from './_components/LoginForm';
 import Footer from 'app/(providers)/(components)/Footer';
+import LoginPopup from './_components/LoginPopup';
 
 function LoginPage() {
   return (

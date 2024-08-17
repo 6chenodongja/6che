@@ -24,30 +24,30 @@ const LoginModalProps = ({ isOpen, onClose }: LoginModalProps) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-[9999]">
-      <div className="bg-white bg-opacity-70 rounded-2xl shadow-[0px_0px_2px_0px_rgba(0,0,0,0.05),4px_4px_20px_0px_rgba(0,0,0,0.05)] backdrop-blur-sm w-[281px] h-[160px] relative p-6">
+    <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50">
+      <div className="bg-white bg-opacity-70 rounded-2xl shadow-[0px_0px_2px_0px_rgba(0,0,0,0.05),4px_4px_20px_0px_rgba(0,0,0,0.05)] backdrop-blur-sm w-[281px] max-w-full h-auto p-6 z-50">
         <button
           title="x-icon"
           onClick={onClose}
-          className="rounded-full hover:bg-[#4d4d4d]/50"
+          className="absolute top-2 right-2 p-1 rounded-full hover:bg-[#4d4d4d]/50"
         >
           <Image src="/x.svg" alt="close" width={24} height={24} />
         </button>
-        <div className="flex flex-col text-center">
+        <div className="flex flex-col text-center mt-8">
           <h2 className="text-[18px] font-semibold leading-[130%] tracking-[-0.36px] font-[Noto Sans KR] text-black-700">
             로그인이 필요한 기능입니다
           </h2>
         </div>
         <div className="flex justify-center mt-[24px] gap-[11px]">
           <button
-            onClick={handleSignupClick} // 회원가입 버튼 클릭 시
-            className="bg-black-100 text-[16px] font-semibold leading-[130%] tracking-[-0.32px] text-[#4D4D4D] font-noto-sans hover:bg-blue-300 rounded-lg my-[14px] ml-3"
+            onClick={handleSignupClick}
+            className="bg-gray-200 text-[16px] font-semibold leading-[130%] tracking-[-0.32px] text-[#4D4D4D] hover:bg-blue-300 rounded-lg px-4 py-2"
           >
             회원가입
           </button>
           <button
-            onClick={handleLoginClick} // 로그인 버튼 클릭 시
-            className="text-[#FFF] rounded-lg p-[14px] font-semibold w-[96px] h-[49px] bg-[#121212] hover:bg-blue-300"
+            onClick={handleLoginClick}
+            className="text-[#FFF] bg-[#121212] hover:bg-blue-300 rounded-lg px-4 py-2 font-semibold"
           >
             로그인
           </button>
