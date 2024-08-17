@@ -40,6 +40,27 @@ const Footer = () => {
     letterSpacing: '-0.24px',
     opacity: '0.7',
   };
+  const { isLoggedIn } = useUserStore();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const router = useRouter();
+
+  const handleMypageClick = (
+    e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
+  ) => {
+    if (!isLoggedIn) {
+      e.preventDefault();
+      setIsModalOpen(true);
+    }
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false); // 모달 닫기
+  };
+
+  const handleConfirm = () => {
+    closeModal();
+    router.push('/login'); // 로그인 페이지로 이동
+  };
 
   return (
     <footer className="w-full bg-#FFF py-4 mt-0 md:py-8">

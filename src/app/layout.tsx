@@ -4,8 +4,10 @@ import './globals.css';
 import KakaoScript from './(providers)/(root)/common/KakaoScript';
 import Header from './(providers)/(components)/Header';
 import Footer from './(providers)/(components)/Footer';
+import { Inter } from 'next/font/google';
 
 const notoSansKR = Noto_Sans_KR({ subsets: ['latin'] });
+const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: '온코디',

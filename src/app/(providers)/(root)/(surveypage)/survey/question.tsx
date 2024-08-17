@@ -513,10 +513,9 @@ const QuestionPage: React.FC = () => {
                   alignItems: 'center',
                   gap: 'var(--sds-size-space-200)',
                   borderRadius: '10px',
-                  background:
-                    selectedOptions[currentQuestionIndex]?.length > 0
-                      ? 'var(--Black, #121212)'
-                      : 'var(--Black-100, rgba(230, 230, 230, 0.60))',
+                  background: selectedOptions[currentQuestionIndex]
+                    ? 'var(--Black, #121212)'
+                    : 'var(--Black-100, rgba(230, 230, 230, 0.60))',
                   color: 'var(--White, #FFF)',
                   fontFamily: '"Noto Sans KR"',
                   fontSize: '16px',
@@ -524,17 +523,15 @@ const QuestionPage: React.FC = () => {
                   fontWeight: 500,
                   lineHeight: '130%',
                   letterSpacing: '-0.32px',
-                  cursor:
-                    selectedOptions[currentQuestionIndex]?.length > 0
-                      ? 'pointer'
-                      : 'not-allowed',
+                  cursor: selectedOptions[currentQuestionIndex]
+                    ? 'pointer'
+                    : 'not-allowed',
                 }}
-                disabled={selectedOptions[currentQuestionIndex]?.length === 0}
+                disabled={!selectedOptions[currentQuestionIndex]}
               >
                 결과보기
               </button>
             )}
-
             {currentQuestionIndex === 3 && (
               <button
                 onClick={handleNextClick}
