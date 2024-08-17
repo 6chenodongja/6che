@@ -875,7 +875,7 @@
 }
 /* 메인 페이지 전용 스타일 */
 
-/* 토스트 알림 스타일-1 */
+/* 토스트 알림 스타일-1  */
 .label-style {
   color: #4d4d4d;
   font-family: 'Noto Sans KR', sans-serif;
@@ -916,4 +916,15 @@
 /* 토스트 알림 - 버튼 밑줄제거 */
 .no-underline {
   text-decoration: none; /* 밑줄 제거 */
+}
+
+.toast-message span {
+  margin-right: auto; /* 텍스트와 버튼 사이의 여백 설정 */
+}
+
+.toast-message button {
+  margin-left: 16px; /* 버튼의 왼쪽 여백을 텍스트와 균등하게 설정 */
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
 }

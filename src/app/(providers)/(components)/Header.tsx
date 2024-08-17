@@ -70,11 +70,12 @@ const Header = () => {
   }
 
   return (
-    <header className="w-full fixed  bg-#fff top-0 z-50 h-[60px]">
+    <header className="w-full fixed top-0 z-50 h-[60px]">
       <div
         className="absolute w-full h-full bg-rgba(255, 255, 255, 0.70))"
         style={{
           boxShadow: '0px 2px 10px 0px rgba(0, 0, 0, 0.05)',
+          backdropFilter: 'blur(7px)',
         }}
       ></div>
       <div className="relative w-full h-full flex items-center px-4">
@@ -120,6 +121,7 @@ const Header = () => {
         style={{
           width: '100%',
           height: '100%',
+          backdropFilter: 'blur(20px)',
           backgroundColor: 'rgba(255, 255, 255, 0.70)',
           transform: isMenuOpen
             ? 'translate(-50%,0%)'
