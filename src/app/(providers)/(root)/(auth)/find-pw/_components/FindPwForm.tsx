@@ -253,20 +253,7 @@ const FindPwForm = () => {
             아이디 비밀번호 찾기
           </h2>
 
-          <div
-            className="flex justify-center p-1 bg-[#fafafa] border-1 border-black-200 rounded-lg mb-[37px] shadow-sm"
-            style={{
-              borderRadius: '8px',
-              opacity: 'var(--sds-size-stroke-border)',
-              background: 'var(--text-box, rgba(255, 255, 255, 0.50))',
-              boxShadow:
-                '0px 0px 1px 0px rgba(0, 0, 0, 0.10), 0px 2px 10px 0px rgba(0, 0, 0, 0.05)',
-              width: '288px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '4px',
-            }}
-          >
+          <div className="flex justify-center items-center p-1  rounded-lg mb-[37px] shadow-[0px_0px_1px_rgba(0,0,0,0.10),_0px_2px_10px_rgba(0,0,0,0.05)] md:w-[400px] md:h-[54px] gap-[4px]">
             <button
               type="button"
               className="w-[141px] h-[44px] bg-white text-text-default rounded-lg font-normal text-[14px] font-KR-button hover:bg-black-100 hover:text-semantic-color-bg-brand-b active:bg-[#E0E0E0] active:text-blue-400"
@@ -432,14 +419,32 @@ const FindPwForm = () => {
               </div>
             </div>
 
-            <div className="flex justify-center px-[40px]">
+            {/* <div className="flex justify-center px-[40px]">
               <button
                 type="submit"
-                className={`md:w-[376px] md:h-[49px] py-2 rounded-lg font-button ${
+                className={`md:w-[400px] md:h-[49px] py-2 rounded-lg font-button ${
                   email && domain !== 'select'
                     ? 'bg-black text-white hover:bg-blue-400 active:bg-[#73aee7]'
                     : 'bg-black-100 text-black-300'
                 }`}
+                disabled={!email || domain === 'select'}
+              >
+                링크 보내기
+              </button>
+            </div> */}
+
+            <div className="flex justify-center ">
+              <button
+                type="submit"
+                className={`w-[400px] h-[49px] py-2 rounded-lg font-button  ${
+                  email && domain !== 'select'
+                    ? 'bg-black text-white hover:bg-blue-400 active:bg-[#73aee7]'
+                    : 'bg-black-100 text-black-300'
+                }`}
+                style={{
+                  width: '400px !important',
+                  height: '49px !important',
+                }}
                 disabled={!email || domain === 'select'}
               >
                 링크 보내기

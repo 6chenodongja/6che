@@ -41,18 +41,19 @@ const FindIdForm = () => {
   return (
     <>
       {/* 모바일 화면 (768px 이하) */}
-      <div className="md:hidden w-full max-w-[320px] mx-auto flex flex-col items-center min-h-[636px] bg-[#fafafa] mt-10 px-4 pt-[64px]">
+      <div className="md:hidden w-full max-w-[320px] mx-auto flex flex-col items-center min-h-[636px] bg-white mt-10 px-4 pt-[64px]">
         <div className="w-full">
           <h2 className="text-xl text-center font-headline-04  text-[20px] mb-[40px] font-bold">
             아이디 비밀번호 찾기
           </h2>
-          <div
+          {/* <div
             className="flex justify-center items-center p-1 border border-gray-300 rounded-lg mb-[37px] shadow-sm md:w-[400px] md:h-[54px] gap-[4px]"
             style={{
               boxShadow:
                 '0px 0px 1px 0px rgba(0, 0, 0, 0.10), 0px 2px 10px 0px rgba(0, 0, 0, 0.05)',
             }}
-          >
+          > */}
+          <div className="flex justify-center items-center p-1  rounded-lg mb-[37px] shadow-[0px_0px_1px_rgba(0,0,0,0.10),_0px_2px_10px_rgba(0,0,0,0.05)] md:w-[400px] md:h-[54px] gap-[4px]">
             <button
               type="button"
               className="w-[141px] h-[44px] bg-black text-white rounded-lg text-[14px] font-normal font-KR-button"
@@ -203,7 +204,7 @@ const FindIdForm = () => {
               </div>
             </div>
 
-            <div className="flex justify-center px-[40px]">
+            {/* <div className="flex justify-center px-[40px]">
               <button
                 type="submit"
                 className={`md:w-[376px] md:h-[49px] py-2 rounded-lg font-button ${
@@ -211,6 +212,23 @@ const FindIdForm = () => {
                     ? 'bg-black text-white hover:bg-blue-400 active:bg-[#73aee7]'
                     : 'bg-black-100 text-black-300'
                 }`}
+                disabled={!email || domain === 'select'}
+              >
+                계정 확인
+              </button>
+            </div> */}
+            <div className="flex justify-center ">
+              <button
+                type="submit"
+                className={`w-[400px] h-[49px] py-2 rounded-lg font-button  ${
+                  email && domain !== 'select'
+                    ? 'bg-black text-white hover:bg-blue-400 active:bg-[#73aee7]'
+                    : 'bg-black-100 text-black-300'
+                }`}
+                style={{
+                  width: '400px !important',
+                  height: '49px !important',
+                }}
                 disabled={!email || domain === 'select'}
               >
                 계정 확인

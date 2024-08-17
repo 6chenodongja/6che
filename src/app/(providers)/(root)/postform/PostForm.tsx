@@ -713,13 +713,13 @@ const PostFormPage = () => {
                   최대 3개의 이미지만 업로드할 수 있습니다.
                 </div>
               )}
-              <div className="mt-4 sm:mt-10 sm:w-[734px] sm:h-[210px]">
+              <div className="mt-4 sm:mt-10 sm:w-[734px] sm:h-[210px] ">
                 <div className="border-t border-black-100 pt-2 pb-0"></div>
                 <div className="relative">
                   <textarea
                     value={description}
                     onChange={handleDescriptionChange}
-                    className="w-full h-24 p-2 pt-1 border-none border-b border-black-100 placeholder-black-300 resize-none focus:outline-none focus:border-transparent bg-transparent"
+                    className="w-[744px] h-[210px] p-2 pt-1 border-none border-b border-black-100 placeholder-black-300 resize-none focus:outline-none focus:border-transparent bg-transparent"
                     placeholder="스타일에 대한 이야기를 써주세요"
                     maxLength={200}
                     required
