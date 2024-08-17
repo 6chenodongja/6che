@@ -17,14 +17,14 @@ interface Post {
 const ResultPage: React.FC = () => {
   const [likes, setLikes] = useState<string[]>([]);
   const [posts, setPosts] = useState<Post[]>([]);
-  const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 768); 
   const { gender, style, seasons, locations } = useTagStore();
   const { user } = useUserStore();
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [windowWidth, setWindowWidth] = useState<number>(0); // 윈도우 가로 크기 상태 저장
 
   const fetchPosts = useCallback(async () => {
-    const limit = isDesktop ? 6 : 4;
+    const limit = windowWidth >= 768 ? 6 : 4; // 윈도우 가로 크기에 따라 limit 변경
     const { data: postList, error } = await supabase
       .from('posts')
       .select('id, image_url')
@@ -42,7 +42,7 @@ const ResultPage: React.FC = () => {
       }));
       setPosts(sanitizedPostList);
     }
-  }, [gender, style, seasons, locations, isDesktop]);
+  }, [gender, style, seasons, locations, windowWidth]);
 
   const fetchUserLikedPosts = useCallback(async () => {
     if (!user) return;
@@ -60,24 +60,25 @@ const ResultPage: React.FC = () => {
   }, [user]);
 
   useEffect(() => {
+    if (typeof window !== 'undefined') {
+      // 윈도우 가로 크기 저장 및 업데이트
+      const handleResize = () => {
+        setWindowWidth(window.innerWidth);
+      };
+
+      handleResize(); // 초기 실행
+      window.addEventListener('resize', handleResize);
+
+      return () => {
+        window.removeEventListener('resize', handleResize);
+      };
+    }
+  }, []);
+
+  useEffect(() => {
     fetchPosts();
     fetchUserLikedPosts();
-  }, [fetchPosts, fetchUserLikedPosts]);
-
-  // 창 크기 변경에 따른 리렌더링
-  useEffect(() => {
-    const handleResize = () => {
-      setIsDesktop(window.innerWidth >= 768);
-    };
-
-    window.addEventListener('resize', handleResize);
-    // 초기에도 강제 리렌더링
-    handleResize();
-    
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
+  }, [fetchPosts, fetchUserLikedPosts, windowWidth]);
 
   const handleLikeClick = async (postId: string) => {
     if (!user) {
@@ -138,7 +139,7 @@ const ResultPage: React.FC = () => {
             </button>
           </div>
           <div
-            className={`grid ${isDesktop ? 'grid-cols-3' : 'grid-cols-2'} gap-4 mb-4`}
+            className={`grid ${windowWidth >= 768 ? 'grid-cols-3' : 'grid-cols-2'} gap-4 mb-4`}
           >
             {posts.map((post) => {
               const imageUrls = post.image_url?.split(',') || [];
@@ -146,7 +147,7 @@ const ResultPage: React.FC = () => {
               return (
                 <div
                   key={post.id}
-                  className="w-[142px] h-[200px] bg-gray-200 rounded-lg flex items-center justify-center relative"
+                  className="w-[142px] h-[230px] bg-gray-200 rounded-lg flex items-center justify-center relative"
                   onClick={() => handleImageClick(post.id)}
                 >
                   {imageUrls.map((url, idx) => (
@@ -167,7 +168,7 @@ const ResultPage: React.FC = () => {
                       handleLikeClick(post.id);
                     }}
                   >
-                    <img
+                    <Image
                       src={
                         likes.includes(post.id)
                           ? '/images/icons/rhaert.png'

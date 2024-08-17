@@ -715,7 +715,7 @@
     width: 100%;
     padding: 20px; /* 내부 패딩 추가 */
     margin-top: 80px; /* 상단 여백 조정 */
-    margin-bottom: 0px; /* 하단 여백 조정 */    
+    margin-bottom: 0px; /* 하단 여백 조정 */
     backdrop-filter: blur(5px);
     background-color: #fafafa;
   }
@@ -781,7 +781,7 @@
     margin-left: -75px;
   }
   .survey-text {
-    font-size: 18px; 
+    font-size: 18px;
   }
   .start-button {
     width: 100%;
@@ -803,12 +803,12 @@
     max-width: 320px;
     margin: 0 auto;
     padding-top: -20px;
-    padding-bottom: 0px; 
+    padding-bottom: 0px;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    justify-content: center; 
-    align-items: center; 
+    justify-content: center;
+    align-items: center;
   }
 
   .question-container > div {
@@ -818,7 +818,7 @@
     padding: 0;
     display: flex;
     flex-direction: column;
-    padding-bottom: 0px; 
+    padding-bottom: 0px;
   }
 
   .question-navigation {
@@ -832,8 +832,8 @@
   .question-back-button {
     margin-top: -510px;
     margin-left: -170px;
-    width: 40px; 
-    height: 40px; 
+    width: 40px;
+    height: 40px;
     position: absolute;
   }
 
@@ -900,18 +900,18 @@
   }
   .div5-down {
     position: relative; /* 다른 요소의 위치에 영향을 받지 않게 설정 */
-    top: 10px; 
+    top: 10px;
   }
   .card-div6 {
     margin-bottom: 47px;
   }
   .next-btn {
     position: relative;
-    top: -50px; 
+    top: -50px;
   }
   .result-btn {
-    position: relative; 
-    top: 100px; 
+    position: relative;
+    top: 100px;
   }
 
   .grid {
@@ -963,8 +963,8 @@
     margin-top: -50px; /* Q와 질문 간의 y 간격을 통일 */
   }
   .text-1 {
-    position: relative; 
-    bottom: -24px; 
+    position: relative;
+    bottom: -24px;
   }
 
   .items2 {
@@ -973,18 +973,18 @@
   }
 
   .text-2 {
-    position: relative; 
-    bottom: -24px; 
+    position: relative;
+    bottom: -24px;
   }
 
   .items3 {
-    margin-top: 125px; 
+    margin-top: 125px;
     position: relative;
   }
 
   .text-3 {
-    position: relative; 
-    bottom: -24px; 
+    position: relative;
+    bottom: -24px;
   }
 
   .items4 {
@@ -993,13 +993,13 @@
   }
 
   .text-4 {
-    position: relative; 
-    bottom: -24px; 
+    position: relative;
+    bottom: -24px;
   }
 
   .stext-4 {
-    position: relative; 
-    bottom: -27px; 
+    position: relative;
+    bottom: -27px;
   }
 
   .items5 {
@@ -1007,36 +1007,36 @@
     position: relative;
   }
   .text-5 {
-    position: relative; 
-    bottom: -24px; 
+    position: relative;
+    bottom: -24px;
   }
   .text-6 {
-    position: relative; 
-    bottom: -24px; 
+    position: relative;
+    bottom: -24px;
   }
 
   /* 768px 이상 화면에서 가로 한 줄로 표시 */
   @media (min-width: 768px) {
     .text-5 {
       white-space: nowrap; /* 텍스트 줄바꿈 방지 */
-      display: flex; 
-      justify-content: center; 
-      align-items: center; 
+      display: flex;
+      justify-content: center;
+      align-items: center;
       position: relative;
     }
   }
 
   .div-down {
-    position: relative; 
-    top: -70px; 
+    position: relative;
+    top: -70px;
   }
   .items6 {
-    margin-top: 128px; 
+    margin-top: 128px;
     position: relative;
   }
   .div-up {
-    position: relative; 
-    top: -70px; 
+    position: relative;
+    top: -70px;
   }
   .next-button {
     width: 100%;
@@ -1071,7 +1071,7 @@
     bottom: -40px;
     top: 10px;
   }
-  .text{
+  .text {
     bottom: -82px;
     position: relative;
   }
@@ -1082,8 +1082,8 @@
   .back-button {
     top: -15px;
     margin-left: 45px;
-    width: 40px; 
-    height: 40px; 
+    width: 40px;
+    height: 40px;
     position: absolute;
   }
 }
@@ -1094,51 +1094,53 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding-top: 47px;
-    padding-bottom: 50px;
+    padding-top: 3rem; /* 47px -> 3rem */
+    padding-bottom: 3rem; /* 50px -> 3rem */
   }
 
   .result-content {
-    width: 651px;
+    width: 100%;
+    max-width: 40rem; /* 651px -> 40rem */
+    height: 724px;
     box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.1);
     overflow: visible;
     position: relative;
-    margin-top: 50px;
-    margin-bottom: 130px;
-    padding: 32px;
-    border-radius: 20px;
+    margin-top: 3rem; /* 50px -> 3rem */
+    margin-bottom: 8rem; /* 130px -> 8rem */
+    padding: 2rem; /* 32px -> 2rem */
+    border-radius: 1.25rem; /* 20px -> 1.25rem */
   }
 
   .result-container .grid {
     grid-template-columns: repeat(3, 1fr); /* 3 열 */
     grid-template-rows: repeat(2, 1fr); /* 2 행 */
-    gap: 10px;
-    margin-top: 32px;
+    gap: 0.625rem; /* 10px -> 0.625rem */
+    margin-top: 2rem; /* 32px -> 2rem */
   }
 
   .result-content .grid > div {
-    width: 161px;
-    height: 230px;
-    border-radius: 20px;
+    width: 10rem; /* 161px -> 10rem */
+    height: 14.375rem; /* 230px -> 14.375rem */
+    border-radius: 1.25rem; /* 20px -> 1.25rem */
   }
 
   .result-content .grid > div img {
-    border-radius: 8px;
+    border-radius: 0.5rem; /* 8px -> 0.5rem */
   }
 
   .back-button {
-    width: 40px;
-    height: 40px;
-    margin-left: -40px;
-    top: -10px;
+    width: 2.5rem; /* 40px -> 2.5rem */
+    height: 2.5rem; /* 40px -> 2.5rem */
+    margin-left: -2.5rem; /* -40px -> -2.5rem */
+    top: -0.625rem; /* -10px -> -0.625rem */
     position: relative;
   }
   .next-btn {
     position: relative;
-    top: 56px;
+    top: 3.5rem; /* 56px -> 3.5rem */
   }
-  .text{
-    bottom: -48px;
+  .text {
+    bottom: -3rem; /* -48px -> -3rem */
     position: relative;
   }
 }
