@@ -4,9 +4,9 @@ import Footer from 'app/(providers)/(components)/Footer';
 
 function SignUpPage() {
   return (
-    <main className="container flex flex-col justify-between items-center w-full min-h-screen bg-neutral-50">
+    <main className="containers flex flex-col justify-between items-center w-full min-h-screen">
       <Header />
-      <div className="flex-grow flex flex-col justify-center items-center w-full">
+      <div className="flex-grow flex flex-col justify-center items-center">
         <SingUp />
       </div>
       <Footer />

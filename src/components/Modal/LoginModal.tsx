@@ -14,12 +14,12 @@ const LoginModalProps = ({ isOpen, onClose }: LoginModalProps) => {
   if (!isOpen) return null;
 
   const handleLoginClick = () => {
-    router.push('/login'); // 로그인 페이지로 이동
+    router.replace('/login'); // 로그인 페이지로 이동
     onClose(); // 모달 닫기
   };
 
   const handleSignupClick = () => {
-    router.push('/signup'); // 회원가입 페이지로 이동
+    router.replace('/signup'); // 회원가입 페이지로 이동
     onClose(); // 모달 닫기
   };
 

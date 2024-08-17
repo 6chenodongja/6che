@@ -4,8 +4,18 @@ import { useSignUpForm } from 'hooks/useSignUpForm';
 import Image from 'next/image';
 import axios from 'axios';
 import { useUserStore } from '@/zustand/store/useUserStore';
+import { useEffect, useState } from 'react';
 
 function SingUp() {
+  // const [isDesktop, setIsDesktop] = useState(true);
+
+  // useEffect(() => {
+  //   const handleResize = () => {
+  //     setIsDesktop(window.innerWidth >= 768);
+  //   };
+  //   handleResize();
+  // }, []);
+
   const {
     nickname,
     emailId,
@@ -15,7 +25,7 @@ function SingUp() {
     passwordConfirm,
     isOver,
     error,
-    isNicknameValid,
+    // isNicknameValid,
     isNicknameChecked,
     nicknameMessage,
     setEmailId,
@@ -24,7 +34,7 @@ function SingUp() {
     setIsOver,
     handleChange,
     // handleEmailDomainChange,
-    checkNickname,
+    // checkNickname,
     isFormValid,
   } = useSignUpForm();
   const router = useRouter();

@@ -27,7 +27,6 @@ const Header = () => {
     const getUser = async () => {
       const response = await fetch('/api/auth/user');
       const user = await response.json();
-      console.log('유저확인', user);
       if (!user) return;
 
       const { data, error } = await supabase
