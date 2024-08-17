@@ -882,11 +882,12 @@
     max-width: auto;
     width: 288px;
     margin-top: 6px;
+    flex-wrap: wrap;
   }
 }
 
 /* 480px~647px 이하 화면에서의 스타일 */
-@media (min-width: 480px) and (max-width: 647px) {
+@media (min-width: 480px) and (max-width: 648px) {
   .list-container {
     width: 100%;
     margin: 0 auto;
@@ -905,11 +906,12 @@
   .list-select {
     max-width: auto;
     margin-top: 6px;
+    flex-wrap: wrap;
   }
 }
 
-/* 648px~767px 이하 화면에서의 스타일 */
-@media (min-width: 648px) and (max-width: 767px) {
+/* 768px~860px 이상 화면에서의 스타일 */
+@media (min-width: 648px) and (max-width: 950px) {
   .list-container {
     width: 100%;
     margin: 0 auto;
@@ -927,53 +929,9 @@
   }
   .list-select {
     max-width: auto;
-    margin-top: 6px;
   }
 }
-
-/* 768px~860px 이상 화면에서의 스타일 */
-@media (min-width: 768px) and (max-width: 860px) {
-  .list-container {
-    width: 100%;
-    margin: 0 auto;
-    padding-top: 60px;
-    box-sizing: border-box;
-  }
-  .list-grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    justify-content: center;
-    align-items: center;
-  }
-  .list-header {
-    max-width: auto;
-  }
-  .list-select {
-    max-width: auto;
-  }
-}
-/* 860px~950px 이상 화면에서의 스타일 */
-@media (min-width: 860px) and (max-width: 950px) {
-  .list-container {
-    width: 100%;
-    margin: 0 auto;
-    padding-top: 60px;
-    box-sizing: border-box;
-  }
-  .list-grid {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    justify-content: center;
-    align-items: center;
-  }
-  .list-header {
-    max-width: auto;
-  }
-  .list-select {
-    max-width: auto;
-  }
-}
-/* 950px~1024px 이상 화면에서의 스타일 */
+/* 950px~1920px 이상 화면에서의 스타일 */
 @media (min-width: 950px) and (max-width: 1920px) {
   .list-container {
     width: 100%;
@@ -983,7 +941,7 @@
   }
   .list-grid {
     display: grid;
-    grid-template-columns: repeat(7, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     justify-content: center;
     align-items: center;
   }
@@ -1039,7 +997,7 @@
   }
 }
 
-@media (min-width: 768px) and (max-width: 1920px) {
+@media (min-width: 769px) and (max-width: 1920px) {
   .notMyStyle-container {
     width: 100%;
     margin: 0 auto;

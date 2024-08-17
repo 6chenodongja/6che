@@ -94,7 +94,6 @@ function ListSelects({
                 </svg>
               )}
             </button>
-
             {showDropdown && (
               <div className="absolute top-10 -right-[34px]  w-[288px] h-[175px] rounded-lg z-20 flex-wrap backdrop-blur-[5px] bg-white bg-opacity-90">
                 <div className="flex flex-wrap gap-1 border-b border-gray-300 pb-1 mb-2 w-full p-2 flex-row items-start">
@@ -239,7 +238,7 @@ function ListSelects({
               </div>
             )}
           </div>
-          <div className="flex justify-start items-start flex-grow-0 flex-shrink-0 w-8 h-8 relative">
+          <div className="flex justify-start items-start flex-grow-0 flex-shrink-0 w-8 h-8 relative z-10">
             <button
               className="flex justify-center items-center flex-grow-0 flex-shrink-0 overflow-hidden gap-2 p-1 rounded-[1000px]"
               style={{ filter: 'drop-shadow(0px 0px 4px rgba(0,0,0,0.08))' }}
@@ -264,7 +263,7 @@ function ListSelects({
             </button>
             {showSearchDropdown && (
               <div
-                className="absolute w-[288px] p-4 top-0 rounded-lg backdrop-blur-[5px] bg-white bg-opacity-90"
+                className="absolute w-[290px] -right-[2px] p-4 top-10 rounded-lg backdrop-blur-[5px] bg-white bg-opacity-90"
                 style={{
                   boxShadow:
                     '0px 0px 2px 0px rgba(0, 0, 0, 0.05), 4px 4px var(--Blur-20, 20px) 0px rgba(0, 0, 0, 0.05)',
@@ -277,7 +276,7 @@ function ListSelects({
                     viewBox="0 0 24 24"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
-                    className="flex-grow-0 flex-shrink-0 w-6 h-6 relative"
+                    className="flex-grow-0 flex-shrink-0 w-6 h-6"
                     preserveAspectRatio="xMidYMid meet"
                   >
                     <path
@@ -290,7 +289,7 @@ function ListSelects({
                   <input
                     type="text"
                     placeholder="원하는 스타일을 검색해보세요"
-                    className="ml-2 text-[#121212] outline-none w-full"
+                    className="ml-2 text-[#121212] outline-none w-full bg-transparent"
                     value={searchTerm}
                     onChange={setSearchTerm} // Call the input change handler
                     onKeyDown={handleSearch}

@@ -1,8 +1,6 @@
 'use client';
 import Image from 'next/image';
-import Header from 'app/(providers)/(components)/Header';
 import Link from 'next/link';
-import Footer from 'app/(providers)/(components)/Footer';
 import MyStyleList from './_components/MyStyleList';
 import { supabase } from '@/supabase/client';
 import { useEffect, useState, useCallback } from 'react';
@@ -61,17 +59,16 @@ function MyStylePage() {
   return (
     <>
       {!isLoading && posts.length === 0 ? (
-        <div className="notMyStyle-container">
-          <Header />
+        <div className="notPostLike-container mx-auto bg-[#FAFAFA] md:h-[1721px]">
           <MyNotStyleHeader />
-          <div className="mt-[60px] mr-[50px] ml-[42px]">
+          <div className="mt-[60px] mr-[50px] ml-[42px] md:-mt-[126px]">
             <Image
               src={'/myStylePage.png'}
               alt="myListPage"
-              width={200}
-              height={100}
+              width={357}
+              height={330}
               sizes="100vw"
-              className="h-[220px] w-[238px] mx-auto"
+              className="mx-auto"
             />
           </div>
           <div className="text-[#4D4D4D] font-KR text-base font-medium leading-6 tracking-[-0.80px] ml-[69px] mr-[68px] flex justify-center ">
@@ -82,9 +79,7 @@ function MyStylePage() {
               코디 등록하기
             </button>
           </Link>
-          <div className="mt-[156px]">
-            <Footer />
-          </div>
+          <div className="mt-[156px]"></div>
         </div>
       ) : (
         <MyStyleList

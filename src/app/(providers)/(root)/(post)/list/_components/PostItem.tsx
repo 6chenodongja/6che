@@ -35,8 +35,8 @@ function PostItem({ post, isLiked, handleLike }: PostProps) {
 
   return (
     <div>
-      <div key={post.id} className="relative w-[140px] object-cover">
-        <Link href={`/detail/${post.id}`} className="w-[140px] h-[200px] block">
+      <div key={post.id} className="relative w-[160px] object-cover">
+        <Link href={`/detail/${post.id}`} className="w-[160px] h-[230px] block">
           {post.image_url && (
             <Image
               src={post.image_url.split(',')[0]}
@@ -44,7 +44,7 @@ function PostItem({ post, isLiked, handleLike }: PostProps) {
               width={100}
               height={100}
               sizes="100"
-              className="w-[140px] h-[200px] object-cover rounded-lg"
+              className="w-[160px] h-[230px] object-cover rounded-lg"
               priority
             />
           )}
@@ -75,7 +75,7 @@ function PostItem({ post, isLiked, handleLike }: PostProps) {
             <span className="flex justify-between">
               {/* 날짜이모지와 닉네임  */}
               <span className="font-bold text-[14px] flex flex-row gap-[4px]">
-                <div className="w-[20px] h-[20px] p-[1px] flex justify-center items-center icon">
+                <div className="w-[20px] h-[20px] p-[1px] flex justify-center items-center">
                   <ListNicknameIcon />
                 </div>
                 <span

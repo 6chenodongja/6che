@@ -1,8 +1,6 @@
 'use client';
 import React, { useCallback } from 'react';
 import _ from 'lodash';
-import Header from 'app/(providers)/(components)/Header';
-import Footer from 'app/(providers)/(components)/Footer';
 import { postLikedItem } from '../../../../../../../types/post';
 import { supabase } from '@/supabase/client';
 import { useUserStore } from '@/zustand/store/useUserStore';
@@ -76,8 +74,7 @@ function MyListPage({ posts, setPosts }: PostsProps) {
   );
 
   return (
-    <div className="mobile-container mx-auto bg-[#FAFAFA]">
-      <Header />
+    <div className="min-w-[320px] max-w-[768px] md:min-w-[768px] md:max-w-[1920px] mx-auto bg-[#FAFAFA]">
       <MyLikeHeader />
       <MySelectPage />
       <div className="grid grid-cols-2 gap-y-2 gap-x-2 w-[288px] mx-auto">
@@ -93,9 +90,7 @@ function MyListPage({ posts, setPosts }: PostsProps) {
         ))}
         <ScrollButtons />
       </div>
-      <div>
-        <Footer />
-      </div>
+      <div></div>
     </div>
   );
 }
