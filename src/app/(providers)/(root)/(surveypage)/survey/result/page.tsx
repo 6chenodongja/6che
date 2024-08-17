@@ -17,20 +17,21 @@ interface Post {
 const ResultPage: React.FC = () => {
   const [likes, setLikes] = useState<string[]>([]);
   const [posts, setPosts] = useState<Post[]>([]);
-  const [isDesktop, setIsDesktop] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 768); 
   const { gender, style, seasons, locations } = useTagStore();
   const { user } = useUserStore();
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const fetchPosts = useCallback(async () => {
+    const limit = isDesktop ? 6 : 4;
     const { data: postList, error } = await supabase
       .from('posts')
       .select('id, image_url')
       .or(
         `gender.eq.${gender},style.eq.${style},seasons.in.(${seasons.join(',')}),locations.in.(${locations.join(',')})`,
       )
-      .limit(isDesktop ? 6 : 4);
+      .limit(limit);
 
     if (error) {
       console.error('포스트 가져오기 에러:', error);
@@ -39,7 +40,6 @@ const ResultPage: React.FC = () => {
         id: post.id,
         image_url: post.image_url || '',
       }));
-
       setPosts(sanitizedPostList);
     }
   }, [gender, style, seasons, locations, isDesktop]);
@@ -63,6 +63,21 @@ const ResultPage: React.FC = () => {
     fetchPosts();
     fetchUserLikedPosts();
   }, [fetchPosts, fetchUserLikedPosts]);
+
+  // 창 크기 변경에 따른 리렌더링
+  useEffect(() => {
+    const handleResize = () => {
+      setIsDesktop(window.innerWidth >= 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    // 초기에도 강제 리렌더링
+    handleResize();
+    
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   const handleLikeClick = async (postId: string) => {
     if (!user) {
@@ -93,17 +108,6 @@ const ResultPage: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    const handleResize = () => {
-      setIsDesktop(window.innerWidth >= 768);
-    };
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
-
   const handleBackClick = () => {
     router.back();
   };
@@ -118,7 +122,7 @@ const ResultPage: React.FC = () => {
 
   return (
     <div className="result-container">
-      <div className="result-content">        
+      <div className="result-content">
         <div className="flex-grow flex flex-col bg-#fafafa items-center justify-between w-full max-w-md mx-auto">
           <div className="w-full flex items-center bg-#fafafa justify-start mb-2 relative question-navigation">
             <button
