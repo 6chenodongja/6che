@@ -112,9 +112,13 @@ const ResultPage: React.FC = () => {
     setIsModalOpen(false);
   };
 
+  const handleImageClick = (postId: string) => {
+    router.push(`/post/detail/${postId}`);
+  };
+
   return (
     <div className="result-container">
-      <div className="result-content">
+      <div className="result-content">        
         <div className="flex-grow flex flex-col bg-#fafafa items-center justify-between w-full max-w-md mx-auto">
           <div className="w-full flex items-center bg-#fafafa justify-start mb-2 relative question-navigation">
             <button
@@ -139,6 +143,7 @@ const ResultPage: React.FC = () => {
                 <div
                   key={post.id}
                   className="w-[142px] h-[200px] bg-gray-200 rounded-lg flex items-center justify-center relative"
+                  onClick={() => handleImageClick(post.id)}
                 >
                   {imageUrls.map((url, idx) => (
                     <Image
@@ -153,7 +158,10 @@ const ResultPage: React.FC = () => {
                   ))}
                   <button
                     className="absolute bottom-2 right-2 text-xl backdrop-filter: blur(2px)"
-                    onClick={() => handleLikeClick(post.id)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleLikeClick(post.id);
+                    }}
                   >
                     <img
                       src={
