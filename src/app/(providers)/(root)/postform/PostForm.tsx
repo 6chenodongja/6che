@@ -596,13 +596,6 @@ const PostFormPage = () => {
             </div>
           )}
         </div>
-        <button
-          type="button"
-          onClick={handleSubmit}
-          className="flex justify-center items-center py-sds-200 px-blur-10 gap-4 rounded-[8px] opacity-sds-stroke-border bg-black text-white font-KR-button"
-        >
-          완료
-        </button>
       </div>
 
       <div className="hidden sm:flex w-full min-h-screen bg-[#fafafa] justify-center items-center">

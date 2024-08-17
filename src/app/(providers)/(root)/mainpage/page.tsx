@@ -328,8 +328,8 @@ const MainPage = () => {
       console.log('Full Weather Data:', JSON.stringify(data, null, 2));
 
       // Sun 객체가 없는 경우 undefined 처리 방지 및 로그 확인
-      const sunriseTime = data?.dailyForecasts?.[0]?.Sun?.Rise ?? 'N/A';
-      const sunsetTime = data?.dailyForecasts?.[0]?.Sun?.Set ?? 'N/A';
+      const sunriseTime = data?.dailyForecasts?.[0]?.Sun?.Rise ?? '준비 중';
+      const sunsetTime = data?.dailyForecasts?.[0]?.Sun?.Set ?? '준비 중';
       console.log('Sunrise Time:', sunriseTime); // 일출 시간 출력
       console.log('Sunset Time:', sunsetTime); // 일몰 시간 출력
 
