@@ -1,83 +1,115 @@
 'use client';
 
 import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
-import { createClient } from '@/supabase/client';
+import React, { useEffect, useState, useCallback } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useTagStore } from '@/zustand/store/useTagStore';
+import { useUserStore } from '@/zustand/store/useUserStore';
+import { supabase } from '@/supabase/client';
+import LoginModalProps from '@/components/Modal/LoginModal';
 
 interface Post {
   id: string;
-  image_url: string;
+  image_url: string | null;
 }
 
 const ResultPage: React.FC = () => {
-  const [likes, setLikes] = useState(Array(6).fill(false)); // 최대 6개의 항목
+  const [likes, setLikes] = useState<string[]>([]);
   const [posts, setPosts] = useState<Post[]>([]);
-  const [isDesktop, setIsDesktop] = useState(false); // 768px 이상 여부 감지
+  const [isDesktop, setIsDesktop] = useState(false);
   const { gender, style, seasons, locations } = useTagStore();
+  const { user } = useUserStore();
   const router = useRouter();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // 화면 크기 감지
-  useEffect(() => {
-    const handleResize = () => {
-      setIsDesktop(window.innerWidth >= 768);
-    };
-
-    handleResize(); // 초기 값 설정
-    window.addEventListener('resize', handleResize); // 화면 크기 변경 시 이벤트 처리
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
-
-  // 화면 크기에 따라 가져올 포스트 수 설정
-  useEffect(() => {
-    if (gender && style && seasons.length > 0 && locations.length > 0) {
-      fetchPosts(gender, style, seasons, locations, isDesktop ? 6 : 4);
-    }
-  }, [gender, style, seasons, locations, isDesktop]);
-
-  // 포스트 가져오기 함수
-  const fetchPosts = async (
-    gender: string,
-    style: string,
-    seasons: string[],
-    locations: string[],
-    limit: number,
-  ) => {
-    const supabase = createClient();
-
-    const { data, error } = await supabase
+  const fetchPosts = useCallback(async () => {
+    const { data: postList, error } = await supabase
       .from('posts')
       .select('id, image_url')
       .or(
         `gender.eq.${gender},style.eq.${style},seasons.in.(${seasons.join(',')}),locations.in.(${locations.join(',')})`,
       )
-      .limit(limit); // limit 값으로 가져올 포스트 수를 설정
+      .limit(isDesktop ? 6 : 4);
 
     if (error) {
-      console.error('Error fetching posts:', error);
-    } else if (
-      data &&
-      Array.isArray(data) &&
-      data.every((post) => 'id' in post && 'image_url' in post)
-    ) {
-      setPosts(data as Post[]);
+      console.error('포스트 가져오기 에러:', error);
+    } else if (postList) {
+      const sanitizedPostList = postList.map((post) => ({
+        id: post.id,
+        image_url: post.image_url || '',
+      }));
+
+      setPosts(sanitizedPostList);
+    }
+  }, [gender, style, seasons, locations, isDesktop]);
+
+  const fetchUserLikedPosts = useCallback(async () => {
+    if (!user) return;
+
+    const { data: likedPosts, error } = await supabase
+      .from('post_likes')
+      .select('post_id')
+      .eq('user_id', user.id);
+
+    if (error) {
+      console.error('좋아요한 포스트 가져오기 에러:', error);
     } else {
-      console.error('Data format is incorrect:', data);
+      setLikes(likedPosts.map((like: { post_id: string }) => like.post_id));
+    }
+  }, [user]);
+
+  useEffect(() => {
+    fetchPosts();
+    fetchUserLikedPosts();
+  }, [fetchPosts, fetchUserLikedPosts]);
+
+  const handleLikeClick = async (postId: string) => {
+    if (!user) {
+      setIsModalOpen(true);
+      return;
+    }
+
+    const isLiked = likes.includes(postId);
+
+    try {
+      if (isLiked) {
+        await supabase
+          .from('post_likes')
+          .delete()
+          .eq('post_id', postId)
+          .eq('user_id', user.id);
+
+        setLikes((prevLikes) => prevLikes.filter((id) => id !== postId));
+      } else {
+        await supabase
+          .from('post_likes')
+          .insert({ post_id: postId, user_id: user.id });
+
+        setLikes((prevLikes) => [...prevLikes, postId]);
+      }
+    } catch (error) {
+      console.error('좋아요 상태 업데이트 에러:', error);
     }
   };
 
-  const handleLikeClick = (index: number) => {
-    const newLikes = [...likes];
-    newLikes[index] = !newLikes[index];
-    setLikes(newLikes);
-  };
+  useEffect(() => {
+    const handleResize = () => {
+      setIsDesktop(window.innerWidth >= 768);
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   const handleBackClick = () => {
     router.back();
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
   };
 
   return (
@@ -93,26 +125,26 @@ const ResultPage: React.FC = () => {
                 src={'/images/icons/arrow_left.svg'}
                 alt="뒤로가기"
                 width={8}
-                height={8}
+                height={14}
               />
             </button>
           </div>
           <div
             className={`grid ${isDesktop ? 'grid-cols-3' : 'grid-cols-2'} gap-4 mb-4`}
           >
-            {posts.map((post, index) => {
-              const imageUrls = post.image_url.split(',');
+            {posts.map((post) => {
+              const imageUrls = post.image_url?.split(',') || [];
 
               return (
                 <div
                   key={post.id}
                   className="w-[142px] h-[200px] bg-gray-200 rounded-lg flex items-center justify-center relative"
                 >
-                  {imageUrls.map((url, imgIndex) => (
+                  {imageUrls.map((url, idx) => (
                     <Image
-                      key={imgIndex}
-                      src={url}
-                      alt={`Post ${post.id} - Image ${imgIndex + 1}`}
+                      key={idx}
+                      src={url.trim() || '/images/placeholder.png'}
+                      alt={`Post ${post.id} - Image ${idx + 1}`}
                       layout="fill"
                       objectFit="cover"
                       className="rounded-lg"
@@ -121,17 +153,22 @@ const ResultPage: React.FC = () => {
                   ))}
                   <button
                     className="absolute bottom-2 right-2 text-xl backdrop-filter: blur(2px)"
-                    onClick={() => handleLikeClick(index)}
+                    onClick={() => handleLikeClick(post.id)}
                   >
-                    <Image
+                    <img
                       src={
-                        likes[index]
-                          ? '/images/icons/redhaert.svg'
-                          : '/images/icons/whitehaert.svg'
+                        likes.includes(post.id)
+                          ? '/images/icons/rhaert.png'
+                          : '/images/icons/ghaert.png'
                       }
                       alt="Like button"
                       width={24}
                       height={24}
+                      style={{
+                        imageRendering: 'auto',
+                        display: 'block',
+                        borderRadius: '50%',
+                      }}
                     />
                   </button>
                 </div>
@@ -159,8 +196,8 @@ const ResultPage: React.FC = () => {
                 style={{
                   bottom: '50px',
                   display: 'flex',
-                  width: '400px', // 너비를 100%로 설정하여 전체 화면을 차지하게 설정
-                  padding: '10px 40px', // 상하 여백을 20px로 설정하고, 좌우 여백도 40px로 증가
+                  width: '400px',
+                  padding: '10px 40px',
                   justifyContent: 'center',
                   alignItems: 'center',
                   gap: 'var(--sds-size-space-200)',
@@ -181,6 +218,13 @@ const ResultPage: React.FC = () => {
           </div>
         </div>
       </div>
+      {isModalOpen && (
+        <LoginModalProps
+          isOpen={isModalOpen}
+          onConfirm={closeModal}
+          onClose={closeModal}
+        />
+      )}
     </div>
   );
 };

@@ -161,7 +161,7 @@ const QuestionPage: React.FC = () => {
                   src={'/images/icons/arrow_left.svg'}
                   alt="뒤로가기"
                   width={8}
-                  height={8}
+                  height={14}
                 />
               </button>
               <p className="question-number">
