@@ -15,7 +15,6 @@ import LoginPopup from '../(root)/(auth)/login/_components/LoginPopup';
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const { user, setUser } = useUserStore();
   const [loginModal, setLoginModal] = useState(false);
   const router = useRouter();

@@ -37,8 +37,8 @@ function MyPageContent() {
   const closeModal = () => setIsModalOpen(false);
 
   return (
-    <div className="flex flex-col gap-3 p-4">
-      <div className="w-full">
+    <div className="w-full max-w-[1280px] mx-auto md:flex flex-col xl:flex md:shadow-boxShadowPc md:backdrop-blur-sm md:rounded-3xl md:p-10 md:mt-[30px] md:mb-[200px] p-4">
+      <div className="w-full mb-3">
         <div className="flex flex-col items-start bg-white p-4 rounded-lg shadow-md">
           <div className="flex justify-between items-center w-full">
             <div className="flex items-center gap-2">
@@ -51,7 +51,7 @@ function MyPageContent() {
                 />
               )}
               <div className="flex justify-start items-center self-stretch flex-grow-0 flex-shrink-0">
-                <span className="flex-grow-0 flex-shrink-0 text-lg font-medium text-[18px] leading-[23.4px] tracking-[-0.36px] text-left text-[#121212]">
+                <span className="flex-grow-0 flex-shrink-0 text-lg font-semibold text-[18px] mb:text-[20px] leading-[23.4px] tracking-[-0.36px] text-left text-[#121212]">
                   {user?.nickname}
                 </span>
                 <span className="flex-grow-0 flex-shrink-0 text-lg text-left text-[18px] font-normal text-[#121212]">
@@ -101,8 +101,8 @@ function MyPageContent() {
           </nav>
         </div>
       </div>
-      <nav className="flex flex-col drop-shadow-lg">
-        <div className="flex flex-col gap-3 px-4 py-5 rounded-[14px] bg-white">
+      <nav className="w-full drop-shadow-lg">
+        <div className="px-4 py-5 rounded-[14px] bg-white">
           <div className="">
             <h1 className="text-[18px] font-semibold leading-[130%] tracking-[-0.36px] pl-1 pb-3">
               계정
@@ -125,18 +125,15 @@ function MyPageContent() {
               {user?.email}
             </div>
           </div>
-          <nav className="bg-slate-50">
-            <div className="hover:bg-gray-200/75 focus:text-blue-400 cursor-pointer">
-              <div
-                className="hover:bg-gray-200/75 focus:text-blue-400"
-                onClick={openModal}
-              >
+          <nav className="">
+            <div className="w-full">
+              <div className="hover:bg-slate-50" onClick={openModal}>
                 <button className="text-[14px] px-3 py-2 w-full">
                   회원탈퇴
                 </button>
               </div>
-              <div className="text-[14px] px-3 py-2 w-full">
-                <LogoutButton />
+              <div className="hover:bg-slate-50 text-[14px] px-3 py-2 w-full ">
+                <LogoutButton className="" />
               </div>
             </div>
           </nav>

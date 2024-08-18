@@ -96,20 +96,18 @@ const ProfileForm: React.FC = () => {
   };
 
   return (
-    <main className="">
-      <section className="flex flex-col justify-start items-start w-full gap-1.5 py-1.5">
-        <header className="flex justify-between items-center w-80 h-14 px-4 py-1.5 bg-white/50 shadow-xl">
-          <h1 className="flex-grow-0 flex-shrink-0 font-semibold text-left text-black text-[16px] leading-[20.8px] tracking-[-0.02em]">
+    <main className="md:flex flex-col md:w-[480px] md:h-[724px] md:bg-white md:shadow-boxShadowPc md:backdrop-blur-sm md:rounded-3xl md:p-10 md:mt-[100px] md:mb-[200px] mx-auto p-4 sm:p-6 lg:p-8">
+      <section className="flex flex-col w-full gap-1.5 py-1.5">
+        <header className="w-full h-[44px] py-[6px] px-4 flex justify-between items-center bg-white/50 shadow-xl">
+          <h1 className="text-[16px] font-semibold leading-[130%] tracking-[-0.32px] font-sans">
             닉네임 / 프로필 수정
           </h1>
           <div className="">
-            <div className="">
-              <Link href={'/mypage'} legacyBehavior>
-                <a>
-                  <Image src="x.svg" alt="close" width={24} height={24} />
-                </a>
-              </Link>
-            </div>
+            <Link href={'/mypage'} legacyBehavior>
+              <a>
+                <Image src="x.svg" alt="close" width={24} height={24} />
+              </a>
+            </Link>
           </div>
         </header>
         <div className="grid grid-flow-row ml-4 mt-[26px]">
@@ -123,7 +121,7 @@ const ProfileForm: React.FC = () => {
                   type="text"
                   value={nickname}
                   onChange={handleNicknameChange}
-                  className="flex-grow text-left w-full py-3 px-4 text-[#b3b3b3] pl-3 border border-[#808080] rounded-lg hover:border-blue-500 focus:border-blue-500 focus:outline-none"
+                  className="w-full py-3 px-4 text-[#b3b3b3] pl-3 border border-[#808080] rounded-lg hover:border-blue-500 focus:border-blue-500 focus:outline-none"
                   placeholder="최대 8글자"
                 />
               </div>
@@ -161,7 +159,7 @@ const ProfileForm: React.FC = () => {
             프로필
           </h2>
         </header>
-        <div className="grid grid-cols-5 gap-2.5 w-72 h-56 pl-[19px] pr-[19px] pt-[16px] pb-[16px] rounded-2xl bg-white shadow-[0_0_2px_0_rgba(0, 0, 0, 0.151),0_2px_20px_0_rgba(18, 18, 18, 0.178)] cursor-pointer">
+        <div className="grid grid-cols-5 gap-2.5 w-full h-full pl-[19px] pr-4 rounded-2xl bg-white shadow-[0_0_2px_0_rgba(0, 0, 0, 0.151),0_2px_20px_0_rgba(18, 18, 18, 0.178)] cursor-pointer">
           {profileIcons.map((icon, index) => (
             <Image
               key={index}
@@ -176,7 +174,7 @@ const ProfileForm: React.FC = () => {
         </div>
         <button
           onClick={handleSubmit}
-          className="bg-black text-white p-4 mt-[52px] w-[288px] border rounded-xl hover:bg-blue-400"
+          className="bg-black text-white w-full p-4 mt-[52px] border rounded-xl hover:bg-blue-400"
           disabled={!nicknameAvailable}
         >
           <Link href={'/mypage'} className="w-full h-full">
