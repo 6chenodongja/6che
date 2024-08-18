@@ -3,8 +3,8 @@ import MyPageContent from './_components/MyPageContent';
 
 const MyPage: React.FC = () => {
   return (
-    <main className="auth-container flex flex-col justify-between items-center w-full bg-neutral-50">
-      <div className="flex-grow flex flex-col justify-center items-center w-full">
+    <main className="flex justify-center items-center w-full min-h-screen bg-neutral-50">
+      <div className="flex justify-center items-center w-full">
         <MyPageContent />
       </div>
     </main>

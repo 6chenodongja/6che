@@ -97,7 +97,7 @@ const ProfileForm: React.FC = () => {
 
   return (
     <main className="">
-      <section className="flex flex-col justify-start items-start w-72 gap-1.5 py-1.5">
+      <section className="flex flex-col justify-start items-start w-full gap-1.5 py-1.5">
         <header className="flex justify-between items-center w-80 h-14 px-4 py-1.5 bg-white/50 shadow-xl">
           <h1 className="flex-grow-0 flex-shrink-0 font-semibold text-left text-black text-[16px] leading-[20.8px] tracking-[-0.02em]">
             닉네임 / 프로필 수정
@@ -114,18 +114,16 @@ const ProfileForm: React.FC = () => {
         </header>
         <div className="grid grid-flow-row ml-4 mt-[26px]">
           <div className="mb-[6px]">
-            <header className="flex justify-start items-center self-stretch flex-grow-0 gap-2 pl-0.5">
-              <h1 className="flex-grow-0 flex-shrink-0 font-bold mb-[6px] text-[14px] leading-[21px] tracking-[-0.02em] text-left text-[#4d4d4d]">
-                닉네임
-              </h1>
-            </header>
             <div className="flex justify-start items-start self-stretch flex-grow-0 flex-shrink-0 gap-1">
-              <div className="flex justify-start items-center flex-grow overflow-hidden bg-white/50">
+              <div className="flex flex-col justify-start items-start flex-grow bg-white/50">
+                <label className="flex-grow-0 flex-shrink-0 font-medium text-[14px] pl-[2px] leading-[21px] tracking-[-0.02em] text-[#4d4d4d]">
+                  닉네임
+                </label>
                 <input
                   type="text"
                   value={nickname}
                   onChange={handleNicknameChange}
-                  className="flex-grow w-[288px] h-[48px] text-left text-[#b3b3b3] pl-3 border border-[#808080] rounded-lg hover:border-blue-500 focus:border-blue-500 focus:outline-none"
+                  className="flex-grow text-left w-full py-3 px-4 text-[#b3b3b3] pl-3 border border-[#808080] rounded-lg hover:border-blue-500 focus:border-blue-500 focus:outline-none"
                   placeholder="최대 8글자"
                 />
               </div>
