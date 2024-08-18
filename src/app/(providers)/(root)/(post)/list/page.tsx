@@ -264,7 +264,7 @@ function PostList() {
         console.error(error);
       }
     },
-    [likedPosts, user],
+    [likedPosts, user, router],
   );
 
   const handleOptionRemove = (key: string, option: string) => {
@@ -326,7 +326,7 @@ function PostList() {
           )}
         </div>
       </div>
-      <div className="list-grid gap-y-2.5 gap-x-2 w-[288px] mx-auto">
+      <div className="list-grid gap-y-2.5 gap-x-2 w-[288px] mx-auto md:gap-x-[20px]">
         {filteredPosts.map((post) => (
           <PostItem
             post={post}

@@ -11,7 +11,7 @@ function MyStyleHeader() {
   };
 
   return (
-    <div className="my-style-page-header relative px-[4px] py-[16px] w-[288px] mx-auto mt-[-44px] rounded-lg shadow-md bg-white">
+    <div className="block md:hidden my-style-page-header relative px-[4px] py-[16px] w-[288px] mx-auto rounded-lg shadow-md bg-white mt-[16px]">
       <header
         className="myPage-Liked-style flex px-2 items-center self-stretch pt-1 w-full justify-between font-bold"
         style={{

@@ -398,9 +398,25 @@
   border: 1px solid white;
 }
 
-.swiper-pagination {
-  margin-bottom: 10px;
+.swiper-button-next,
+.swiper-button-prev {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  border-radius: 1000px;
 }
+
+.swiper-button-next::after,
+.swiper-button-prev::after {
+  width: 28px !important;
+  height: 28px !important;
+  color: gray !important;
+  font-size: 28px !important;
+  line-height: 28px !important;
+}
+
 /* listPage 스타일 */
 
 .list-icon {
@@ -499,7 +515,7 @@
   padding: var(--sds-size-space-200) var(--Blur-10, 10px);
 }
 .detail-icon {
-  border-radius: 8px;
+  border-radius: 4px;
   background: #fff;
   backdrop-filter: blur(10px);
   width: 28px;
@@ -969,6 +985,8 @@
     box-sizing: border-box;
   }
 }
+
+/* 포스트 없을 때  */
 
 @media (min-width: 320px) and (max-width: 768px) {
   .notPostLike-container {

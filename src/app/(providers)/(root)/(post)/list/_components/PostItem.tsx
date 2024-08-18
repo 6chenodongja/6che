@@ -35,16 +35,22 @@ function PostItem({ post, isLiked, handleLike }: PostProps) {
 
   return (
     <div>
-      <div key={post.id} className="relative w-[160px] object-cover">
-        <Link href={`/detail/${post.id}`} className="w-[160px] h-[230px] block">
+      <div
+        key={post.id}
+        className="relative w-[140px] object-cover lg:w-[188px]"
+      >
+        <Link
+          href={`/detail/${post.id}`}
+          className="w-[140px] h-[230px] block lg:w-[188px] lg:h-[300px]"
+        >
           {post.image_url && (
             <Image
               src={post.image_url.split(',')[0]}
               alt="alt"
               width={100}
               height={100}
-              sizes="100"
-              className="w-[160px] h-[230px] object-cover rounded-lg"
+              sizes="100vw"
+              className="w-[140px] h-[230px] object-cover rounded-lg lg:w-[188px] lg:h-[300px]"
               priority
             />
           )}

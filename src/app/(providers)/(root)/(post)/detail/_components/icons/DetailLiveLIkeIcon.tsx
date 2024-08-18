@@ -1,4 +1,4 @@
-function DetailLiveLIkeIcon() {
+function DetailLiveLikeIcon() {
   return (
     <svg
       width={28}
@@ -75,4 +75,4 @@ function DetailLiveLIkeIcon() {
   );
 }
 
-export default DetailLiveLIkeIcon;
+export default DetailLiveLikeIcon;
