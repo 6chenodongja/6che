@@ -748,7 +748,7 @@
     position: absolute;
     top: 426px;
   }
-  
+
   .start-button {
     display: flex;
     width: 288px;
@@ -761,7 +761,6 @@
     position: absolute;
     top: 511px;
   }
-  
 }
 
 /* 768px 이상  설문 첫 화면에서의 스타일 */
@@ -790,9 +789,8 @@
     height: 724px;
     box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.1);
     overflow: hidden;
-    position: relative;
-    margin-top: 32px;
-    margin-bottom: 210px;
+    position: absolute;
+    top: 90px;
     border-radius: 20px;
   }
 
@@ -821,11 +819,14 @@
     top: -73px;
   }
   .start-button {
+    display: flex;
     width: 400px;
+    height: 49px;
     max-width: 400px;
     border-radius: 10px;
     position: relative;
     top: -56px;
+    background: var(--Black, #121212);
   }
 }
 /* 320px 이하 질문 화면에서의 스타일 */
@@ -991,7 +992,8 @@
   }
   .card6-div {
     position: relative;
-    top: -16px;
+    top: -17px;
+    margin-top: -13px;
   }
   .card6-div-text {
     position: relative;
@@ -1001,6 +1003,10 @@
   .next-btn {
     position: relative;
     top: -50px;
+  }
+  .next2-btn {
+    position: relative;
+    top: 200px;
   }
   .result-btn {
     position: relative;
@@ -1187,7 +1193,7 @@
     width: 100%;
     max-width: 400px;
     position: relative;
-    top: 150px;
+    top: 50px;
   }
   .item {
     margin-top: 10px;
@@ -1217,13 +1223,13 @@
     top: 10px;
   }
   .text {
-    bottom: -82px;
+    bottom: -50px;
     position: relative;
   }
   .next-btn {
     position: relative;
-    top: 159px;
-  }
+    top: 56px;
+  }  
 
   .back-button {
     top: -15px;
@@ -1246,15 +1252,15 @@
 
   .result-content {
     width: 652px;
-    max-width: 652px; /* 651px -> 40rem */
+    max-width: 652px;
     height: 724px;
     box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.1);
     overflow: visible;
     position: relative;
-    margin-top: 3rem; /* 50px -> 3rem */
-    margin-bottom: 8rem; /* 130px -> 8rem */
-    padding: 2rem; /* 32px -> 2rem */
-    border-radius: 1.25rem; /* 20px -> 1.25rem */
+    top: 38px;
+    margin-bottom: 8rem;
+    padding: 2rem;
+    border-radius: 1.25rem;
   }
 
   .result-container .grid {

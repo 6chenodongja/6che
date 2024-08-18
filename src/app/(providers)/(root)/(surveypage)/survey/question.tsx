@@ -619,7 +619,7 @@ const QuestionPage: React.FC = () => {
             {currentQuestionIndex === 3 && (
               <button
                 onClick={handleNextClick}
-                className="start-button next-btn next-button w-72 h-[49px] text-white rounded-lg "
+                className="start-button next-button next2-btn w-72 h-[49px] text-white rounded-lg "
                 style={{
                   bottom: '50px',
                   display: 'flex',
