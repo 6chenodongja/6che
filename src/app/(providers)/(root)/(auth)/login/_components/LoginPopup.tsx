@@ -1,29 +1,38 @@
 'use client';
+
 import Image from 'next/image';
 import LoginForm from './LoginForm';
-import { useState } from 'react';
 
-function LoginPopup() {
-  const [login, setLogin] = useState(false);
-  const handleLogin = () => setLogin(!login);
+type LoginPopupProps = {
+  show: boolean;
+  onClose: () => void;
+};
+
+function LoginPopup({ show, onClose }: LoginPopupProps) {
+  if (!show) return null;
   return (
-    <>
-      <div className="flex flex-col justify-center items-center fixed top-0 left-0 w-full h-full z-50 box-shadow">
-        <div className="bg-white border rounded-3xl">
-          <button title="x-icon">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+      <div className=" flex flex-col justify-center items-center fixed top-0 left-0 w-full h-full z-50 box-shadow">
+        <div className="bg-white rounded-3xl w-[480px]">
+          <button
+            title="x-icon"
+            className="p-2 w-full flex items-end justify-end"
+            onClick={onClose}
+          >
             <Image
               src="x.svg"
-              alt="close"
-              className="hover:bg-black-200 hover:rounded-full "
+              alt=""
+              className="hover:bg-black-200 hover:rounded-full"
               width={24}
               height={24}
             />
           </button>
-
-          <LoginForm />
+          <div className="flex justify-center w-[400px] mx-auto">
+            <LoginForm />
+          </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 

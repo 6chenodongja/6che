@@ -90,195 +90,195 @@ function SingUp() {
   };
 
   return (
-    <main className="">
-      <form onSubmit={onSubmit} className="">
-        <h1 className="text-[20px] text-center text-[#121212] font-bold leading-[130%] tracking-[-0.4px] mb-5">
+    <main className="w-full items-center justify-center h-full rounded-3xl">
+      <form
+        onSubmit={onSubmit}
+        className="w-full h-full flex-col bg-white rounded-3xl"
+      >
+        <h1 className="text-[20px] text-center text-[#121212] font-bold leading-[130%] tracking-[-0.4px]">
           회원가입
         </h1>
-        <div className="">
-          <label
-            className={`text-[14px] leading-[150%] ml-[2px] ${
-              error.nickname ? 'text-[#FF4732]/85' : 'text-[#808080]'
-            }`}
-          >
-            닉네임
-          </label>
-          <input
-            type="text"
-            maxLength={10}
-            onChange={handleChange('nickname')}
-            value={nickname}
-            className={`w-[288px] h-[48px] border hover:border-blue-500 ${
-              error.nickname ? 'border-[#FF4732]/85' : 'border-[#808080]'
-            } rounded-lg focus:outline-none pl-4`}
-          />
-        </div>
-        {error.nickname && (
-          <p className="mt-2 text-[12px] flex text-[#FF4732]/85">
-            <Image
-              src="images/ExclamationMarks/Unavailable.svg"
-              alt=""
-              width={12}
-              height={12}
-              className="mr-[3px]"
-            />
-            {error.nickname}
-          </p>
-        )}
-        {!error.nickname && isNicknameChecked && (
-          <p className="mt-2 text-[12px] text-black-700">{nicknameMessage}</p>
-        )}
-        {!error.nickname && !isNicknameChecked && (
-          <p className="text-black-700 mt-[7px] text-[12px] flex">
-            <Image
-              src="images/ExclamationMarks/ExclamationMarks.svg"
-              alt=""
-              width={12}
-              height={12}
-              className="mr-[3px]"
-            />
-            최대 10글자
-          </p>
-        )}
-
-        <div className="">
-          <label className="font-medium text-sm leading-[21px] tracking-[-0.02em] text-[#4d4d4d]">
-            이메일
-          </label>
+        <div className="flex flex-col items-center">
           <div className="">
+            <label
+              className={`text-[14px] leading-[150%] ml-[2px] ${
+                error.nickname ? 'text-[#FF4732]/85' : 'text-[#808080]'
+              }`}
+            >
+              닉네임
+            </label>
             <input
               type="text"
-              onChange={(e) => {
-                setEmailId(e.target.value);
-                handleChange('email')(e);
-              }}
-              value={emailId}
-              className="w-[141px] h-[48px] p-2 border-1 border-black-500 rounded-lg hover:border-blue-500 focus:border-blue-500 focus:outline-none pl-4 mr-[6px]"
+              onChange={handleChange('nickname')}
+              value={nickname}
+              className={`w-full h-[48px] border hover:border-blue-500 ${
+                error.nickname ? 'border-[#FF4732]/85' : 'border-[#808080]'
+              } rounded-lg focus:outline-none pl-4`}
             />
-            {emailDomain === '직접 입력' ? (
+          </div>
+          {error.nickname && (
+            <p className="mt-2 text-[12px] flex text-[#FF4732]/85">
+              <Image
+                src="images/ExclamationMarks/Unavailable.svg"
+                alt=""
+                width={12}
+                height={12}
+                className="mr-[3px]"
+              />
+              {error.nickname}
+            </p>
+          )}
+          {!error.nickname && isNicknameChecked && (
+            <p className="mt-2 text-[12px] text-black-700">{nicknameMessage}</p>
+          )}
+          {!error.nickname && !isNicknameChecked && (
+            <p className="text-black-700 mt-[7px] text-[12px] flex">
+              <Image
+                src="images/ExclamationMarks/ExclamationMarks.svg"
+                alt=""
+                width={12}
+                height={12}
+                className="mr-[3px]"
+              />
+              최대 10글자
+            </p>
+          )}
+          <div className="flex flex-col">
+            <label className="w-full font-medium text-sm leading-[21px] tracking-[-0.02em] text-[#4d4d4d]">
+              이메일
+            </label>
+            <div className="flex items-center justify-center">
               <input
                 type="text"
                 onChange={(e) => {
-                  setCustomEmailDomain(e.target.value);
+                  setEmailId(e.target.value);
                   handleChange('email')(e);
                 }}
-                value={customEmailDomain}
-                placeholder="example.com"
-                className="w-[160px] h-[48px] p-2 border-1 border-black-500 text-bl rounded-lg font-[16px] hover:border-blue-500 focus:border-blue-500 focus:outline-none"
+                value={emailId}
+                className="w-full h-[48px] py-3 px-4 border-1 border-black-500 rounded-lg hover:border-blue-500 focus:border-blue-500 focus:outline-none pl-4 mr-[6px]"
               />
-            ) : (
-              <select
-                title="이메일 선택"
-                onChange={(e) => setEmailDomain(e.target.value)}
-                value={emailDomain}
-                className="w-[160px] h-[48px] p-2 border-1 border-black-500 text-bl rounded-lg font-[16px] hover:border-blue-500 focus:border-blue-500 focus:outline-none cursor-pointer"
-              >
-                <option value="gmail.com" className="cursor-pointer">
-                  @gmail.com
-                </option>
-                <option value="naver.com" className="cursor-pointer">
-                  @naver.com
-                </option>
-                <option value="daum.net" className="cursor-pointer">
-                  @daum.net
-                </option>
-                <option value="nate.com" className="cursor-pointer">
-                  @nate.com
-                </option>
-                <option value="icloud.com" className="cursor-pointer">
-                  @icloud.com
-                </option>
-                <option value="hanmail.net" className="cursor-pointer">
-                  @hanmail.net
-                </option>
-                <option value="직접 입력" className="">
-                  직접 입력
-                </option>
-              </select>
-            )}
+              {emailDomain === '직접 입력' ? (
+                <input
+                  type="text"
+                  onChange={(e) => {
+                    setCustomEmailDomain(e.target.value);
+                    handleChange('email')(e);
+                  }}
+                  value={customEmailDomain}
+                  placeholder="example.com"
+                  className="w-full h-[48px] py-3 px-4  border-1 border-black-500 text-bl rounded-lg font-[16px] hover:border-blue-500 focus:border-blue-500 focus:outline-none"
+                />
+              ) : (
+                <select
+                  title="이메일 선택"
+                  onChange={(e) => setEmailDomain(e.target.value)}
+                  value={emailDomain}
+                  className="w-full h-[48px] py-3 px-4 border-1 border-black-500 text-bl rounded-lg font-[16px] hover:border-blue-500 focus:border-blue-500 focus:outline-none cursor-pointer"
+                >
+                  <option value="gmail.com" className="cursor-pointer">
+                    @gmail.com
+                  </option>
+                  <option value="naver.com" className="cursor-pointer">
+                    @naver.com
+                  </option>
+                  <option value="daum.net" className="cursor-pointer">
+                    @daum.net
+                  </option>
+                  <option value="nate.com" className="cursor-pointer">
+                    @nate.com
+                  </option>
+                  <option value="icloud.com" className="cursor-pointer">
+                    @icloud.com
+                  </option>
+                  <option value="hanmail.net" className="cursor-pointer">
+                    @hanmail.net
+                  </option>
+                  <option value="직접 입력" className="">
+                    직접 입력
+                  </option>
+                </select>
+              )}
+            </div>
           </div>
-          {error.email && (
-            <p className="text-[#FF4732]/85 text-[12px] mt-2">{error.email}</p>
-          )}
-        </div>
-
-        <div className="">
-          <label
-            className={`text-[14px] leading-[150%] ml-[2px] ${
-              error.password ? 'text-[#FF4732]/85' : 'text-[#808080]'
-            }`}
-          >
-            비밀번호
-          </label>
-          <input
-            type="password"
-            // maxLength={10}
-            onChange={handleChange('password')}
-            value={password}
-            className={`w-[288px] h-[48px] border hover:border-blue-500 ${
-              error.password ? 'border-[#FF4732]/85' : 'border-[#808080]'
-            } rounded-lg focus:outline-none pl-4`}
-          />
-        </div>
-        {error.password && (
-          <p className="mt-2 text-[12px] flex text-[#FF4732]/85">
-            {error.password}
-          </p>
-        )}
-        {!error.password && password && (
-          <p className="mt-2 text-[12px] text-black-700">{error.password}</p>
-        )}
-        {!error.password && !password && (
-          <p className="text-black-700 mt-[7px] text-[12px] flex">
-            <Image
-              src="images/ExclamationMarks/ExclamationMarks.svg"
-              alt=""
-              width={12}
-              height={12}
-              className="mr-[3px]"
+          <div className="">
+            <label
+              className={`text-[14px] leading-[150%] ml-[2px] ${
+                error.password ? 'text-[#FF4732]/85' : 'text-[#808080]'
+              }`}
+            >
+              비밀번호
+            </label>
+            <input
+              type="password"
+              onChange={handleChange('password')}
+              value={password}
+              className={`w-full h-[48px] py-3 px-4 border hover:border-blue-500 ${
+                error.password ? 'border-[#FF4732]/85' : 'border-[#808080]'
+              } rounded-lg focus:outline-none pl-4`}
             />
-            특수문자,대문자 포함 8자 이상
-          </p>
-        )}
-        <div className="mt-2 text-[#4D4D4D]">
-          <label
-            className={`text-[14px] leading-[150%] ml-[2px] ${error.passwordConfirm ? 'text-[#FF4732]/85' : 'text-[#808080]'}`}
-          >
-            비밀번호 확인
-          </label>
-          <input
-            type="password"
-            value={passwordConfirm}
-            onChange={handleChange('passwordConfirm')}
-            className={`w-[288px] h-[48px] border hover:border-blue-500 ${
-              error.passwordConfirm ? 'border-[#FF4732]/85' : 'border-[#808080]'
-            } rounded-lg focus:outline-none pl-4`}
-          />
-          {error.passwordConfirm && (
-            <p className="text-[#FF4732]/85 text-[12px] mt-[7px]">
-              {error.passwordConfirm}
+          </div>
+          {error.password && (
+            <p className="mt-2 text-[12px] flex text-[#FF4732]/85">
+              {error.password}
             </p>
           )}
+          {!error.password && password && (
+            <p className="mt-2 text-[12px] text-black-700">{error.password}</p>
+          )}
+          {!error.password && !password && (
+            <p className="text-black-700 mt-[7px] text-[12px] flex">
+              <Image
+                src="images/ExclamationMarks/ExclamationMarks.svg"
+                alt=""
+                width={12}
+                height={12}
+                className="mr-[3px]"
+              />
+              특수문자,대문자 포함 8자 이상
+            </p>
+          )}
+          <div className="mt-2 text-[#4D4D4D]">
+            <label
+              className={`text-[14px] leading-[150%] ml-[2px] ${error.passwordConfirm ? 'text-[#FF4732]/85' : 'text-[#808080]'}`}
+            >
+              비밀번호 확인
+            </label>
+            <input
+              type="password"
+              value={passwordConfirm}
+              onChange={handleChange('passwordConfirm')}
+              className={`w-[288px] h-[48px] border hover:border-blue-500 ${
+                error.passwordConfirm
+                  ? 'border-[#FF4732]/85'
+                  : 'border-[#808080]'
+              } rounded-lg focus:outline-none pl-4`}
+            />
+            {error.passwordConfirm && (
+              <p className="text-[#FF4732]/85 text-[12px] mt-[7px]">
+                {error.passwordConfirm}
+              </p>
+            )}
+          </div>
+          <div className="flex">
+            <input
+              type="checkbox"
+              id="over14"
+              checked={isOver}
+              onChange={(e) => setIsOver(e.target.checked)}
+              className="w-[18px] h-[18px] cursor-pointer"
+            />
+            <label htmlFor="over14" className="text-[14px] ml-[6px]">
+              [필수] 만 14세 이상입니다.
+            </label>
+          </div>
+          <button
+            type="submit"
+            className={`w-[288px] h-[49px] rounded-lg ${isFormValid ? 'bg-[#121212] text-white' : 'bg-black-100 text-black-300'}`}
+            disabled={!isFormValid}
+          >
+            회원가입
+          </button>
         </div>
-        <div className="mt-[49px] mb-[10px] flex">
-          <input
-            type="checkbox"
-            id="over14"
-            checked={isOver}
-            onChange={(e) => setIsOver(e.target.checked)}
-            className="w-[18px] h-[18px] cursor-pointer"
-          />
-          <label htmlFor="over14" className="text-[14px] ml-[6px]">
-            [필수] 만 14세 이상입니다.
-          </label>
-        </div>
-        <button
-          type="submit"
-          className={`w-[288px] h-[49px] rounded-lg ${isFormValid ? 'bg-[#121212] text-white' : 'bg-black-100 text-black-300'}`}
-          disabled={!isFormValid}
-        >
-          회원가입
-        </button>
       </form>
     </main>
   );

@@ -9,6 +9,7 @@ import { useUserStore } from '@/zustand/store/useUserStore';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { createAuthClient } from '@/supabase/client';
+import LoginPopup from './LoginPopup';
 
 function LoginForm() {
   const emailRef = useRef<HTMLInputElement>(null);
@@ -95,16 +96,16 @@ function LoginForm() {
   };
 
   return (
-    <main className="flex items-center space-x-2 py-1 px-4">
-      <form onSubmit={onSubmit} className="mt-[64px] h-[568px]">
-        <h1 className="text-[20px] text-center text-[#121212] font-bold leading-[130%] tracking-[-0.4px] mb-5">
+    <main className="flex items-center space-x-2 py-1 px-4 h-full w-full">
+      <form onSubmit={onSubmit} className="h-full w-full">
+        <h1 className="text-[20px] text-center text-[#121212] font-bold leading-[130%] tracking-[-0.4px] mt-16 mb-5">
           로그인
         </h1>
         {/* 이메일 input */}
-        <div className="mb-[6px]">
+        <div className="py-[6px]">
           <label
             htmlFor="email"
-            className="w-[39px] h-[21px] text-[14px] leading-[150%] ml-[2px] "
+            className="w-full text-[14px] leading-[150%] ml-[2px] "
           >
             아이디
           </label>
@@ -112,35 +113,33 @@ function LoginForm() {
             type="email"
             id="email"
             ref={emailRef}
-            className="w-[288px] h-[48px] border-1 border-black-500 rounded-lg hover:border-blue-500 focus:border-blue-500 focus:outline-none pl-4"
+            className="w-full border-1 border-black-500 rounded-lg hover:border-blue-500 focus:border-blue-500 focus:outline-none pl-4 h-[48px]"
           />
         </div>
         {/* 비밀번호 input */}
         <div className="mt-2 text-[#4D4D4D]">
-          <label className="w-[39px] h-[21px] text-[14px] leading-[150%] ">
-            비밀번호
-          </label>
+          <label className="text-[14px] leading-[150%] ">비밀번호</label>
           <input
             type="password"
             ref={passwordRef}
             id="password"
-            className="w-[288px] h-[48px] border-1 border-black-500 rounded-lg hover:border-blue-500 focus:border-blue-500 focus:outline-none pl-4"
+            className="w-full border-1 border-black-500 rounded-lg hover:border-blue-500 focus:border-blue-500 focus:outline-none pl-4  h-[48px]"
           />
         </div>
         <div className="flex flex-col gap-2 mt-[33px]">
           <div className="flex flex-row w-full">
-            <button className="bg-[#121212] hover:bg-blue-400 text-[#fff] rounded-xl px-4 py-3 w-[288px] font-bold">
+            <button className="w-full bg-[#121212] hover:bg-blue-400 text-[#fff] rounded-xl px-3 py-[14px] font-bold">
               로그인
             </button>
           </div>
-          <Link href={'/signup'} passHref>
-            <button className="bg-white border-1 border-[#808080] text-[#4d4d4d] rounded-xl px-4 py-3 w-[288px] font-medium hover:bg-[#FFF7D4] hover:border-[#ffc22975] focus:bg-[#ffd75e59]">
+          <Link href={'/signup'} className="block w-full" passHref>
+            <button className="w-full bg-white border-1 border-[#808080] text-[#4d4d4d] rounded-xl px-3 py-[14px] font-medium hover:bg-[#FFF7D4] hover:border-[#ffc22975] focus:bg-[#ffd75e59]">
               이메일로 회원가입
             </button>
           </Link>
         </div>
-        <div className="flex justify-end">
-          <button className="text-sm mt-2 text-[#4d4d4d] rounded-lg hover:bg-gray-100 p-2">
+        <div className="flex justify-end items-end mt-2 mb-8">
+          <button className="text-sm text-[#4d4d4d] rounded-lg hover:bg-gray-100 p-2">
             <Link href={'/find-id'} className="w-full h-full flex" passHref>
               아이디/비밀번호 찾기
               <Image
@@ -152,8 +151,7 @@ function LoginForm() {
             </Link>
           </button>
         </div>
-
-        <div className="flex justify-start items-center w-72 gap-3 m-auto my-[32px]">
+        <div className="flex justify-start items-center w-72 gap-3 m-auto mb-8">
           <div className="flex-grow h-px bg-[#d9d9d9]" />
           <p className="flex-grow-0 flex-shrink-0 text-base text-left text-black">
             or
@@ -163,14 +161,26 @@ function LoginForm() {
         <div className="flex flex-col gap-2 justify-center items-center mb-[100px]">
           <button
             onClick={() => handleSocialLogin('google')}
-            className="bg-white border-1 hover:bg-[#ccc] hover:bg-opacity-70 border-[#121212]/15 text-[#4D4D4D] font-bold w-[288px] h-[52px] rounded-xl"
+            className="bg-white border-1 hover:bg-[#ccc] hover:bg-opacity-70 border-[#121212]/15 text-[#4D4D4D] font-bold rounded-xl flex h-[49px] items-center justify-center w-full"
           >
+            <Image
+              src="images/login/Logo_Google.svg"
+              alt="google-icon"
+              width={22}
+              height={22}
+            />
             구글로 시작하기
           </button>
           <button
             onClick={() => handleSocialLogin('kakao')}
-            className="bg-[#FFD65E] hover:bg-[#ccc] hover:bg-opacity-70 text-[#4D4D4D] font-bold w-[288px] h-[52px] rounded-xl"
+            className="bg-[#FFD65E] hover:bg-[#ccc] hover:bg-opacity-70 text-[#4D4D4D] font-bold rounded-xl  flex h-[49px] items-center justify-center w-full"
           >
+            <Image
+              src="images/login/Logo_Kakao.svg"
+              alt="kakao-icon"
+              width={22}
+              height={22}
+            />
             카카오로 시작하기
           </button>
         </div>

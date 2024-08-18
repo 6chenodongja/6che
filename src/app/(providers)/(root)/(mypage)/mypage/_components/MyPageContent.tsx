@@ -38,8 +38,8 @@ function MyPageContent() {
 
   return (
     <div className="mt-3 mb-[287px]">
-      <div className="flex flex-col justify-start items-start w-72 drop-shadow-lg">
-        <div className="flex flex-col justify-start items-start self-stretch flex-grow-0 flex-shrink-0 gap-3 px-4 py-5 rounded-[14px] bg-white">
+      <div className="flex-col justify-start items-start w-72 drop-shadow-lg flex">
+        <div className="block mb:flex items-center flex-col justify-start self-stretch flex-grow-0 flex-shrink-0 gap-3 px-4 py-5 rounded-[14px] bg-white">
           <div className="flex justify-between items-center self-stretch flex-grow-0 flex-shrink-0 pb-[6px]">
             <div className="flex justify-start items-center flex-grow-0 flex-shrink-0 w-[32px] h-[32px] gap-2">
               {user?.profileImage && (
