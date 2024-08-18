@@ -57,9 +57,9 @@ function MyStylePage() {
   }, [user, fetchMyPosts, fetchUserLiked]);
 
   return (
-    <>
+    <div>
       {!isLoading && posts.length === 0 ? (
-        <div className="notPostLike-container mx-auto bg-[#FAFAFA] md:h-[1721px]">
+        <div className="notPostLike-container mx-auto bg-[#FAFAFA]">
           <MyNotStyleHeader />
           <div className="mt-[60px] mr-[50px] ml-[42px]">
             <Image
@@ -89,7 +89,7 @@ function MyStylePage() {
           setLikedPosts={setLikedPosts}
         />
       )}
-    </>
+    </div>
   );
 }
 

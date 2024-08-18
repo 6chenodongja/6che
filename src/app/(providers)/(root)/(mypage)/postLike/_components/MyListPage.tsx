@@ -110,7 +110,7 @@ function MyListPage({ posts, setPosts }: PostsProps) {
                 마이페이지
               </p>
             </Link>
-            <p className="flex px-[16px] items-center self-stretch flex-row justify-between">
+            <p className="flex px-[16px] items-center self-stretch flex-row justify-between text-[#298CFF] font-bold">
               좋아요한 코디
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -123,7 +123,7 @@ function MyListPage({ posts, setPosts }: PostsProps) {
                   fillRule="evenodd"
                   clipRule="evenodd"
                   d="M8.51849 4.85149C8.87647 4.49351 9.45687 4.49351 9.81485 4.85149L15.3148 10.3515C15.6728 10.7095 15.6728 11.2899 15.3148 11.6479L9.81485 17.1479C9.45687 17.5058 8.87647 17.5058 8.51849 17.1479C8.1605 16.7899 8.1605 16.2095 8.51849 15.8515L13.3703 10.9997L8.51849 6.14786C8.1605 5.78988 8.1605 5.20947 8.51849 4.85149Z"
-                  fill="#121212"
+                  fill="#298CFF"
                   fill-opacity="0.8"
                 />
               </svg>
@@ -137,7 +137,7 @@ function MyListPage({ posts, setPosts }: PostsProps) {
         </div>
         <div className="flex flex-col">
           <MySelectPage />
-          <div className="grid grid-cols-2 gap-y-2 gap-x-2 w-[288px] mx-auto">
+          <div className="grid grid-cols-2 gap-y-2 gap-x-2 w-[288px] ml-[6px]">
             {posts.map((post) => (
               <MyListPostItem
                 post={post}

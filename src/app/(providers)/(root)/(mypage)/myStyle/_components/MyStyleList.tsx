@@ -158,7 +158,7 @@ function MyStyleList({
   };
 
   return (
-    <div className="notPostLike-container min-w-[320px] max-w-[768px] md:min-w-[768px] md:max-w-[1920px] mx-auto bg-[#FAFAFA]">
+    <div className="notPostLike-container min-w-[320px] max-w-[768px] md:min-w-[768px] md:max-w-[1920px] mx-auto bg-[#FAFAFA] md:h-[1721px]">
       <div className="block md:hidden">
         <MyStyleHeader />
 
@@ -193,7 +193,7 @@ function MyStyleList({
       {/* 768이상 해상도 디자인 */}
       <div className="hidden md:flex">
         <div
-          className="md:w-[220px] md:h-[170px] md:px-[8xp] md:py-[16px] md:flex md:flex-col ml-[150px] md:rounded-[12px] md:opacity-50 md:gap-[4px] md:mt-[20px] md:justify-around"
+          className="md:w-[220px] md:h-[170px] md:px-[8xp] md:py-[16px] md:flex md:flex-col ml-[200px] md:rounded-[12px] md:opacity-50 md:gap-[4px] md:mt-[20px] md:justify-around"
           style={{
             boxShadow: '0px 2px 10px 0px rgba(0, 0, 0, 0.05)',
           }}
@@ -208,7 +208,7 @@ function MyStyleList({
               좋아요한 코디
             </p>
           </Link>
-          <p className="flex px-[16px] items-center self-stretch text-[16px] flex-row justify-between">
+          <p className="flex px-[16px] items-center self-stretch text-[16px] flex-row justify-between text-[#298CFF] font-bold">
             내 코디
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -221,7 +221,7 @@ function MyStyleList({
                 fillRule="evenodd"
                 clipRule="evenodd"
                 d="M8.51849 4.85149C8.87647 4.49351 9.45687 4.49351 9.81485 4.85149L15.3148 10.3515C15.6728 10.7095 15.6728 11.2899 15.3148 11.6479L9.81485 17.1479C9.45687 17.5058 8.87647 17.5058 8.51849 17.1479C8.1605 16.7899 8.1605 16.2095 8.51849 15.8515L13.3703 10.9997L8.51849 6.14786C8.1605 5.78988 8.1605 5.20947 8.51849 4.85149Z"
-                fill="#121212"
+                fill="#298CFF"
                 fill-opacity="0.8"
               />
             </svg>
