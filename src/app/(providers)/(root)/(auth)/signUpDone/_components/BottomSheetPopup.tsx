@@ -1,14 +1,14 @@
 'use client';
 
 import Image from 'next/image';
-import LoginForm from './LoginForm';
+import BottomSheet from './BottomSheet';
 
-type LoginPopupProps = {
+type BottomSheetPopupProps = {
   show: boolean;
   onClose: () => void;
 };
 
-function LoginPopup({ show, onClose }: LoginPopupProps) {
+function BottomSheetPopup({ show, onClose }: BottomSheetPopupProps) {
   if (!show) return null;
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
@@ -28,7 +28,7 @@ function LoginPopup({ show, onClose }: LoginPopupProps) {
             />
           </button>
           <div className="flex justify-center w-[400px] mx-auto">
-            <LoginForm />
+            <BottomSheet />
           </div>
         </div>
       </div>
@@ -36,4 +36,4 @@ function LoginPopup({ show, onClose }: LoginPopupProps) {
   );
 }
 
-export default LoginPopup;
+export default BottomSheetPopup;
