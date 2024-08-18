@@ -73,7 +73,7 @@ const BottomSheet = () => {
 
   return (
     <div
-      className={`fixed inset-0 z-50 flex items-end justify-center w-full ${isVisible ? 'bg-black bg-opacity-50' : 'bg-transparent'} transition-opacity duration-500`}
+      className={`hidden md:inline-flex fixed inset-0 z-50 items-end justify-center w-full ${isVisible ? 'bg-black bg-opacity-50' : 'bg-transparent'} transition-opacity duration-500`}
       style={{
         visibility: isVisible ? 'visible' : 'hidden',
         opacity: isVisible ? 1 : 0,

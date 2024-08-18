@@ -27,7 +27,7 @@ function SingUp() {
     error,
     // isNicknameValid,
     isNicknameChecked,
-    nicknameMessage,
+    // nicknameMessage,
     setEmailId,
     setEmailDomain,
     setCustomEmailDomain,
@@ -90,18 +90,18 @@ function SingUp() {
   };
 
   return (
-    <main className="w-full items-center justify-center h-full rounded-3xl">
+    <main className=" flex flex-col justify-center items-center w-full min-h-screen">
       <form
         onSubmit={onSubmit}
-        className="w-full h-full flex-col bg-white rounded-3xl"
+        className=" auth-mb-container auth-pc-container w-full h-full flex-col rounded-3xl"
       >
-        <h1 className="text-[20px] text-center text-[#121212] font-bold leading-[130%] tracking-[-0.4px]">
+        <h1 className="mem-text text-[20px] text-center text-[#121212] font-bold leading-[130%] tracking-[-0.4px]">
           회원가입
         </h1>
-        <div className="flex flex-col items-center">
-          <div className="">
+        <div className=" flex flex-col items-center">
+          <div className="nickbox">
             <label
-              className={`text-[14px] leading-[150%] ml-[2px] ${
+              className={`nick-inputbox  text-[14px] leading-[150%] ml-[2px] ${
                 error.nickname ? 'text-[#FF4732]/85' : 'text-[#808080]'
               }`}
             >
@@ -111,28 +111,30 @@ function SingUp() {
               type="text"
               onChange={handleChange('nickname')}
               value={nickname}
-              className={`w-full h-[48px] border hover:border-blue-500 ${
+              className={`nick-inputbox w-full h-[48px] border hover:border-blue-500 ${
                 error.nickname ? 'border-[#FF4732]/85' : 'border-[#808080]'
               } rounded-lg focus:outline-none pl-4`}
             />
           </div>
           {error.nickname && (
-            <p className="mt-2 text-[12px] flex text-[#FF4732]/85">
+            <p className="unavailable-text mt-2 text-[12px] flex text-[#FF4732]/85">
               <Image
                 src="images/ExclamationMarks/Unavailable.svg"
                 alt=""
                 width={12}
                 height={12}
-                className="mr-[3px]"
+                className=""
               />
               {error.nickname}
             </p>
           )}
-          {!error.nickname && isNicknameChecked && (
-            <p className="mt-2 text-[12px] text-black-700">{nicknameMessage}</p>
-          )}
-          {!error.nickname && !isNicknameChecked && (
-            <p className="text-black-700 mt-[7px] text-[12px] flex">
+          {/* {!error.nickname && isNicknameChecked && (
+            <p className="ten-text mt-2 text-[12px] text-black-700">
+              {nicknameMessage}
+            </p>
+          )} */}
+          {!error.nickname && (
+            <p className="ten-text text-black-700 mt-[7px] text-[12px] flex">
               <Image
                 src="images/ExclamationMarks/ExclamationMarks.svg"
                 alt=""
@@ -143,11 +145,11 @@ function SingUp() {
               최대 10글자
             </p>
           )}
-          <div className="flex flex-col">
-            <label className="w-full font-medium text-sm leading-[21px] tracking-[-0.02em] text-[#4d4d4d]">
+          <div className="meilbox flex flex-col">
+            <label className="emailtext w-full font-medium text-sm leading-[21px] tracking-[-0.02em] text-[#4d4d4d]">
               이메일
             </label>
-            <div className="flex items-center justify-center">
+            <div className="meilinputbox flex items-center justify-center">
               <input
                 type="text"
                 onChange={(e) => {
@@ -166,7 +168,7 @@ function SingUp() {
                   }}
                   value={customEmailDomain}
                   placeholder="example.com"
-                  className="w-full h-[48px] py-3 px-4  border-1 border-black-500 text-bl rounded-lg font-[16px] hover:border-blue-500 focus:border-blue-500 focus:outline-none"
+                  className="   border-1 border-black-500 text-bl rounded-lg font-[16px] hover:border-blue-500 focus:border-blue-500 focus:outline-none"
                 />
               ) : (
                 <select
@@ -200,7 +202,7 @@ function SingUp() {
               )}
             </div>
           </div>
-          <div className="">
+          <div className="passwordbox">
             <label
               className={`text-[14px] leading-[150%] ml-[2px] ${
                 error.password ? 'text-[#FF4732]/85' : 'text-[#808080]'
@@ -212,21 +214,21 @@ function SingUp() {
               type="password"
               onChange={handleChange('password')}
               value={password}
-              className={`w-full h-[48px] py-3 px-4 border hover:border-blue-500 ${
+              className={`password-input-box w-full h-[48px] py-3 px-4 border hover:border-blue-500 ${
                 error.password ? 'border-[#FF4732]/85' : 'border-[#808080]'
               } rounded-lg focus:outline-none pl-4`}
             />
           </div>
           {error.password && (
-            <p className="mt-2 text-[12px] flex text-[#FF4732]/85">
+            <p className="pass-error mt-2 text-[12px] flex text-[#FF4732]/85">
               {error.password}
             </p>
           )}
-          {!error.password && password && (
+          {/* {!error.password && password && (
             <p className="mt-2 text-[12px] text-black-700">{error.password}</p>
-          )}
+          )} */}
           {!error.password && !password && (
-            <p className="text-black-700 mt-[7px] text-[12px] flex">
+            <p className="pass-text text-black-700 mt-[7px] text-[12px] flex">
               <Image
                 src="images/ExclamationMarks/ExclamationMarks.svg"
                 alt=""
@@ -237,9 +239,9 @@ function SingUp() {
               특수문자,대문자 포함 8자 이상
             </p>
           )}
-          <div className="mt-2 text-[#4D4D4D]">
+          <div className="password2-input-box mt-2 text-[#4D4D4D]">
             <label
-              className={`text-[14px] leading-[150%] ml-[2px] ${error.passwordConfirm ? 'text-[#FF4732]/85' : 'text-[#808080]'}`}
+              className={`unavailable-text text-[14px] leading-[150%] ml-[2px] ${error.passwordConfirm ? 'text-[#FF4732]/85' : 'text-[#808080]'}`}
             >
               비밀번호 확인
             </label>
@@ -247,7 +249,7 @@ function SingUp() {
               type="password"
               value={passwordConfirm}
               onChange={handleChange('passwordConfirm')}
-              className={`w-[288px] h-[48px] border hover:border-blue-500 ${
+              className={`py-3 px-4 w-full h-[48px] border hover:border-blue-500 ${
                 error.passwordConfirm
                   ? 'border-[#FF4732]/85'
                   : 'border-[#808080]'
@@ -259,21 +261,24 @@ function SingUp() {
               </p>
             )}
           </div>
-          <div className="flex">
+          <div className="check-box flex items-center justify-center px-1 py-2 cursor-pointer">
             <input
               type="checkbox"
               id="over14"
               checked={isOver}
               onChange={(e) => setIsOver(e.target.checked)}
-              className="w-[18px] h-[18px] cursor-pointer"
+              className="w-[18px] h-[18px]"
             />
-            <label htmlFor="over14" className="text-[14px] ml-[6px]">
+            <label
+              htmlFor="over14"
+              className="text-[14px] pl-[6px] text-[#808080] focus:text-[#121212]"
+            >
               [필수] 만 14세 이상입니다.
             </label>
           </div>
           <button
             type="submit"
-            className={`w-[288px] h-[49px] rounded-lg ${isFormValid ? 'bg-[#121212] text-white' : 'bg-black-100 text-black-300'}`}
+            className={`next-btn py-3 px-4 w-full h-[49px] rounded-lg ${isFormValid ? 'bg-[#121212] text-white' : 'bg-black-100 text-black-300'}`}
             disabled={!isFormValid}
           >
             회원가입
