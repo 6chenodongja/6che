@@ -719,6 +719,10 @@
     backdrop-filter: blur(5px);
     background-color: #fafafa;
   }
+  .survey-imgae {
+    position: relative;
+    top: -125px;
+  }
 
   object {
     width: 100%;
@@ -727,20 +731,29 @@
   }
 
   .survey-text {
-    font-size: 16px; /* 320px에서의 폰트 크기 */
-    margin-top: 10px;
+    font-size: 16px;
+    top: -217px;
     text-align: center;
+    position: relative;
+    font-family: 'Noto Sans KR';
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%; /* 20.8px */
+    letter-spacing: -0.32px;
+    color: var(--Black, #121212);
   }
 
   .start-button {
-    width: 100%;
-    max-width: 288px; /* 320px에서의 버튼 너비 */
+    width: 288px;
+    max-width: 288px;
     padding: 10px 12px;
-    margin-top: 15px;
-    border-radius: 8px;
+    top: -241px;
+    border-radius: 10px;
     background: var(--Black, #121212);
     color: #fff;
     text-align: center;
+    position: relative;
   }
 }
 
@@ -753,6 +766,16 @@
     padding-top: 55px;
     padding-bottom: 20px;
     border-radius: 20px;
+  }
+  .survey-imgae {
+    display: flex;
+    width: 418px;
+    height: 500px;
+    padding: 39px 32px 38.998px 32px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
   }
 
   .survey-content {
@@ -781,11 +804,21 @@
     margin-left: -75px;
   }
   .survey-text {
-    font-size: 18px;
+    font-family: 'Noto Sans KR';
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 130%; /* 20.8px */
+    letter-spacing: -0.32px;
+    position: relative;
+    top: -73px;
   }
   .start-button {
-    width: 100%;
+    width: 400px;
     max-width: 400px;
+    border-radius: 10px;
+    position: relative;
+    top: -56px;
   }
 }
 /* 320px 이하 질문 화면에서의 스타일 */
@@ -871,47 +904,100 @@
 
   /* 320px에서의 Q, 질문과의 간격, 선택지 간 간격 설정 */
   .items2 {
-    margin-top: 20px; /* 헤더와 Q 간의 y 간격 */
+    margin-top: 24px; /* 헤더와 Q 간의 y 간격 */
   }
 
   .items3,
   .items4 {
-    margin-top: 50px; /* Q와 질문 간의 y 간격 */
+    top: 50px; /* Q와 질문 간의 y 간격 */
   }
 
   .card-div {
-    margin-top: 16px; /* 질문과 선택지 간의 y 간격 */
+    top: 10px; /* 질문과 선택지 간의 y 간격 */
+    position: relative;
+  }
+  .card1-div {
+    position: relative;
+    top: -31px;
   }
   .card-div2 {
-    margin-top: 55px; /* 질문과 선택지 간의 y 간격 */
+    position: relative;
+    top: -21px;
+  }
+  .card2-div {
+    position: relative;
+    top: -8px;
+  }
+  .card2-div-text {
+    position: relative;
+    top: -8px;
   }
   .card-div3 {
-    margin-top: 70px; /* 질문과 선택지 간의 y 간격 */
+    top: -17px; /* 질문과 선택지 간의 y 간격 */
+    position: relative;
+  }
+  .card3-div {
+    position: relative;
+    top: -28px;
+  }
+  .card3-div-text {
+    position: relative;
+    top: -27px;
   }
   .card-div4 {
-    margin-bottom: -53px;
+    position: relative;
+    top: 1px;
   }
+  .card4-div {
+    position: relative;
+    top: 27px;
+  }
+  .card4-1div {
+    position: relative;
+    top : 10px
+  }
+  .card4-div-text {
+    position: relative;
+    top: 27px;
+  }
+
   .two-text {
     position: relative;
-    top: -20px;
+    top: 7px;
   }
   .card-div5 {
-    margin-bottom: 75px;
+    position: relative;
+    top: -50px;
   }
-  .div5-down {
-    position: relative; /* 다른 요소의 위치에 영향을 받지 않게 설정 */
-    top: 10px;
+  .card5-div {
+    position: relative;
+    top: -30px;
   }
+  .card5-div-text {
+    position: relative;
+    top: -30px;
+  }
+
   .card-div6 {
-    margin-bottom: 47px;
+    position: relative;
+    top: -6px;
   }
+  .card6-div {
+    position: relative;
+    top: -16px;
+  }
+  .card6-div-text {
+    position: relative;
+    top: -15px;
+  }
+
   .next-btn {
     position: relative;
     top: -50px;
   }
   .result-btn {
     position: relative;
-    top: 100px;
+    top: 79px;
   }
 
   .grid {
@@ -928,14 +1014,13 @@
     justify-content: center;
     padding-top: -30px;
     padding-bottom: 20px;
-    margin: 0 auto;
     border-radius: 20px;
   }
 
   .question-back-button {
-    margin-left: -115px;
+    left: -115px;
     position: relative;
-    top: -145px;
+    bottom: 109px;
     width: 40px;
     height: 40px;
   }
@@ -947,72 +1032,120 @@
   }
 
   .card-div {
-    margin-top: 69px; /* 질문과 선택지 간의 y 간격 */
+    margin-top: 71px; /* 질문과 선택지 간의 y 간격 */
+    position: relative;
+  }
+
+  .qdiv {
+    top: 30px;
+    position: relative;
+  }
+  .item1-1 {
+    top: 51px;
     position: relative;
   }
 
   .question-number {
     font-size: 18px;
     color: #666;
-    margin-right: -310px;
-    margin-top: -295px;
+    right: -246px;
+    top: -110px;
     position: relative;
   }
 
   .items {
-    margin-top: -50px; /* Q와 질문 간의 y 간격을 통일 */
+    top: -49px; /* Q와 질문 간의 y 간격을 통일 */
+    position: relative;
   }
   .text-1 {
     position: relative;
-    bottom: -24px;
+    bottom: -55px;
   }
 
   .items2 {
-    margin-top: 110px; /* Q와 질문 간의 y 간격을 통일 */
+    margin-top: 111px; /* Q와 질문 간의 y 간격을 통일 */
+    position: relative;
+  }
+  .item2-1 {
+    top: 11px;
+    position: relative;
+  }
+  .item2-2 {
+    top: 30px;
     position: relative;
   }
 
   .text-2 {
     position: relative;
-    bottom: -24px;
+    bottom: -56px;
   }
 
   .items3 {
-    margin-top: 125px;
+    margin-top: 126px;
+    position: relative;
+  }
+
+  .item3-1 {
+    top: -4px;
+    position: relative;
+  }
+
+  .item3-2 {
+    top: 30px;
     position: relative;
   }
 
   .text-3 {
     position: relative;
-    bottom: -24px;
+    bottom: -55px;
   }
 
   .items4 {
-    margin-top: 52px; /* Q와 질문 간의 y 간격을 통일 */
+    top: 50px; /* Q와 질문 간의 y 간격을 통일 */
     position: relative;
   }
-
+  .item4-1 {
+    top: -55px;
+    position: relative;
+  }
+  .item4-2 {
+    top: -23px;
+    position: relative;
+    margin-top: 53px;
+  }
   .text-4 {
     position: relative;
-    bottom: -24px;
+    bottom: -3px;
   }
-
+  .two-text{
+    top: 9px;
+    position: relative;
+  }
+  
   .stext-4 {
     position: relative;
     bottom: -27px;
   }
 
   .items5 {
-    margin-top: 162px; /* Q와 질문 간의 y 간격을 통일 */
+    margin-top: 163px; /* Q와 질문 간의 y 간격을 통일 */
     position: relative;
+  }
+  .item5-1 {
+    top: 30px;
+    position: relative; 
   }
   .text-5 {
     position: relative;
-    bottom: -24px;
+    bottom: -56px;
   }
   .text-6 {
     position: relative;
-    bottom: -24px;
+    bottom: -56px;
+  }
+  .result-btn {
+    position: relative;
+    top: 80px;
   }
 
   /* 768px 이상 화면에서 가로 한 줄로 표시 */
@@ -1028,15 +1161,20 @@
 
   .div-down {
     position: relative;
-    top: -70px;
+    top: -39px;
   }
   .items6 {
-    margin-top: 128px;
+    margin-top: 130px;
     position: relative;
   }
+
+  .item6-1 {
+    top: 30px;
+    position: relative; 
+  }
   .div-up {
+    top: -8px;
     position: relative;
-    top: -70px;
   }
   .next-button {
     width: 100%;
@@ -1077,8 +1215,9 @@
   }
   .next-btn {
     position: relative;
-    top: 74px;
+    top: 60px;
   }
+
   .back-button {
     top: -15px;
     margin-left: 45px;
@@ -1099,8 +1238,8 @@
   }
 
   .result-content {
-    width: 100%;
-    max-width: 40rem; /* 651px -> 40rem */
+    width: 652px;
+    max-width: 652px; /* 651px -> 40rem */
     height: 724px;
     box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.1);
     overflow: visible;

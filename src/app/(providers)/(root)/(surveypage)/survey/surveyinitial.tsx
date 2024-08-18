@@ -22,32 +22,20 @@ const SurveyLayout: React.FC = () => {
     >
       <div
         className="survey-content bg-#fafafa flex-grow flex flex-col items-center justify-between w-full max-w-lg mx-auto"
-        style={{
-
-        }}
+        style={{}}
       >
         {showQuestionPage ? (
           <QuestionPage />
         ) : (
           <>
-            <div className="flex flex-col items-center mt-[23px]">
+            <div className="survey-imgae flex flex-col items-center mt-[23px]">
               <object
-                data="/images/Survey/box.png"
-                style={{ width: '100%', maxWidth: '288px', height: 'auto' }}
-                className="mb-5"
+                data="/images/Survey/box.png"                
               />
             </div>
             <p
-              className="survey-text text-center text-[#121212] mt-[-40px]"
-              style={{
-                fontFamily: 'Noto Sans KR',
-                fontWeight: '400',
-                lineHeight: '150%', // 27px
-                fontStyle: 'normal',
-                letterSpacing: '-0.54px',
-                color: 'var(--Black, #121212)',
-                textAlign: 'center',
-              }}
+              className="survey-text text-center text-[#121212]"
+              
             >
               <span>질문의 답변을 통해</span>
               <br />
@@ -55,32 +43,17 @@ const SurveyLayout: React.FC = () => {
             </p>
 
             <div
-              className="start-button flex justify-center items-center cursor-pointer hover:bg-[rgba(94,176,255,0.80)] active:bg-[rgba(88,168,243,0.8)] mb-40
+              className="start-button flex justify-center items-center cursor-pointer hover:bg-[rgba(94,176,255,0.80)] active:bg-[rgba(88,168,243,0.8)]
               "
               onClick={handleStartClick}
               style={{
-                width: '100%',
                 padding: '10px 20px',
                 justifyContent: 'center',
                 alignItems: 'center',
-                borderRadius: '10px',
-                background: 'var(--Black, #121212)',
-                marginTop: '150px',
+                background: 'var(--Black, #121212)',           
               }}
             >
-              <p
-                className="text-center text-white text-[#FFF]"
-                style={{
-                  fontSize: '16px',
-                  fontFamily: 'Noto Sans KR',
-                  fontStyle: 'normal',
-                  fontWeight: '500',
-                  lineHeight: '130%',
-                  letterSpacing: '0.32px',
-                }}
-              >
-                시작하기
-              </p>
+              <p className="text-center text-white text-[#FFF]">시작하기</p>
             </div>
           </>
         )}

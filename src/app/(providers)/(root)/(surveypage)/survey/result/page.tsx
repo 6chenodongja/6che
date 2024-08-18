@@ -117,10 +117,6 @@ const ResultPage: React.FC = () => {
     setIsModalOpen(false);
   };
 
-  const handleImageClick = (postId: string) => {
-    router.push(`/post/detail/${postId}`);
-  };
-
   return (
     <div className="result-container">
       <div className="result-content">
@@ -148,7 +144,6 @@ const ResultPage: React.FC = () => {
                 <div
                   key={post.id}
                   className="w-[142px] h-[230px] bg-gray-200 rounded-lg flex items-center justify-center relative"
-                  onClick={() => handleImageClick(post.id)}
                 >
                   {imageUrls.map((url, idx) => (
                     <Image

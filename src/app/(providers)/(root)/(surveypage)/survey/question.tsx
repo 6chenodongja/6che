@@ -168,20 +168,104 @@ const QuestionPage: React.FC = () => {
                 {currentQuestionIndex + 1}/{questions.length}
               </p>
             </div>
-            <div className="flex flex-col items-center justify-center items">
-              <div className=" w-[74px] h-[39px] rounded-[1000px] bg-[#ffc329]/80 flex justify-center">
-                <p
-                  className={`mt-1 text-3xl text-left text-[#121212] ${modak.className}`}
-                  style={{
-                    color: 'var(--Black, #121212)',
-                    fontSize: '30px',
-                    fontStyle: 'normal',
-                    letterSpacing: '-1.8px',
-                  }}
-                >
-                  Q {currentQuestionIndex + 1}
-                </p>
-              </div>
+            <div className="card1-div flex flex-col items-center justify-center items">
+              
+              {currentQuestionIndex === 0 && (
+                <div className=" qdiv w-[74px] h-[40px] rounded-[1000px] bg-[#ffc329]/80 flex justify-center">
+                  <p
+                    className={`m-1 text-3xl text-left ${modak.className}`}
+                    style={{
+                      color: 'var(--Black, #121212)',
+                      fontSize: '30px',
+                      fontStyle: 'normal',
+                      fontWeight: '400',
+                      letterSpacing: '-1.8px',
+                    }}
+                  >
+                    Q 1
+                  </p>
+                </div>
+              )}
+              {currentQuestionIndex === 1 && (
+                <div className=" card2-div item2-2 w-[74px] h-[40px] rounded-[1000px] bg-[#ffc329]/80 flex justify-center">
+                  <p
+                    className={`m-1 text-3xl text-left ${modak.className}`}
+                    style={{
+                      color: 'var(--Black, #121212)',
+                      fontSize: '30px',
+                      fontStyle: 'normal',
+                      fontWeight: '400',
+                      letterSpacing: '-1.8px',
+                    }}
+                  >
+                    Q 2
+                  </p>
+                </div>
+              )}
+              {currentQuestionIndex === 2 && (
+                <div className="card3-div item3-2 w-[74px] h-[40px] rounded-[1000px] bg-[#ffc329]/80 flex justify-center">
+                  <p
+                    className={`m-1 text-3xl text-left ${modak.className}`}
+                    style={{
+                      color: 'var(--Black, #121212)',
+                      fontSize: '30px',
+                      fontStyle: 'normal',
+                      fontWeight: '400',
+                      letterSpacing: '-1.8px',
+                    }}
+                  >
+                    Q 3
+                  </p>
+                </div>
+              )}
+              {currentQuestionIndex === 3 && (
+                <div className="card4-div item4-2 w-[74px] h-[40px] rounded-[1000px] bg-[#ffc329]/80 flex justify-center">
+                  <p
+                    className={`m-1 text-3xl text-left ${modak.className}`}
+                    style={{
+                      color: 'var(--Black, #121212)',
+                      fontSize: '30px',
+                      fontStyle: 'normal',
+                      fontWeight: '400',
+                      letterSpacing: '-1.8px',
+                    }}
+                  >
+                    Q 4
+                  </p>
+                </div>
+              )}
+              {currentQuestionIndex === 4 && (
+                <div className="card5-div item5-1 w-[74px] h-[40px] rounded-[1000px] bg-[#ffc329]/80 flex justify-center">
+                  <p
+                    className={`m-1 text-3xl text-left ${modak.className}`}
+                    style={{
+                      color: 'var(--Black, #121212)',
+                      fontSize: '30px',
+                      fontStyle: 'normal',
+                      fontWeight: '400',
+                      letterSpacing: '-1.8px',
+                    }}
+                  >
+                    Q 5
+                  </p>
+                </div>
+              )}
+              {currentQuestionIndex === 5 && (
+                <div className="card6-div item6-1 w-[74px] h-[40px] rounded-[1000px] bg-[#ffc329]/80 flex justify-center">
+                  <p
+                    className={`m-1 text-3xl text-left ${modak.className}`}
+                    style={{
+                      color: 'var(--Black, #121212)',
+                      fontSize: '30px',
+                      fontStyle: 'normal',
+                      fontWeight: '400',
+                      letterSpacing: '-1.8px',
+                    }}
+                  >
+                    Q 6
+                  </p>
+                </div>
+              )}
               {currentQuestionIndex === 0 && (
                 <p
                   className={`text-1 text-2xl text-left text-[#121212] ${notoSansKr.className}`}
@@ -196,7 +280,7 @@ const QuestionPage: React.FC = () => {
               )}
               {currentQuestionIndex === 1 && (
                 <p
-                  className={`text-2 text-2xl text-left text-[#121212] ${notoSansKr.className}`}
+                  className={`card2-div-text text-2 text-2xl text-left text-[#121212] ${notoSansKr.className}`}
                 >
                   <span className="text-2xl font-bold text-left text-[#121212]">
                     현재 기온
@@ -208,7 +292,7 @@ const QuestionPage: React.FC = () => {
               )}
               {currentQuestionIndex === 2 && (
                 <p
-                  className={`text-3 text-2xl text-left text-[#121212] ${notoSansKr.className}`}
+                  className={`card3-div-text text-3 text-2xl text-left text-[#121212] ${notoSansKr.className}`}
                 >
                   <span className="text-2xl font-bold text-left text-[#121212]">
                     어떤 사람
@@ -220,7 +304,7 @@ const QuestionPage: React.FC = () => {
               )}
               {currentQuestionIndex === 3 && (
                 <p
-                  className={`text-4 text-2xl text-center text-[#121212] ${notoSansKr.className}`}
+                  className={`card4-div-text text-4 text-2xl text-center text-[#121212] ${notoSansKr.className}`}
                 >
                   <span className=" text-2xl text-center text-[#121212]">
                     오늘{' '}
@@ -235,7 +319,7 @@ const QuestionPage: React.FC = () => {
               )}
               {currentQuestionIndex === 4 && (
                 <p
-                  className={`text-5 text-2xl text-center text-[#121212] ${notoSansKr.className}`}
+                  className={`card5-div-text text-5 text-2xl text-center text-[#121212] ${notoSansKr.className}`}
                 >
                   <span className="w-full text-2xl font-bold text-center text-[#121212]">
                     어떤 스타일
@@ -251,7 +335,7 @@ const QuestionPage: React.FC = () => {
               )}
               {currentQuestionIndex === 5 && (
                 <p
-                  className={`text-6 text-2xl text-center text-[#121212] ${notoSansKr.className}`}
+                  className={`card6-div-text text-6 text-2xl text-center text-[#121212] ${notoSansKr.className}`}
                 >
                   <span className="w-72 text-2xl font-bold text-center text-[#121212]">
                     성별
@@ -271,9 +355,9 @@ const QuestionPage: React.FC = () => {
             </div>
 
             {/* Option Rendering Based on Question Index */}
-            <div className=" flex flex-col items-start w-full gap-4">
+            <div className="item4-1 card4-1div flex flex-col items-start w-full gap-4">
               {currentQuestionIndex === 0 ? (
-                <div className="grid card-div grid-cols-2 gap-[8px] mb-4">
+                <div className="item1-1 grid card-div grid-cols-2 gap-[8px] mb-4">
                   {questions[currentQuestionIndex].options.map(
                     (option, index) => (
                       <div
@@ -325,7 +409,7 @@ const QuestionPage: React.FC = () => {
                   )}
                 </div>
               ) : currentQuestionIndex === 1 ? (
-                <div className="grid grid-cols-2 w-full gap-[8px] mb-4 card-div2 items2">
+                <div className="grid grid-cols-2 w-full gap-[8px] mb-4 card-div2 items2 item2-1">
                   {questions[currentQuestionIndex].options.map(
                     (option, index) => (
                       <div
@@ -357,7 +441,7 @@ const QuestionPage: React.FC = () => {
                   )}
                 </div>
               ) : currentQuestionIndex === 4 ? (
-                <div className="flex flex-col w-full gap-2 card-div5 div5-down items5 div-down">
+                <div className="flex flex-col w-full gap-2 card-div5 items5 div-down">
                   {questions[currentQuestionIndex].options.map(
                     (option, index) => (
                       <div
@@ -458,7 +542,7 @@ const QuestionPage: React.FC = () => {
                   className={`flex ${
                     currentQuestionIndex === 3
                       ? 'flex-wrap justify-between card-div4 items4'
-                      : 'flex-col card-div3 items3'
+                      : 'flex-col card-div3 items3 item3-1'
                   } w-full gap-2 `}
                 >
                   {questions[currentQuestionIndex].options.map(
