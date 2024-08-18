@@ -693,10 +693,16 @@
     width: 100%;
     max-width: full;
     margin: 0 auto;
-    padding-top: 70px;
+    padding-top: 100px;
+    padding-bottom: 120px;
     box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     background-color: #fafafa;
   }
+
   .question-navigation {
     position: absolute;
     right: 35px;
@@ -716,8 +722,8 @@
     padding: 20px; /* 내부 패딩 추가 */
     margin-top: 80px; /* 상단 여백 조정 */
     margin-bottom: 0px; /* 하단 여백 조정 */
-    backdrop-filter: blur(5px);
     background-color: #fafafa;
+    min-height: calc(100vh - 100px);
   }
   .survey-imgae {
     position: relative;
@@ -732,29 +738,30 @@
 
   .survey-text {
     font-size: 16px;
-    top: -217px;
     text-align: center;
-    position: relative;
     font-family: 'Noto Sans KR';
-    font-size: 16px;
     font-style: normal;
     font-weight: 400;
     line-height: 150%; /* 20.8px */
     letter-spacing: -0.32px;
     color: var(--Black, #121212);
+    position: absolute;
+    top: 426px;
   }
-
+  
   .start-button {
+    display: flex;
     width: 288px;
     max-width: 288px;
     padding: 10px 12px;
-    top: -241px;
     border-radius: 10px;
     background: var(--Black, #121212);
     color: #fff;
     text-align: center;
-    position: relative;
+    position: absolute;
+    top: 511px;
   }
+  
 }
 
 /* 768px 이상  설문 첫 화면에서의 스타일 */
@@ -945,25 +952,25 @@
     top: -27px;
   }
   .card-div4 {
-    position: relative;
-    top: 1px;
+    position: absolute;
+    top: -135px;
   }
   .card4-div {
     position: relative;
-    top: 27px;
+    top: -102px;
   }
   .card4-1div {
     position: relative;
-    top : 10px
+    top: 10px;
   }
   .card4-div-text {
     position: relative;
-    top: 27px;
+    top: -102px;
   }
 
   .two-text {
     position: relative;
-    top: 7px;
+    top: -123px;
   }
   .card-div5 {
     position: relative;
@@ -1117,11 +1124,11 @@
     position: relative;
     bottom: -3px;
   }
-  .two-text{
+  .two-text {
     top: 9px;
     position: relative;
   }
-  
+
   .stext-4 {
     position: relative;
     bottom: -27px;
@@ -1133,7 +1140,7 @@
   }
   .item5-1 {
     top: 30px;
-    position: relative; 
+    position: relative;
   }
   .text-5 {
     position: relative;
@@ -1170,7 +1177,7 @@
 
   .item6-1 {
     top: 30px;
-    position: relative; 
+    position: relative;
   }
   .div-up {
     top: -8px;
@@ -1215,7 +1222,7 @@
   }
   .next-btn {
     position: relative;
-    top: 60px;
+    top: 159px;
   }
 
   .back-button {

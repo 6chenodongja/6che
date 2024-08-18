@@ -46,12 +46,7 @@ const SurveyLayout: React.FC = () => {
               className="start-button flex justify-center items-center cursor-pointer hover:bg-[rgba(94,176,255,0.80)] active:bg-[rgba(88,168,243,0.8)]
               "
               onClick={handleStartClick}
-              style={{
-                padding: '10px 20px',
-                justifyContent: 'center',
-                alignItems: 'center',
-                background: 'var(--Black, #121212)',           
-              }}
+             
             >
               <p className="text-center text-white text-[#FFF]">시작하기</p>
             </div>
