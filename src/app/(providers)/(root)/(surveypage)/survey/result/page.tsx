@@ -23,8 +23,7 @@ const ResultPage: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [windowWidth, setWindowWidth] = useState<number>(0); // 윈도우 가로 크기 상태 저장
 
-  const fetchPosts = useCallback(async () => {
-    const limit = windowWidth >= 768 ? 6 : 4; // 윈도우 가로 크기에 따라 limit 변경
+  const fetchPosts = useCallback(async (limit: number) => {
     const { data: postList, error } = await supabase
       .from('posts')
       .select('id, image_url')
@@ -42,7 +41,7 @@ const ResultPage: React.FC = () => {
       }));
       setPosts(sanitizedPostList);
     }
-  }, [gender, style, seasons, locations, windowWidth]);
+  }, [gender, style, seasons, locations]);
 
   const fetchUserLikedPosts = useCallback(async () => {
     if (!user) return;
@@ -61,12 +60,11 @@ const ResultPage: React.FC = () => {
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      // 윈도우 가로 크기 저장 및 업데이트
       const handleResize = () => {
         setWindowWidth(window.innerWidth);
       };
 
-      handleResize(); // 초기 실행
+      handleResize(); // 초기 실행 시 호출
       window.addEventListener('resize', handleResize);
 
       return () => {
@@ -76,9 +74,10 @@ const ResultPage: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    fetchPosts();
+    const limit = typeof window !== 'undefined' && window.innerWidth >= 768 ? 6 : 4;
+    fetchPosts(limit);
     fetchUserLikedPosts();
-  }, [fetchPosts, fetchUserLikedPosts, windowWidth]);
+  }, [fetchPosts, fetchUserLikedPosts]);
 
   const handleLikeClick = async (postId: string) => {
     if (!user) {
@@ -135,7 +134,7 @@ const ResultPage: React.FC = () => {
             </button>
           </div>
           <div
-            className={`grid ${windowWidth >= 768 ? 'grid-cols-3' : 'grid-cols-2'} gap-4 mb-4`}
+            className={`grid ${typeof window !== 'undefined' && window.innerWidth >= 768 ? 'grid-cols-3' : 'grid-cols-2'} gap-4 mb-4`}
           >
             {posts.map((post) => {
               const imageUrls = post.image_url?.split(',') || [];
