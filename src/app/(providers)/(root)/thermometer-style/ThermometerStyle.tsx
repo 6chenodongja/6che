@@ -618,11 +618,14 @@ const ThermometerStyle: React.FC = () => {
   const handleRef = useRef<HTMLDivElement | null>(null);
   const textContainerRef = useRef<HTMLDivElement | null>(null);
 
-  // 클라이언트에서만 실행되도록 설정
   useEffect(() => {
-    if (typeof window !== 'undefined') {
+    const updateSize = () => {
       setIsDesktop(window.innerWidth >= 769);
-    }
+    };
+
+    window.addEventListener('resize', updateSize);
+    updateSize(); // 초기화 시 창 크기를 반영
+    return () => window.removeEventListener('resize', updateSize);
   }, []);
 
   const handleTemperatureChange = (newIndex: number) => {
@@ -767,19 +770,18 @@ const ThermometerStyle: React.FC = () => {
             overflow: 'hidden',
           }}
         >
-          <Image
-            src="/images/Thermometer/temperature-box.svg"
-            alt="Temperature Box"
-            width={146}
-            height={48}
-            sizes="100vw"
-            priority
-          />
           <div
-            ref={textContainerRef}
-            className="absolute inset-0 flex items-center justify-center text-lg font-bold temperature-display-text"
+            className={`${
+              isDesktop ? 'w-[219px] h-[72px]' : 'w-[146px] h-[48px]'
+            } relative bg-white rounded-3xl shadow-inner`}
           >
-            {initialView ? '?' : temperatureRanges[temperatureIndex].display}
+            <div
+              className={`absolute inset-0 flex items-center justify-center ${
+                isDesktop ? 'text-2xl' : 'text-lg'
+              } font-bold`}
+            >
+              {initialView ? '?' : temperatureRanges[temperatureIndex].display}
+            </div>
           </div>
         </div>
 
@@ -809,21 +811,18 @@ const ThermometerStyle: React.FC = () => {
             .map((outfit, index) => (
               <div
                 key={index}
-                className={`relative w-[115px] h-[130px] md:w-[159px] md:h-[177px] bg-white/40 rounded-2xl shadow border border-white backdrop-blur-[20px] flex flex-col items-center justify-center`}
+                className={`relative w-[115px] h-[130px] md:w-[159px] md:h-[177px] bg-white/40 rounded-2xl shadow border border-white backdrop-blur-[20px] flex items-center justify-center`}
               >
                 {outfit.imageSrc ? (
-                  <div className="flex justify-center items-center w-[66px] h-[66px] mb-2 md:w-[99px] md:h-[99px]">
+                  <div className="flex items-center justify-center">
                     <Image
                       src={outfit.imageSrc}
                       alt={outfit.label}
+                      width={isDesktop ? 100 : 54} // 769px 이상일 때는 100px, 이하일 때는 54px
+                      height={isDesktop ? 100 : 56} // 769px 이상일 때는 100px, 이하일 때는 56px
                       style={{
-                        maxWidth: '115px',
-                        maxHeight: '91px',
-                        transform: 'translateY(35px)',
                         objectFit: 'contain',
                       }}
-                      layout="fill"
-                      objectFit="contain"
                     />
                   </div>
                 ) : (
@@ -904,8 +903,8 @@ const ThermometerStyle: React.FC = () => {
         <Image
           src="/images/Thermometer/Thermometer.png"
           alt="Thermometer Bar"
-          width={411}
-          height={63}
+          width={isDesktop ? 411 : 411}
+          height={isDesktop ? 63 : 62}
           sizes="100vw"
           priority
         />
