@@ -14,14 +14,13 @@
 @media (min-width: 768px) {
   .header {
     position: absolute;
-  }  
+  }
 }
 
 /* 기본 버튼 스타일 */
 .nav-button {
-
-  width: 75px; 
-  height: 36px; 
+  width: 75px;
+  height: 36px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -773,7 +772,6 @@
   margin-top: 20px;
 }
 
-
 /* X 버튼 스타일 */
 .navbar-close {
   position: absolute;
@@ -1197,7 +1195,7 @@
     margin-bottom: 7px;
     background-color: #fafafa;
     height: 130vh;
-    max-width: 1920px;
+    max-width: 2560px;
   }
 
   .survey-imgae {
@@ -1816,47 +1814,22 @@
 }
 /* 메인 페이지 전용 스타일 */
 
-/* 토스트 알림 스타일-1 */
-.label-style {
-  color: #4d4d4d;
-  font-family: 'Noto Sans KR', sans-serif;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 120%;
-  letter-spacing: -0.28px;
+/* 토스트 알림 */
+/* 데스크탑 설정 */
+.Toastify__toast-container {
+  top: 80px !important; /* 상단 우측에 위치 */
+  right: 20px !important;
+  position: fixed;
 }
 
-/* 토스트 알림-1 */
-.custom-toast {
-  background-color: transparent !important;
-  box-shadow: none !important;
-  padding: 0 !important;
-  border-radius: 0 !important;
-}
-
-/* 토스트 알림-2 */
-.toast-message {
-  color: #4d4d4d;
-  font-family: 'Noto Sans KR', sans-serif;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 120%;
-  letter-spacing: -0.28px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 288px;
-  height: 52px;
-  background-color: rgba(229, 229, 229, 0.6);
-  border-radius: 12px;
-  padding: 0 16px;
-}
-
-/* 토스트 알림 - 버튼 밑줄제거 */
-.no-underline {
-  text-decoration: none; /* 밑줄 제거 */
+/* 모바일 설정 */
+@media (max-width: 768px) {
+  .Toastify__toast-container {
+    bottom: 20px !important; /* 하단 중앙에 위치 */
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    position: fixed;
+  }
 }
 
 /* login, singup, signUpDone */

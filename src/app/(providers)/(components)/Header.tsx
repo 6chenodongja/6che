@@ -81,12 +81,10 @@ const Header = () => {
       setIsLoading(false);
       router.push(url);
     }, 2300);
-
   };
 
   if (isLoading) {
     return <LoadingScreen />;
-
   }
 
   return (

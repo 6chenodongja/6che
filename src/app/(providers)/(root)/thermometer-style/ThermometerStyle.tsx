@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import React, {
   useState,
   useRef,
@@ -9,7 +8,6 @@ import React, {
   TouchEvent,
 } from 'react';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
 
 interface Outfit {
   imageSrc?: string;
@@ -81,6 +79,43 @@ const outfits: { [key: string]: Outfit[] } = {
   ],
 };
 
+const temperatureImages: {
+  [key: string]: { sun: string; leaf: string };
+} = {
+  hot: {
+    sun: '/images/Weather2/Deco/parasol.svg',
+    leaf: '/images/Weather2/Deco/tube.svg',
+  },
+  warm: {
+    sun: '/images/Weather2/Deco/sun.svg',
+    leaf: '/images/Weather2/Deco/leaf.svg',
+  },
+  mild: {
+    sun: '/images/Weather2/Deco/straw_hat.svg',
+    leaf: '/images/Weather2/Deco/sun.svg',
+  },
+  cool: {
+    sun: '/images/Weather2/Deco/ginkgo_leaves.svg',
+    leaf: '/images/Weather2/Deco/leaf.svg',
+  },
+  chilly: {
+    sun: '/images/Weather2/Deco/forsythia.svg',
+    leaf: '/images/Weather2/Deco/cherry_blossoms.svg',
+  },
+  cold: {
+    sun: '/images/Weather2/Deco/ginkgo_leaves.svg',
+    leaf: '/images/Weather2/Deco/autumn_leaves.svg',
+  },
+  colder: {
+    sun: '/images/Weather2/Deco/sun.svg',
+    leaf: '/images/Weather2/Deco/fallen_leaves.svg',
+  },
+  coldest: {
+    sun: '/images/Weather2/Deco/snowman.svg',
+    leaf: '/images/Weather2/Deco/snow.svg',
+  },
+};
+
 const defaultImages: string[] = [
   '/images/Weather2/default-blue.svg',
   '/images/Weather2/default-yellow.svg',
@@ -109,10 +144,20 @@ const ThermometerStyle: React.FC = () => {
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [initialView, setInitialView] = useState<boolean>(true);
   const [animationsEnabled, setAnimationsEnabled] = useState<boolean>(false);
+  const [isDesktop, setIsDesktop] = useState<boolean>(false);
   const sliderRef = useRef<HTMLDivElement | null>(null);
   const handleRef = useRef<HTMLDivElement | null>(null);
   const textContainerRef = useRef<HTMLDivElement | null>(null);
-  const router = useRouter();
+
+  useEffect(() => {
+    const updateSize = () => {
+      setIsDesktop(window.innerWidth >= 769);
+    };
+
+    window.addEventListener('resize', updateSize);
+    updateSize(); // 초기화 시 창 크기를 반영
+    return () => window.removeEventListener('resize', updateSize);
+  }, []);
 
   const handleTemperatureChange = (newIndex: number) => {
     if (newIndex >= 0 && newIndex < temperatureRanges.length) {
@@ -207,29 +252,22 @@ const ThermometerStyle: React.FC = () => {
 
       if (initialView) {
         handleRef.current.style.transition = 'none';
-        handleRef.current.style.left = `${(sliderRect.width - handleWidth) / 2}px`;
+        handleRef.current.style.left = `${
+          (sliderRect.width - handleWidth) / 2
+        }px`;
       }
     }
   }, [temperatureIndex, initialView]);
 
   useEffect(() => {
     if (textContainerRef.current) {
-      const direction = prevTemperatureIndex < temperatureIndex ? 1 : -1;
-      textContainerRef.current.style.transform = `translateX(${direction * 100}%)`;
-      textContainerRef.current.style.transition = animationsEnabled
-        ? 'transform 0.3s ease'
-        : 'none';
-
-      const timer = setTimeout(() => {
-        if (textContainerRef.current) {
-          textContainerRef.current.style.transition = 'none';
-          textContainerRef.current.style.transform = 'translateX(0)';
-        }
-      }, 300);
-
-      return () => clearTimeout(timer);
+      textContainerRef.current.style.transform = 'translateX(0)';
+      textContainerRef.current.style.transition = 'none';
     }
-  }, [temperatureIndex, prevTemperatureIndex, animationsEnabled]);
+  }, [temperatureIndex]);
+
+  const currentTemperatureLabel = temperatureRanges[temperatureIndex].label;
+  const temperatureImagesToUse = temperatureImages[currentTemperatureLabel];
 
   const getOutfitsForTemperature = (tempDisplay: string): Outfit[] => {
     const matchedKey = Object.keys(outfits).find((key) => key === tempDisplay);
@@ -250,7 +288,11 @@ const ThermometerStyle: React.FC = () => {
   };
 
   return (
-    <div className="w-full max-w-md mx-auto flex flex-col min-h-screen bg-[#FFFFF]">
+    <div
+      className={`w-full max-w-md mx-auto flex flex-col min-h-screen ${
+        isDesktop ? '' : 'bg-neutral-50'
+      }`}
+    >
       <div className="flex flex-col items-center mt-5 mb-8">
         <div
           className="relative mb-3 mt-15 temperature-display-container"
@@ -265,104 +307,59 @@ const ThermometerStyle: React.FC = () => {
             flexShrink: 0,
           }}
         >
-          <Image
-            src="/images/Weather2/temparature_box.svg"
-            alt="Temperature Box"
-            width={146}
-            height={48}
-            sizes="100vw"
-            priority
-          />
           <div
-            ref={textContainerRef}
-            className="absolute inset-0 flex items-center justify-center text-lg font-medium temperature-display-text"
-            style={{
-              fontFamily: 'Varela',
-              color: '#000',
-              fontSize: '20px',
-            }}
+            className={`${
+              isDesktop ? 'w-[219px] h-[72px]' : 'w-[146px] h-[48px]'
+            } relative bg-white rounded-3xl shadow-inner`}
           >
-            {initialView
-              ? "?"
-              : temperatureRanges[temperatureIndex].display
-                  .split(" - ")
-                  .map((text, i) => (
-                    <React.Fragment key={i}>
-                      {i > 0 && (
-                        <Image
-                          src="/images/Weather2/bar2.svg"
-                          alt="Separator"
-                          width={15} // 원하는 크기
-                          height={10} // 원하는 크기
-                          style={{ margin: "0 5px" }}
-                        />
-                      )}
-                      {text}
-                    </React.Fragment>
-                  ))}
+            <div
+              className={`absolute inset-0 flex items-center justify-center ${
+                isDesktop ? 'text-2xl' : 'text-lg'
+              } font-bold`}
+            >
+              {initialView ? '?' : temperatureRanges[temperatureIndex].display}
+            </div>
           </div>
         </div>
 
-        <div className="relative w-full grid grid-cols-2 gap-[8px] px-[40px] py-[25px]">
-          {/* 상단 sun.svg 아이콘 */}
-          <div className="absolute left-[12px] top-[-5px]">
+        <div className="relative w-full h-auto md:w-[412px] md:h-[400px] grid grid-cols-2 gap-[8px] md:gap-[14px] px-[40px] py-[25px]">
+          <div className="absolute left-[12px] top-[-5px] md:left-[-12px] md:top-[-35px]">
             <Image
-              src="/images/Weather2/sun.svg"
+              src={temperatureImagesToUse.sun}
               alt="Sun Icon"
               width={56}
               height={46}
+              className="md:w-[104px] md:h-[104px]"
             />
           </div>
 
-          {/* 나뭇잎 leaf.svg 아이콘 */}
-          <div
-            className="absolute right-[25px] top-[134px] z-10"
-            style={{
-              flexShrink: 0,
-              opacity: 1,
-            }}
-          >
+          <div className="absolute right-[25px] top-[135px] z-[3] md:right-[-7px] md:top-[160px] md:z-[3]">
             <Image
-              src="/images/Weather2/leaf.svg"
+              src={temperatureImagesToUse.leaf}
               alt="Leaf Icon"
               width={50}
               height={46}
-              style={{
-                display: 'block',
-                margin: 0,
-                padding: 1,
-                filter: 'drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))',
-              }}
+              className="md:w-[100px] md:h-[100px]"
             />
           </div>
 
-          {/* 옷 이미지 */}
           {currentOutfits
             .slice(currentOutfitIndex, currentOutfitIndex + 4)
             .map((outfit, index) => (
               <div
                 key={index}
-                className={`relative w-[115px] h-[130px] bg-white/40 rounded-2xl shadow border border-white backdrop-blur-[20px] flex flex-col items-center justify-center`}
-                style={{
-                  zIndex: index === 1 ? 4 : index === 3 ? 10 : 6,
-                  opacity: 1, // 모든 박스의 투명도를 1로 설정
-                  backdropFilter: 'blur(10px)', // 모든 박스에 blur(20px) 적용
-                  boxShadow:
-                    '0px 0px 1.797px 0px rgba(0, 0, 0, 0.05), 3.595px 3.595px var(--Blur-20, 20px) 0px rgba(0, 0, 0, 0.05)', // 모든 박스에 동일한 box-shadow 적용
-                }}
+                className={`relative w-[115px] h-[130px] md:w-[159px] md:h-[177px] bg-white/40 rounded-2xl shadow border border-white backdrop-blur-[20px] flex items-center justify-center`}
               >
                 {outfit.imageSrc ? (
-                  <div className="w-[66px] h-[66px] mb-2">
+                  <div className="flex items-center justify-center">
                     <Image
                       src={outfit.imageSrc}
                       alt={outfit.label}
+                      width={isDesktop ? 100 : 54} // 769px 이상일 때는 100px, 이하일 때는 54px
+                      height={isDesktop ? 100 : 56} // 769px 이상일 때는 100px, 이하일 때는 56px
                       style={{
-                        maxWidth: '115px',
-                        maxHeight: '91px',
-                        transform: 'translateY(35px)',
-                      }} // 최대 크기 제한 및 아래로 이동
-                      layout="fill"
-                      objectFit="contain"
+                        objectFit: 'contain',
+                      }}
                     />
                   </div>
                 ) : (
@@ -370,10 +367,9 @@ const ThermometerStyle: React.FC = () => {
                 )}
                 <div className="absolute top-0 left-0.8 w-full text-center pt-2">
                   <span
-                    className="text-sm font-medium"
+                    className="text-sm font-medium md:text-[18px]"
                     style={{
                       fontFamily: 'Noto Sans KR',
-                      fontSize: '12px',
                       letterSpacing: '-0.24px',
                       fontWeight: 600,
                       fontStyle: 'normal',
@@ -386,7 +382,6 @@ const ThermometerStyle: React.FC = () => {
               </div>
             ))}
 
-          {/* 이미지 왼쪽 버튼 */}
           {currentOutfitIndex > 0 && (
             <button
               className="absolute left-[8px] top-[50%] transform -translate-y-1/2 flex items-start opacity-[var(--sds-size-stroke-border)] shadow-[0px_1px_2px_0px_rgba(0,0,0,0.10)] backdrop-filter backdrop-blur-[2px] rounded-full z-10"
@@ -409,7 +404,6 @@ const ThermometerStyle: React.FC = () => {
               />
             </button>
           )}
-          {/* 이미지 오른쪽 버튼 */}
           {currentOutfitIndex + 4 < currentOutfits.length && (
             <button
               className="absolute right-[9px] top-[50%] transform -translate-y-1/2 flex items-start opacity-[var(--sds-size-stroke-border)] shadow-[0px_1px_2px_0px_rgba(0,0,0,0.10)] backdrop-filter backdrop-blur-[2px] rounded-full z-10"
@@ -441,7 +435,6 @@ const ThermometerStyle: React.FC = () => {
         onMouseDown={handleMouseDown}
         onTouchStart={handleMouseDown}
       >
-        {/* 왼쪽 버튼 */}
         <button
           className="absolute left-[35px] top-[41.5%] transform -translate-y-1/2 flex items-center justify-center z-1"
           onClick={handleLeftClick}
@@ -459,8 +452,8 @@ const ThermometerStyle: React.FC = () => {
         <Image
           src="/images/Thermometer/Thermometer.png"
           alt="Thermometer Bar"
-          width={411}
-          height={63}
+          width={isDesktop ? 411 : 411}
+          height={isDesktop ? 63 : 62}
           sizes="100vw"
           priority
         />
@@ -492,7 +485,6 @@ const ThermometerStyle: React.FC = () => {
           ></div>
         </div>
 
-        {/* 오른쪽 버튼 */}
         <button
           className="absolute right-[35px] top-[41.5%] transform -translate-y-1/2 flex items-center justify-center z-1"
           onClick={handleRightClick}
@@ -508,17 +500,13 @@ const ThermometerStyle: React.FC = () => {
         </button>
       </div>
 
-      <div className="w-full px-4 mb-8">
-        <Link href="/list">
-          <button className="w-full px-4 py-2 mb-4 text-base bg-black text-white rounded-lg button-style">
-            온도에 맞는 코디 보러가기
-          </button>
-        </Link>
-        <Link href="/survey">
-          <button className="w-full px-4 py-2 border-2 border-black bg-white rounded-lg text-base button-style">
-            취향 코디 추천받기
-          </button>
-        </Link>
+      <div className="w-full flex flex-col items-center mb-8">
+        <button className="w-full md:w-[400px] md:h-[49px] px-4 py-2 mb-4 text-base bg-black text-white rounded-lg button-style">
+          온도에 맞는 코디 보러가기
+        </button>
+        <button className="w-full md:w-[400px] md:h-[49px] px-4 py-2 border-2 border-black bg-white rounded-lg text-base button-style">
+          취향 코디 추천받기
+        </button>
       </div>
     </div>
   );
