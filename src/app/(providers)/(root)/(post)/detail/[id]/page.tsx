@@ -280,16 +280,15 @@ function PostDetail({ params }: { params: { id: string } }) {
 
           <div className="flex flex-col gap-2.5 mt-2 ml-auto">
             <div className="flex justify-between items-center self-stretch flex-grow-0 flex-shrink-0">
-              {user?.profileImage && (
-                <Image
-                  src={user.profileImage}
-                  alt="프로필 이미지"
-                  width={24}
-                  height={24}
-                />
-              )}
               <div className="flex justify-between items-center flex-grow-0 flex-shrink-0 gap-[5px]">
-                <DetailNicknameIcon />
+                {user?.profileImage && (
+                  <Image
+                    src={user.profileImage}
+                    alt="프로필 이미지"
+                    width={24}
+                    height={24}
+                  />
+                )}
                 <div>
                   {/* 유저 닉네임 */}
                   <p className="flex-grow-0 flex-shrink-0 font-semibold text-[#333] text-[18px] leading-[23.4px] tracking-[-0.36px]">

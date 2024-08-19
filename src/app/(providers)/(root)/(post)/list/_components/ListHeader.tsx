@@ -8,7 +8,7 @@ function ListHeader() {
   const [temperature, setTemperature] = useState<string | null>(null);
   // 모달 추가
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { isLoggedIn } = useUserStore();
+  const { user } = useUserStore();
   const router = useRouter();
   useEffect(() => {
     const fetchLocationAndWeather = async () => {
@@ -45,7 +45,7 @@ function ListHeader() {
 
   // 모달 오픈/닫기 함수
   const openModal = () => {
-    if (!isLoggedIn) {
+    if (!user) {
       setIsModalOpen(true);
     } else {
       router.replace('/postform');
@@ -247,12 +247,12 @@ function ListHeader() {
           </div>
         </div>
         <div className="flex justify-center items-center flex-grow-0 flex-shrink-0 relative overflow-hidden gap-1 p-2 rounded-lg bg-[#121212]">
-          <Link
-            href={'/postform'}
+          <button
+            onClick={openModal}
             className="flex-grow-0 flex-shrink-0 text-sm text-left text-white"
           >
             코디 등록
-          </Link>
+          </button>
           <svg
             width={18}
             height={18}
