@@ -2,8 +2,6 @@
 
 import React from 'react';
 import ResetPasswordForm from './_components/ResetPasswordForm';
-import Header from 'app/(providers)/(components)/Header';
-import Footer from 'app/(providers)/(components)/Footer';
 
 function ResetPasswordPage() {
   return (
