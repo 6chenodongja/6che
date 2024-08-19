@@ -174,6 +174,9 @@ const config: Config = {
       // lineHeight: {
       //   '130%': '20.8px',
       // },
+      boxShadowPc: {
+        'custom': '0px 0px 2px 0px rgba(0, 0, 0, 0.05), 4px 4px var(--Blur-20, 20px) 0px rgba(0, 0, 0, 0.05)',
+      },
 
     },
   },

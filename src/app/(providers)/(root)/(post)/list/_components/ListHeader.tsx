@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import Link from 'next/link';
+import LoginModalProps from '@/components/Modal/LoginModal';
+import { useUserStore } from '@/zustand/store/useUserStore';
+import { useRouter } from 'next/navigation';
 
 function ListHeader() {
   const [temperature, setTemperature] = useState<string | null>(null);
-
+  // 모달 추가
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { isLoggedIn } = useUserStore();
+  const router = useRouter();
   useEffect(() => {
     const fetchLocationAndWeather = async () => {
       try {
@@ -37,26 +42,39 @@ function ListHeader() {
     fetchLocationAndWeather();
   }, []);
 
+  // 모달 오픈/닫기 함수
+  const openModal = () => {
+    if (!isLoggedIn) {
+      setIsModalOpen(true);
+    } else {
+      router.replace('/postform');
+    }
+  };
+  const closeModal = () => setIsModalOpen(false);
+
+  const handlerLoginModal = () => {
+    closeModal();
+  };
   return (
     <div
-      className="flex justify-between items-center w-[288px] px-1 py-1.5 rounded-lg bg-white/50 border border-white/60 backdrop-blur-[20px] mx-auto mt-[16px]"
+      className="flex justify-between items-center w-[288px] px-1 py-1.5 rounded-lg bg-white/50 border border-white/60 mx-auto mt-[16px] z-[5000]"
       style={{
         boxShadow:
           '0px 0px 2px 0px rgba(0, 0, 0, 0.05), 0px 2px var(--Blur-8, 8px) 0px rgba(0, 0, 0, 0.05)',
       }}
     >
-      <div className="flex justify-start items-center flex-grow-0 flex-shrink-0 relative gap-0.5 px-1.5">
+      <div className="flex justify-start items-center flex-grow-0 flex-shrink-0 gap-0.5 px-1.5">
         <p className="flex-grow-0 flex-shrink-0 font-KR font-normal text-[14px] text-[#666] leading-[21px] tacking-[-0.28px]">
           현재
         </p>
-        <div className="flex justify-start items-center flex-grow-0 flex-shrink-0 relative gap-1.5">
+        <div className="flex justify-start items-center flex-grow-0 flex-shrink-0 gap-1.5">
           <svg
             width={24}
             height={24}
             viewBox="0 0 24 24"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
-            className="flex-grow-0 flex-shrink-0 w-6 h-6 relative"
+            className="flex-grow-0 flex-shrink-0 w-6 h-6"
             preserveAspectRatio="xMidYMid meet"
           >
             <g filter="url(#filter0_b_3033_4449)">
@@ -226,20 +244,20 @@ function ListHeader() {
           </p>
         </div>
       </div>
-      <div className="flex justify-center items-center flex-grow-0 flex-shrink-0 relative overflow-hidden gap-1 p-2 rounded-lg bg-[#121212]">
-        <Link
-          href={'/postform'}
+      <div className="flex justify-center items-center flex-shrink-0  gap-1 p-2 rounded-lg bg-[#121212]">
+        <button
+          onClick={openModal}
           className="flex-grow-0 flex-shrink-0 text-sm text-left text-white"
         >
-          스타일
-        </Link>
+          등록
+        </button>
         <svg
           width={18}
           height={18}
           viewBox="0 0 18 18"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
-          className="flex-grow-0 flex-shrink-0 w-[18px] h-[18px] relative"
+          className="flex-grow-0 flex-shrink-0 w-[18px] h-[18px] "
           preserveAspectRatio="xMidYMid meet"
         >
           <path
@@ -250,6 +268,13 @@ function ListHeader() {
           />
         </svg>
       </div>
+      {isModalOpen && (
+        <LoginModalProps
+          isOpen={isModalOpen}
+          onConfirm={handlerLoginModal}
+          onClose={closeModal}
+        />
+      )}
     </div>
   );
 }
