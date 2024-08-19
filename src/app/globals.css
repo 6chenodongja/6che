@@ -802,13 +802,29 @@
   border: 1px solid white;
 }
 
-.swiper-pagination {
-  margin-bottom: 10px;
+.swiper-button-next,
+.swiper-button-prev {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  border-radius: 1000px;
 }
+
+.swiper-button-next::after,
+.swiper-button-prev::after {
+  width: 28px !important;
+  height: 28px !important;
+  color: gray !important;
+  font-size: 28px !important;
+  line-height: 28px !important;
+}
+
 /* listPage 스타일 */
 
 .list-icon {
-  border-radius: 2px;
+  border-radius: 4px;
   background: #fff;
   backdrop-filter: blur(10px);
 }
@@ -825,12 +841,6 @@
     var(--Bg_icon, rgba(255, 255, 255, 0.6));
   opacity: var(--sds-size-stroke-border);
   background: var(--text-box, rgba(255, 255, 255, 0.5));
-}
-.list-header {
-  width: 320px;
-  height: 50px;
-  padding: 8px 12px 9px 14px;
-  gap: 155px;
 }
 
 /* 모달 글자 부분 */
@@ -930,7 +940,7 @@
   padding: var(--sds-size-space-200) var(--Blur-10, 10px);
 }
 .detail-icon {
-  border-radius: 8px;
+  border-radius: 4px;
   background: #fff;
   backdrop-filter: blur(10px);
   width: 28px;
@@ -1814,47 +1824,22 @@
 }
 /* 메인 페이지 전용 스타일 */
 
-/* 토스트 알림 스타일-1 */
-.label-style {
-  color: #4d4d4d;
-  font-family: 'Noto Sans KR', sans-serif;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 120%;
-  letter-spacing: -0.28px;
+/* 토스트 알림 */
+/* 데스크탑 설정 */
+.Toastify__toast-container {
+  top: 80px !important; /* 상단 우측에 위치 */
+  right: 20px !important;
+  position: fixed;
 }
 
-/* 토스트 알림-1 */
-.custom-toast {
-  background-color: transparent !important;
-  box-shadow: none !important;
-  padding: 0 !important;
-  border-radius: 0 !important;
-}
-
-/* 토스트 알림-2 */
-.toast-message {
-  color: #4d4d4d;
-  font-family: 'Noto Sans KR', sans-serif;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 120%;
-  letter-spacing: -0.28px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 288px;
-  height: 52px;
-  background-color: rgba(229, 229, 229, 0.6);
-  border-radius: 12px;
-  padding: 0 16px;
-}
-
-/* 토스트 알림 - 버튼 밑줄제거 */
-.no-underline {
-  text-decoration: none; /* 밑줄 제거 */
+/* 모바일 설정 */
+@media (max-width: 768px) {
+  .Toastify__toast-container {
+    bottom: 20px !important; /* 하단 중앙에 위치 */
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    position: fixed;
+  }
 }
 
 /* login, singup, signUpDone */
@@ -2025,3 +2010,193 @@
     border-radius: 20px;
   }
 } */
+/* 토스트 알림 스타일-1 */
+.label-style {
+  color: #4d4d4d;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 120%;
+  letter-spacing: -0.28px;
+}
+
+/* 토스트 알림-1 */
+.custom-toast {
+  background-color: transparent !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+}
+
+/* 토스트 알림-2 */
+.toast-message {
+  color: #4d4d4d;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 120%;
+  letter-spacing: -0.28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 288px;
+  height: 52px;
+  background-color: rgba(229, 229, 229, 0.6);
+  border-radius: 12px;
+  padding: 0 16px;
+}
+
+/* 토스트 알림 - 버튼 밑줄제거 */
+.no-underline {
+  text-decoration: none; /* 밑줄 제거 */
+}
+
+/* 320px~479px 이하 화면에서의 스타일 */
+@media (min-width: 320px) and (max-width: 480px) {
+  .list-container {
+    width: 100%;
+    margin: 0 auto;
+    padding-top: 60px;
+    box-sizing: border-box;
+  }
+  .list-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    justify-content: center;
+    align-items: center;
+  }
+  .list-header {
+    max-width: auto;
+    width: 288px;
+  }
+  .list-select {
+    max-width: auto;
+    width: 288px;
+    margin-top: 6px;
+    flex-wrap: wrap;
+  }
+}
+
+/* 480px~647px 이하 화면에서의 스타일 */
+@media (min-width: 480px) and (max-width: 648px) {
+  .list-container {
+    width: 100%;
+    margin: 0 auto;
+    padding-top: 60px;
+    box-sizing: border-box;
+  }
+  .list-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-content: center;
+    align-items: center;
+  }
+  .list-header {
+    max-width: auto;
+  }
+  .list-select {
+    max-width: auto;
+    margin-top: 6px;
+    flex-wrap: wrap;
+  }
+}
+
+/* 768px~860px 이상 화면에서의 스타일 */
+@media (min-width: 648px) and (max-width: 950px) {
+  .list-container {
+    width: 100%;
+    margin: 0 auto;
+    padding-top: 60px;
+    box-sizing: border-box;
+  }
+  .list-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    justify-content: center;
+    align-items: center;
+  }
+  .list-header {
+    max-width: auto;
+  }
+  .list-select {
+    max-width: auto;
+  }
+}
+/* 950px~1920px 이상 화면에서의 스타일 */
+@media (min-width: 950px) and (max-width: 1920px) {
+  .list-container {
+    width: 100%;
+    margin: 0 auto;
+    padding-top: 60px;
+    box-sizing: border-box;
+  }
+  .list-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    justify-content: center;
+    align-items: center;
+  }
+  .list-header {
+    width: 1024px;
+  }
+  .list-select {
+    width: 1024px;
+  }
+}
+
+@media (min-width: 320px) and (max-width: 768px) {
+  .detail-container {
+    width: 100%;
+    margin: 0 auto;
+    padding-top: 60px;
+    box-sizing: border-box;
+  }
+}
+@media (min-width: 768px) and (max-width: 1920px) {
+  .detail-container {
+    width: 100%;
+    margin: 0 auto;
+    padding-top: 60px;
+    box-sizing: border-box;
+  }
+}
+
+/* 포스트 없을 때  */
+
+@media (min-width: 320px) and (max-width: 768px) {
+  .notPostLike-container {
+    width: 100%;
+    margin: 0 auto;
+    padding-top: 60px;
+    box-sizing: border-box;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1920px) {
+  .notPostLike-container {
+    width: 100%;
+    margin: 0 auto;
+    padding-top: 60px;
+    box-sizing: border-box;
+  }
+}
+
+@media (min-width: 320px) and (max-width: 768px) {
+  .notMyStyle-container {
+    width: 100%;
+    margin: 0 auto;
+    padding-top: 60px;
+    box-sizing: border-box;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1920px) {
+  .notMyStyle-container {
+    width: 100%;
+    margin: 0 auto;
+    padding-top: 60px;
+    box-sizing: border-box;
+  }
+}

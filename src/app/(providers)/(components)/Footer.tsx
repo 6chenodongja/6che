@@ -1,17 +1,37 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { LogoText } from '../../../icons/LogoText';
 import { useUserStore } from '@/zustand/store/useUserStore';
 import LoginModalProps from '@/components/Modal/LoginModal';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 const Footer = () => {
   const { isLoggedIn } = useUserStore();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const router = useRouter();
+  const pathname = usePathname();
+  const isDetailPage = pathname?.startsWith('/detail');
+  const [isDetailMobile, setIsDetailMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsDetailMobile(window.innerWidth <= 768); // DetailPage 768이하에서만 푸터 안보이게 하기
+    };
+
+    handleResize(); // 초기 호출
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  if (isDetailPage && isDetailMobile) {
+    return <></>;
+  }
 
   const handleMypageClick = (
     e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
@@ -46,7 +66,10 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link href="/" className="footer-link footer-text-style text-item">
+                <Link
+                  href="/"
+                  className="footer-link footer-text-style text-item"
+                >
                   코디
                 </Link>
               </li>
@@ -59,7 +82,10 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link href="/survey" className="footer-link footer-text-style text3-item">
+                <Link
+                  href="/survey"
+                  className="footer-link footer-text-style text3-item"
+                >
                   취향 코디
                 </Link>
               </li>
@@ -73,7 +99,10 @@ const Footer = () => {
                 </Link>
                 <ul className="flex flex-col items-start space-y-[4px] footer-text-style2 mybtn">
                   <li>
-                    <Link href="/mypage" className="footer-link footer-text2 footer-text-style2 mybtn">
+                    <Link
+                      href="/mypage"
+                      className="footer-link footer-text2 footer-text-style2 mybtn"
+                    >
                       좋아요한 코디
                     </Link>
                   </li>

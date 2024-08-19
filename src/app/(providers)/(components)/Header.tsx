@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { LogoText } from '../../../icons/LogoText';
@@ -19,6 +19,22 @@ const Header = () => {
   const [loginModal, setLoginModal] = useState(false);
   const [activeLink, setActiveLink] = useState(''); // 활성화된 링크 상태 관리
   const router = useRouter();
+  const pathname = usePathname();
+  const isDetailPage = pathname?.startsWith('/detail');
+  const [isDetailMobile, setIsDetailMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsDetailMobile(window.innerWidth <= 768); // DetailPage 768이하에서만 헤더 안보이게 하기
+    };
+
+    handleResize(); // 초기 호출
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   const handleLoginModal = () => setLoginModal(!loginModal);
   const handleMenuToggle = () => {
@@ -68,9 +84,7 @@ const Header = () => {
   const handleLogoClick = () => {
     if (window.location.pathname === '/') {
       window.location.reload();
-      window.location.reload();
     } else {
-      router.push('/');
       router.push('/');
     }
   };
@@ -81,12 +95,13 @@ const Header = () => {
       setIsLoading(false);
       router.push(url);
     }, 2300);
-
   };
 
   if (isLoading) {
     return <LoadingScreen />;
-
+  }
+  if (isDetailPage && isDetailMobile) {
+    return <></>;
   }
 
   return (
