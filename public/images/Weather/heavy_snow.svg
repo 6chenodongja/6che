@@ -1,20 +1,23 @@
 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g filter="url(#filter0_b_2350_1029)">
-<rect width="24" height="24" rx="4" fill="white" fill-opacity="0.6"/>
-<g filter="url(#filter1_b_2350_1029)">
+<g id="icon/weather/heavy snow" filter="url(#filter0_b_2350_1029)">
+<g id="Group 36">
+<g id="Union" filter="url(#filter1_b_2350_1029)">
 <path d="M16.2353 15C18.8668 15 21 13.2952 21 11.1923C21 9.20447 19.0939 7.57241 16.6626 7.39972C16.1794 5.46107 14.0385 4 11.4706 4C8.54673 4 6.17647 5.89418 6.17647 8.23077C6.17647 8.2663 6.17702 8.30174 6.17811 8.33706C4.35057 8.71234 3 10.0378 3 11.6154C3 13.4847 4.89621 15 7.23529 15H16.2353Z" fill="#CCCCCC" fill-opacity="0.7"/>
 </g>
-<g filter="url(#filter2_bd_2350_1029)">
+</g>
+<g id="snow">
+<g id="Rectangle 165" filter="url(#filter2_bd_2350_1029)">
 <path d="M17.4168 10.6109C17.6853 10.3424 18.1206 10.3424 18.3891 10.6109C18.6576 10.8794 18.6576 11.3147 18.3891 11.5832L11.5832 18.3891C11.3147 18.6576 10.8794 18.6576 10.6109 18.3891C10.3424 18.1206 10.3424 17.6853 10.6109 17.4168L17.4168 10.6109Z" fill="#7EC5FF" fill-opacity="0.6" shape-rendering="crispEdges"/>
 </g>
-<g filter="url(#filter3_bd_2350_1029)">
+<g id="Rectangle 166" filter="url(#filter3_bd_2350_1029)">
 <path d="M10.6109 11.5833C10.3424 11.3148 10.3424 10.8795 10.6109 10.611C10.8794 10.3425 11.3147 10.3425 11.5832 10.611L18.3891 17.4169C18.6576 17.6854 18.6576 18.1207 18.3891 18.3892C18.1206 18.6577 17.6853 18.6577 17.4168 18.3892L10.6109 11.5833Z" fill="#7EC5FF" fill-opacity="0.6" shape-rendering="crispEdges"/>
 </g>
-<g filter="url(#filter4_bd_2350_1029)">
+<g id="Rectangle 164" filter="url(#filter4_bd_2350_1029)">
 <path d="M19.3125 13.8125C19.6922 13.8125 20 14.1203 20 14.5C20 14.8797 19.6922 15.1875 19.3125 15.1875L9.6875 15.1875C9.3078 15.1875 9 14.8797 9 14.5C9 14.1203 9.3078 13.8125 9.6875 13.8125L19.3125 13.8125Z" fill="#7EC5FF" fill-opacity="0.6" shape-rendering="crispEdges"/>
 </g>
-<g filter="url(#filter5_bd_2350_1029)">
+<g id="Rectangle 161" filter="url(#filter5_bd_2350_1029)">
 <path d="M13.8125 9.6875C13.8125 9.3078 14.1203 9 14.5 9C14.8797 9 15.1875 9.3078 15.1875 9.6875V19.3125C15.1875 19.6922 14.8797 20 14.5 20C14.1203 20 13.8125 19.6922 13.8125 19.3125V9.6875Z" fill="#7EC5FF" fill-opacity="0.6" shape-rendering="crispEdges"/>
+</g>
 </g>
 </g>
 <defs>
