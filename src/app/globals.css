@@ -339,33 +339,35 @@
   text-align: center;
 }
 
-/* 홈 버튼 스타일 */
-.navbar ul li:first-child a {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 195px; /* 크기 설정 */
-  height: 36px; /* 높이 설정 */
-  background-color: black; /* 배경색: 검정색 */
-  color: white; /* 글자색: 흰색 */
-  text-decoration: none;
-  border-radius: 18px; /* 둥근 모서리 */
-  font-size: 16px; /* 글자 크기 */
-  font-weight: bold; /* 글자 굵기 */
-  margin-bottom: 20px; /* 홈 버튼과 아래 항목 간격 설정 */
-}
-
-/* 나머지 메뉴 항목 스타일 */
-.navbar ul li:not(:first-child) a {
+/* 메뉴 항목 */
+.navbar ul li a {
   display: block;
   text-align: center;
-  color: #4d4d4d; /* 텍스트 색상 */
-  font-family: 'Noto Sans KR'; /* 글꼴 설정 */
-  font-size: 16px; /* 글자 크기 */
-  font-weight: 400; /* 글자 굵기 */
-  line-height: 24px; /* 줄 간격 */
-  letter-spacing: -0.32px; /* 자간 */
-  margin-top: 18px; /* 각 메뉴 항목 사이의 간격 */
+  color: #4d4d4d;
+  font-family: 'Noto Sans KR';
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: -0.32px;
+  padding: 6px 18px;
+  margin: 12px 0;
+  border-radius: 18px;
+  background-color: transparent;
+  transition:
+    background-color 0.3s,
+    color 0.3s;
+}
+
+/* 호버 시 모든 메뉴 항목에 동일한 효과 적용 */
+.navbar ul li a:hover {
+  background-color: #121212; /* 호버 시 배경색 */
+  color: #ffffff; /* 호버 시 글자색 */
+}
+
+/* 현재 활성화된 메뉴 항목에 특별한 스타일 적용 */
+.navbar ul li a.active {
+  background-color: #121212; /* 활성화된 메뉴의 배경색 */
+  color: #ffffff; /* 활성화된 메뉴의 글자색 */
 }
 
 /* X 버튼 스타일 */
@@ -470,6 +472,27 @@
   box-sizing: border-box;
 }
 
+/* 메인페이지 모바일 주현우 */
+.main-mobile-container {
+  width: 100%;
+  min-width: 320px;
+  /* max-width: 2560px; */
+  max-width: 1920px;
+  margin: 0 auto;
+  padding-top: 60px;
+  box-sizing: border-box;
+}
+
+/* 메인페이지 웹 주현우 */
+.main-web-container {
+  width: 100%;
+  min-width: 769px;
+  max-width: 1920px;
+  margin: 0 auto;
+  padding-top: 60px;
+  box-sizing: border-box;
+}
+
 .container {
   width: 320px;
   min-width: 320px;
@@ -480,11 +503,84 @@
 }
 
 /* 반응형 조정 */
-/* @media (min-width: 320px) and (max-width: 500px) {
+/* @media (max-width: 1000px) {
   .container {
     width: 100%;
+    padding: 0 16px;
   }
-} */
+
+  .navbar ul {
+    padding: 16px;
+  }
+
+  .w-[88px] {
+    width: 72px;
+    height: 82px;
+  }
+
+  .h-[100px] {
+    height: 82px;
+  }
+
+  .px-[17px] {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .py-2.5 {
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+
+  .px-4 {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .pt-4 {
+    padding-top: 16px;
+  }
+
+  .pb-5 {
+    padding-bottom: 20px;
+  }
+
+  .mt-8 {
+    margin-top: 32px;
+  }
+
+  .text-base {
+    font-size: 14px;
+  }
+
+  .text-sm {
+    font-size: 12px;
+  }
+
+  .text-[63.6px] {
+    font-size: 48px;
+  }
+
+  .text-[50px] {
+    font-size: 40px;
+  }
+
+  .text-[16px] {
+    font-size: 14px;
+  }
+
+  .text-[18.20px] {
+    font-size: 16px;
+  }
+
+  .swiper-slide {
+    width: calc(50% - 8px); /* 슬라이드 간의 간격을 고려한 너비 조정 */
+/* }
+
+  .swiper-container {
+    padding: 0 16px;
+  }
+/* } */
 
 /* detail 부분 */
 .deleteButton {
