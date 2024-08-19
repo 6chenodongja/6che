@@ -9,8 +9,8 @@ function SingUpDone() {
   const { user } = useUserStore();
 
   return (
-    <main className="relative flex flex-col justify-center items-center md:w-[480px] md:h-[724px] md:bg-white md:shadow-boxShadowPc md:rounded-3xl">
-      <div className="">
+    <main className="flex flex-col justify-center items-center md:w-[480px] md:h-[724px] md:bg-white md:shadow-boxShadowPc md:rounded-3xl">
+      <div className="flex flex-col w-full">
         <div className="text-center">
           <div className="w-full h-full flex justify-center items-center top-0 left-0">
             <Image
@@ -19,7 +19,11 @@ function SingUpDone() {
               width={292}
               height={330}
               className="absolute top-[92px] left-2"
+              className="absolute top-[92px] left-2"
             />
+            <Image
+              src="/images/signUpDone/SignupConfirmationGlow.svg"
+              alt=""
             <Image
               src="/images/signUpDone/SignupConfirmationGlow.svg"
               alt=""
@@ -28,7 +32,7 @@ function SingUpDone() {
               className="absolute top-[92px] left-2"
             />
           </div>
-          <div className="flex flex-col">
+          <div className="flex flex-col mb-[165px] w-full">
             <div className="">
               <p className="text-[24px] font-[700] leading-[31.2px] tracking-[-0.02em] relative pb-[1px]">
                 {user?.nickname}
