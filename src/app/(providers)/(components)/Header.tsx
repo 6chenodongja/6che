@@ -15,7 +15,6 @@ import LoginPopup from '../(root)/(auth)/login/_components/LoginPopup';
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const { user, setUser } = useUserStore();
   const [loginModal, setLoginModal] = useState(false);
   const [activeLink, setActiveLink] = useState(''); // 활성화된 링크 상태 관리
@@ -28,8 +27,14 @@ const Header = () => {
 
   const handleLinkClick = (link: string) => {
     setActiveLink(link); // 클릭한 링크를 활성화 상태로 설정
+    setIsMenuOpen(false); // 메뉴 닫기
     router.push(link); // 링크로 이동
   };
+
+  useEffect(() => {
+    // 현재 경로에 따라 활성화된 링크 설정
+    setActiveLink(window.location.pathname);
+  }, [router]);
 
   useEffect(() => {
     const getUser = async () => {
@@ -191,18 +196,50 @@ const Header = () => {
           </div>
           <ul>
             <li>
-              <Link href="/" onClick={handleMenuToggle}>
+              <Link
+                href="/"
+                className={`${
+                  activeLink === '/' ? 'selected-menu' : 'unselected-menu'
+                }`}
+                onClick={() => handleLinkClick('/')}
+              >
                 홈
               </Link>
             </li>
             <li>
-              <Link href="/list">스타일</Link>
+              <Link
+                href="/list"
+                className={`${
+                  activeLink === '/list' ? 'selected-menu' : 'unselected-menu'
+                }`}
+                onClick={() => handleLinkClick('/list')}
+              >
+                스타일
+              </Link>
             </li>
             <li>
-              <Link href="/thermometer-style">옷 차림</Link>
+              <Link
+                href="/thermometer-style"
+                className={`${
+                  activeLink === '/thermometer-style'
+                    ? 'selected-menu'
+                    : 'unselected-menu'
+                }`}
+                onClick={() => handleLinkClick('/thermometer-style')}
+              >
+                옷 차림
+              </Link>
             </li>
             <li>
-              <Link href="/survey">취향 코디</Link>
+              <Link
+                href="/survey"
+                className={`${
+                  activeLink === '/survey' ? 'selected-menu' : 'unselected-menu'
+                }`}
+                onClick={() => handleLinkClick('/survey')}
+              >
+                취향 코디
+              </Link>
             </li>
           </ul>
         </nav>

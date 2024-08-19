@@ -746,34 +746,33 @@
   text-align: center;
 }
 
-/* 홈 버튼 스타일 */
-.navbar ul li:first-child a {
+.selected-menu {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 195px; /* 크기 설정 */
-  height: 36px; /* 높이 설정 */
-  background-color: black; /* 배경색: 검정색 */
-  color: white; /* 글자색: 흰색 */
+  width: 195px;
+  height: 36px;
+  background-color: black;
+  color: white;
   text-decoration: none;
-  border-radius: 18px; /* 둥근 모서리 */
-  font-size: 16px; /* 글자 크기 */
-  font-weight: bold; /* 글자 굵기 */
-  margin-bottom: 20px; /* 홈 버튼과 아래 항목 간격 설정 */
+  border-radius: 18px;
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: 20px;
 }
 
-/* 나머지 메뉴 항목 스타일 */
-.navbar ul li:not(:first-child) a {
+.unselected-menu {
   display: block;
   text-align: center;
-  color: #4d4d4d; /* 텍스트 색상 */
-  font-family: 'Noto Sans KR'; /* 글꼴 설정 */
-  font-size: 16px; /* 글자 크기 */
-  font-weight: 400; /* 글자 굵기 */
-  line-height: 24px; /* 줄 간격 */
-  letter-spacing: -0.32px; /* 자간 */
-  margin-top: 18px; /* 각 메뉴 항목 사이의 간격 */
+  color: #4d4d4d;
+  font-family: 'Noto Sans KR';
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: -0.32px;
+  margin-top: 20px;
 }
+
 
 /* X 버튼 스타일 */
 .navbar-close {
