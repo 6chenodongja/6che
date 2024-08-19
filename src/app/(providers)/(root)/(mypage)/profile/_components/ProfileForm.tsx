@@ -96,7 +96,7 @@ const ProfileForm: React.FC = () => {
   };
 
   return (
-    <main className="border md:flex flex-col md:w-[480px] md:h-[724px] md:bg-white md:shadow-boxShadowPc md:backdrop-blur-sm md:rounded-3xl md:p-10 md:mt-[100px] md:mb-[200px] mx-auto p-4 sm:p-6 lg:p-8">
+    <main className="md:flex flex-col md:w-[480px] md:h-[724px] md:bg-white md:shadow-boxShadowPc md:backdrop-blur-sm md:rounded-3xl md:p-10 p-4 sm:p-6 lg:p-8">
       <header className="fixed top-0 left-0 w-full h-[44px] py-[6px] px-4 flex justify-between items-center bg-white/50 shadow-xl">
         <h1 className="text-[16px] font-semibold leading-[130%] tracking-[-0.32px] font-sans">
           닉네임 / 프로필 수정
@@ -113,7 +113,7 @@ const ProfileForm: React.FC = () => {
         <div className="grid grid-flow-row ml-4 mt-[26px]">
           <div className="mb-[6px]">
             <div className="flex justify-start items-start self-stretch flex-grow-0 flex-shrink-0 gap-1">
-              <div className="flex flex-col justify-start items-start flex-grow bg-white/50">
+              <div className="flex-col justify-start items-start flex-grow bg-white/50">
                 <label className="flex-grow-0 flex-shrink-0 font-medium text-[14px] pl-[2px] leading-[21px] tracking-[-0.02em] text-[#4d4d4d]">
                   닉네임
                 </label>

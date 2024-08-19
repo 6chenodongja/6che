@@ -5,6 +5,8 @@ export interface ErrorState {
   email: string;
   password: string;
   passwordConfirm: string;
+  domain?: string;
+  verificationMessage?:string;
 }
 
 export interface VerificationRule {
@@ -22,6 +24,12 @@ export const verificationRules: { [key: string]: VerificationRule[] } = {
   email: [
     {
       validator: (value: string) => /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/.test(value),
+      message: '유효한 이메일 주소를 입력해주세요.',
+    },
+  ],
+  domain: [
+    {
+      validator: (value: string) => /$/.test(value),
       message: '유효한 이메일 주소를 입력해주세요.',
     },
   ],
@@ -86,5 +94,5 @@ export const checkEmailDuplication = async (email: string): Promise<boolean> => 
     return false;
   }
 
-  return data.length === 0;
+  return data.length >= 1; // 중복되면 true, 중복이 아니면 false
 };

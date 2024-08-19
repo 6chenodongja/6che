@@ -48,8 +48,8 @@ function LoginDropdown() {
                       <Image
                         src={user.profileImage}
                         alt="프로필 이미지"
-                        width={24}
-                        height={24}
+                        width={20}
+                        height={20}
                         className="rounded-md shadow-[0_0_4px_0_rgba(18,18,18,0.1)]"
                       />
                     )}
