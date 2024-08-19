@@ -914,7 +914,7 @@ const MainPage = () => {
 
               <button
                 onClick={handleCodiClick}
-                className="p-3 bg-[#121212] rounded-lg justify-center items-center gap-2 inline-flex self-stretch md:absolute md:w-[180px] md:h-[49px] md:bottom-[-62px] md:right-[0] md:self-auto hover:bg-[#5eb0ff] active:bg-[#2f697e]" // active:bg-[#2f697e] 추가
+                className="p-3 bg-[#121212] rounded-lg justify-center items-center gap-2 inline-flex self-stretch md:absolute md:w-[180px] md:h-[49px] md:bottom-[-62px] md:right-[0] md:self-auto hover:bg-[#5eb0ff] active:bg-[#73aee7]" // 클릭 시 색상 #73aee7로 변경
                 style={{ bottom: '-62px', right: '0' }}
               >
                 <div className="text-white text-base font-medium font-['Noto Sans KR'] leading-tight">
