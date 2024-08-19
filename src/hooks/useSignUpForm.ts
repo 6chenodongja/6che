@@ -50,7 +50,7 @@ export const useSignUpForm = () => {
         setError((prevState) => ({
           ...prevState,
           nickname: '사용 불가능한 닉네임입니다.',
-        }));
+        })); 
         setIsNicknameValid(false);
         setNicknameMessage('');
       } else {
