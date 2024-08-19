@@ -1,12 +1,12 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { LogoText } from '../../../icons/LogoText';
 import { IconLogin } from '../../../icons/IconLogin';
-import LoadingScreen from '../(components)/LoadingScreen'; // LoadingScreen 컴포넌트를 불러옵니다.
+import LoadingScreen from '../(components)/LoadingScreen';
 import LoginDropdown from '@/components/LoginDropdown/LoginDropdown';
 import { useUserStore } from '@/zustand/store/useUserStore';
 import { supabase } from '@/supabase/client';
@@ -17,11 +17,40 @@ const Header = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { user, setUser } = useUserStore();
   const [loginModal, setLoginModal] = useState(false);
+  const [activeLink, setActiveLink] = useState(''); // 활성화된 링크 상태 관리
   const router = useRouter();
+  const pathname = usePathname();
+  const isDetailPage = pathname?.startsWith('/detail');
+  const [isDetailMobile, setIsDetailMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsDetailMobile(window.innerWidth <= 768); // DetailPage 768이하에서만 헤더 안보이게 하기
+    };
+
+    handleResize(); // 초기 호출
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   const handleLoginModal = () => setLoginModal(!loginModal);
   const handleMenuToggle = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+
+  const handleLinkClick = (link: string) => {
+    setActiveLink(link); // 클릭한 링크를 활성화 상태로 설정
+    setIsMenuOpen(false); // 메뉴 닫기
+    router.push(link); // 링크로 이동
+  };
+
+  useEffect(() => {
+    // 현재 경로에 따라 활성화된 링크 설정
+    setActiveLink(window.location.pathname);
+  }, [router]);
 
   useEffect(() => {
     const getUser = async () => {
@@ -53,11 +82,10 @@ const Header = () => {
   }, []);
 
   const handleLogoClick = () => {
-    // 메인화면에서 로고 클릭 시 새로고침
     if (window.location.pathname === '/') {
-      window.location.reload(); // 메인화면에서는 새로고침
+      window.location.reload();
     } else {
-      router.push('/'); // 다른 페이지에서는 메인화면으로 이동
+      router.push('/');
     }
   };
 
@@ -66,21 +94,23 @@ const Header = () => {
     setTimeout(() => {
       setIsLoading(false);
       router.push(url);
-    }, 2300); // 2.3초 동안 로딩 화면을 보여줍니다.
+    }, 2300);
   };
 
   if (isLoading) {
-    return <LoadingScreen />; // 로딩 중일 때 LoadingScreen 컴포넌트를 보여줍니다.
+    return <LoadingScreen />;
+  }
+  if (isDetailPage && isDetailMobile) {
+    return <></>;
   }
 
   return (
     <>
-      <header className="w-full fixed top-0 z-50 h-[60px]">
+      <header className="w-full fixed top-0 z-50 h-[60px] bg-white header">
         <div
-          className="absolute w-full h-full bg-rgba(255, 255, 255, 0.70))"
+          className="absolute w-full h-full bg-white "
           style={{
             boxShadow: '0px 2px 10px 0px rgba(0, 0, 0, 0.05)',
-            backdropFilter: 'blur(7px)',
           }}
         ></div>
         <div className="relative w-full h-full flex items-center px-4">
@@ -123,18 +153,46 @@ const Header = () => {
             )}
           </div>
           <div className="hidden md:flex md:absolute md:left-1/2 md:transform md:-translate-x-1/2">
-            <ul className="flex space-x-8">
+            <ul className="flex space-x-2">
               <li>
-                <Link href="/">홈</Link>
+                <button
+                  onClick={() => handleLinkClick('/')}
+                  className={`nav-button ${
+                    activeLink === '/' ? 'active-link' : ''
+                  }`}
+                >
+                  홈
+                </button>
               </li>
               <li>
-                <Link href="/list">코디</Link>
+                <button
+                  onClick={() => handleLinkClick('/list')}
+                  className={`nav-button ${
+                    activeLink === '/list' ? 'active-link' : ''
+                  }`}
+                >
+                  코디
+                </button>
               </li>
               <li>
-                <Link href="/thermometer-style">옷차림</Link>
+                <button
+                  onClick={() => handleLinkClick('/thermometer-style')}
+                  className={`nav-button ${
+                    activeLink === '/thermometer-style' ? 'active-link' : ''
+                  }`}
+                >
+                  옷차림
+                </button>
               </li>
               <li>
-                <Link href="/survey">취향 코디</Link>
+                <button
+                  onClick={() => handleLinkClick('/survey')}
+                  className={`nav-button ${
+                    activeLink === '/survey' ? 'active-link' : ''
+                  }`}
+                >
+                  취향 코디
+                </button>
               </li>
             </ul>
           </div>
@@ -157,18 +215,50 @@ const Header = () => {
           </div>
           <ul>
             <li>
-              <Link href="/" onClick={handleMenuToggle}>
+              <Link
+                href="/"
+                className={`${
+                  activeLink === '/' ? 'selected-menu' : 'unselected-menu'
+                }`}
+                onClick={() => handleLinkClick('/')}
+              >
                 홈
               </Link>
             </li>
             <li>
-              <Link href="/list">스타일</Link>
+              <Link
+                href="/list"
+                className={`${
+                  activeLink === '/list' ? 'selected-menu' : 'unselected-menu'
+                }`}
+                onClick={() => handleLinkClick('/list')}
+              >
+                스타일
+              </Link>
             </li>
             <li>
-              <Link href="/thermometer-style">옷 차림</Link>
+              <Link
+                href="/thermometer-style"
+                className={`${
+                  activeLink === '/thermometer-style'
+                    ? 'selected-menu'
+                    : 'unselected-menu'
+                }`}
+                onClick={() => handleLinkClick('/thermometer-style')}
+              >
+                옷 차림
+              </Link>
             </li>
             <li>
-              <Link href="/survey">취향 코디</Link>
+              <Link
+                href="/survey"
+                className={`${
+                  activeLink === '/survey' ? 'selected-menu' : 'unselected-menu'
+                }`}
+                onClick={() => handleLinkClick('/survey')}
+              >
+                취향 코디
+              </Link>
             </li>
           </ul>
         </nav>

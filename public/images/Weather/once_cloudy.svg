@@ -1,13 +1,16 @@
 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g filter="url(#filter0_b_2350_1018)">
-<rect width="24" height="24" rx="4" fill="white" fill-opacity="0.6"/>
-<g filter="url(#filter1_f_2350_1018)">
+<g id="icon/weather/once cloudy" filter="url(#filter0_b_2350_1018)">
+<g id="Group 29">
+<g id="Sunshine" filter="url(#filter1_f_2350_1018)">
 <circle cx="16.95" cy="10.05" r="4.05" fill="#FFC329"/>
 </g>
+<g id="Sun">
 <circle cx="16.95" cy="10.05" r="4.05" fill="#FFC329" fill-opacity="0.8"/>
 <circle cx="16.95" cy="10.05" r="4.25" stroke="white" stroke-opacity="0.3" stroke-width="0.4"/>
-<g filter="url(#filter2_bd_2350_1018)">
+</g>
+<g id="Union" filter="url(#filter2_bd_2350_1018)">
 <path d="M16.2353 18.5999C18.8668 18.5999 21 16.7867 21 14.5499C21 12.4356 19.0939 10.6996 16.6626 10.516C16.1794 8.45395 14.0385 6.8999 11.4706 6.8999C8.54673 6.8999 6.17647 8.91462 6.17647 11.3999C6.17647 11.4377 6.17702 11.4754 6.17811 11.513C4.35057 11.9121 3 13.3219 3 14.9999C3 16.9881 4.89621 18.5999 7.23529 18.5999H16.2353Z" fill="#CCCCCC" fill-opacity="0.7" shape-rendering="crispEdges"/>
+</g>
 </g>
 </g>
 <defs>

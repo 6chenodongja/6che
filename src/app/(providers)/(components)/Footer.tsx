@@ -1,17 +1,37 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { LogoText } from '../../../icons/LogoText';
 import { useUserStore } from '@/zustand/store/useUserStore';
 import LoginModalProps from '@/components/Modal/LoginModal';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 const Footer = () => {
   const { user } = useUserStore();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const router = useRouter();
+  const pathname = usePathname();
+  const isDetailPage = pathname?.startsWith('/detail');
+  const [isDetailMobile, setIsDetailMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsDetailMobile(window.innerWidth <= 768); // DetailPage 768이하에서만 푸터 안보이게 하기
+    };
+
+    handleResize(); // 초기 호출
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  if (isDetailPage && isDetailMobile) {
+    return <></>;
+  }
 
   const handleMypageClick = (
     e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
@@ -32,107 +52,112 @@ const Footer = () => {
   };
 
   return (
-    <footer className="w-full bg-white py-4 flex flex-col items-start mt-0">
-      <nav className="flex flex-col items-start space-y-2 mb-4">
-        <LogoText className="w-24 h-8 mb-4" />
-        <Link
-          href="/"
-          className="text-[#4d4d4d] text-sm font-medium leading-[21px] font-['Noto Sans KR']"
-        >
-          날씨
-        </Link>
-        <Link
-          href="/list"
-          className="text-[#4d4d4d] text-sm font-medium leading-[21px] font-['Noto Sans KR']"
-        >
-          스타일
-        </Link>
-        <Link
-          href="/thermometer-style"
-          className="text-[#4d4d4d] text-sm font-medium leading-[21px] font-['Noto Sans KR']"
-        >
-          기온 별 옷차림
-        </Link>
-        <Link
-          href="/survey"
-          className="text-[#4d4d4d] text-sm font-medium leading-[21px] font-['Noto Sans KR']"
-        >
-          취향 코디
-        </Link>
-        <Link
-          href="/mypage"
-          onClick={handleMypageClick}
-          className="text-[#4d4d4d] text-sm font-medium leading-[21px] font-['Noto Sans KR']"
-        >
-          마이페이지
-        </Link>
-        <Link
-          href="/mypage"
-          onClick={handleMypageClick}
-          className="text-[#4d4d4d] text-xs font-normal leading-none font-['Noto Sans KR']"
-        >
-          좋아요한 게시글
-        </Link>
-        <Link
-          href="/mypage"
-          onClick={handleMypageClick}
-          className="text-[#4d4d4d] text-xs font-normal leading-none font-['Noto Sans KR']"
-        >
-          내가 쓴 게시글
-        </Link>
-      </nav>
-      <hr className="w-full border-t border-[#e6e6e6] mb-4" />
-      <div className="flex flex-col items-start text-gray-500">
-        <div
-          className="flex items-center mb-2 cursor-pointer"
-          onClick={() =>
-            window.open(
-              'https://github.com/6chenodongja/6che/tree/main',
-              '_blank',
-            )
-          }
-        >
-          <Image
-            src="/images/github.svg"
-            alt="GitHub"
-            width={24}
-            height={24}
-            className="mr-2"
-          />
-          <span className="text-base font-medium text-[#4d4d4d] leading-tight font-['Noto Sans KR']">
-            6체노동자
-          </span>
+    <footer className="footer-container">
+      <div className="footer-content">
+        {/* 첫 번째 섹션: 로고와 네비게이션 */}
+        <div className="develop-div develop2-div">
+          <LogoText className="logo" />
+
+          <nav className="menu-div">
+            <ul className="menu2-div flex flex-col items-start space-y-2 md:flex-row md:space-y-0 md:space-x-[18px]">
+              <li>
+                <Link href="/" className="footer-link footer-text-style">
+                  홈
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/"
+                  className="footer-link footer-text-style text-item"
+                >
+                  코디
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/thermometer-style"
+                  className="footer-link footer-text-style text2-item "
+                >
+                  기온 별 옷차림
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/survey"
+                  className="footer-link footer-text-style text3-item"
+                >
+                  취향 코디
+                </Link>
+              </li>
+              <li className="footer-text-style flex flex-col items-start text4-item">
+                <Link
+                  href="/mypage"
+                  className="footer-link mybtn"
+                  onClick={handleMypageClick}
+                >
+                  마이페이지
+                </Link>
+                <ul className="flex flex-col items-start space-y-[4px] footer-text-style2 mybtn">
+                  <li>
+                    <Link
+                      href="/postLike"
+                      className="footer-link footer-text2 footer-text-style2 mybtn"
+                      onClick={handleMypageClick}
+                    >
+                      좋아요한 코디
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/myStyle"
+                      className="footer-link footer-text2 mb-[32px]"
+                      onClick={handleMypageClick}
+                    >
+                      내 코디
+                    </Link>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </nav>
         </div>
-        <p className="text-left flex flex-wrap">
-          <span className="text-sm font-normal text-[#4d4d4d] leading-[14px] font-['Noto Sans KR']">
-            개발:
-          </span>
-          <span className="ml-2 text-sm font-normal text-[#4d4d4d] leading-[14px] font-['Noto Sans KR']">
-            주현우
-          </span>
-          <span className="ml-2 text-sm font-normal text-[#4d4d4d] leading-[14px] font-['Noto Sans KR']">
-            전은겸
-          </span>
-          <span className="ml-2 text-sm font-normal text-[#4d4d4d] leading-[14px] font-['Noto Sans KR']">
-            김성구
-          </span>
-          <span className="ml-2 text-sm font-normal text-[#4d4d4d] leading-[14px] font-['Noto Sans KR']">
-            석재영
-          </span>
-          <span className="ml-2 text-sm font-normal text-[#4d4d4d] leading-[14px] font-['Noto Sans KR']">
-            한소영.
-          </span>
-          <br />
-          <span className="text-sm font-normal text-[#4d4d4d] leading-[14px] font-['Noto Sans KR']">
-            디자인:
-          </span>
-          <span className="ml-2 text-sm font-normal text-[#4d4d4d] leading-[14px] font-['Noto Sans KR']">
-            김윤하
-          </span>
-        </p>
-        <p className="text-left mt-2 text-sm font-normal text-[#4d4d4d] leading-[14px] font-['Noto Sans KR']">
-          © 2024. 김윤하 all rights reserved.
-        </p>
+
+        <hr className="hr-class" />
+
+        {/* 두 번째 섹션: 6체노동자 정보 */}
+        <div className="design-div">
+          <div className="footer-gitcontent">
+            <Image
+              src="/images/github.svg"
+              alt="GitHub"
+              width={24}
+              height={24}
+              className="footer-icon"
+            />
+            <span className="footer-gitname">6체노동자</span>
+          </div>
+
+          <ul className="dev-div">
+            <li className="develop-div ">
+              <span className="develop ">개발:</span>
+              <span className="ml-[4px] footer-text-last">주현우</span>
+              <span className="ml-[6px] footer-text-last">전은겸</span>
+              <span className="ml-[6px] footer-text-last">김성구</span>
+              <span className="ml-[6px] footer-text-last">석재영</span>
+              <span className="ml-[6px] footer-text-last">한소영</span>
+            </li>
+          </ul>
+
+          <ul className="design2-div">
+            <li className="flex items-start">
+              <span className="design">디자인:</span>
+              <span className="design-name">김윤하</span>
+            </li>
+          </ul>
+          <p className="footer-designdiv">
+            © 2024. 김윤하 all rights reserved.
+          </p>
+        </div>
       </div>
 
       {/* 로그인 모달 추가 */}

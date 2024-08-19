@@ -2,17 +2,17 @@
 
 import React from 'react';
 import ThermometerStyle from './ThermometerStyle';
-import Header from 'app/(providers)/(components)/Header';
-import Footer from 'app/(providers)/(components)/Footer';
 
 function Page() {
   return (
-    <div className="container bg-neutral-50 flex flex-col justify-center  items-center w-full min-h-screen">
-      <Header />
-      <main className="container bg-neutral-50 flex flex-col justify-center  items-center w-full min-h-screen">
+    <div
+      className={`container flex flex-col justify-center items-center w-full min-h-screen ${typeof window !== 'undefined' && window.innerWidth <= 768 ? '' : 'bg-white'}`}
+    >
+      <main
+        className={`container flex flex-col justify-center items-center w-full min-h-screen ${typeof window !== 'undefined' && window.innerWidth >= 769 ? '' : 'bg-neutral-50'}`}
+      >
         <ThermometerStyle />
       </main>
-      <Footer />
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import Image from 'next/image';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { useUserStore } from '@/zustand/store/useUserStore'; 
 
 interface LoginModalProps {
   isOpen: boolean;
@@ -10,8 +11,17 @@ interface LoginModalProps {
 
 const LoginModalProps = ({ isOpen, onClose }: LoginModalProps) => {
   const router = useRouter();
+  const { isLoggedIn } = useUserStore(); // zustand로부터 로그인 상태를 불러옴
 
-  if (!isOpen) return null;
+  // 로그인 상태 확인 및 모달 닫기
+  useEffect(() => {
+    if (isLoggedIn) {
+      onClose(); // 로그인이 되어 있으면 모달을 자동으로 닫음
+    }
+  }, [isLoggedIn, onClose]);
+
+  // 로그인 상태가 아니면 모달을 보여줌
+  if (!isOpen || isLoggedIn) return null;
 
   const handleLoginClick = () => {
     router.replace('/login'); // 로그인 페이지로 이동
