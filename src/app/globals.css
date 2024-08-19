@@ -9,7 +9,349 @@
     all: unset;
   }
 }
+/* 공통 스타일 */
 
+/* 768px 이하 화면 (모바일 뷰) */
+@media (max-width: 768px) {
+  .footer-container {
+    display: flex;
+    width: 100%; /* 화면 너비에 맞추기 */
+    max-width: 320px; /* 최대 너비 제한 */
+    height: auto; /* 높이를 자동으로 조정 */
+    padding: 60px var(--sds-size-icon-small) 80px var(--sds-size-icon-small);
+    flex-direction: column;
+    align-items: center; /* 가운데 정렬 */
+    gap: var(--sds-size-space-300);
+    margin: 0 auto; /* 가운데 정렬 */
+    flex-shrink: 0;
+    position: relative; /* 기본 위치 설정 */
+    bottom: 0; /* 화면의 아래쪽에 배치 */
+  }
+
+  .footer-text {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 10px;
+  }
+
+  .footer-gitcontent {
+    position: relative;
+    top: -28px;
+    left: -4px;
+  }
+
+  .menu-div {
+    left: 0px;
+    position: absolute;
+    top: 1px;
+  }
+  .menu2-div {
+    top: 40px;
+    position: relative;
+  }
+
+  .footer-gitname {
+    position: relative;
+    bottom: 23px;
+    right: -29px;
+  }
+
+  .logo {
+    position: relative;
+    right: 6px;
+  }
+
+  .hr-class {
+    position: relative;
+    width: 100%;
+    max-width: 272px;
+    height: 2px;
+    background-color: rgba(230, 230, 230, 0.6);
+    margin: 0 auto;
+    top: 305px;
+  }
+
+  .footer-link {
+    color: var(--text, #4d4d4d);
+    font-family: 'Noto Sans KR';
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 150%;
+    letter-spacing: -0.28px;
+  }
+
+  .develop-div {
+    position: relative;
+    top: -49px; /* 기존 설정 유지 */
+  }
+  .develop2-div {
+    position: relative;
+    top: 60px;
+  }
+
+  .design-div {
+    position: relative;
+    top: 355px;
+    padding-bottom: 80px; /* 내부 아래쪽에 100px 패딩 추가 */
+  }
+  .design2-div {
+    position: relative;
+    top: -42px;
+    left: -2px;
+  }
+
+  .design-name {
+    color: var(--text, #4d4d4d);
+    font-family: 'Noto Sans KR';
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 100%;
+    letter-spacing: -0.28px;
+    opacity: 0.7;
+    position: relative;
+    left: 4px;
+  }
+
+  .develop {
+    color: var(--Black-700, #4d4d4d);
+    font-family: 'Noto Sans KR';
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 130%;
+    letter-spacing: -0.24px;
+    opacity: 0.7;
+    top: 1px;
+    left: -1px;
+    position: relative;
+  }
+
+  .design {
+    color: var(--Black-700, #4d4d4d);
+    font-family: 'Noto Sans KR';
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 130%; /* 15.6px */
+    letter-spacing: -0.24px;
+    top: 1px;
+    opacity: 0.7;
+  }
+
+  .footer-text2 {
+    color: var(--text, #4d4d4d);
+    font-family: 'Noto Sans KR';
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 130%;
+    letter-spacing: -0.24px;
+    opacity: 0.7;
+  }
+
+  .footer-designdiv {
+    position: relative;
+    bottom: 20px;
+    opacity: var(--sds-size-stroke-border);
+    left: -2px;
+    color: var(--Black-500, #808080);
+    font-family: 'Noto Sans KR';
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 130%; /* 15.6px */
+    letter-spacing: -0.24px;
+    opacity: var(--sds-size-stroke-border);
+  }
+
+  .footer-link:hover {
+    text-decoration: underline;
+  }
+
+  .footer-text-last {
+    color: var(--text, #4d4d4d);
+    font-family: 'Noto Sans KR';
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 100%;
+    letter-spacing: -0.42px;
+    opacity: 0.7;
+  }
+
+  .footer-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+  }
+}
+
+/* 769px 이상 화면 (데스크탑 뷰) */
+@media (min-width: 769px) {
+  .footer-container {
+    width: 100%;
+    max-width: 1920px;
+    padding: 0px 320px 80px 320px; /* 위쪽 20px, 아래쪽 60px으로 설정 */
+    flex-direction: row; /* 로고와 메뉴가 나란히 배치되도록 변경 */
+    justify-content: space-between; /* 로고와 메뉴 사이에 공간 확보 */
+    align-items: flex-start; /* 아이템을 위쪽에 정렬 */
+  }
+
+  .logo {
+    top: 28px;
+    position: relative;
+    left: -6px;
+  }
+  .menu-div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+  .footer-link {
+    position: relative;
+    right: -130px;
+  }
+  .footer-text-style {
+    color: var(--text, #4d4d4d);
+    font-family: 'Noto Sans KR';
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 18px; /* 줄 간 간격을 18px로 설정 */
+    letter-spacing: -0.28px;
+    opacity: var(--sds-size-stroke-border);
+  }
+  .footer-text-style2 {
+    align-self: stretch;
+    color: var(--text, #4d4d4d);
+    font-family: 'Noto Sans KR';
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 200;
+    line-height: 130%; /* 15.6px */
+    letter-spacing: -0.24px;
+  }
+  .mybtn {
+    position: relative;
+    top: 3px;
+  }
+
+  .text-item {
+    position: relative;
+    left: 100px;
+  }
+  .text2-item {
+    position: relative;
+    left: 70px;
+  }
+  .text3-item {
+    position: relative;
+    left: 40px;
+  }
+
+  .text4-item {
+    position: relative;
+    left: -116px;
+  }
+
+  .menu2-div {
+    flex-direction: row;
+    gap: 30px; /* 메뉴 간격 설정 */
+  }
+
+  .hr-class {
+    height: 2px;
+    align-self: stretch;
+    opacity: var(--sds-size-stroke-border);
+    background: var(--Black-100, rgba(230, 230, 230, 0.6));
+    top: 30px;
+    position: relative;
+  }
+
+  .develop-div {
+    flex-direction: row;
+    align-items: center;
+    margin-top: 20px;
+  }
+  .develop {
+    color: var(--Black-700, #4d4d4d);
+    font-family: 'Noto Sans KR';
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 130%; /* 15.6px */
+    letter-spacing: -0.24px;
+    opacity: 0.7;
+  }
+
+  .dev-div {
+    position: relative;
+    top: -13px;
+  }
+
+  .design-div {
+    margin-top: 58px;
+  }
+
+  .footer-designdiv {
+    position: relative;
+    top: 27px;
+    text-align: left;
+    color: var(--Black-500, #808080);
+    font-family: 'Noto Sans KR';
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 130%; /* 15.6px */
+    letter-spacing: -0.24px;
+    opacity: var(--sds-size-stroke-border);
+  }
+  .footer-gitcontent {
+    display: flex;
+    align-items: flex-end;
+    gap: 4px;
+  }
+  .footer-gitname {
+    color: var(--text, #4d4d4d);
+    font-family: 'Noto Sans KR';
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 130%; /* 20.8px */
+    letter-spacing: -0.32px;
+    opacity: var(--sds-size-stroke-border);
+  }
+  .footer-text-last {
+    color: var(--text, #4d4d4d);
+    font-family: 'Noto Sans KR';
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 100%; /* 14px */
+    letter-spacing: -0.42px;
+    opacity: 0.7;
+  }
+  .design {
+    color: var(--Black-700, #4d4d4d);
+    font-family: 'Noto Sans KR';
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 130%; /* 15.6px */
+    letter-spacing: -0.24px;
+    opacity: 0.7;
+  }
+  .design-name {
+    color: var(--text, #4d4d4d);
+    font-family: 'Noto Sans KR';
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 100%; /* 14px */
+    letter-spacing: -0.42px;
+    opacity: 0.7;
+    position: relative;
+    top: -1px;
+    left: 3px;
+  }
+}
 :root {
   --sds-size-space-200: 8px;
   --Blur-10: 10px;
@@ -690,11 +1032,10 @@
 /* 768px 이하 화면에서의 스타일 */
 @media (max-width: 767px) {
   .survey-container {
-    width: 100%;
-    max-width: full;
-    margin: 0 auto;
-    padding-top: 100px;
-    padding-bottom: 120px;
+    width: 100vw; /* 뷰포트 전체 너비 */
+    height: 100vh; /* 뷰포트 전체 높이 */
+    margin: 0; /* 외부 여백 제거 */
+    padding: 0;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
@@ -722,12 +1063,11 @@
     padding: 20px; /* 내부 패딩 추가 */
     margin-top: 80px; /* 상단 여백 조정 */
     margin-bottom: 0px; /* 하단 여백 조정 */
-    background-color: #fafafa;
     min-height: calc(100vh - 100px);
   }
   .survey-imgae {
     position: relative;
-    top: -125px;
+    top: -15px;
   }
 
   object {
@@ -769,10 +1109,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding-top: 55px;
-    padding-bottom: 20px;
-    border-radius: 20px;
+    margin-bottom: 7px;
+    background-color: #fafafa;
+    height: 130vh;
+    max-width: 1920px;
   }
+
   .survey-imgae {
     display: flex;
     width: 418px;
@@ -1229,7 +1571,7 @@
   .next-btn {
     position: relative;
     top: 56px;
-  }  
+  }
 
   .back-button {
     top: -15px;
