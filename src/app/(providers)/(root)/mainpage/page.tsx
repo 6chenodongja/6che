@@ -812,7 +812,8 @@ const MainPage = () => {
 
         <section className="w-full max-w-[878px] mt-[5px] relative">
           {filteredPosts.length > 0 ? (
-            <div className="w-full h-auto px-4 pt-4 pb-5 bg-white/40 rounded-2xl shadow border border-white bg-gradient-to-r from-white/50 to-transparent backdrop-blur-[20px] flex flex-col justify-start items-start relative">
+            <div className="w-full h-auto px-4 pt-4 pb-5 bg-white/40 rounded-2xl shadow border border-white background: linear-gradient(37deg, rgba(255,255,255,0.5018601190476191) 0%, rgba(255,255,255,0) 100%) from-white/50 to-transparent backdrop-blur-[20px] flex flex-col justify-start items-start relative">
+              {' '}
               <div className="self-stretch justify-between items-center inline-flex mb-[14px]">
                 <div className="h-[21px] px-2 justify-center items-center flex">
                   <div className="text-[#121212] text-base font-weight:500px font-semibold font-['NotoSansKR'] leading-tight">
@@ -838,7 +839,6 @@ const MainPage = () => {
                   </div>
                 </div>
               </div>
-
               <div className="self-stretch rounded-lg justify-start items-start inline-flex overflow-hidden mb-[14px]">
                 <Swiper
                   spaceBetween={4} // 모든 화면 크기에서 기본 간격을 4px로 설정
@@ -911,7 +911,6 @@ const MainPage = () => {
                   })}
                 </Swiper>
               </div>
-
               <button
                 onClick={handleCodiClick}
                 className="p-3 bg-[#121212] rounded-lg justify-center items-center gap-2 inline-flex self-stretch md:absolute md:w-[180px] md:h-[49px] md:bottom-[-62px] md:right-[0] md:self-auto hover:bg-[#5eb0ff] active:bg-[#73aee7]" // 클릭 시 색상 #73aee7로 변경
