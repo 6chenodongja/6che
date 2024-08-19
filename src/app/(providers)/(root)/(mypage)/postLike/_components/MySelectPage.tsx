@@ -116,7 +116,7 @@ function MySelectPage() {
 
   return (
     <div>
-      <div className="mt-7">
+      <div className="mt-7 md:mt-3">
         <MyLikeFilter
           handleSortChange={handleSortChange}
           selectedOptions={selectedOptions}

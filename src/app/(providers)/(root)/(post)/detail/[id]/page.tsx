@@ -224,7 +224,7 @@ function PostDetail({ params }: { params: { id: string } }) {
             {DetailList?.user_id === user?.id && (
               <div className="flex flex-row gap-1 ">
                 <button
-                  onClick={deletePosts}
+                  onClick={deleteModal}
                   className="flex justify-center items-center bg-[#FF4732]/85 text-white rounded-xl px-[10px] py-[8px]"
                 >
                   삭제
@@ -460,17 +460,41 @@ function PostDetail({ params }: { params: { id: string } }) {
             </div>
           </div>
         )}
+        {showModal && (
+          <div className="fixed inset-0 bg-black/20 bg-opacity-50 flex justify-center items-center z-10 md:hidden">
+            <div className="bg-white rounded-lg shadow-lg  w-[281px] h-[185px] p-[40px] backdrop-blur-[5px] opacity-80">
+              <h2 className="text-[18px] font-KR font-semibold text-[#4D4D4D] tracking-[-0.36px] self-stretch text-center leading-[23.4px] gap-[4px]">
+                정말 삭제하시겠습니까?
+                <p className="text-[14px] text-[#4D4D4D] font-KR font-medium leading-[21px] tracking-[-1.2px] self-stretch whitespace-nowrap text-center mt-[4px]">
+                  삭제한 스타일은 복구 할 수 없습니다
+                </p>
+              </h2>
+
+              <span className="grid grid-cols-2 gap-[10px] mt-[21px]">
+                <button
+                  onClick={() => setShowModal(false)}
+                  className="bg-black-100 text-[#4D4D4D] font-KR rounded-lg p-[14px] font-semibold "
+                >
+                  이전으로
+                </button>
+                <button
+                  onClick={deletePosts}
+                  className="text-[#FFF] rounded-lg p-[14px] font-semibold"
+                  style={{
+                    backgroundColor: 'rgba(255, 71, 50, 0.85)',
+                  }}
+                >
+                  삭제하기
+                </button>
+              </span>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* 해상도 768이상 디자인 */}
       <div className="hidden md:flex md:bg-[#FAFAFA] detail-container">
-        <div
-          className="md:w-[800px] md:h-[500px] md:mx-auto md:mb-[80px] md:mt-[20px] md:rounded-xl md:flex md:flex-row md:relative"
-          style={{
-            boxShadow:
-              '0px 0px 2px 0px rgba(0, 0, 0, 0.05), 4px 4px var(--Blur-20, 20px) 0px rgba(0, 0, 0, 0.05);',
-          }}
-        >
+        <div className="md:w-[800px] md:h-[500px] md:mx-auto md:mb-[80px] md:mt-[20px] md:rounded-xl md:flex md:flex-row md:relative md:bg-[#FFF] md:shadow-[0_0_2px_0px_rgba(0,0,0,0.05),4px_4px_var(--Blur-20,20px)_0_rgba(0,0,0,0.05)]">
           <Link
             href={'/list'}
             className="hidden md:flex md:items-center md:object-cover md:absolute md:left-6 md:top-1"
@@ -528,13 +552,49 @@ function PostDetail({ params }: { params: { id: string } }) {
             </Swiper>
           </div>
 
-          <div className="flex justify-between items-center self-stretch flex-grow-0 flex-shrink-0 w-[450px] mb-auto mt-[40px]">
-            <div className="flex flex-col gap-[5px] ml-6">
-              <div className="flex items-center flex-grow-0 flex-shrink-0 gap-[5px]">
-                <DetailNicknameIcon />
-                <p className="flex-grow-0 flex-shrink-0 font-semibold text-[#333] text-[24px] leading-[31.2px] tracking-[-0.48px] font-KR">
-                  {DetailList?.users?.nick_name}
-                </p>
+          <div className="flex flex-1 mb-auto mt-[40px]">
+            <div className="flex flex-col gap-[5px] ml-6 mr-6 w-full">
+              <div className="flex justify-between w-full">
+                <div className="flex items-center flex-grow-0 flex-shrink-0 gap-[5px]">
+                  <DetailNicknameIcon />
+                  <p className="flex-grow-0 flex-shrink-0 font-semibold text-[#333] text-[24px] leading-[31.2px] tracking-[-0.48px] font-KR">
+                    {DetailList?.users?.nick_name}
+                  </p>
+                </div>
+                <div className="flex items-center flex-grow-0 flex-shrink-0 gap-6">
+                  <div className="flex justify-start items-center flex-grow-0 flex-shrink-0 gap-0.5">
+                    <DetailLiveLikeIcon />
+                    <p className="flex-grow-0 flex-shrink-0 text-sm text-left text-black">
+                      {userLiked}
+                    </p>
+                  </div>
+                  {/* 필터 */}
+                  <div
+                    className="flex justify-center items-center flex-grow-0 flex-shrink-0 overflow-hidden gap-2 rounded-[1000px]"
+                    style={{
+                      filter: 'drop-shadow(0px 0px 4px rgba(0,0,0,0.08))',
+                    }}
+                  >
+                    <button onClick={clickModal}>
+                      <svg
+                        width={28}
+                        height={28}
+                        viewBox="0 0 28 28"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="flex-grow-0 flex-shrink-0 w-6 h-6"
+                        preserveAspectRatio="xMidYMid meet"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          clipRule="evenodd"
+                          d="M20.7083 5.25C19.9029 5.25 19.25 5.90292 19.25 6.70833C19.25 7.51375 19.9029 8.16667 20.7083 8.16667C21.5137 8.16667 22.1667 7.51375 22.1667 6.70833C22.1667 5.90292 21.5137 5.25 20.7083 5.25ZM17.5 6.70833C17.5 4.93642 18.9364 3.5 20.7083 3.5C22.4802 3.5 23.9167 4.93642 23.9167 6.70833C23.9167 8.48025 22.4802 9.91667 20.7083 9.91667C18.9364 9.91667 17.5 8.48025 17.5 6.70833ZM20.7083 19.25C19.9029 19.25 19.25 19.9029 19.25 20.7083C19.25 21.5137 19.9029 22.1667 20.7083 22.1667C21.5137 22.1667 22.1667 21.5137 22.1667 20.7083C22.1667 19.9029 21.5137 19.25 20.7083 19.25ZM17.5 20.7083C17.5 18.9364 18.9364 17.5 20.7083 17.5C22.4802 17.5 23.9167 18.9364 23.9167 20.7083C23.9167 22.4802 22.4802 23.9167 20.7083 23.9167C18.9364 23.9167 17.5 22.4802 17.5 20.7083ZM5.25 13.7083C5.25 12.9029 5.90292 12.25 6.70833 12.25C7.51375 12.25 8.16667 12.9029 8.16667 13.7083C8.16667 14.5137 7.51375 15.1667 6.70833 15.1667C5.90292 15.1667 5.25 14.5137 5.25 13.7083ZM6.70833 10.5C4.93642 10.5 3.5 11.9364 3.5 13.7083C3.5 15.4802 4.93642 16.9167 6.70833 16.9167C8.48025 16.9167 9.91667 15.4802 9.91667 13.7083C9.91667 11.9364 8.48025 10.5 6.70833 10.5ZM17.0852 8.51992C17.3733 9.09623 17.1397 9.79701 16.5634 10.0852L11.8967 12.4185C11.3204 12.7067 10.6197 12.4731 10.3315 11.8967C10.0433 11.3204 10.2769 10.6197 10.8533 10.3315L15.5199 7.99817C16.0962 7.71001 16.797 7.94361 17.0852 8.51992ZM11.8967 14.9982C11.3204 14.71 10.6197 14.9436 10.3315 15.5199C10.0433 16.0962 10.2769 16.797 10.8533 17.0852L15.5199 19.4185C16.0962 19.7067 16.797 19.4731 17.0852 18.8967C17.3733 18.3204 17.1397 17.6197 16.5634 17.3315L11.8967 14.9982Z"
+                          fill="#121212"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
               </div>
               {/* 코멘트, 로컬스, 크리에이트포스트 */}
               <div className="mt-[23.5px]">
@@ -550,51 +610,17 @@ function PostDetail({ params }: { params: { id: string } }) {
               </div>
             </div>
 
-            <div className="flex items-center flex-grow-0 flex-shrink-0 -mt-[130px] gap-6">
-              <div className="flex justify-start items-center flex-grow-0 flex-shrink-0 gap-0.5">
-                <DetailLiveLikeIcon />
-                <p className="flex-grow-0 flex-shrink-0 text-sm text-left text-black">
-                  {userLiked}
-                </p>
-              </div>
-              {/* 필터 */}
-              <div
-                className="flex justify-center items-center flex-grow-0 flex-shrink-0 overflow-hidden gap-2 rounded-[1000px]"
-                style={{
-                  filter: 'drop-shadow(0px 0px 4px rgba(0,0,0,0.08))',
-                }}
-              >
-                <button onClick={clickModal}>
-                  <svg
-                    width={28}
-                    height={28}
-                    viewBox="0 0 28 28"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="flex-grow-0 flex-shrink-0 w-6 h-6"
-                    preserveAspectRatio="xMidYMid meet"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      clipRule="evenodd"
-                      d="M20.7083 5.25C19.9029 5.25 19.25 5.90292 19.25 6.70833C19.25 7.51375 19.9029 8.16667 20.7083 8.16667C21.5137 8.16667 22.1667 7.51375 22.1667 6.70833C22.1667 5.90292 21.5137 5.25 20.7083 5.25ZM17.5 6.70833C17.5 4.93642 18.9364 3.5 20.7083 3.5C22.4802 3.5 23.9167 4.93642 23.9167 6.70833C23.9167 8.48025 22.4802 9.91667 20.7083 9.91667C18.9364 9.91667 17.5 8.48025 17.5 6.70833ZM20.7083 19.25C19.9029 19.25 19.25 19.9029 19.25 20.7083C19.25 21.5137 19.9029 22.1667 20.7083 22.1667C21.5137 22.1667 22.1667 21.5137 22.1667 20.7083C22.1667 19.9029 21.5137 19.25 20.7083 19.25ZM17.5 20.7083C17.5 18.9364 18.9364 17.5 20.7083 17.5C22.4802 17.5 23.9167 18.9364 23.9167 20.7083C23.9167 22.4802 22.4802 23.9167 20.7083 23.9167C18.9364 23.9167 17.5 22.4802 17.5 20.7083ZM5.25 13.7083C5.25 12.9029 5.90292 12.25 6.70833 12.25C7.51375 12.25 8.16667 12.9029 8.16667 13.7083C8.16667 14.5137 7.51375 15.1667 6.70833 15.1667C5.90292 15.1667 5.25 14.5137 5.25 13.7083ZM6.70833 10.5C4.93642 10.5 3.5 11.9364 3.5 13.7083C3.5 15.4802 4.93642 16.9167 6.70833 16.9167C8.48025 16.9167 9.91667 15.4802 9.91667 13.7083C9.91667 11.9364 8.48025 10.5 6.70833 10.5ZM17.0852 8.51992C17.3733 9.09623 17.1397 9.79701 16.5634 10.0852L11.8967 12.4185C11.3204 12.7067 10.6197 12.4731 10.3315 11.8967C10.0433 11.3204 10.2769 10.6197 10.8533 10.3315L15.5199 7.99817C16.0962 7.71001 16.797 7.94361 17.0852 8.51992ZM11.8967 14.9982C11.3204 14.71 10.6197 14.9436 10.3315 15.5199C10.0433 16.0962 10.2769 16.797 10.8533 17.0852L15.5199 19.4185C16.0962 19.7067 16.797 19.4731 17.0852 18.8967C17.3733 18.3204 17.1397 17.6197 16.5634 17.3315L11.8967 14.9982Z"
-                      fill="#121212"
-                    />
-                  </svg>
-                </button>
-              </div>
-            </div>
             {DetailList?.user_id === user?.id && (
               <div className="flex flex-row gap-1 mt-auto absolute bottom-8 right-8">
                 <button
                   onClick={deleteModal}
-                  className="flex justify-center items-center bg-[#FF4732]/85 text-white rounded-xl px-[10px] py-[14px]"
+                  className="flex justify-center items-center bg-[#FF4732]/85 text-white rounded-xl px-[10px] py-[10px]"
                 >
                   삭제
                 </button>
                 <button
                   onClick={() => router.push(`/edit/${params.id}`)}
-                  className="bg-[#121212] text-white rounded-xl px-[10px] py-[14px]"
+                  className="bg-[#121212] text-white rounded-xl px-[10px] py-[10px]"
                 >
                   수정
                 </button>
@@ -730,7 +756,7 @@ function PostDetail({ params }: { params: { id: string } }) {
 
       {/* 768이상 해상도 삭제 모달 */}
       {showModal && (
-        <div className="md:fixed md:inset-0 md:bg-black/20 md:bg-opacity-50 md:flex md:justify-center md:items-center md:z-10">
+        <div className="hidden md:fixed md:inset-0 md:bg-black/20 md:bg-opacity-50 md:flex md:justify-center md:items-center md:z-10">
           <div className="bg-white rounded-lg shadow-lg  w-[281px] h-[185px] p-[40px] backdrop-blur-[5px] opacity-80">
             <h2 className="text-[18px] font-KR font-semibold text-[#4D4D4D] tracking-[-0.36px] self-stretch text-center leading-[23.4px] gap-[4px]">
               정말 삭제하시겠습니까?

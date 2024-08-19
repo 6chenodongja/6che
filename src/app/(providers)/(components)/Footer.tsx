@@ -1,11 +1,33 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { LogoText } from '../../../icons/LogoText';
+import { usePathname } from 'next/navigation';
 
 const Footer = () => {
+  const pathname = usePathname();
+  const isDetailPage = pathname?.startsWith('/detail');
+  const [isDetailMobile, setIsDetailMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsDetailMobile(window.innerWidth <= 768); // DetailPage 768이하에서만 푸터 안보이게 하기
+    };
+
+    handleResize(); // 초기 호출
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  if (isDetailPage && isDetailMobile) {
+    return <></>;
+  }
+
   const linkStyle = {
     color: 'var(--text, #4D4D4D)',
     fontFamily: '"Noto Sans KR"',
@@ -91,10 +113,7 @@ const Footer = () => {
         </Link>
 
         {/* "좋아요한 코디"와 "내 코디" 간격을 6px로 조정 */}
-        <Link
-          href="/mypage"
-          style={{ ...smallLinkStyle, marginLeft: '-5px' }}
-        >
+        <Link href="/mypage" style={{ ...smallLinkStyle, marginLeft: '-5px' }}>
           내 코디
         </Link>
       </nav>

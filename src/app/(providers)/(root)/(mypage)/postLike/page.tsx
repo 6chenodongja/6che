@@ -34,11 +34,11 @@ const PostLike = () => {
   }, [user]);
 
   return (
-    <div className="notPostLike-container mx-auto bg-[#FAFAFA] md:h-[1721px]">
+    <div className="notPostLike-container mx-auto bg-[#FAFAFA] md:h-[1721px] ">
       {posts.length === 0 ? (
         <div>
           <MyNotLikeHeader />
-          <div className="mt-[60px] mr-[50px] ml-[42px]">
+          <div className="mt-[60px] mr-[50px] ml-[42px] md:mt-auto">
             <Image
               src={'/myLikePage.png'}
               alt="myListPage"

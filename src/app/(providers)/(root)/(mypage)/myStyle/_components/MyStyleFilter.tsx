@@ -36,242 +36,487 @@ function MyStyleFilter({
   const clickModal = () => setShowModal(!showModal);
 
   return (
-    <div className="relative z-10 flex justify-center">
-      <div className="flex justify-center items-center shrink-0 gap-[170px] p-2">
-        <div className="flex justify-center items-center flex-grow-0 flex-shrink-0 overflow-hidden px-1 py-1.5 rounded-lg m">
-          <label className="flex items-center justify-center py-[8px] gap-[6px] rounded text-[14px] font-normal leading-[14px] tracking-[-0.28px] font-KR text-black-500">
-            <input type="checkbox" onChange={allCheckHandler} />
-            모두 선택
-          </label>
-        </div>
-        <div className="flex justify-center items-center top-[9px]">
-          {checkItems.length === 0 ? (
-            <div>
+    <div>
+      <div className="relative z-10 flex justify-center md:hidden">
+        <div className="flex justify-center items-center shrink-0 gap-[170px] p-2">
+          <div className="flex justify-center items-center flex-grow-0 flex-shrink-0 overflow-hidden px-1 py-1.5 rounded-lg m">
+            <label className="flex items-center justify-center py-[8px] gap-[6px] rounded text-[14px] font-normal leading-[14px] tracking-[-0.28px] font-KR text-black-500">
+              <input type="checkbox" onChange={allCheckHandler} />
+              모두 선택
+            </label>
+          </div>
+          <div className="flex justify-center items-center top-[9px]">
+            {checkItems.length === 0 ? (
+              <div>
+                <button
+                  className="flex justify-center items-center flex-grow-0 flex-shrink-0 overflow-hidden gap-2 p-1 rounded-[1000px]"
+                  style={{
+                    filter: 'drop-shadow(0px 0px 4px rgba(0,0,0,0.08))',
+                  }}
+                  onClick={handleFilterClick}
+                >
+                  {isFilterOn ? (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="22"
+                      height="22"
+                      viewBox="0 0 22 22"
+                      fill="none"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        clipRule="evenodd"
+                        d="M15.5833 3.66667C15.5833 3.16041 15.1729 2.75 14.6667 2.75C14.1604 2.75 13.75 3.16041 13.75 3.66667V10.0833C13.75 10.5896 14.1604 11 14.6667 11C15.1729 11 15.5833 10.5896 15.5833 10.0833V3.66667ZM8.25 18.3333C8.25 18.8396 7.83959 19.25 7.33333 19.25C6.82707 19.25 6.41667 18.8396 6.41667 18.3333V11.9167C6.41667 11.4104 6.82707 11 7.33333 11C7.83959 11 8.25 11.4104 8.25 11.9167V18.3333ZM14.6667 12.6042C14.0338 12.6042 13.5208 13.1172 13.5208 13.75C13.5208 14.3828 14.0338 14.8958 14.6667 14.8958C15.2995 14.8958 15.8125 14.3828 15.8125 13.75C15.8125 13.1172 15.2995 12.6042 14.6667 12.6042ZM12.1458 13.75C12.1458 12.3578 13.2744 11.2292 14.6667 11.2292C16.0589 11.2292 17.1875 12.3578 17.1875 13.75C17.1875 15.1422 16.0589 16.2708 14.6667 16.2708C13.2744 16.2708 12.1458 15.1422 12.1458 13.75ZM6.1875 8.25C6.1875 8.88283 6.70051 9.39583 7.33333 9.39583C7.96616 9.39583 8.47917 8.88283 8.47917 8.25C8.47917 7.61717 7.96616 7.10417 7.33333 7.10417C6.70051 7.10417 6.1875 7.61717 6.1875 8.25ZM7.33333 10.7708C5.94112 10.7708 4.8125 9.64222 4.8125 8.25C4.8125 6.85778 5.94112 5.72917 7.33333 5.72917C8.72555 5.72917 9.85417 6.85778 9.85417 8.25C9.85417 9.64222 8.72555 10.7708 7.33333 10.7708ZM14.6667 16.5C15.1729 16.5 15.5833 16.9104 15.5833 17.4167V18.3333C15.5833 18.8396 15.1729 19.25 14.6667 19.25C14.1604 19.25 13.75 18.8396 13.75 18.3333V17.4167C13.75 16.9104 14.1604 16.5 14.6667 16.5ZM9.25 5.58333C9.25 6.08959 8.83959 6.5 8.33333 6.5C7.82707 6.5 7.41667 6.08959 7.41667 5.58333V4.66667C7.41667 4.16041 7.82707 3.75 8.33333 3.75C8.83959 3.75 9.25 4.16041 9.25 4.66667V5.58333Z"
+                        fill="#5EB0FF"
+                        fillOpacity="0.8"
+                      />
+                    </svg>
+                  ) : (
+                    <svg
+                      width={32}
+                      height={32}
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="flex-grow-0 flex-shrink-0 w-6 h-6 relative"
+                      preserveAspectRatio="xMidYMid meet"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        clipRule="evenodd"
+                        d="M16.5833 4.66667C16.5833 4.16041 16.1729 3.75 15.6667 3.75C15.1604 3.75 14.75 4.16041 14.75 4.66667V11.0833C14.75 11.5896 15.1604 12 15.6667 12C16.1729 12 16.5833 11.5896 16.5833 11.0833V4.66667ZM9.25 19.3333C9.25 19.8396 8.83959 20.25 8.33333 20.25C7.82707 20.25 7.41667 19.8396 7.41667 19.3333V12.9167C7.41667 12.4104 7.82707 12 8.33333 12C8.83959 12 9.25 12.4104 9.25 12.9167V19.3333ZM15.6667 13.6042C15.0338 13.6042 14.5208 14.1172 14.5208 14.75C14.5208 15.3828 15.0338 15.8958 15.6667 15.8958C16.2995 15.8958 16.8125 15.3828 16.8125 14.75C16.8125 14.1172 16.2995 13.6042 15.6667 13.6042ZM13.1458 14.75C13.1458 13.3578 14.2744 12.2292 15.6667 12.2292C17.0589 12.2292 18.1875 13.3578 18.1875 14.75C18.1875 16.1422 17.0589 17.2708 15.6667 17.2708C14.2744 17.2708 13.1458 16.1422 13.1458 14.75ZM7.1875 9.25C7.1875 9.88283 7.70051 10.39583 8.33333 10.39583C8.96616 10.39583 9.47917 9.88283 9.47917 8.25C9.47917 7.61717 8.96616 7.10417 8.33333 7.10417C7.70051 7.10417 7.1875 7.61717 7.1875 8.25ZM8.33333 11.7708C6.94112 11.7708 5.8125 10.64222 5.8125 9.25C5.8125 6.85778 6.94112 5.72917 8.33333 5.72917C9.72555 5.72917 10.8542 6.85778 10.8542 9.25C10.8542 10.64222 9.72555 11.7708 8.33333 11.7708ZM15.6667 17.5C16.1729 17.5 16.5833 17.9104 16.5833 18.4167V19.3333C16.5833 19.8396 16.1729 20.25 15.6667 20.25C15.1604 20.25 14.75 19.8396 14.75 19.3333V18.4167C14.75 17.9104 15.1604 17.5 15.6667 17.5ZM9.25 5.58333C9.25 6.08959 8.83959 6.5 8.33333 6.5C7.82707 6.5 7.41667 6.08959 7.41667 5.58333V4.66667C7.41667 4.16041 7.82707 3.75 8.33333 3.75C8.83959 3.75 9.25 4.16041 9.25 4.66667V5.58333Z"
+                        fill="#121212"
+                      />
+                    </svg>
+                  )}
+                </button>
+              </div>
+            ) : (
               <button
-                className="flex justify-center items-center flex-grow-0 flex-shrink-0 overflow-hidden gap-2 p-1 rounded-[1000px]"
-                style={{ filter: 'drop-shadow(0px 0px 4px rgba(0,0,0,0.08))' }}
-                onClick={handleFilterClick}
+                onClick={clickModal}
+                className="rounded-lg px-[10px] py-[6px] flex justify-center items-center text-[#FFF] text-[14px] font-KR font-medium mr-3"
+                style={{ backgroundColor: 'rgba(255, 71, 50, 0.85)' }}
               >
-                {isFilterOn ? (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="22"
-                    height="22"
-                    viewBox="0 0 22 22"
-                    fill="none"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      clipRule="evenodd"
-                      d="M15.5833 3.66667C15.5833 3.16041 15.1729 2.75 14.6667 2.75C14.1604 2.75 13.75 3.16041 13.75 3.66667V10.0833C13.75 10.5896 14.1604 11 14.6667 11C15.1729 11 15.5833 10.5896 15.5833 10.0833V3.66667ZM8.25 18.3333C8.25 18.8396 7.83959 19.25 7.33333 19.25C6.82707 19.25 6.41667 18.8396 6.41667 18.3333V11.9167C6.41667 11.4104 6.82707 11 7.33333 11C7.83959 11 8.25 11.4104 8.25 11.9167V18.3333ZM14.6667 12.6042C14.0338 12.6042 13.5208 13.1172 13.5208 13.75C13.5208 14.3828 14.0338 14.8958 14.6667 14.8958C15.2995 14.8958 15.8125 14.3828 15.8125 13.75C15.8125 13.1172 15.2995 12.6042 14.6667 12.6042ZM12.1458 13.75C12.1458 12.3578 13.2744 11.2292 14.6667 11.2292C16.0589 11.2292 17.1875 12.3578 17.1875 13.75C17.1875 15.1422 16.0589 16.2708 14.6667 16.2708C13.2744 16.2708 12.1458 15.1422 12.1458 13.75ZM6.1875 8.25C6.1875 8.88283 6.70051 9.39583 7.33333 9.39583C7.96616 9.39583 8.47917 8.88283 8.47917 8.25C8.47917 7.61717 7.96616 7.10417 7.33333 7.10417C6.70051 7.10417 6.1875 7.61717 6.1875 8.25ZM7.33333 10.7708C5.94112 10.7708 4.8125 9.64222 4.8125 8.25C4.8125 6.85778 5.94112 5.72917 7.33333 5.72917C8.72555 5.72917 9.85417 6.85778 9.85417 8.25C9.85417 9.64222 8.72555 10.7708 7.33333 10.7708ZM14.6667 16.5C15.1729 16.5 15.5833 16.9104 15.5833 17.4167V18.3333C15.5833 18.8396 15.1729 19.25 14.6667 19.25C14.1604 19.25 13.75 18.8396 13.75 18.3333V17.4167C13.75 16.9104 14.1604 16.5 14.6667 16.5ZM9.25 5.58333C9.25 6.08959 8.83959 6.5 8.33333 6.5C7.82707 6.5 7.41667 6.08959 7.41667 5.58333V4.66667C7.41667 4.16041 7.82707 3.75 8.33333 3.75C8.83959 3.75 9.25 4.16041 9.25 4.66667V5.58333Z"
-                      fill="#5EB0FF"
-                      fillOpacity="0.8"
-                    />
-                  </svg>
-                ) : (
-                  <svg
-                    width={32}
-                    height={32}
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="flex-grow-0 flex-shrink-0 w-6 h-6 relative"
-                    preserveAspectRatio="xMidYMid meet"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      clipRule="evenodd"
-                      d="M16.5833 4.66667C16.5833 4.16041 16.1729 3.75 15.6667 3.75C15.1604 3.75 14.75 4.16041 14.75 4.66667V11.0833C14.75 11.5896 15.1604 12 15.6667 12C16.1729 12 16.5833 11.5896 16.5833 11.0833V4.66667ZM9.25 19.3333C9.25 19.8396 8.83959 20.25 8.33333 20.25C7.82707 20.25 7.41667 19.8396 7.41667 19.3333V12.9167C7.41667 12.4104 7.82707 12 8.33333 12C8.83959 12 9.25 12.4104 9.25 12.9167V19.3333ZM15.6667 13.6042C15.0338 13.6042 14.5208 14.1172 14.5208 14.75C14.5208 15.3828 15.0338 15.8958 15.6667 15.8958C16.2995 15.8958 16.8125 15.3828 16.8125 14.75C16.8125 14.1172 16.2995 13.6042 15.6667 13.6042ZM13.1458 14.75C13.1458 13.3578 14.2744 12.2292 15.6667 12.2292C17.0589 12.2292 18.1875 13.3578 18.1875 14.75C18.1875 16.1422 17.0589 17.2708 15.6667 17.2708C14.2744 17.2708 13.1458 16.1422 13.1458 14.75ZM7.1875 9.25C7.1875 9.88283 7.70051 10.39583 8.33333 10.39583C8.96616 10.39583 9.47917 9.88283 9.47917 8.25C9.47917 7.61717 8.96616 7.10417 8.33333 7.10417C7.70051 7.10417 7.1875 7.61717 7.1875 8.25ZM8.33333 11.7708C6.94112 11.7708 5.8125 10.64222 5.8125 9.25C5.8125 6.85778 6.94112 5.72917 8.33333 5.72917C9.72555 5.72917 10.8542 6.85778 10.8542 9.25C10.8542 10.64222 9.72555 11.7708 8.33333 11.7708ZM15.6667 17.5C16.1729 17.5 16.5833 17.9104 16.5833 18.4167V19.3333C16.5833 19.8396 16.1729 20.25 15.6667 20.25C15.1604 20.25 14.75 19.8396 14.75 19.3333V18.4167C14.75 17.9104 15.1604 17.5 15.6667 17.5ZM9.25 5.58333C9.25 6.08959 8.83959 6.5 8.33333 6.5C7.82707 6.5 7.41667 6.08959 7.41667 5.58333V4.66667C7.41667 4.16041 7.82707 3.75 8.33333 3.75C8.83959 3.75 9.25 4.16041 9.25 4.66667V5.58333Z"
-                      fill="#121212"
-                    />
-                  </svg>
-                )}
+                삭제
               </button>
+            )}
+          </div>
+        </div>
+        {showDropdown && (
+          <div className="absolute w-[288px] h-[165px] rounded-lg top-[55px] flex flex-col items-start p-2 z-20 backdrop-blur-[5px] bg-white bg-opacity-90">
+            <div className="flex flex-wrap gap-1 border-b border-gray-300 pb-1 mb-2">
+              {['유형', '날씨', '계절', '스타일', '장소'].map((item) => (
+                <button
+                  key={item}
+                  className={`w-[50px] h-[33px] flex justify-center items-center rounded-lg text-[#121212] relative ${
+                    selectedTab === item ? 'font-bold' : ''
+                  }`}
+                  onClick={() => handleTabClick(item)}
+                >
+                  {item}
+                  {selectedTab === item && (
+                    <span className="absolute bottom-[-6px] left-1/2 transform -translate-x-1/2 h-0.5 w-10 bg-black" />
+                  )}
+                </button>
+              ))}
             </div>
-          ) : (
-            <button
-              onClick={clickModal}
-              className="rounded-lg px-[10px] py-[6px] flex justify-center items-center text-[#FFF] text-[14px] font-KR font-medium mr-3"
-              style={{ backgroundColor: 'rgba(255, 71, 50, 0.85)' }}
-            >
-              삭제
-            </button>
-          )}
-        </div>
-      </div>
-      {showDropdown && (
-        <div className="absolute w-[288px] h-[165px] rounded-lg top-[55px] flex flex-col items-start p-2 z-20 backdrop-blur-[5px] bg-white bg-opacity-90">
-          <div className="flex flex-wrap gap-1 border-b border-gray-300 pb-1 mb-2">
-            {['유형', '날씨', '계절', '스타일', '장소'].map((item) => (
-              <button
-                key={item}
-                className={`w-[50px] h-[33px] flex justify-center items-center rounded-lg text-[#121212] relative ${
-                  selectedTab === item ? 'font-bold' : ''
-                }`}
-                onClick={() => handleTabClick(item)}
-              >
-                {item}
-                {selectedTab === item && (
-                  <span className="absolute bottom-[-6px] left-1/2 transform -translate-x-1/2 h-0.5 w-10 bg-black" />
-                )}
-              </button>
-            ))}
+            <div>
+              {selectedTab === '유형' && (
+                <div className="flex flex-wrap gap-1">
+                  {['남성', '여성', '선택 안함'].map((option) => (
+                    <button
+                      key={option}
+                      onClick={() => handleOptionClick(option)}
+                      className={`flex justify-center items-center rounded-lg ${
+                        selectedOptions['유형']?.includes(option)
+                          ? 'bg-[#121212] text-white'
+                          : 'bg-[#E6E6E699] text-[#121212]'
+                      } ${
+                        option === '선택 안함'
+                          ? 'w-[74px] h-[32px]'
+                          : 'w-[46px] h-[32px]'
+                      }`}
+                    >
+                      {option}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+            <div>
+              {selectedTab === '날씨' && (
+                <div className="flex flex-wrap gap-1">
+                  {['맑음', '흐림', '비', '눈'].map((option) => (
+                    <button
+                      key={option}
+                      onClick={() => handleOptionClick(option)}
+                      className={`flex justify-center items-center rounded-lg ${
+                        selectedOptions['날씨']?.includes(option)
+                          ? 'bg-[#121212] text-white'
+                          : 'bg-[#E6E6E699] text-[#121212]'
+                      } ${'w-[59px] h-[32px]'}`}
+                    >
+                      {option}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+            <div>
+              {selectedTab === '계절' && (
+                <div className="flex flex-wrap gap-1">
+                  {['봄', '여름', '가을', '겨울'].map((option) => (
+                    <button
+                      key={option}
+                      onClick={() => handleOptionClick(option)}
+                      className={`flex justify-center items-center rounded-lg ${
+                        selectedOptions['계절']?.includes(option)
+                          ? 'bg-[#121212] text-white'
+                          : 'bg-[#E6E6E699] text-[#121212]'
+                      } ${'w-[59px] h-[32px]'}`}
+                    >
+                      {option}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+            <div>
+              {selectedTab === '스타일' && (
+                <div className="flex flex-wrap gap-1">
+                  {[
+                    '미니멀',
+                    '아메카지',
+                    '시티보이',
+                    '캐주얼',
+                    '비즈니스캐주얼',
+                    '스포츠',
+                    '빈티지',
+                  ].map((option) => (
+                    <button
+                      key={option}
+                      onClick={() => handleOptionClick(option)}
+                      className={`flex justify-center items-center rounded-lg ${
+                        selectedOptions['스타일']?.includes(option)
+                          ? 'bg-[#121212] text-white'
+                          : 'bg-[#E6E6E699] text-[#121212]'
+                      } ${
+                        option === '비즈니스캐주얼'
+                          ? 'w-[120px] h-[32px]'
+                          : option === '아메카지' || option === '시티보이'
+                            ? 'w-[80px] h-[32px]'
+                            : 'w-[59px] h-[32px]'
+                      }`}
+                    >
+                      {option}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+            <div>
+              {selectedTab === '장소' && (
+                <div className="flex flex-wrap gap-1">
+                  {[
+                    '데이트',
+                    '캠퍼스',
+                    '카페',
+                    '출근',
+                    '결혼식',
+                    '바다',
+                    '여행',
+                    '데일리',
+                    '소개팅',
+                  ].map((option) => (
+                    <button
+                      key={option}
+                      onClick={() => handleOptionClick(option)}
+                      className={`flex justify-center items-center rounded-lg ${
+                        selectedOptions['장소']?.includes(option)
+                          ? 'bg-[#121212] text-white'
+                          : 'bg-[#E6E6E699] text-[#121212]'
+                      } ${'w-[59px] h-[32px]'}`}
+                    >
+                      {option}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
-          <div>
-            {selectedTab === '유형' && (
-              <div className="flex flex-wrap gap-1">
-                {['남성', '여성', '선택 안함'].map((option) => (
-                  <button
-                    key={option}
-                    onClick={() => handleOptionClick(option)}
-                    className={`flex justify-center items-center rounded-lg ${
-                      selectedOptions['유형']?.includes(option)
-                        ? 'bg-[#121212] text-white'
-                        : 'bg-[#E6E6E699] text-[#121212]'
-                    } ${
-                      option === '선택 안함'
-                        ? 'w-[74px] h-[32px]'
-                        : 'w-[46px] h-[32px]'
-                    }`}
-                  >
-                    {option}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-          <div>
-            {selectedTab === '날씨' && (
-              <div className="flex flex-wrap gap-1">
-                {['맑음', '흐림', '비', '눈'].map((option) => (
-                  <button
-                    key={option}
-                    onClick={() => handleOptionClick(option)}
-                    className={`flex justify-center items-center rounded-lg ${
-                      selectedOptions['날씨']?.includes(option)
-                        ? 'bg-[#121212] text-white'
-                        : 'bg-[#E6E6E699] text-[#121212]'
-                    } ${'w-[59px] h-[32px]'}`}
-                  >
-                    {option}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-          <div>
-            {selectedTab === '계절' && (
-              <div className="flex flex-wrap gap-1">
-                {['봄', '여름', '가을', '겨울'].map((option) => (
-                  <button
-                    key={option}
-                    onClick={() => handleOptionClick(option)}
-                    className={`flex justify-center items-center rounded-lg ${
-                      selectedOptions['계절']?.includes(option)
-                        ? 'bg-[#121212] text-white'
-                        : 'bg-[#E6E6E699] text-[#121212]'
-                    } ${'w-[59px] h-[32px]'}`}
-                  >
-                    {option}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-          <div>
-            {selectedTab === '스타일' && (
-              <div className="flex flex-wrap gap-1">
-                {[
-                  '미니멀',
-                  '아메카지',
-                  '시티보이',
-                  '캐주얼',
-                  '비즈니스캐주얼',
-                  '스포츠',
-                  '빈티지',
-                ].map((option) => (
-                  <button
-                    key={option}
-                    onClick={() => handleOptionClick(option)}
-                    className={`flex justify-center items-center rounded-lg ${
-                      selectedOptions['스타일']?.includes(option)
-                        ? 'bg-[#121212] text-white'
-                        : 'bg-[#E6E6E699] text-[#121212]'
-                    } ${
-                      option === '비즈니스캐주얼'
-                        ? 'w-[120px] h-[32px]'
-                        : option === '아메카지' || option === '시티보이'
-                          ? 'w-[80px] h-[32px]'
-                          : 'w-[59px] h-[32px]'
-                    }`}
-                  >
-                    {option}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-          <div>
-            {selectedTab === '장소' && (
-              <div className="flex flex-wrap gap-1">
-                {[
-                  '데이트',
-                  '캠퍼스',
-                  '카페',
-                  '출근',
-                  '결혼식',
-                  '바다',
-                  '여행',
-                  '데일리',
-                  '소개팅',
-                ].map((option) => (
-                  <button
-                    key={option}
-                    onClick={() => handleOptionClick(option)}
-                    className={`flex justify-center items-center rounded-lg ${
-                      selectedOptions['장소']?.includes(option)
-                        ? 'bg-[#121212] text-white'
-                        : 'bg-[#E6E6E699] text-[#121212]'
-                    } ${'w-[59px] h-[32px]'}`}
-                  >
-                    {option}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-      {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white rounded-lg shadow-lg  w-[281px] h-[185px] p-[40px]">
-            <h2 className="text-[18px] font-KR font-semibold text-[#4D4D4D] tracking-[-0.36px] self-stretch text-center leading-[23.4px] gap-[4px]">
-              정말 삭제하시겠습니까?
-              <p className="text-[14px] text-[#4D4D4D] font-KR font-medium leading-[21px] tracking-[-1.2px] self-stretch whitespace-nowrap text-center mt-[4px]">
-                삭제한 스타일은 복구 할 수 없습니다
-              </p>
-            </h2>
+        )}
+        {showModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center md:hidden">
+            <div className="bg-white rounded-lg shadow-lg  w-[281px] h-[185px] p-[40px]">
+              <h2 className="text-[18px] font-KR font-semibold text-[#4D4D4D] tracking-[-0.36px] self-stretch text-center leading-[23.4px] gap-[4px]">
+                정말 삭제하시겠습니까?
+                <p className="text-[14px] text-[#4D4D4D] font-KR font-medium leading-[21px] tracking-[-1.2px] self-stretch whitespace-nowrap text-center mt-[4px]">
+                  삭제한 스타일은 복구 할 수 없습니다
+                </p>
+              </h2>
 
-            <span className="grid grid-cols-2 gap-[10px] mt-[21px]">
+              <span className="grid grid-cols-2 gap-[10px] mt-[21px]">
+                <button
+                  onClick={() => setShowModal(false)}
+                  className="bg-black-100 text-[#4D4D4D] font-KR rounded-lg p-[14px] font-semibold "
+                >
+                  이전으로
+                </button>
+                <button
+                  onClick={handlePostDelete}
+                  className="text-[#FFF] rounded-lg p-[14px] font-semibold"
+                  style={{
+                    backgroundColor: 'rgba(255, 71, 50, 0.85)',
+                  }}
+                >
+                  삭제하기
+                </button>
+              </span>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* 해상도 768px 이상 디자인 */}
+      <div className="hidden md:relative md:z-10 md:flex md:justify-center">
+        <div className="flex justify-between items-center shrink-0 w-[1030px] p-2 ml-[14px]">
+          <div className="flex justify-center items-center flex-grow-0 flex-shrink-0 overflow-hidden px-1 py-1.5 rounded-lg m">
+            <label className="flex items-center justify-center py-[8px] gap-[6px] rounded text-[14px] font-normal leading-[14px] tracking-[-0.28px] font-KR text-black-500">
+              <input type="checkbox" onChange={allCheckHandler} />
+              모두 선택
+            </label>
+          </div>
+          <div className="flex justify-center items-center top-[9px]">
+            {checkItems.length === 0 ? (
+              <div>
+                <button
+                  className="flex justify-center items-center flex-grow-0 flex-shrink-0 overflow-hidden gap-2 p-1 rounded-[1000px]"
+                  style={{
+                    filter: 'drop-shadow(0px 0px 4px rgba(0,0,0,0.08))',
+                  }}
+                  onClick={handleFilterClick}
+                >
+                  {isFilterOn ? (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="22"
+                      height="22"
+                      viewBox="0 0 22 22"
+                      fill="none"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        clipRule="evenodd"
+                        d="M15.5833 3.66667C15.5833 3.16041 15.1729 2.75 14.6667 2.75C14.1604 2.75 13.75 3.16041 13.75 3.66667V10.0833C13.75 10.5896 14.1604 11 14.6667 11C15.1729 11 15.5833 10.5896 15.5833 10.0833V3.66667ZM8.25 18.3333C8.25 18.8396 7.83959 19.25 7.33333 19.25C6.82707 19.25 6.41667 18.8396 6.41667 18.3333V11.9167C6.41667 11.4104 6.82707 11 7.33333 11C7.83959 11 8.25 11.4104 8.25 11.9167V18.3333ZM14.6667 12.6042C14.0338 12.6042 13.5208 13.1172 13.5208 13.75C13.5208 14.3828 14.0338 14.8958 14.6667 14.8958C15.2995 14.8958 15.8125 14.3828 15.8125 13.75C15.8125 13.1172 15.2995 12.6042 14.6667 12.6042ZM12.1458 13.75C12.1458 12.3578 13.2744 11.2292 14.6667 11.2292C16.0589 11.2292 17.1875 12.3578 17.1875 13.75C17.1875 15.1422 16.0589 16.2708 14.6667 16.2708C13.2744 16.2708 12.1458 15.1422 12.1458 13.75ZM6.1875 8.25C6.1875 8.88283 6.70051 9.39583 7.33333 9.39583C7.96616 9.39583 8.47917 8.88283 8.47917 8.25C8.47917 7.61717 7.96616 7.10417 7.33333 7.10417C6.70051 7.10417 6.1875 7.61717 6.1875 8.25ZM7.33333 10.7708C5.94112 10.7708 4.8125 9.64222 4.8125 8.25C4.8125 6.85778 5.94112 5.72917 7.33333 5.72917C8.72555 5.72917 9.85417 6.85778 9.85417 8.25C9.85417 9.64222 8.72555 10.7708 7.33333 10.7708ZM14.6667 16.5C15.1729 16.5 15.5833 16.9104 15.5833 17.4167V18.3333C15.5833 18.8396 15.1729 19.25 14.6667 19.25C14.1604 19.25 13.75 18.8396 13.75 18.3333V17.4167C13.75 16.9104 14.1604 16.5 14.6667 16.5ZM9.25 5.58333C9.25 6.08959 8.83959 6.5 8.33333 6.5C7.82707 6.5 7.41667 6.08959 7.41667 5.58333V4.66667C7.41667 4.16041 7.82707 3.75 8.33333 3.75C8.83959 3.75 9.25 4.16041 9.25 4.66667V5.58333Z"
+                        fill="#5EB0FF"
+                        fillOpacity="0.8"
+                      />
+                    </svg>
+                  ) : (
+                    <svg
+                      width={32}
+                      height={32}
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="flex-grow-0 flex-shrink-0 w-6 h-6 relative"
+                      preserveAspectRatio="xMidYMid meet"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        clipRule="evenodd"
+                        d="M16.5833 4.66667C16.5833 4.16041 16.1729 3.75 15.6667 3.75C15.1604 3.75 14.75 4.16041 14.75 4.66667V11.0833C14.75 11.5896 15.1604 12 15.6667 12C16.1729 12 16.5833 11.5896 16.5833 11.0833V4.66667ZM9.25 19.3333C9.25 19.8396 8.83959 20.25 8.33333 20.25C7.82707 20.25 7.41667 19.8396 7.41667 19.3333V12.9167C7.41667 12.4104 7.82707 12 8.33333 12C8.83959 12 9.25 12.4104 9.25 12.9167V19.3333ZM15.6667 13.6042C15.0338 13.6042 14.5208 14.1172 14.5208 14.75C14.5208 15.3828 15.0338 15.8958 15.6667 15.8958C16.2995 15.8958 16.8125 15.3828 16.8125 14.75C16.8125 14.1172 16.2995 13.6042 15.6667 13.6042ZM13.1458 14.75C13.1458 13.3578 14.2744 12.2292 15.6667 12.2292C17.0589 12.2292 18.1875 13.3578 18.1875 14.75C18.1875 16.1422 17.0589 17.2708 15.6667 17.2708C14.2744 17.2708 13.1458 16.1422 13.1458 14.75ZM7.1875 9.25C7.1875 9.88283 7.70051 10.39583 8.33333 10.39583C8.96616 10.39583 9.47917 9.88283 9.47917 8.25C9.47917 7.61717 8.96616 7.10417 8.33333 7.10417C7.70051 7.10417 7.1875 7.61717 7.1875 8.25ZM8.33333 11.7708C6.94112 11.7708 5.8125 10.64222 5.8125 9.25C5.8125 6.85778 6.94112 5.72917 8.33333 5.72917C9.72555 5.72917 10.8542 6.85778 10.8542 9.25C10.8542 10.64222 9.72555 11.7708 8.33333 11.7708ZM15.6667 17.5C16.1729 17.5 16.5833 17.9104 16.5833 18.4167V19.3333C16.5833 19.8396 16.1729 20.25 15.6667 20.25C15.1604 20.25 14.75 19.8396 14.75 19.3333V18.4167C14.75 17.9104 15.1604 17.5 15.6667 17.5ZM9.25 5.58333C9.25 6.08959 8.83959 6.5 8.33333 6.5C7.82707 6.5 7.41667 6.08959 7.41667 5.58333V4.66667C7.41667 4.16041 7.82707 3.75 8.33333 3.75C8.83959 3.75 9.25 4.16041 9.25 4.66667V5.58333Z"
+                        fill="#121212"
+                      />
+                    </svg>
+                  )}
+                </button>
+              </div>
+            ) : (
               <button
-                onClick={() => setShowModal(false)}
-                className="bg-black-100 text-[#4D4D4D] font-KR rounded-lg p-[14px] font-semibold "
+                onClick={clickModal}
+                className="rounded-lg px-[10px] py-[6px] flex justify-center items-center text-[#FFF] text-[14px] font-KR font-medium mr-3"
+                style={{ backgroundColor: 'rgba(255, 71, 50, 0.85)' }}
               >
-                이전으로
+                삭제
               </button>
-              <button
-                onClick={handlePostDelete}
-                className="text-[#FFF] rounded-lg p-[14px] font-semibold"
-                style={{
-                  backgroundColor: 'rgba(255, 71, 50, 0.85)',
-                }}
-              >
-                삭제하기
-              </button>
-            </span>
+            )}
           </div>
         </div>
-      )}
+        {showDropdown && (
+          <div className="absolute w-[288px] h-[165px] rounded-lg top-[55px] flex flex-col items-start p-2 z-20 backdrop-blur-[5px] bg-white bg-opacity-90">
+            <div className="flex flex-wrap gap-1 border-b border-gray-300 pb-1 mb-2">
+              {['유형', '날씨', '계절', '스타일', '장소'].map((item) => (
+                <button
+                  key={item}
+                  className={`w-[50px] h-[33px] flex justify-center items-center rounded-lg text-[#121212] relative ${
+                    selectedTab === item ? 'font-bold' : ''
+                  }`}
+                  onClick={() => handleTabClick(item)}
+                >
+                  {item}
+                  {selectedTab === item && (
+                    <span className="absolute bottom-[-6px] left-1/2 transform -translate-x-1/2 h-0.5 w-10 bg-black" />
+                  )}
+                </button>
+              ))}
+            </div>
+            <div>
+              {selectedTab === '유형' && (
+                <div className="flex flex-wrap gap-1">
+                  {['남성', '여성', '선택 안함'].map((option) => (
+                    <button
+                      key={option}
+                      onClick={() => handleOptionClick(option)}
+                      className={`flex justify-center items-center rounded-lg ${
+                        selectedOptions['유형']?.includes(option)
+                          ? 'bg-[#121212] text-white'
+                          : 'bg-[#E6E6E699] text-[#121212]'
+                      } ${
+                        option === '선택 안함'
+                          ? 'w-[74px] h-[32px]'
+                          : 'w-[46px] h-[32px]'
+                      }`}
+                    >
+                      {option}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+            <div>
+              {selectedTab === '날씨' && (
+                <div className="flex flex-wrap gap-1">
+                  {['맑음', '흐림', '비', '눈'].map((option) => (
+                    <button
+                      key={option}
+                      onClick={() => handleOptionClick(option)}
+                      className={`flex justify-center items-center rounded-lg ${
+                        selectedOptions['날씨']?.includes(option)
+                          ? 'bg-[#121212] text-white'
+                          : 'bg-[#E6E6E699] text-[#121212]'
+                      } ${'w-[59px] h-[32px]'}`}
+                    >
+                      {option}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+            <div>
+              {selectedTab === '계절' && (
+                <div className="flex flex-wrap gap-1">
+                  {['봄', '여름', '가을', '겨울'].map((option) => (
+                    <button
+                      key={option}
+                      onClick={() => handleOptionClick(option)}
+                      className={`flex justify-center items-center rounded-lg ${
+                        selectedOptions['계절']?.includes(option)
+                          ? 'bg-[#121212] text-white'
+                          : 'bg-[#E6E6E699] text-[#121212]'
+                      } ${'w-[59px] h-[32px]'}`}
+                    >
+                      {option}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+            <div>
+              {selectedTab === '스타일' && (
+                <div className="flex flex-wrap gap-1">
+                  {[
+                    '미니멀',
+                    '아메카지',
+                    '시티보이',
+                    '캐주얼',
+                    '비즈니스캐주얼',
+                    '스포츠',
+                    '빈티지',
+                  ].map((option) => (
+                    <button
+                      key={option}
+                      onClick={() => handleOptionClick(option)}
+                      className={`flex justify-center items-center rounded-lg ${
+                        selectedOptions['스타일']?.includes(option)
+                          ? 'bg-[#121212] text-white'
+                          : 'bg-[#E6E6E699] text-[#121212]'
+                      } ${
+                        option === '비즈니스캐주얼'
+                          ? 'w-[120px] h-[32px]'
+                          : option === '아메카지' || option === '시티보이'
+                            ? 'w-[80px] h-[32px]'
+                            : 'w-[59px] h-[32px]'
+                      }`}
+                    >
+                      {option}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+            <div>
+              {selectedTab === '장소' && (
+                <div className="flex flex-wrap gap-1">
+                  {[
+                    '데이트',
+                    '캠퍼스',
+                    '카페',
+                    '출근',
+                    '결혼식',
+                    '바다',
+                    '여행',
+                    '데일리',
+                    '소개팅',
+                  ].map((option) => (
+                    <button
+                      key={option}
+                      onClick={() => handleOptionClick(option)}
+                      className={`flex justify-center items-center rounded-lg ${
+                        selectedOptions['장소']?.includes(option)
+                          ? 'bg-[#121212] text-white'
+                          : 'bg-[#E6E6E699] text-[#121212]'
+                      } ${'w-[59px] h-[32px]'}`}
+                    >
+                      {option}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+        {showModal && (
+          <div className="hidden md:fixed md:inset-0 md:bg-black md:bg-opacity-50 md:flex md:justify-center md:items-center">
+            <div className="bg-white rounded-lg shadow-lg  w-[281px] h-[185px] p-[40px]">
+              <h2 className="text-[18px] font-KR font-semibold text-[#4D4D4D] tracking-[-0.36px] self-stretch text-center leading-[23.4px] gap-[4px]">
+                정말 삭제하시겠습니까?
+                <p className="text-[14px] text-[#4D4D4D] font-KR font-medium leading-[21px] tracking-[-1.2px] self-stretch whitespace-nowrap text-center mt-[4px]">
+                  삭제한 스타일은 복구 할 수 없습니다
+                </p>
+              </h2>
+
+              <span className="grid grid-cols-2 gap-[10px] mt-[21px]">
+                <button
+                  onClick={() => setShowModal(false)}
+                  className="bg-black-100 text-[#4D4D4D] font-KR rounded-lg p-[14px] font-semibold "
+                >
+                  이전으로
+                </button>
+                <button
+                  onClick={handlePostDelete}
+                  className="text-[#FFF] rounded-lg p-[14px] font-semibold"
+                  style={{
+                    backgroundColor: 'rgba(255, 71, 50, 0.85)',
+                  }}
+                >
+                  삭제하기
+                </button>
+              </span>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

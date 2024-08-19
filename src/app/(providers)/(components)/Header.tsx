@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { LogoText } from '../../../icons/LogoText';
@@ -16,6 +16,22 @@ const Header = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { user, setUser, isLoggedIn } = useUserStore();
   const router = useRouter();
+  const pathname = usePathname();
+  const isDetailPage = pathname?.startsWith('/detail');
+  const [isDetailMobile, setIsDetailMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsDetailMobile(window.innerWidth <= 768); // DetailPage 768이하에서만 헤더 안보이게 하기
+    };
+
+    handleResize(); // 초기 호출
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   const handleMenuToggle = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -68,13 +84,16 @@ const Header = () => {
   if (isLoading) {
     return <LoadingScreen />;
   }
+  if (isDetailPage && isDetailMobile) {
+    return <></>;
+  }
 
   return (
     <header className="w-full fixed top-0 z-50 h-[60px]">
       <div
         className="absolute w-full h-full bg-rgba(255, 255, 255, 0.70))"
         style={{
-          boxShadow: '0px 2px 10px 0px rgba(0, 0, 0, 0.05)',          
+          boxShadow: '0px 2px 10px 0px rgba(0, 0, 0, 0.05)',
         }}
       ></div>
       <div className="relative w-full h-full flex items-center px-4">
@@ -119,7 +138,7 @@ const Header = () => {
         className={`navbar ${isMenuOpen ? 'open' : ''}`}
         style={{
           width: '100%',
-          height: '100%',          
+          height: '100%',
           backgroundColor: 'rgba(255, 255, 255, 0.70)',
           transform: isMenuOpen
             ? 'translate(-50%,0%)'

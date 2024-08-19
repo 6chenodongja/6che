@@ -59,9 +59,9 @@ function MyStylePage() {
   return (
     <div>
       {!isLoading && posts.length === 0 ? (
-        <div className="notPostLike-container mx-auto bg-[#FAFAFA]">
+        <div className="notPostLike-container mx-auto bg-[#FAFAFA] md:h-[1721px]">
           <MyNotStyleHeader />
-          <div className="mt-[60px] mr-[50px] ml-[42px]">
+          <div className="mt-[60px] mr-[50px] ml-[42px] md:mt-auto">
             <Image
               src={'/myStylePage.png'}
               alt="myListPage"
