@@ -228,6 +228,12 @@ const PostFormPage = () => {
       console.error('Error inserting/updating data:', result.error);
     } else {
       console.log('Data inserted/updated successfully');
+      const timeoutId = setTimeout(() => {
+        if (!sessionStorage.getItem('redirectToMyStyle')) {
+          router.push('/list');
+        }
+      }, 2500);
+
       toast.success(
         <div className="toast-message">
           <span>게시 완료되었습니다</span>
@@ -245,12 +251,6 @@ const PostFormPage = () => {
           duration: 2500, // react-hot-toast에서는 duration을 사용합니다.
         },
       );
-
-      const timeoutId = setTimeout(() => {
-        if (!sessionStorage.getItem('redirectToMyStyle')) {
-          router.push('/list');
-        }
-      }, 2500);
     }
 
     setImages([]);
@@ -330,10 +330,12 @@ const PostFormPage = () => {
 
   return (
     <>
-      <Toaster
-        position={window.innerWidth < 769 ? 'bottom-center' : 'top-right'}
-        reverseOrder={false}
-      />
+      {typeof window !== 'undefined' && (
+        <Toaster
+          position={window.innerWidth < 769 ? 'bottom-center' : 'top-right'}
+          reverseOrder={false}
+        />
+      )}
 
       <div className="sm:hidden w-full max-w-[320px] mx-auto flex flex-col min-h-[636px] bg-[#fafafa] mt-10 px-4">
         <div className="flex items-center justify-between mb-4 pb-2 border-b pt-14">
@@ -574,14 +576,15 @@ const PostFormPage = () => {
             </div>
           )}
         </div>
-
         <div className="mb-8">
           <div className="flex items-center justify-between">
             <div className="flex items-baseline">
               <div className="text-[#4d4d4d] font-subtitle-KR-small text-sm not-italic font-medium leading-normal tracking-[-0.28px]">
                 활동
               </div>
-              <div className="ml-1 text-[#4d4d4d] text-sm">(최대 2개)</div>
+              <div className="ml-2 text-sm text-[#4d4d4d] font-normal not-italic leading-normal tracking-[-0.28px]">
+                (최대 2개)
+              </div>
             </div>
             <div className="flex gap-2">
               <button
