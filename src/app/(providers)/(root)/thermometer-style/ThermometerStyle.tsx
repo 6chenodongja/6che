@@ -764,10 +764,16 @@ const ThermometerStyle: React.FC = () => {
     >
       <div className="flex flex-col items-center mt-5 mb-8">
         <div
-          className="relative mb-4 mt-10 temperature-display-container"
+          className="relative mb-3 mt-15 temperature-display-container"
           style={{
-            marginTop: '-40px',
+            marginTop: '-41px',
             overflow: 'hidden',
+            display: 'flex',
+            height: '60px',
+            padding: '9px 0px 9px 0px',
+            justifyContent: 'flex-end',
+            alignItems: 'center',
+            flexShrink: 0,
           }}
         >
           <div
@@ -800,7 +806,7 @@ const ThermometerStyle: React.FC = () => {
             <Image
               src={temperatureImagesToUse.leaf}
               alt="Leaf Icon"
-              width={46}
+              width={50}
               height={46}
               className="md:w-[100px] md:h-[100px]"
             />
@@ -834,7 +840,7 @@ const ThermometerStyle: React.FC = () => {
                     style={{
                       fontFamily: 'Noto Sans KR',
                       letterSpacing: '-0.24px',
-                      fontWeight: 400,
+                      fontWeight: 600,
                       fontStyle: 'normal',
                       color: 'var(--Box-text, rgba(18, 18, 18, 0.70))',
                     }}
@@ -849,7 +855,13 @@ const ThermometerStyle: React.FC = () => {
             <button
               className="absolute left-[8px] top-[50%] transform -translate-y-1/2 flex items-start opacity-[var(--sds-size-stroke-border)] shadow-[0px_1px_2px_0px_rgba(0,0,0,0.10)] backdrop-filter backdrop-blur-[2px] rounded-full z-10"
               onClick={handlePrev}
-              style={{ padding: 0, border: 'none', background: 'transparent' }}
+              style={{
+                padding: 0,
+                border: 'none',
+                background: 'transparent',
+                boxShadow: '0px 1px 2px 0px rgba(0,0,0,0.10)',
+                backdropFilter: 'blur(2px)',
+              }}
             >
               <Image
                 src="/images/Thermometer/skip(512h-png).png"
@@ -865,7 +877,13 @@ const ThermometerStyle: React.FC = () => {
             <button
               className="absolute right-[9px] top-[50%] transform -translate-y-1/2 flex items-start opacity-[var(--sds-size-stroke-border)] shadow-[0px_1px_2px_0px_rgba(0,0,0,0.10)] backdrop-filter backdrop-blur-[2px] rounded-full z-10"
               onClick={handleNext}
-              style={{ padding: 0, border: 'none', background: 'transparent' }}
+              style={{
+                padding: 0,
+                border: 'none',
+                boxShadow: '0px 0px 1px 0px rgba(0,0,0,0.15)',
+                backdropFilter: 'blur(4px)',
+                opacity: 1,
+              }}
             >
               <Image
                 src="/images/Thermometer/skip(512h-png).png"
@@ -887,7 +905,7 @@ const ThermometerStyle: React.FC = () => {
         onTouchStart={handleMouseDown}
       >
         <button
-          className="absolute left-[35px] top-[41.5%] transform -translate-y-1/2 flex items-center justify-center z-10"
+          className="absolute left-[35px] top-[41.5%] transform -translate-y-1/2 flex items-center justify-center z-1"
           onClick={handleLeftClick}
           style={{ padding: 0, border: 'none', background: 'transparent' }}
         >
@@ -937,7 +955,7 @@ const ThermometerStyle: React.FC = () => {
         </div>
 
         <button
-          className="absolute right-[35px] top-[41.5%] transform -translate-y-1/2 flex items-center justify-center z-10"
+          className="absolute right-[35px] top-[41.5%] transform -translate-y-1/2 flex items-center justify-center z-1"
           onClick={handleRightClick}
           style={{ padding: 0, border: 'none', background: 'transparent' }}
         >

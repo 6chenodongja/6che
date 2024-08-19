@@ -282,7 +282,6 @@ function PostList() {
 
   return (
     <div className="container mx-auto h-auto bg-[#FAFAFA]">
-      <Header />
       <ListHeader />
       <div className="mt-6">
         <ListSelects
@@ -340,7 +339,6 @@ function PostList() {
         ))}
         <ScrollButtons />
       </div>
-      <Footer />
     </div>
   );
 }

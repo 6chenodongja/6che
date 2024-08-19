@@ -4,13 +4,14 @@ import LogoutButton from '../LogoutButton/LogoutButton';
 import Link from 'next/link';
 import { useUserStore } from '@/zustand/store/useUserStore';
 import Image from 'next/image';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function LoginDropdown() {
   const [isOpen, setIsOpen] = useState(false);
   const { user } = useUserStore();
-  // console.log('????', profileImage);
-  console.log('', user?.profileImage);
   const toggleDropdown = () => setIsOpen(!isOpen);
+
   return (
     <main className="">
       <div className="inline-block ">
@@ -38,11 +39,11 @@ function LoginDropdown() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.2 }}
-              className="origin-top-right absolute right-0 top-[64px] rounded-2xl shadow-lg bg-white pb-4"
+              className="w-[128px] h-[170px] origin-top-right absolute right-0 rounded-2xl shadow-lg bg-white/70 backdrop-blur-[10px]"
             >
-              <div className="mt-[16px] flex">
-                <ul className="flex flex-col">
-                  <li className="flex p-2">
+              <div className="flex flex-col">
+                <ul className="px-[6px] py-[16px] flex flex-col pl-[14px]">
+                  <li className="flex items-center h-[34px]">
                     {user?.profileImage && (
                       <Image
                         src={user.profileImage}
@@ -53,11 +54,13 @@ function LoginDropdown() {
                       />
                     )}
                     <p className="flex">
-                      <span className="pl-3 text-[16px]">{user?.nickname}</span>
+                      <span className="ml-[6px] mr-[2px] text-[16px]">
+                        {user?.nickname}
+                      </span>
                       <span className="text-black-600 text-[16px]">님</span>
                     </p>
                   </li>
-                  <li className="flex items-center px-4 py-2 text-sm text-[#4d4d4d] hover:bg-gray-100 rounded-xl">
+                  <li className="flex justify-start items-center text-sm text-[#4d4d4d] hover:bg-[#E6E6E6]/60 focus:text-blue-400 rounded-xl h-[34px]">
                     <Link href={'/mypage'} className="flex">
                       <Image
                         src="/images/auth/setting.svg"
@@ -69,7 +72,7 @@ function LoginDropdown() {
                       마이페이지
                     </Link>
                   </li>
-                  <li className="flex items-center px-4 py-2 text-sm text-[#4d4d4d] hover:bg-gray-100 rounded-xl">
+                  <li className="flex justify-start items-center text-sm text-[#4d4d4d] hover:bg-[#E6E6E6]/60 rounded-xl h-[34px]">
                     <Link href={'/postLike'} className="flex">
                       <Image
                         src="/images/auth/blackHeart.svg"
@@ -82,7 +85,7 @@ function LoginDropdown() {
                     </Link>
                   </li>
                   <li className="flex justify-center items-center">
-                    <LogoutButton className="w-[74px] h-[28px] font-[400] text-[12px] leading-[15.6px] text-[#4d4d4d] tracking-[-0.02em] hover:bg-gray-100 rounded-lg" />
+                    <LogoutButton className="w-[74px] h-[28px] font-[400] text-[12px] leading-[15.6px] text-[#4d4d4d] tracking-[-0.02em] hover:bg-[#E6E6E6]/60 rounded-lg" />
                   </li>
                 </ul>
               </div>
@@ -90,6 +93,18 @@ function LoginDropdown() {
           )}
         </AnimatePresence>
       </div>
+      <ToastContainer
+        position="bottom-center"
+        autoClose={2500}
+        hideProgressBar
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        className="custom-toast"
+      />
     </main>
   );
 }

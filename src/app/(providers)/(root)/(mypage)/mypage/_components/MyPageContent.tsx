@@ -6,19 +6,18 @@ import { useUserStore } from '@/zustand/store/useUserStore';
 import { useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
-import Modal from '@/components/Modal/Modal';
+
 import LogoutButton from '@/components/LogoutButton/LogoutButton';
+import DeletesUserIdModalProps from '@/components/Modal/DeletesUserIdModal';
 
 function MyPageContent() {
   const { user, clearUser } = useUserStore();
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const notify = () => {
-    alert('준비 중인 서비스 입니다!');
-  };
+
   const handlerDelete = async () => {
     try {
-      const res = await axios.delete('/api/auth/deletUserId', {
+      const res = await axios.delete('/api/auth/deletesUserId', {
         data: { userId: user?.id },
       });
       if (res.data) {
@@ -38,30 +37,29 @@ function MyPageContent() {
   const closeModal = () => setIsModalOpen(false);
 
   return (
-    <div className="mt-3 mb-[287px]">
-      <div className="flex flex-col justify-start items-start w-72 drop-shadow-lg">
-        <div className="flex flex-col justify-start items-start self-stretch flex-grow-0 flex-shrink-0 gap-3 px-4 py-5 rounded-[14px] bg-white">
-          <div className="flex justify-between items-center self-stretch flex-grow-0 flex-shrink-0 pb-2">
-            <div className="flex justify-start items-center flex-grow-0 flex-shrink-0 w-[32px] h-[32px] gap-2">
+    <div className="flex flex-col gap-3 p-4">
+      <div className="w-full">
+        <div className="flex flex-col items-start bg-white p-4 rounded-lg shadow-md">
+          <div className="flex justify-between items-center w-full">
+            <div className="flex items-center gap-2">
               {user?.profileImage && (
-                <Image
-                  src={user.profileImage}
-                  alt="profile-icon"
+                <object
+                  data={user.profileImage}
                   width={24}
                   height={24}
-                  className="flex-grow-0 flex-shrink-0 w-8 h-8 rounded-lg shadow-[0_0_4px_0_rgba(18,18,18,0.1)]"
+                  className="flex-grow-0 flex-shrink-0 rounded-[4px] shadow-[0_0_4px_0_rgba(18,18,18,0.1)]"
                 />
               )}
-              <div className="flex justify-start items-center self-stretch flex-grow-0 flex-shrink-0 gap-0.5">
-                <p className="flex-grow-0 flex-shrink-0 text-lg font-medium text-left text-[#121212]">
+              <div className="flex justify-start items-center self-stretch flex-grow-0 flex-shrink-0">
+                <span className="flex-grow-0 flex-shrink-0 text-lg font-medium text-[18px] leading-[23.4px] tracking-[-0.36px] text-left text-[#121212]">
                   {user?.nickname}
-                </p>
-                <p className="flex-grow-0 flex-shrink-0 text-lg text-left text-[#121212]">
+                </span>
+                <span className="flex-grow-0 flex-shrink-0 text-lg text-left text-[18px] font-normal text-[#121212]">
                   님
-                </p>
+                </span>
               </div>
             </div>
-            <div className="flex text-center gap-4 w-[46px] h-[28px] rounded-lg bg-[#121212] hover:bg-blue-400">
+            <div className="flex text-center py-[6px] px-3 rounded-xl bg-[#121212] hover:bg-blue-400">
               <Link href={'/profile'} className="w-full h-full" passHref>
                 <button className="w-full h-full text-[12px] font-normal leading-[15.6px] tracking-[-0.02em] text-white">
                   수정
@@ -69,18 +67,16 @@ function MyPageContent() {
               </Link>
             </div>
           </div>
-          {/* Navigation Links */}
-          <nav className="flex flex-col justify-start items-start self-stretch flex-grow-0 flex-shrink-0 gap-1">
+          <nav className="flex flex-col justify-start items-start self-stretch flex-grow-0 flex-shrink-0 gap-2">
             <Link
               href={'/postLike'}
               className="flex justify-between items-center self-stretch flex-grow-0 flex-shrink-0 px-1.5 py-2.5 rounded-lg bg-white hover:bg-gray-200/75"
             >
               <p className="flex-grow-0 flex-shrink-0 text-sm text-left text-[#4d4d4d] focus:text-blue-400">
-                좋아요한 게시글
+                좋아요한 코디
               </p>
-              <Image
-                src="/images/Thermometer/arrow_right.svg"
-                alt="arrow-icon"
+              <object
+                data="/images/Thermometer/arrow_right.svg"
                 width={18}
                 height={18}
                 className="flex-grow-0 flex-shrink-0 w-[18px] h-[18px]"
@@ -92,11 +88,10 @@ function MyPageContent() {
                 className="flex justify-between items-center self-stretch flex-grow-0 flex-shrink-0 hover:bg-gray-200/75 px-1.5 py-2.5 rounded-lg"
               >
                 <p className="flex-grow-0 flex-shrink-0 text-sm text-left text-[#4d4d4d]">
-                  내 스타일
+                  내 코디
                 </p>
-                <Image
-                  src="/images/Thermometer/arrow_right.svg"
-                  alt="arrow-icon"
+                <object
+                  data="/images/Thermometer/arrow_right.svg"
                   width={18}
                   height={18}
                   className="flex-grow-0 flex-shrink-0 w-[18px] h-[18px]"
@@ -106,65 +101,49 @@ function MyPageContent() {
           </nav>
         </div>
       </div>
-      <div className="flex flex-col justify-start items-start w-72 drop-shadow-lg mt-3">
-        <div className="flex flex-col justify-start items-start self-stretch flex-grow-0 flex-shrink-0 gap-3 px-4 py-5 rounded-[14px] bg-white">
-          <div className="flex flex-col items-left self-stretch flex-grow-0 pb-2">
-            <h1 className="text-[18px]">계정</h1>
-            <div className="bg-[#FAFAFA] rounded-md p-3 mt-2">
+      <nav className="flex flex-col drop-shadow-lg">
+        <div className="flex flex-col gap-3 px-4 py-5 rounded-[14px] bg-white">
+          <div className="">
+            <h1 className="text-[18px] font-semibold leading-[130%] tracking-[-0.36px] pl-1 pb-3">
+              계정
+            </h1>
+            <div className="flex bg-[#FAFAFA] rounded-md p-3 w-full text-[16px] font-semibold leading-[130%] tracking-[-0.32px] gap-2">
+              {user?.provider === 'google' && (
+                <object
+                  data="/images/login/Logo_Google.svg"
+                  width={22}
+                  height={22}
+                />
+              )}
+              {user?.provider === 'kakao' && (
+                <object
+                  data="/images/login/Logo_Kakao.svg"
+                  width={22}
+                  height={22}
+                />
+              )}
               {user?.email}
             </div>
           </div>
-          <nav className="flex flex-col justify-start items-start self-stretch flex-grow-0 flex-shrink-0 gap-1">
-            <Link
-              href={'/mypage'}
-              onClick={notify}
-              className="flex justify-between items-center self-stretch flex-grow-0 flex-shrink-0 px-1.5 py-2.5 rounded-lg bg-white hover:bg-gray-200/75"
-            >
-              <p className="flex-grow-0 flex-shrink-0 text-sm text-left text-[#4d4d4d] focus:text-blue-400">
-                비밀번호 변경
-              </p>
-              <Image
-                src="/images/Thermometer/arrow_right.svg"
-                alt="arrow-icon"
-                width={18}
-                height={18}
-                className="flex-grow-0 flex-shrink-0 w-[18px] h-[18px]"
-              />
-            </Link>
-            <div className="text-sm text-left text-[#4d4d4d] flex justify-between items-center self-stretch flex-grow-0 flex-shrink-0 hover:bg-gray-200/75 focus:text-blue-400 px-1.5 py-2.5 rounded-lg cursor-pointer">
-              <div className="flex justify-start items-center gap-1">
-                <LogoutButton />
-              </div>
-              <Image
-                src="/images/Thermometer/arrow_right.svg"
-                alt="arrow-icon"
-                width={18}
-                height={18}
-                className="flex-grow-0 flex-shrink-0 w-[18px] h-[18px]"
-              />
-            </div>
-            <div className="flex flex-col justify-start items-start self-stretch flex-grow-0 flex-shrink-0 gap-1">
+          <nav className="bg-slate-50">
+            <div className="hover:bg-gray-200/75 focus:text-blue-400 cursor-pointer">
               <div
-                className="flex justify-between items-center self-stretch flex-grow-0 flex-shrink-0 hover:bg-gray-200/75 focus:text-blue-400 px-1.5 py-2.5 rounded-lg cursor-pointer"
+                className="hover:bg-gray-200/75 focus:text-blue-400"
                 onClick={openModal}
               >
-                <button className="flex-grow-0 flex-shrink-0 text-sm text-left text-[#4d4d4d]">
+                <button className="text-[14px] px-3 py-2 w-full">
                   회원탈퇴
                 </button>
-                <Image
-                  src="/images/Thermometer/arrow_right.svg"
-                  alt="arrow-icon"
-                  width={18}
-                  height={18}
-                  className="flex-grow-0 flex-shrink-0 w-[18px] h-[18px]"
-                />
+              </div>
+              <div className="text-[14px] px-3 py-2 w-full">
+                <LogoutButton />
               </div>
             </div>
           </nav>
         </div>
-      </div>
+      </nav>
       {isModalOpen && (
-        <Modal
+        <DeletesUserIdModalProps
           isOpen={isModalOpen}
           onConfirm={handlerDelete}
           onClose={closeModal}

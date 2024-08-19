@@ -1,19 +1,23 @@
 import Image from 'next/image';
 import React from 'react';
 
-interface ModalProps {
+interface DeletesUserIdModalProps {
   isOpen: boolean;
   onClose: () => void;
   onConfirm: () => void;
 }
 
-const Modal = ({ isOpen, onClose, onConfirm }: ModalProps) => {
+const DeletesUserIdModalProps = ({
+  isOpen,
+  onClose,
+  onConfirm,
+}: DeletesUserIdModalProps) => {
   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50">
       <div className="bg-white rounded-lg shadow-lg w-[281px] h-[206px] relative z-50">
-        <button onClick={onClose} className="absolute top-2 right-2">
+        <button title="x-icon" onClick={onClose} className="">
           <Image src="/x.svg" alt="close" width={24} height={24} />
         </button>
         <div className="p-4 text-center">
@@ -37,4 +41,4 @@ const Modal = ({ isOpen, onClose, onConfirm }: ModalProps) => {
   );
 };
 
-export default Modal;
+export default DeletesUserIdModalProps;

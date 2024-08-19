@@ -1,8 +1,12 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Noto_Sans_KR } from "next/font/google";
 import './globals.css';
 import KakaoScript from './(providers)/(root)/common/KakaoScript';
+import Header from './(providers)/(components)/Header';
+import Footer from './(providers)/(components)/Footer';
+import { Inter } from 'next/font/google';
 
+const notoSansKR = Noto_Sans_KR({ subsets: ['latin'] });
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
@@ -24,8 +28,10 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <link rel="icon" href="/favicon.ico?v=1" />
-      <body className={inter.className}>
-        {children}
+      <body className={`${inter.className} min-h-screen flex flex-col`}>
+        <Header />
+        <main className="flex-grow">{children}</main>
+        <Footer />
         <KakaoScript />
       </body>
     </html>

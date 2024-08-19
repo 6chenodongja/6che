@@ -5,6 +5,7 @@ import { useUserStore } from '@/zustand/store/useUserStore';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { FormEventHandler, useState } from 'react';
+import BottomSheetPopup from './BottomSheetPopup';
 
 const profileIcons = [
   '/images/Weather/sun.svg',
@@ -73,7 +74,7 @@ const BottomSheet = () => {
 
   return (
     <div
-      className={`fixed inset-0 z-50 flex items-end justify-center w-full ${isVisible ? 'bg-black bg-opacity-50' : 'bg-transparent'} transition-opacity duration-500`}
+      className={`md:hidden flex fixed inset-0 z-50 items-end justify-center w-full ${isVisible ? 'bg-black bg-opacity-50' : 'bg-transparent'} transition-opacity duration-500`}
       style={{
         visibility: isVisible ? 'visible' : 'hidden',
         opacity: isVisible ? 1 : 0,
@@ -83,14 +84,14 @@ const BottomSheet = () => {
         initial={{ y: '500%' }}
         animate={{ y: isClosing ? '500%' : 0 }}
         transition={{ type: 'spring', stiffness: 200, damping: 40 }}
-        className="flex flex-col justify-center rounded-t-2xl p-6 bg-white bg-opacity-70"
+        className="flex flex-col justify-center rounded-t-2xl py-[30px] px-4 bg-white/70 backdrop-blur-[10px]"
       >
-        <div className="">
-          <div className="text-center mt-[30px] mb-1">
-            <h2 className="text-xl font-semibold">프로필 선택</h2>
+        <div className="flex flex-col w-full gap-1">
+          <div className="text-center">
+            <h2 className="text-lg font-semibold">프로필 선택</h2>
           </div>
           <form className="h-full" onSubmit={handleSubmit}>
-            <div className="grid grid-cols-5 gap-2  h-56 pl-[19px] pr-[19px] pt-[16px] pb-[16px] rounded-2xl">
+            <div className="grid grid-cols-5  h-full pl-[19px] pr-4 rounded-2xl w-full cursor-pointer">
               {profileIcons.map((icon, index) => (
                 <Image
                   key={index}
@@ -98,15 +99,15 @@ const BottomSheet = () => {
                   alt={`profile-icon-${index}`}
                   width={34}
                   height={34}
-                  className={`border-2 rounded-md ${profileIcon === icon ? 'border-blue-200' : 'border-transparent'}`}
+                  className={`border-2 rounded-md p-1 w-full ${profileIcon === icon ? 'border-[#7EC5FF]/60' : 'border-transparent'}`}
                   onClick={() => handleProfileIconSelect(icon)}
                 />
               ))}
             </div>
-            <div className="flex justify-center items-center mb-3">
+            <div className="flex justify-center items-center pt-1">
               <button
                 type="submit"
-                className="w-[288px] h-[49px] py-2 px-4 rounded-md shadow-sm text-center font-medium text-[white] bg-[#121212] hover:bg-blue-400"
+                className="font-sans w-full py-[14px] px-3 rounded-lg shadow-sm text-center font-semibold text-[white] bg-[#121212] hover:bg-blue-400"
               >
                 선택 완료
               </button>
@@ -114,6 +115,7 @@ const BottomSheet = () => {
           </form>
         </div>
       </motion.div>
+      {/* <BottomSheetPopup show={} onClose={} /> */}
     </div>
   );
 };
