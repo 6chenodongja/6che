@@ -158,7 +158,7 @@ function MyStyleList({
   };
 
   return (
-    <div className="notPostLike-container min-w-[320px] max-w-[768px] md:min-w-[768px] md:max-w-[1920px] mx-auto bg-[#FAFAFA] md:h-[1721px]">
+    <div className="notPostLike-container mx-auto bg-[#FAFAFA] md:h-[1721px]">
       <div className="block md:hidden">
         <MyStyleHeader />
 
@@ -191,10 +191,10 @@ function MyStyleList({
       </div>
 
       {/* 768이상 해상도 디자인 */}
-      <div className="hidden md:flex">
+      <div className="hidden md:flex md:justify-center">
         <div>
           <div
-            className="md:w-[220px] md:h-[170px] md:px-[8xp] md:py-[16px] md:flex md:flex-col md:rounded-[12px] md:opacity-50 md:gap-[4px] md:mt-[20px] md:justify-around md:ml-[200px] md:shadow-[0_2px_10px_0_rgba(0,0,0,0.05)] bg-[#FFF]"
+            className="md:w-[220px] md:h-[170px] md:px-[8xp] md:py-[16px] md:flex md:flex-col md:rounded-[12px] md:opacity-50 md:gap-[4px] md:mt-[20px] md:justify-around md:shadow-[0_2px_10px_0_rgba(0,0,0,0.05)] bg-[#FFF]"
             style={{
               boxShadow: '0px 2px 10px 0px rgba(0, 0, 0, 0.05)',
             }}
@@ -229,7 +229,7 @@ function MyStyleList({
             </p>
           </div>
         </div>
-        <div className="flex flex-col w-[1034px]">
+        <div className="md:flex md:flex-col md:PostLike-container md:justify-start">
           <MyStyleSelect
             allCheckHandler={allCheckHandler}
             fetchUserPostDelete={fetchUserPostDelete}
@@ -238,7 +238,7 @@ function MyStyleList({
             handlePostDelete={handlePostDelete}
           />
 
-          <div className="grid grid-cols-2 gap-y-2 gap-x-2 w-[288px] mx-[28px] md:grid md:grid-cols-4 md:w-[1008px] md:gap-[20px] md:mt-[21px]">
+          <div className="postLike-grid grid grid-cols-2 gap-y-[20px] gap-x-[20px] ml-4">
             {posts.map((post) => {
               return (
                 <MyStylePostItem

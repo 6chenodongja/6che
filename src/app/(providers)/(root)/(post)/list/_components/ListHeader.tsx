@@ -246,7 +246,7 @@ function ListHeader() {
             </p>
           </div>
         </div>
-        <div className="flex justify-center items-center flex-grow-0 flex-shrink-0 relative overflow-hidden gap-1 p-2 rounded-lg bg-[#121212]">
+        <div className="flex justify-center items-center flex-grow-0 flex-shrink-0 relative overflow-hidden gap-1 p-2 rounded-lg bg-[#121212] transition duration-100 hover:bg-[#5EB0FF]">
           <Link
             href={'/postform'}
             className="flex-grow-0 flex-shrink-0 text-sm text-left text-white"

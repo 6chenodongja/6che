@@ -75,7 +75,7 @@ function MyListPage({ posts, setPosts }: PostsProps) {
   );
 
   return (
-    <div className="min-w-[320px] max-w-[768px] md:min-w-[768px] md:max-w-[1920px] mx-auto bg-[#FAFAFA]">
+    <div className="bg-[#FAFAFA]">
       <div className="flex justify-center flex-col md:hidden">
         <div className="flex justify-center md:hidden">
           <MyLikeHeader />
@@ -97,9 +97,9 @@ function MyListPage({ posts, setPosts }: PostsProps) {
       </div>
 
       {/* 768이상 해상도 디자인 */}
-      <div className="hidden md:flex">
-        <div>
-          <div className="md:w-[220px] md:h-[170px] md:px-[8xp] md:py-[16px] md:flex md:flex-col md:rounded-[12px] md:opacity-50 md:gap-[4px] md:mt-[20px] md:justify-around md:ml-[200px] md:shadow-[0_2px_10px_0_rgba(0,0,0,0.05)] bg-[#FFF]">
+      <div className="hidden md:flex md:justify-center">
+        <div className="flex justify-center">
+          <div className="md:w-[220px] md:h-[170px] md:px-[8xp] md:py-[16px] md:flex md:flex-col md:rounded-[12px] md:opacity-50 md:gap-[4px] md:mt-[20px] md:justify-around md:shadow-[0_2px_10px_0_rgba(0,0,0,0.05)] bg-[#FFF]">
             <Link href={'/mypage'}>
               <p className="flex px-[16px] items-center font-KR text-[14px] font-medium leading-[18.2px] -tracking-[0.28] text-[#4D4D4D]">
                 마이페이지
@@ -130,9 +130,9 @@ function MyListPage({ posts, setPosts }: PostsProps) {
             </Link>
           </div>
         </div>
-        <div className="flex flex-col w-[1034px]">
+        <div className="md:flex md:flex-col md:PostLike-container justify-start">
           <MySelectPage />
-          <div className="grid grid-cols-2 gap-y-2 gap-x-2 w-[288px] mx-[28px] md:grid md:grid-cols-4 md:w-[1008px] md:gap-[20px] md:mt-[21px]">
+          <div className="postLike-grid grid grid-cols-2 mx-[20px]">
             {posts.map((post) => (
               <MyListPostItem
                 post={post}

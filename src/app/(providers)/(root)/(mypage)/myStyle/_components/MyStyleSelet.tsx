@@ -138,7 +138,7 @@ function MyStyleSelect({
           handlePostDelete={handlePostDelete}
         />
       </div>
-      <div className="max-w-[288px] mx-auto">
+      <div className="w-[288px] mx-auto md:w-full md:ml-4">
         <div className="flex justify-start items-center gap-[4px] flex-wrap">
           {Object.entries(selectedOptions).map(([key, options]) =>
             options.map((option) => (

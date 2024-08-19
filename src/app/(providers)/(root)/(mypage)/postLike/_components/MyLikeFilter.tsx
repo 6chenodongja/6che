@@ -41,7 +41,7 @@ function MyLikeFilter({
               </p>
             </div>
           </div>
-          <div className="flex justify-start items-center top-[9px] md:hidden relative">
+          <div className="flex justify-start items-center md:hidden relative">
             <button
               className="flex justify-center items-center flex-grow-0 flex-shrink-0 overflow-hidden gap-2 p-1 rounded-[1000px] relative"
               style={{ filter: 'drop-shadow(0px 0px 4px rgba(0,0,0,0.08))' }}
@@ -231,7 +231,7 @@ function MyLikeFilter({
 
       {/* 해상도 768px 이상 디자인 */}
       <div className="hidden md:z-10 md:flex md:justify-between">
-        <div className="flex justify-between items-center shrink-0 p-2 w-[1030px] ml-[14px]">
+        <div className="flex justify-between items-center shrink-0 p-2 mx-auto w-full">
           <div className="flex justify-center items-center shrink-0">
             <div className="flex justify-center items-center flex-grow-0 flex-shrink-0 relative overflow-hidden px-1 py-1.5 rounded-lg]">
               <p className="flex-grow-0 flex-shrink-0 text-sm text-[#121212]">
@@ -242,7 +242,7 @@ function MyLikeFilter({
               </p>
             </div>
           </div>
-          <div className="flex justify-start items-center top-[9px]">
+          <div className="flex justify-start items-center relative">
             <button
               className="flex justify-center items-center flex-grow-0 flex-shrink-0 relative overflow-hidden gap-2 p-1 rounded-[1000px]"
               style={{ filter: 'drop-shadow(0px 0px 4px rgba(0,0,0,0.08))' }}
@@ -283,151 +283,151 @@ function MyLikeFilter({
                 </svg>
               )}
             </button>
+            {showDropdown && (
+              <div className="hidden md:absolute -right-[10px] top-7 md:w-[288px] md:h-[165px] md:rounded-lg md:border-opacity-50 md:flex md:flex-col md:items-start md:p-2 md:z-20 md:backdrop-blur-[5px] md:bg-white md:bg-opacity-90">
+                <div className="flex flex-wrap gap-1 border-b border-gray-300 pb-1 mb-2">
+                  {['유형', '날씨', '계절', '스타일', '장소'].map((item) => (
+                    <button
+                      key={item}
+                      className={`w-[50px] h-[33px] flex justify-center items-center rounded-lg text-[#121212] relative ${
+                        selectedTab === item ? 'font-bold' : ''
+                      }`}
+                      onClick={() => handleTabClick(item)}
+                    >
+                      {item}
+                      {selectedTab === item && (
+                        <span className="absolute bottom-[-6px] left-1/2 transform -translate-x-1/2 h-0.5 w-10 bg-black" />
+                      )}
+                    </button>
+                  ))}
+                </div>
+                <div>
+                  {selectedTab === '유형' && (
+                    <div className="flex flex-wrap gap-1">
+                      {['남성', '여성', '선택 안함'].map((option) => (
+                        <button
+                          key={option}
+                          onClick={() => handleOptionClick(option)}
+                          className={`flex justify-center items-center rounded-lg ${
+                            selectedOptions['유형']?.includes(option)
+                              ? 'bg-[#121212] text-white'
+                              : 'bg-[#E6E6E699] text-[#121212]'
+                          } ${
+                            option === '선택 안함'
+                              ? 'w-[74px] h-[32px]'
+                              : 'w-[59px] h-[32px]'
+                          }`}
+                        >
+                          {option}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+                <div>
+                  {selectedTab === '날씨' && (
+                    <div className="flex flex-wrap gap-1">
+                      {['맑음', '흐림', '비', '눈'].map((option) => (
+                        <button
+                          key={option}
+                          onClick={() => handleOptionClick(option)}
+                          className={`flex justify-center items-center rounded-lg ${
+                            selectedOptions['날씨']?.includes(option)
+                              ? 'bg-[#121212] text-white'
+                              : 'bg-[#E6E6E699] text-[#121212]'
+                          } ${'w-[59px] h-[32px]'}`}
+                        >
+                          {option}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+                <div>
+                  {selectedTab === '계절' && (
+                    <div className="flex flex-wrap gap-1">
+                      {['봄', '여름', '가을', '겨울'].map((option) => (
+                        <button
+                          key={option}
+                          onClick={() => handleOptionClick(option)}
+                          className={`flex justify-center items-center rounded-lg ${
+                            selectedOptions['계절']?.includes(option)
+                              ? 'bg-[#121212] text-white'
+                              : 'bg-[#E6E6E699] text-[#121212]'
+                          } ${'w-[59px] h-[32px]'}`}
+                        >
+                          {option}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+                <div>
+                  {selectedTab === '스타일' && (
+                    <div className="flex flex-wrap gap-1">
+                      {[
+                        '미니멀',
+                        '아메카지',
+                        '시티보이',
+                        '캐주얼',
+                        '비즈니스캐주얼',
+                        '스포츠',
+                        '빈티지',
+                      ].map((option) => (
+                        <button
+                          key={option}
+                          onClick={() => handleOptionClick(option)}
+                          className={`flex justify-center items-center rounded-lg ${
+                            selectedOptions['스타일']?.includes(option)
+                              ? 'bg-[#121212] text-white'
+                              : 'bg-[#E6E6E699] text-[#121212]'
+                          } ${
+                            option === '비즈니스캐주얼'
+                              ? 'w-[120px] h-[32px]'
+                              : option === '아메카지' || option === '시티보이'
+                                ? 'w-[80px] h-[32px]'
+                                : 'w-[59px] h-[32px]'
+                          }`}
+                        >
+                          {option}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+                <div>
+                  {selectedTab === '장소' && (
+                    <div className="flex flex-wrap gap-1">
+                      {[
+                        '데이트',
+                        '캠퍼스',
+                        '카페',
+                        '출근',
+                        '결혼식',
+                        '바다',
+                        '여행',
+                        '데일리',
+                        '소개팅',
+                      ].map((option) => (
+                        <button
+                          key={option}
+                          onClick={() => handleOptionClick(option)}
+                          className={`flex justify-center items-center rounded-lg ${
+                            selectedOptions['장소']?.includes(option)
+                              ? 'bg-[#121212] text-white'
+                              : 'bg-[#E6E6E699] text-[#121212]'
+                          } ${'w-[59px] h-[32px]'}`}
+                        >
+                          {option}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
         </div>
-        {showDropdown && (
-          <div className="hidden md:absolute md:right-16 top-[130px] md:w-[288px] md:h-[165px] md:rounded-lg md:border-opacity-50 md:flex md:flex-col md:items-start md:p-2 md:z-20 md:backdrop-blur-[5px] md:bg-white md:bg-opacity-90">
-            <div className="flex flex-wrap gap-1 border-b border-gray-300 pb-1 mb-2">
-              {['유형', '날씨', '계절', '스타일', '장소'].map((item) => (
-                <button
-                  key={item}
-                  className={`w-[50px] h-[33px] flex justify-center items-center rounded-lg text-[#121212] relative ${
-                    selectedTab === item ? 'font-bold' : ''
-                  }`}
-                  onClick={() => handleTabClick(item)}
-                >
-                  {item}
-                  {selectedTab === item && (
-                    <span className="absolute bottom-[-6px] left-1/2 transform -translate-x-1/2 h-0.5 w-10 bg-black" />
-                  )}
-                </button>
-              ))}
-            </div>
-            <div>
-              {selectedTab === '유형' && (
-                <div className="flex flex-wrap gap-1">
-                  {['남성', '여성', '선택 안함'].map((option) => (
-                    <button
-                      key={option}
-                      onClick={() => handleOptionClick(option)}
-                      className={`flex justify-center items-center rounded-lg ${
-                        selectedOptions['유형']?.includes(option)
-                          ? 'bg-[#121212] text-white'
-                          : 'bg-[#E6E6E699] text-[#121212]'
-                      } ${
-                        option === '선택 안함'
-                          ? 'w-[74px] h-[32px]'
-                          : 'w-[59px] h-[32px]'
-                      }`}
-                    >
-                      {option}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-            <div>
-              {selectedTab === '날씨' && (
-                <div className="flex flex-wrap gap-1">
-                  {['맑음', '흐림', '비', '눈'].map((option) => (
-                    <button
-                      key={option}
-                      onClick={() => handleOptionClick(option)}
-                      className={`flex justify-center items-center rounded-lg ${
-                        selectedOptions['날씨']?.includes(option)
-                          ? 'bg-[#121212] text-white'
-                          : 'bg-[#E6E6E699] text-[#121212]'
-                      } ${'w-[59px] h-[32px]'}`}
-                    >
-                      {option}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-            <div>
-              {selectedTab === '계절' && (
-                <div className="flex flex-wrap gap-1">
-                  {['봄', '여름', '가을', '겨울'].map((option) => (
-                    <button
-                      key={option}
-                      onClick={() => handleOptionClick(option)}
-                      className={`flex justify-center items-center rounded-lg ${
-                        selectedOptions['계절']?.includes(option)
-                          ? 'bg-[#121212] text-white'
-                          : 'bg-[#E6E6E699] text-[#121212]'
-                      } ${'w-[59px] h-[32px]'}`}
-                    >
-                      {option}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-            <div>
-              {selectedTab === '스타일' && (
-                <div className="flex flex-wrap gap-1">
-                  {[
-                    '미니멀',
-                    '아메카지',
-                    '시티보이',
-                    '캐주얼',
-                    '비즈니스캐주얼',
-                    '스포츠',
-                    '빈티지',
-                  ].map((option) => (
-                    <button
-                      key={option}
-                      onClick={() => handleOptionClick(option)}
-                      className={`flex justify-center items-center rounded-lg ${
-                        selectedOptions['스타일']?.includes(option)
-                          ? 'bg-[#121212] text-white'
-                          : 'bg-[#E6E6E699] text-[#121212]'
-                      } ${
-                        option === '비즈니스캐주얼'
-                          ? 'w-[120px] h-[32px]'
-                          : option === '아메카지' || option === '시티보이'
-                            ? 'w-[80px] h-[32px]'
-                            : 'w-[59px] h-[32px]'
-                      }`}
-                    >
-                      {option}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-            <div>
-              {selectedTab === '장소' && (
-                <div className="flex flex-wrap gap-1">
-                  {[
-                    '데이트',
-                    '캠퍼스',
-                    '카페',
-                    '출근',
-                    '결혼식',
-                    '바다',
-                    '여행',
-                    '데일리',
-                    '소개팅',
-                  ].map((option) => (
-                    <button
-                      key={option}
-                      onClick={() => handleOptionClick(option)}
-                      className={`flex justify-center items-center rounded-lg ${
-                        selectedOptions['장소']?.includes(option)
-                          ? 'bg-[#121212] text-white'
-                          : 'bg-[#E6E6E699] text-[#121212]'
-                      } ${'w-[59px] h-[32px]'}`}
-                    >
-                      {option}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );

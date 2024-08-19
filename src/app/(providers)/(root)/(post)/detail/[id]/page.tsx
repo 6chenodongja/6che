@@ -225,13 +225,13 @@ function PostDetail({ params }: { params: { id: string } }) {
               <div className="flex flex-row gap-1 ">
                 <button
                   onClick={deleteModal}
-                  className="flex justify-center items-center bg-[#FF4732]/85 text-white rounded-xl px-[10px] py-[8px]"
+                  className="flex justify-center items-center bg-[#FF4732]/85 text-white rounded-xl px-[10px] py-[8px] transition duration-100 hover:bg-[#5EB0FF]"
                 >
                   삭제
                 </button>
                 <button
                   onClick={() => router.push(`/edit/${params.id}`)}
-                  className="bg-[#121212] text-white rounded-xl px-[10px] py-[8px]"
+                  className="bg-[#121212] text-white rounded-xl px-[10px] py-[8px] transition duration-100 hover:bg-[#5EB0FF]"
                 >
                   수정
                 </button>
@@ -280,16 +280,15 @@ function PostDetail({ params }: { params: { id: string } }) {
 
           <div className="flex flex-col gap-2.5 mt-2 ml-auto">
             <div className="flex justify-between items-center self-stretch flex-grow-0 flex-shrink-0">
-              {user?.profileImage && (
-                <Image
-                  src={user.profileImage}
-                  alt="프로필 이미지"
-                  width={24}
-                  height={24}
-                />
-              )}
               <div className="flex justify-between items-center flex-grow-0 flex-shrink-0 gap-[5px]">
-                <DetailNicknameIcon />
+                {user?.profileImage && (
+                  <Image
+                    src={user.profileImage}
+                    alt="프로필 이미지"
+                    width={24}
+                    height={24}
+                  />
+                )}
                 <div>
                   {/* 유저 닉네임 */}
                   <p className="flex-grow-0 flex-shrink-0 font-semibold text-[#333] text-[18px] leading-[23.4px] tracking-[-0.36px]">
@@ -564,7 +563,14 @@ function PostDetail({ params }: { params: { id: string } }) {
             <div className="flex flex-col gap-[5px] ml-6 mr-6 w-full">
               <div className="flex justify-between w-full">
                 <div className="flex items-center flex-grow-0 flex-shrink-0 gap-[5px]">
-                  <DetailNicknameIcon />
+                  {user?.profileImage && (
+                    <Image
+                      src={user.profileImage}
+                      alt="프로필 이미지"
+                      width={24}
+                      height={24}
+                    />
+                  )}
                   <p className="flex-grow-0 flex-shrink-0 font-semibold text-[#333] text-[24px] leading-[31.2px] tracking-[-0.48px] font-KR">
                     {DetailList?.users?.nick_name}
                   </p>
@@ -622,13 +628,13 @@ function PostDetail({ params }: { params: { id: string } }) {
               <div className="flex flex-row gap-1 mt-auto absolute bottom-8 right-8">
                 <button
                   onClick={deleteModal}
-                  className="flex justify-center items-center bg-[#FF4732]/85 text-white rounded-xl px-[10px] py-[10px]"
+                  className="flex justify-center items-center bg-[#FF4732]/85 text-white rounded-xl px-[10px] py-[10px] transition duration-100 hover:bg-[#5EB0FF]"
                 >
                   삭제
                 </button>
                 <button
                   onClick={() => router.push(`/edit/${params.id}`)}
-                  className="bg-[#121212] text-white rounded-xl px-[10px] py-[10px]"
+                  className="bg-[#121212] text-white rounded-xl px-[10px] py-[10px] transition duration-100 hover:bg-[#5EB0FF]"
                 >
                   수정
                 </button>
