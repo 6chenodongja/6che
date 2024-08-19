@@ -145,108 +145,31 @@ const PostFormPage = () => {
   const handleSubmit = async () => {
     // 필수 필드 체크
     if (images.length === 0) {
-      toast.error(
-        <div className="toast-message">
-          <span>최소 1개 이미지를 업로드해야 합니다.</span>
-        </div>,
-        {
-          autoClose: 2500,
-          icon: false,
-          closeButton: false,
-          className:
-            'custom-toast bg-white text-black rounded-lg shadow-md p-4',
-        },
-      );
+      toast.error('최소 1개 이미지를 업로드해야 합니다.');
       return;
     }
     if (!description.trim()) {
-      toast.error(
-        <div className="toast-message">
-          <span>글 작성을 해야 합니다.</span>
-        </div>,
-        {
-          autoClose: 2500,
-          icon: false,
-          closeButton: false,
-          className:
-            'custom-toast bg-white text-black rounded-lg shadow-md p-4',
-        },
-      );
+      toast.error('글 작성을 해야 합니다.');
       return;
     }
     if (!gender) {
-      toast.error(
-        <div className="toast-message">
-          <span>유형을 선택해야 합니다.</span>
-        </div>,
-        {
-          autoClose: 2500,
-          icon: false,
-          closeButton: false,
-          className:
-            'custom-toast bg-white text-black rounded-lg shadow-md p-4',
-        },
-      );
+      toast.error('유형을 선택해야 합니다.');
       return;
     }
     if (!weatherIcon || !temperature) {
-      toast.error(
-        <div className="toast-message">
-          <span>날씨와 기온을 선택해야 합니다.</span>
-        </div>,
-        {
-          autoClose: 2500,
-          icon: false,
-          closeButton: false,
-          className:
-            'custom-toast bg-white text-black rounded-lg shadow-md p-4',
-        },
-      );
+      toast.error('날씨와 기온을 선택해야 합니다.');
       return;
     }
     if (seasons.length === 0) {
-      toast.error(
-        <div className="toast-message">
-          <span>계절을 선택해야 합니다.</span>
-        </div>,
-        {
-          autoClose: 2500,
-          icon: false,
-          closeButton: false,
-          className:
-            'custom-toast bg-white text-black rounded-lg shadow-md p-4',
-        },
-      );
+      toast.error('계절을 선택해야 합니다.');
       return;
     }
     if (style.length === 0) {
-      toast.error(
-        <div className="toast-message">
-          <span>스타일을 선택해야 합니다.</span>
-        </div>,
-        {
-          autoClose: 2500,
-          icon: false,
-          closeButton: false,
-          className:
-            'custom-toast bg-white text-black rounded-lg shadow-md p-4',
-        },
-      );
+      toast.error('스타일을 선택해야 합니다.');
       return;
     }
     if (locations.length === 0) {
-      toast.error(
-        <div className="toast-message">
-          <span>활동을 선택해야 합니다.</span>
-        </div>,
-        {
-          autoClose: 2500,
-          icon: false,
-          closeButton: false,
-          className:
-            'custom-toast bg-white text-black rounded-lg shadow-md p-4',
-        },
-      );
+      toast.error('활동을 선택해야 합니다.');
       return;
     }
 
@@ -306,23 +229,7 @@ const PostFormPage = () => {
       console.error('Error inserting/updating data:', result.error);
     } else {
       console.log('Data inserted/updated successfully');
-      toast.success(
-        <div className="toast-message">
-          <span>게시 완료되었습니다</span>
-          <button
-            onClick={() => router.push('/myStyle')}
-            className="text-[#4d4d4d] font-caption font-normal text-xs no-underline"
-          >
-            내 코디
-          </button>
-        </div>,
-        {
-          autoClose: 2500,
-          icon: false,
-          closeButton: false,
-          className: 'custom-toast',
-        },
-      );
+      toast.success('게시 완료되었습니다');
       setTimeout(() => {
         if (!sessionStorage.getItem('redirectToMyStyle')) {
           router.push('/list');
@@ -714,17 +621,7 @@ const PostFormPage = () => {
       {/* 769px 이상 데스크탑 */}
       <div className="hidden sm:flex w-full min-h-screen bg-[#fafafa] justify-center items-center">
         <div className="w-full sm:w-[1240px] sm:h-[725px] bg-white rounded-3xl shadow-lg flex flex-col px-10 pt-0 pb-14">
-          <ToastContainer
-            position="top-right"
-            autoClose={2500}
-            hideProgressBar
-            newestOnTop
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-          />
+          <ToastContainer />
 
           <div className="flex items-center justify-between mb-4 border-b ">
             <button
@@ -765,7 +662,7 @@ const PostFormPage = () => {
                 {images.length < 3 && (
                   <SwiperSlide className="!w-auto">
                     <div
-                      className="overflow:hidden rounded-xl w-24 h-32 bg-black flex flex-col justify-center items-center border border-gray-300 cursor-pointer flex-shrink-0 mt-[18px] sm:w-[242px] sm:h-[345px]" /* 실선과의 간격을 18px로 조정 */
+                      className="overflow:hidden rounded-xl w-24 h-32 bg-black flex flex-col justify-center items-center border border-gray-300 cursor-pointer flex-shrink-0 mt-[18px] sm:w-[242px] sm:h-[345px]"
                       onClick={(e) => {
                         e.stopPropagation();
                         fileInputRef.current?.click();
