@@ -83,21 +83,21 @@ const BottomSheet = () => {
         initial={{ y: '500%' }}
         animate={{ y: isClosing ? '500%' : 0 }}
         transition={{ type: 'spring', stiffness: 200, damping: 40 }}
-        className="flex flex-col justify-center rounded-t-2xl py-[30px] px-4 bg-white/70 backdrop-blur-[10px]"
+        className="flex flex-col justify-center rounded-t-2xl py-[30px] w-full px-4 bg-white/70 backdrop-blur-[10px]"
       >
-        <div className="flex flex-col w-full gap-0.5">
+        <div className="flex flex-col gap-0.5">
           <div className="text-center">
-            <h1 className="text-[18px] font-semibold">프로필 선택</h1>
+            <h1 className="text-[18px] font-semibold li">프로필 선택</h1>
           </div>
           <form className="w-full h-full" onSubmit={handleSubmit}>
-            <div className="grid grid-cols-5 h-full py-4 pl-[19px] pr-4 rounded-2xl w-full cursor-pointer">
+            <div className="grid grid-cols-5 h-full py-4 pl-[19px] pr-4 rounded-2xl cursor-pointer">
               {profileIcons.map((icon, index) => (
                 <Image
                   key={index}
                   src={icon}
                   alt={`profile-icon-${index}`}
-                  width={34}
-                  height={34}
+                  width={22}
+                  height={22}
                   className={`border-2 rounded-md p-1 w-full ${profileIcon === icon ? 'border-[#7EC5FF]/60' : 'border-transparent'}`}
                   onClick={() => handleProfileIconSelect(icon)}
                 />
@@ -106,7 +106,7 @@ const BottomSheet = () => {
             <div className="flex justify-center items-center pt-1">
               <button
                 type="submit"
-                className="font-sans w-full py-[16px] px-3 rounded-lg shadow-sm text-center font-semibold text-[white] bg-[#121212] hover:bg-[#5EB0FFCC]"
+                className="font-sans py-[16px] px-3 w-full rounded-lg shadow-sm text-center font-semibold text-[white] bg-[#121212] hover:bg-[#5EB0FFCC]"
               >
                 선택 완료
               </button>
