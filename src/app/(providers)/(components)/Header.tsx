@@ -139,13 +139,8 @@ const Header = () => {
           <li>
             <Link href="/list">스타일</Link>
           </li>
-<<<<<<< HEAD
           <li>
             <Link href="/thermometer-style">옷 차림</Link>
-=======
-          <li>            
-              <Link href="/thermometer-style">옷 차림</Link>            
->>>>>>> 9e958386d1ad2d19d7f6968c5068c06ae9c79776
           </li>
           <li>
             <Link href="/survey">취향 코디</Link>
