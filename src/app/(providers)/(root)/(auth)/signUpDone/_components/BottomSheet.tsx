@@ -83,14 +83,14 @@ const BottomSheet = () => {
         initial={{ y: '500%' }}
         animate={{ y: isClosing ? '500%' : 0 }}
         transition={{ type: 'spring', stiffness: 200, damping: 40 }}
-        className="flex flex-col justify-center rounded-t-2xl py-[30px] w-full px-4 bg-white/70 backdrop-blur-[10px]"
+        className="flex flex-col justify-center rounded-t-2xl py-[30px] px-4 bg-white/70 backdrop-blur-[10px] lg:w-full lg:h-full lg:bg-white"
       >
         <div className="flex flex-col gap-0.5">
           <div className="text-center">
             <h1 className="text-[18px] font-semibold li">프로필 선택</h1>
           </div>
           <form className="w-full h-full" onSubmit={handleSubmit}>
-            <div className="grid grid-cols-5 h-full py-4 pl-[19px] pr-4 rounded-2xl cursor-pointer">
+            <div className="grid grid-cols-5 h-full py-4 pl-[19px] pr-4 rounded-2xl w-full cursor-pointer">
               {profileIcons.map((icon, index) => (
                 <Image
                   key={index}

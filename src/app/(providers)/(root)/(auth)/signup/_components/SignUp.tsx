@@ -170,9 +170,9 @@ function SingUp() {
                 <option value="@hanmail.net" className="cursor-pointer">
                   @hanmail.net
                 </option>
-                <option value="직접 입력" className="">
+                {/* <option value="직접 입력" className="">
                   직접 입력
-                </option>
+                </option> */}
               </select>
             </div>
             <div className="">

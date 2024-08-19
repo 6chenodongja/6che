@@ -72,16 +72,16 @@ const ProfileSelect = () => {
     <main
       className={`hidden absolute left-0 top-0 flex-col justify-center items-center lg:w-full lg:h-full lg:flex ${isClosing ? 'lg:!hidden' : ''}`}
     >
-      <div className="flex flex-col rounded-3xl py-[30px] px-4 bg-white/70 backdrop-blur-[10px] lg:w-full lg:h-full lg:bg-white">
-        <div className="flex flex-col justify-between w-full">
-          <div className="text-center pb-[120px]">
-            <h1 className="text-[24px] font-bold pb-3">프로필 선택</h1>
+      <div className="flex flex-col justify-center rounded-t-2xl py-[30px] px-4 bg-white/70 backdrop-blur-[10px] lg:w-full lg:h-full lg:bg-white">
+        <div className="flex flex-col w-full gap-0.5">
+          <div className="text-center">
+            <h1 className="text-[18px] font-semibold">프로필 선택</h1>
             <h2 className="text-[14px] font-normal">
               프로필은 마이페이지에서 변경할 수 있습니다
             </h2>
           </div>
-          <form className="" onSubmit={handleSubmit}>
-            <div className="grid grid-cols-6 cursor-pointer px-5 gap-x-auto gap-y-8">
+          <form className="w-full h-full" onSubmit={handleSubmit}>
+            <div className="grid grid-cols-6 h-full py-4 pl-[19px] pr-4 rounded-2xl w-full cursor-pointer">
               {profileIcons.map((icon, index) => (
                 <div
                   key={index}
