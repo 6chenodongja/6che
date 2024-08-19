@@ -1,14 +1,15 @@
 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g filter="url(#filter0_b_2350_1026)">
-<rect width="24" height="24" rx="4" fill="white" fill-opacity="0.6"/>
-<g filter="url(#filter1_f_2350_1026)">
+<g id="icon/weather/sunrise" filter="url(#filter0_b_2350_1026)">
+<g id="Group 26">
+<g id="Sunshine" filter="url(#filter1_f_2350_1026)">
 <path d="M19 12C19 10.1435 18.2625 8.36301 16.9497 7.05025C15.637 5.7375 13.8565 5 12 5C10.1435 5 8.36301 5.7375 7.05025 7.05025C5.7375 8.36301 5 10.1435 5 12L12 12H19Z" fill="#FFC329"/>
 </g>
-<circle cx="12" cy="12" r="7" fill="#FFC329" fill-opacity="0.8"/>
-<g filter="url(#filter2_b_2350_1026)">
+<circle id="Sun" cx="12" cy="12" r="7" fill="#FFC329" fill-opacity="0.8"/>
+<g id="Rectangle 148" filter="url(#filter2_b_2350_1026)">
 <rect y="12" width="24" height="12" fill="white" fill-opacity="0.6"/>
 </g>
-<path fill-rule="evenodd" clip-rule="evenodd" d="M11.6464 13.6464C11.8417 13.4512 12.1583 13.4512 12.3536 13.6464L14.3536 15.6464C14.5488 15.8417 14.5488 16.1583 14.3536 16.3536C14.1583 16.5488 13.8417 16.5488 13.6464 16.3536L12.5 15.2071V20C12.5 20.2761 12.2761 20.5 12 20.5C11.7239 20.5 11.5 20.2761 11.5 20V15.2071L10.3536 16.3536C10.1583 16.5488 9.84171 16.5488 9.64645 16.3536C9.45118 16.1583 9.45118 15.8417 9.64645 15.6464L11.6464 13.6464Z" fill="#121212"/>
+<path id="Vector 30 (Stroke)" fill-rule="evenodd" clip-rule="evenodd" d="M11.6464 13.6464C11.8417 13.4512 12.1583 13.4512 12.3536 13.6464L14.3536 15.6464C14.5488 15.8417 14.5488 16.1583 14.3536 16.3536C14.1583 16.5488 13.8417 16.5488 13.6464 16.3536L12.5 15.2071V20C12.5 20.2761 12.2761 20.5 12 20.5C11.7239 20.5 11.5 20.2761 11.5 20V15.2071L10.3536 16.3536C10.1583 16.5488 9.84171 16.5488 9.64645 16.3536C9.45118 16.1583 9.45118 15.8417 9.64645 15.6464L11.6464 13.6464Z" fill="#121212"/>
+</g>
 </g>
 <defs>
 <filter id="filter0_b_2350_1026" x="-4" y="-4" width="32" height="32" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">

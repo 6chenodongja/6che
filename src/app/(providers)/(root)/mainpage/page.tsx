@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState, useCallback } from 'react';
-import { useRouter } from 'next/navigation'; // next/router 대신 next/navigation 사용!
+import { useRouter } from 'next/navigation';
 import Head from 'next/head';
 import '../../../../app/globals.css';
 import 'swiper/css';
@@ -10,8 +10,6 @@ import 'swiper/css/pagination';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { LogoText } from '../../../../icons/LogoText';
-import { IconLogin } from '../../../../icons/IconLogin';
 import { IconLocation } from '../../../../icons/IconLocation';
 import { motion, AnimatePresence } from 'framer-motion';
 import Header from '../../(components)/Header';
@@ -30,7 +28,7 @@ interface Post {
   weather: string | null;
 }
 
-// Weather 타입 정의!
+// Weather 타입 정의
 type Weather = {
   Date: string;
   Temperature: {
@@ -45,7 +43,7 @@ type Weather = {
 
 type WeatherData = Weather[];
 
-// 강수확률에 따른 이미지를 반환하는 함수!
+// 강수확률에 따른 이미지를 반환하는 함수
 const getPrecipitationImage = (probability: number) => {
   const precipitationValue = Math.min(Math.floor(probability / 10) * 10, 100);
   return `/images/Precipitation-probability/${precipitationValue}.svg`;
@@ -94,6 +92,29 @@ const convertFahrenheitToCelsius = (fahrenheit: number) => {
   return ((fahrenheit - 32) * 5) / 9;
 };
 
+// weather 아이콘을 반환하는 함수
+const getWeatherIconUrl = (weatherCode: string): string => {
+  console.log(`Received weather code: ${weatherCode}`);
+
+  // weatherCode에서 파일 이름만 추출
+  const parsedCode = weatherCode.split(' ')[0];
+  console.log(`Parsed weather code: ${parsedCode}`);
+
+  const iconMap: Record<string, string> = {
+    '/sun.svg': '/images/Weather/sun.png',
+    '/blur.svg': '/images/Weather/blur.png',
+    '/rain.svg': '/images/Weather/rain.png',
+    '/wind.svg': '/images/Weather/wind.png',
+    '/thunderstorm.svg': '/images/Weather/thunderstorm.png',
+    '/snow.svg': '/images/Weather/snow.png',
+    '/sleet.svg': '/images/Weather/sleet.png',
+  };
+
+  const url = iconMap[parsedCode] || '/icons/default.svg';
+  console.log(`Weather icon URL: ${url}`);
+  return url;
+};
+
 // 게시글 데이터를 가져오고 필터링하는 함수
 const fetchAndFilterPosts = async (currentTemp: number): Promise<Post[]> => {
   const { data: posts, error } = await supabase
@@ -121,7 +142,7 @@ const fetchAndFilterPosts = async (currentTemp: number): Promise<Post[]> => {
       return { ...post, image_url: firstImageUrl, tempDifference };
     })
     .sort((a, b) => a.tempDifference - b.tempDifference)
-    .slice(0, 5);
+    .slice(0, 10);
 };
 
 // LocationInput 컴포넌트
@@ -131,23 +152,11 @@ const LocationInput = ({
   setWeather: (weatherData: any) => void;
 }) => {
   const [isEditing, setIsEditing] = useState(false);
-  const [location, setLocation] = useState('서울시 동작구');
-
-  const handleEditClick = () => {
-    setIsEditing(true);
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setLocation(e.target.value);
-  };
-
-  const handleBlur = () => {
-    setIsEditing(false);
-  };
+  const [location, setLocation] = useState('서울시');
 
   type GeocodeAddressComponent = {
     long_name: string;
-    short_name: string;
+    short_name: string[];
     types: string[];
   };
 
@@ -198,8 +207,8 @@ const LocationInput = ({
     }
   };
 
-  // 위치 정보를 가져오는 함수
-  const handleLocationClick = () => {
+  // 위치 정보를 자동으로 가져오는 함수
+  useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -208,69 +217,61 @@ const LocationInput = ({
         },
         (error) => {
           console.error('Error getting location', error);
-          alert('위치를 가져올 수 없습니다. 위치 권한을 확인해주세요.');
+          // 초기 위치로 설정 (예: 서울시)
+          setLocation('서울시');
         },
       );
     } else {
-      alert('현재 브라우저에서 위치 정보를 사용할 수 없습니다.');
+      console.error('현재 브라우저에서 위치 정보를 사용할 수 없습니다.');
+      // 초기 위치로 설정 (예: 서울시)
+      setLocation('서울시');
     }
-  };
+  }, []);
 
   return (
     <>
-      {/* <div
-        className="absolute"
-        style={{
-          top: '-86px',
-          right: '-44px',
-          width: '94px',
-          height: '94px',
-          zIndex: 0, // Sun.svg의 z-index를 0으로 설정하여 뒤로 보냄
-        }}
-      >
-        <Image
-          src="/images/Sun.svg"
-          alt="Sun"
-          className="object-contain"
-          width={94}
-          height={94}
-        />
-      </div> */}
-
       <div
-        className="h-[26px] px-2 py-1 bg-white/40 rounded-full shadow border border-white/50 linear-gradient(37deg, rgba(255,255,255,0.5018601190476191) 0%, rgba(255,255,255,0) 100%) background: rgb(255,255,255) backdrop-blur-[20px] justify-center items-center inline-flex"
-        style={{ zIndex: 1 }} // 위치 박스 z-index를 1로 설정하여 앞으로 보냄
+        className="h-[26px] md:h-[32px] px-2 py-1 bg-white/40 rounded-full shadow border border-white/50 linear-gradient(37deg, rgba(255,255,255,0.5018601190476191) 0%, rgba(255,255,255,0) 100%) background: rgb(255,255,255) backdrop-blur-[20px] justify-center items-center inline-flex md:w-[138px]"
+        style={{ zIndex: 1, cursor: 'pointer' }} // 위치 박스 z-index를 1로 설정하여 앞으로 보냄 및 cursor 속성 추가
       >
         <div className="justify-start items-center gap-0.5 flex">
-          {isEditing ? (
-            <input
-              type="text"
-              value={location}
-              onChange={handleInputChange}
-              onBlur={handleBlur}
-              autoFocus
-              className="text-[#121212] text-xs font-normal font-['Noto Sans KR'] leading-none bg-transparent border-none outline-none"
-              style={{ whiteSpace: 'nowrap', lineHeight: '1' }}
-            />
-          ) : (
-            <span
-              className="text-[#121212] text-xs font-normal font-['Noto Sans KR'] leading-none"
-              onClick={handleEditClick}
-              style={{ whiteSpace: 'nowrap', lineHeight: '1' }}
-            >
-              {location}
-            </span>
-          )}
+          <span
+            className="text-[#121212] text-xs md:text-[16px] font-normal font-['Noto Sans KR'] leading-none"
+            style={{ whiteSpace: 'nowrap', lineHeight: '1' }}
+          >
+            {location}
+          </span>
         </div>
-        <div className="w-[18px] h-[18px] p-px justify-center items-center flex">
-          <IconLocation
-            className="w-4 h-4 cursor-pointer"
-            onClick={handleLocationClick}
-          />
+        <div className="w-[18px] h-[18px] md:w-[24px] md:h-[24px] p-px justify-center items-center flex">
+          <IconLocation className="w-4 h-4 md:w-[24px] md:h-[24px]" />
         </div>
       </div>
     </>
   );
+};
+
+// 스켈레톤 로딩 컴포넌트 추가
+const SkeletonLoader = ({ type }: { type: string }) => {
+  switch (type) {
+    case 'temperature':
+      return (
+        <div className="w-[75px] h-[64px] mt-[15px] bg-gray-300 animate-pulse rounded-2xl" />
+      );
+    case 'difference':
+      return (
+        <div className="w-[200px] h-[18px] bg-gray-300 animate-pulse rounded-2xl" />
+      );
+    case 'outfit':
+      return (
+        <div className="w-[88px] h-[100px] bg-gray-300 animate-pulse rounded-2xl" />
+      );
+    case 'recommendation':
+      return (
+        <div className="w-[288px] h-[297px] bg-gray-300 animate-pulse rounded-2xl" />
+      );
+    default:
+      return null;
+  }
 };
 
 // MainPage 컴포넌트
@@ -301,7 +302,8 @@ const MainPage = () => {
 
   // 날씨 데이터를 업데이트하는 함수
   const updateWeatherData = useCallback((data: any) => {
-    console.log(data);
+    console.log('Weather Data:', data); // 전체 데이터 출력
+
     if (data && data.current) {
       setWeather(data.current);
 
@@ -318,6 +320,21 @@ const MainPage = () => {
       const uvIndex =
         data.current?.UVIndex ?? data.dailyForecasts?.[0]?.UVIndex ?? 'N/A';
       console.log('UV Index:', uvIndex);
+
+      // 여기서 data 객체를 콘솔로 확인하여 일출과 일몰 시간이 어디에 존재하는지 확인
+      console.log('data.current.Sun:', data.current.Sun); // 예상되는 위치에서 Sun 정보 출력
+      console.log('data.dailyForecasts[0].Sun:', data.dailyForecasts?.[0]?.Sun); // 예상되는 위치에서 Sun 정보 출력
+      console.log('Full Weather Data:', JSON.stringify(data, null, 2));
+
+      // Sun 객체가 없는 경우 undefined 처리 방지 및 로그 확인
+      const sunriseTime = data?.dailyForecasts?.[0]?.Sun?.Rise ?? '준비 중';
+      const sunsetTime = data?.dailyForecasts?.[0]?.Sun?.Set ?? '준비 중';
+      console.log('Sunrise Time:', sunriseTime); // 일출 시간 출력
+      console.log('Sunset Time:', sunsetTime); // 일몰 시간 출력
+
+      // 풍속 데이터를 가져오고, 값이 없거나 0일 때 0으로 설정
+      const windSpeed = data.current.Wind?.Speed?.Metric?.Value ?? 0;
+      console.log('풍속', windSpeed, 'km/h');
 
       setExtraWeatherInfo([
         {
@@ -341,6 +358,26 @@ const MainPage = () => {
           label: '자외선',
           value: `${uvIndex !== 'N/A' ? uvIndex : 'N/A'}`,
           image: getUVIndexImage(uvIndex !== 'N/A' ? uvIndex : 0),
+        },
+        {
+          label: '일출 시간',
+          value: sunriseTime,
+          image: '/images/Sunrise.svg',
+        },
+        {
+          label: '일몰 시간',
+          value: sunsetTime,
+          image: '/images/Sunset.svg',
+        },
+        {
+          label: '풍속',
+          value: `${windSpeed} km/h`,
+          image: '/images/Wind.svg',
+        },
+        {
+          label: '작년 기온',
+          value: `${data.historical?.Temperature?.Metric?.Value || 'N/A'}°`,
+          image: '/images/HistoryTemp.svg',
         },
       ]);
     }
@@ -380,7 +417,7 @@ const MainPage = () => {
     [updateWeatherData],
   );
 
-  // 초기 로드 시 날씨 데이터를 가져옴!
+  // 초기 로드 시 날씨 데이터를 가져옴
   useEffect(() => {
     fetchWeatherData();
   }, [fetchWeatherData]);
@@ -455,7 +492,7 @@ const MainPage = () => {
   };
 
   return (
-    <div className="container bg-neutral-50 flex flex-col justify-center items-center w-full">
+    <div className="main-mobile-container bg-neutral-50 flex flex-col justify-center items-center w-full max-w-[1000px] mx-auto">
       <Head>
         <title>온코디</title>
       </Head>
@@ -488,13 +525,15 @@ const MainPage = () => {
       </nav>
 
       <main
-        className="container flex flex-col items-center w-full text-white py-8 px-4"
+        className="main-mobile-container flex flex-col items-center w-full text-white py-8 px-4"
         style={{
-          ...backgroundStyle, // 기존 배경 스타일을 유지하고
-          paddingTop: '64px', // 헤더 높이만큼 패딩을 추가
+          ...backgroundStyle,
+          marginTop: '-4px',
         }}
       >
-        <LocationInput setWeather={updateWeatherData} />
+        <div className="md:mt-[38px]">
+          <LocationInput setWeather={updateWeatherData} />
+        </div>
 
         <div className="mt-[24px] flex items-end flex-col relative">
           <div
@@ -504,41 +543,33 @@ const MainPage = () => {
               right: '-84px',
               width: '94px',
               height: '94px',
+              zIndex: 0, // 뒤쪽에 배치
             }}
           >
             <Image
-              src="/images/Sun.svg"
-              alt="Sun"
+              src={(() => {
+                const currentHours = new Date().getHours();
+                return currentHours >= 18 || currentHours < 7
+                  ? '/images/Up_Moon.svg'
+                  : '/images/Up_Sun.svg';
+              })()}
+              alt={(() => {
+                const currentHours = new Date().getHours();
+                return currentHours >= 18 || currentHours < 7
+                  ? 'Up_Moon'
+                  : 'Up_Sun';
+              })()}
               className="object-contain"
               width={94}
               height={94}
             />
           </div>
 
-          {/* <div
-            className="absolute"
-            style={{
-              top: '-27px', // 구름 이미지의 위치 조정
-              right: '-208px', // 구름 이미지의 위치 조정
-              width: '200px',
-              height: '120px',
-              zIndex: 1, // 구름 이미지의 z-index를 1로 설정하여 Sun.svg보다 앞에 위치
-            }}
-          >
-            <Image
-              src="/images/up_cloud.svg"
-              alt="Cloud"
-              className="object-contain"
-              width={146}
-              height={86}
-            />
-          </div> */}
-
           <div
             className="absolute"
             style={{
-              top: '35px', // 새로운 구름 이미지의 위치 조정
-              right: '9px', // 새로운 구름 이미지의 위치 조정
+              top: '35px',
+              right: '9px',
               width: '189px',
               height: '115px',
               zIndex: 1, // 뒤쪽에 배치
@@ -554,312 +585,478 @@ const MainPage = () => {
           </div>
 
           <div
-            className="relative w-[75px] h-[64px] mt-[15px]"
+            className="absolute"
+            style={{
+              top: '-23px', // 새로운 이미지의 위치 조정
+              right: '-124px', // 새로운 이미지의 위치 조정
+              zIndex: 0, // 뒤쪽에 배치
+            }}
+          >
+            <Image
+              src="/images/up_cloud.svg"
+              alt="Up Cloud"
+              className="object-contain"
+              width={113}
+              height={53}
+            />
+          </div>
+
+          <div
+            className="relative w-[75px] h-[64px] mt-[15px] md:w-[100px] md:h-[85px]"
             style={{ top: '-15px' }}
           >
             <div
               className={`absolute top-0 left-0 ${textColor} flex items-start`}
             >
-              <span className="text-[63.6px] font-[400] leading-[63.6px] tracking-[0] whitespace-nowrap">
-                {weather && weather.Temperature && weather.Temperature.Metric
-                  ? Math.round(weather.Temperature.Metric.Value)
-                  : 'N/A'}
-              </span>
-              {weather && weather.Temperature && weather.Temperature.Metric && (
-                <span
-                  className="text-[63.6px] font-[400] leading-[63.6px] tracking-[0] whitespace-nowrap"
-                  style={{ marginTop: '-16px', marginLeft: '2px' }} // ° 기호 위치 조정
-                >
-                  °
-                </span>
+              {weather && weather.Temperature && weather.Temperature.Metric ? (
+                <>
+                  <span className="text-[63.6px] md:text-[80px] font-[400] leading-[63.6px] md:leading-[80px] tracking-[0] whitespace-nowrap font-['Varela']">
+                    {Math.round(weather.Temperature.Metric.Value)}
+                  </span>
+
+                  <span
+                    className="text-[50px] md:text-[80px] font-[400] leading-[50px] md:leading-[80px] tracking-[0] whitespace-nowrap font-['Varela']"
+                    style={{ marginTop: '-8px', marginLeft: '-2px' }}
+                  >
+                    °
+                  </span>
+                </>
+              ) : (
+                <SkeletonLoader type="temperature" />
               )}
             </div>
           </div>
         </div>
 
         <div
-          className="relative flex justify-center items-center"
+          className="relative flex justify-center items-center md:mb-[101px]"
           style={{ top: '12px', zIndex: 10, marginBottom: '24px' }}
         >
           {weather ? (
             <span
-              className={`${textColor} text-sm font-semibold font-['Noto Sans KR'] leading-[18.20px]`}
+              className={`${textColor} text-sm md:text-[20px] font-medium font-['Noto Sans KR'] leading-[18.20px] md:leading-[24px]`}
             >
-              {difference !== null
-                ? Math.abs(difference) <= 0.9
-                  ? '어제 기온과 비슷해요'
-                  : `어제 기온보다 ${Math.round(Math.abs(difference))}° ${
-                      difference > 0 ? '높아요' : '낮아요'
-                    }`
-                : '정보 없음'}
+              {difference !== null ? (
+                Math.abs(difference) <= 0.9 ? (
+                  '어제 기온과 비슷해요'
+                ) : (
+                  <>
+                    어제보다{' '}
+                    <span className="font-normal font-['Varela']">
+                      {Math.round(Math.abs(difference))}
+                    </span>
+                    <span className="font-normal font-['Varela']">°</span>{' '}
+                    낮아요
+                  </>
+                )
+              ) : (
+                '정보 없음'
+              )}
             </span>
           ) : (
-            <div className="text-center text-red-500">
-              날씨 정보를 불러오는데 실패했습니다. 나중에 다시 시도해주세요.
-            </div>
+            <SkeletonLoader type="difference" />
           )}
         </div>
 
         <h2
-          className={`${textColor} text-base font-black font-['Noto Sans KR'] leading-tight mt-[34px]`}
+          className={`${textColor} text-base font-black font-['Noto Sans KR'] leading-tight mt-[34px] block md:hidden`}
         >
           오늘 옷차림
         </h2>
-
         <section className="w-full mt-3.5">
-          <div className="flex justify-between items-center mb-4">
-            <div className="w-[88px] h-[100px] px-[17px] py-2.5 bg-white/40 rounded-2xl shadow border border-white linear-gradient(37deg, rgba(255,255,255,0.5018601190476191) 0%, rgba(255,255,255,0) 100%) background: rgb(255,255,255) backdrop-blur-[20px] flex-col justify-center items-center gap-2 inline-flex">
-              <div className="text-center text-[#121212]/70 text-xs font-normal font-['Noto Sans KR'] leading-none">
-                반팔티
-              </div>
-              <div className="w-[54px] h-14 relative flex-col justify-start items-start flex">
-                <div className="w-[53.04px] h-[55px] relative">
-                  <Image
-                    src="/images/tshirt.svg"
-                    alt="반팔티"
-                    className="object-contain"
-                    width={53.04}
-                    height={55}
-                  />
-                </div>
-              </div>
-            </div>
+          <div className="flex justify-between items-center md:mt-[101px] mb-4">
+            {weather ? (
+              <Swiper
+                spaceBetween={4}
+                slidesPerView="auto"
+                centeredSlides={false}
+              >
+                <SwiperSlide style={{ width: 'auto', flexShrink: 0 }}>
+                  <div className="w-[88px] md:w-[106px] h-[100px] md:h-[118px] px-[17px] py-2.5 bg-white/40 rounded-2xl shadow border border-white linear-gradient(37deg, rgba(255,255,255,0.5018601190476191) 0%, rgba(255,255,255,0) 100%) backdrop-blur-[20px] flex flex-col justify-center items-center gap-2">
+                    <div className="text-center text-[#121212]/70 text-xs font-normal font-['Noto Sans KR'] leading-none">
+                      반팔티
+                    </div>
+                    <div className="w-[54px] h-14 md:w-[66px] md:h-[74px] relative flex-col justify-start items-start flex">
+                      <Image
+                        src="/images/반팔티.svg"
+                        alt="반팔티"
+                        className="object-contain object-center"
+                        layout="fill"
+                      />
+                    </div>
+                  </div>
+                </SwiperSlide>
 
-            <div className="w-[88px] h-[100px] px-[17px] py-2.5 bg-white/40 rounded-2xl shadow border border-white linear-gradient(37deg, rgba(255,255,255,0.5018601190476191) 0%, rgba(255,255,255,0) 100%) background: rgb(255,255,255) backdrop-blur-[20px] flex-col justify-center items-center gap-2 inline-flex">
-              <div className="text-center text-[#121212]/70 text-xs font-normal font-['Noto Sans KR'] leading-none">
-                반바지
-              </div>
-              <div className="w-[54px] h-14 relative flex-col justify-start items-start flex">
-                <div className="w-[53.04px] h-[55px] relative">
-                  <Image
-                    src="/images/shorts.svg"
-                    alt="반바지"
-                    className="object-contain"
-                    width={53.04}
-                    height={55}
-                  />
-                </div>
-              </div>
-            </div>
+                <SwiperSlide style={{ width: 'auto', flexShrink: 0 }}>
+                  <div className="w-[88px] md:w-[106px] h-[100px] md:h-[118px] px-[17px] py-2.5 bg-white/40 rounded-2xl shadow border border-white linear-gradient(37deg, rgba(255,255,255,0.5018601190476191) 0%, rgba(255,255,255,0) 100%) backdrop-blur-[20px] flex flex-col justify-center items-center gap-2">
+                    <div className="text-center text-[#121212]/70 text-xs font-normal font-['Noto Sans KR'] leading-none">
+                      민소매
+                    </div>
+                    <div className="w-[54px] h-14 md:w-[66px] md:h-[74px] relative flex-col justify-start items-start flex">
+                      <Image
+                        src="/images/민소매.svg"
+                        alt="민소매"
+                        className="object-contain object-center"
+                        layout="fill"
+                      />
+                    </div>
+                  </div>
+                </SwiperSlide>
 
-            <div className="w-[88px] h-[100px] px-[17px] py-2.5 bg-white/40 rounded-2xl shadow border border-white linear-gradient(37deg, rgba(255,255,255,0.5018601190476191) 0%, rgba(255,255,255,0) 100%) background: rgb(255,255,255) backdrop-blur-[20px] flex-col justify-center items-center gap-2 inline-flex">
-              <div className="text-center text-[#121212]/70 text-xs font-normal font-['Noto Sans KR'] leading-none">
-                셔츠
-              </div>
-              <div className="w-[54px] h-14 relative flex-col justify-start items-start flex">
-                <div className="w-[53.04px] h-[55px] relative">
-                  <Image
-                    src="/images/shirt.svg"
-                    alt="셔츠"
-                    className="object-contain"
-                    width={55}
-                    height={55}
-                  />
-                </div>
-              </div>
-            </div>
+                <SwiperSlide style={{ width: 'auto', flexShrink: 0 }}>
+                  <div className="w-[88px] md:w-[106px] h-[100px] md:h-[118px] px-[17px] py-2.5 bg-white/40 rounded-2xl shadow border border-white linear-gradient(37deg, rgba(255,255,255,0.5018601190476191) 0%, rgba(255,255,255,0) 100%) backdrop-blur-[20px] flex flex-col justify-center items-center gap-2">
+                    <div className="text-center text-[#121212]/70 text-xs font-normal font-['Noto Sans KR'] leading-none">
+                      반바지
+                    </div>
+                    <div className="w-[54px] h-14 md:w-[66px] md:h-[74px] relative flex-col justify-start items-start flex">
+                      <Image
+                        src="/images/반바지.svg"
+                        alt="반바지"
+                        className="object-contain object-center"
+                        layout="fill"
+                      />
+                    </div>
+                  </div>
+                </SwiperSlide>
+
+                <SwiperSlide style={{ width: 'auto', flexShrink: 0 }}>
+                  <div className="w-[88px] md:w-[106px] h-[100px] md:h-[118px] px-[17px] py-2.5 bg-white/40 rounded-2xl shadow border border-white linear-gradient(37deg, rgba(255,255,255,0.5018601190476191) 0%, rgba(255,255,255,0) 100%) backdrop-blur-[20px] flex flex-col justify-center items-center gap-2">
+                    <div className="text-center text-[#121212]/70 text-xs font-normal font-['Noto Sans KR'] leading-none">
+                      치마
+                    </div>
+                    <div className="w-[54px] h-14 md:w-[66px] md:h-[74px] relative flex-col justify-start items-start flex">
+                      <Image
+                        src="/images/짧은_치마.svg"
+                        alt="짧은치마"
+                        className="object-contain object-center"
+                        layout="fill"
+                      />
+                    </div>
+                  </div>
+                </SwiperSlide>
+
+                <SwiperSlide style={{ width: 'auto', flexShrink: 0 }}>
+                  <div className="w-[88px] md:w-[106px] h-[100px] md:h-[118px] px-[17px] py-2.5 bg-white/40 rounded-2xl shadow border border-white linear-gradient(37deg, rgba(255,255,255,0.5018601190476191) 0%, rgba(255,255,255,0) 100%) backdrop-blur-[20px] flex flex-col justify-center items-center gap-2">
+                    <div className="text-center text-[#121212]/70 text-xs font-normal font-['Noto Sans KR'] leading-none">
+                      린넨 옷
+                    </div>
+                    <div className="w-[54px] h-14 md:w-[66px] md:h-[74px] relative flex-col justify-start items-start flex">
+                      <Image
+                        src="/images/린넨_옷.svg"
+                        alt="린넨_옷"
+                        className="object-contain object-center"
+                        layout="fill"
+                      />
+                    </div>
+                  </div>
+                </SwiperSlide>
+
+                <SwiperSlide style={{ width: 'auto', flexShrink: 0 }}>
+                  <div className="w-[88px] md:w-[106px] h-[100px] md:h-[118px] px-[17px] py-2.5 bg-white/40 rounded-2xl shadow border border-white linear-gradient(37deg, rgba(255,255,255,0.5018601190476191) 0%, rgba(255,255,255,0) 100%) backdrop-blur-[20px] flex flex-col justify-center items-center gap-2">
+                    <div className="text-center text-[#121212]/70 text-xs font-normal font-['Noto Sans KR'] leading-none">
+                      양산
+                    </div>
+                    <div className="w-[54px] h-14 md:w-[66px] md:h-[74px] relative flex-col justify-start items-start flex">
+                      <Image
+                        src="/images/양산.svg"
+                        alt="양산"
+                        className="object-contain object-center"
+                        layout="fill"
+                      />
+                    </div>
+                  </div>
+                </SwiperSlide>
+
+                <SwiperSlide style={{ width: 'auto', flexShrink: 0 }}>
+                  <div className="w-[88px] md:w-[106px] h-[100px] md:h-[118px] px-[17px] py-2.5 bg-white/40 rounded-2xl shadow border border-white linear-gradient(37deg, rgba(255,255,255,0.5018601190476191) 0%, rgba(255,255,255,0) 100%) backdrop-blur-[20px] flex flex-col justify-center items-center gap-2">
+                    <div className="text-center text-[#121212]/70 text-xs font-normal font-['Noto Sans KR'] leading-none">
+                      선글라스
+                    </div>
+                    <div className="w-[54px] h-14 md:w-[66px] md:h-[74px] relative flex-col justify-start items-start flex">
+                      <Image
+                        src="/images/선글라스.svg"
+                        alt="선글라스"
+                        className="object-contain object-center"
+                        layout="fill"
+                      />
+                    </div>
+                  </div>
+                </SwiperSlide>
+
+                <SwiperSlide style={{ width: 'auto', flexShrink: 0 }}>
+                  <div className="w-[88px] md:w-[106px] h-[100px] md:h-[118px] px-[17px] py-2.5 bg-white/40 rounded-2xl shadow border border-white linear-gradient(37deg, rgba(255,255,255,0.5018601190476191) 0%, rgba(255,255,255,0) 100%) backdrop-blur-[20px] flex flex-col justify-center items-center gap-2">
+                    <div className="text-center text-[#121212]/70 text-xs font-normal font-['Noto Sans KR'] leading-none">
+                      모자
+                    </div>
+                    <div className="w-[54px] h-14 md:w-[66px] md:h-[74px] relative flex-col justify-start items-start flex">
+                      <Image
+                        src="/images/모자.svg"
+                        alt="모자"
+                        className="object-contain object-center"
+                        layout="fill"
+                      />
+                    </div>
+                  </div>
+                </SwiperSlide>
+              </Swiper>
+            ) : (
+              <>
+                <SkeletonLoader type="outfit" />
+                <SkeletonLoader type="outfit" />
+                <SkeletonLoader type="outfit" />
+              </>
+            )}
           </div>
         </section>
 
-        <section className="w-full mt-[5px]">
-          <div className="w-full max-w-[320px] h-[297px] px-4 pt-4 pb-5 bg-white/40 rounded-2xl shadow border border-white linear-gradient(37deg, rgba(255,255,255,0.5018601190476191) 0%, rgba(255,255,255,0) 100%) background: rgb(255,255,255) backdrop-blur-[20px] flex-col justify-start items-start gap-3.5 inline-flex">
-            <div className="self-stretch justify-between items-center inline-flex">
-              <div className="h-[21px] px-2 justify-center items-center gap-[129px] flex">
-                <div className="text-[#121212] text-base font-semibold font-['NotoSansKR'] leading-tight">
-                  추천 코디
+        <section className="w-full max-w-[878px] mt-[5px] relative">
+          {filteredPosts.length > 0 ? (
+            <div className="w-full h-auto px-4 pt-4 pb-5 bg-white/40 rounded-2xl shadow border border-white background: linear-gradient(37deg, rgba(255,255,255,0.5018601190476191) 0%, rgba(255,255,255,0) 100%) from-white/50 to-transparent backdrop-blur-[20px] flex flex-col justify-start items-start relative">
+              {' '}
+              <div className="self-stretch justify-between items-center inline-flex mb-[14px]">
+                <div className="h-[21px] px-2 justify-center items-center flex">
+                  <div className="text-[#121212] text-base font-weight:500px font-semibold font-['NotoSansKR'] leading-tight">
+                    추천 코디
+                  </div>
+                </div>
+                <div
+                  className="p-1.5 rounded-lg justify-center items-center flex cursor-pointer"
+                  onClick={() => router.push('/list')}
+                  style={{ marginLeft: '14px' }}
+                >
+                  <div className="text-[#4d4d4d] text-xs font-normal font-['Noto Sans KR'] leading-none">
+                    더보기
+                  </div>
+                  <div className="w-4 h-4 justify-center items-center flex">
+                    <Image
+                      src="/images/arrow_right.png"
+                      alt="더보기"
+                      className="w-4 h-4"
+                      width={16}
+                      height={16}
+                    />
+                  </div>
                 </div>
               </div>
-              <div
-                className="p-1.5 rounded-lg justify-center items-center gap-1 flex cursor-pointer"
-                onClick={() => router.push('/list')}
-              >
-                <div className="text-[#4d4d4d] text-xs font-normal font-['Noto Sans KR'] leading-none">
-                  더보기
-                </div>
-                <div className="w-4 h-4 justify-center items-center flex">
-                  <Image
-                    src="/images/arrow_right.png"
-                    alt="더보기"
-                    className="w-4 h-4"
-                    width={16}
-                    height={16}
-                  />
-                </div>
-              </div>
-            </div>
+              <div className="self-stretch rounded-lg justify-start items-start inline-flex overflow-hidden mb-[14px]">
+                <Swiper
+                  spaceBetween={4} // 모든 화면 크기에서 기본 간격을 4px로 설정
+                  slidesPerView="auto"
+                  centeredSlides={false}
+                  pagination={{ clickable: true }}
+                  navigation={false}
+                  className="w-full"
+                >
+                  {filteredPosts.slice(0, 10).map((post, index) => {
+                    const validImageUrl = isValidImageUrl(post.image_url);
+                    const imageUrl = validImageUrl
+                      ? post.image_url
+                      : '/images/default_image.png';
 
-            <div className="self-stretch rounded-lg justify-start items-start gap-2 inline-flex">
-              <Swiper
-                spaceBetween={8}
-                slidesPerView={2}
-                pagination={{ clickable: true }}
-                navigation={false} // 스와이퍼 네비게이션 화살표 제거
-              >
-                {filteredPosts.map((post, index) => {
-                  const validImageUrl = isValidImageUrl(post.image_url);
+                    const postTempMatch = post.weather?.match(/(\d+)(?=°C)/);
+                    const postTemperature = postTempMatch
+                      ? parseInt(postTempMatch[1], 10)
+                      : 'N/A';
 
-                  const imageUrl = validImageUrl
-                    ? post.image_url
-                    : '/images/default_image.png';
+                    const weatherIcon = post.weather
+                      ? getWeatherIconUrl(post.weather)
+                      : null;
 
-                  const postTempMatch = post.weather?.match(/(\d+)(?=°C)/);
-                  const postTemperature = postTempMatch
-                    ? parseInt(postTempMatch[1], 10)
-                    : 'N/A';
-
-                  return (
-                    <SwiperSlide key={index}>
-                      <div
-                        className="w-28 h-40 relative rounded-lg overflow-hidden cursor-pointer linear-gradient(37deg, rgba(255,255,255,0.5018601190476191) 0%, rgba(255,255,255,0) 100%) background: rgb(255,255,255)"
-                        onClick={() => router.push(`/detail/${post.id}`)}
+                    return (
+                      <SwiperSlide
+                        key={index}
+                        style={{
+                          width: 'auto',
+                          flexShrink: 0,
+                        }}
+                        className="swiper-slide"
                       >
-                        <Image
-                          src={imageUrl as string}
-                          alt={`추천 코디 ${index + 1}`}
-                          className="w-[113.60px] h-40 left-0 top-0 absolute object-cover"
-                          width={113.6}
-                          height={160}
-                        />
-                        <div className="w-6 h-6 left-[84px] top-[132px] absolute justify-center items-center inline-flex">
-                          <div className="w-6 h-6 relative backdrop-blur-[20px] flex-col justify-start items-start flex" />
-                        </div>
-                        <div className="px-1 py-px left-[10px] top-[10px] absolute bg-white/50 rounded border border-white/60 justify-start items-center gap-0.5 inline-flex">
-                          <div className="w-4 h-4 bg-white rounded-sm backdrop-blur-[20px] justify-center items-center flex">
-                            <div className="w-4 h-4 p-0.5 bg-white/60 rounded justify-center items-center inline-flex">
-                              <div className="w-3 h-3 relative" />
+                        <div
+                          className="relative rounded-lg overflow-hidden cursor-pointer bg-gradient-to-r from-white/50 to-transparent backdrop-blur-[20px] 
+      w-[113.6px] h-[160px] md:w-[186px] md:h-[260px]"
+                          onClick={() => router.push(`/detail/${post.id}`)}
+                        >
+                          <Image
+                            src={imageUrl as string}
+                            alt={`추천 코디 ${index + 1}`}
+                            layout="fill"
+                            objectFit="cover"
+                          />
+                          <div className="px-1 py-px left-[10px] top-[10px] absolute bg-white/50 rounded border border-white/60 justify-start items-center gap-0.5 inline-flex">
+                            <div className="w-4 h-4 bg-white rounded-sm backdrop-blur-[20px] justify-center items-center flex">
+                              {weatherIcon && weatherIcon !== 'undefined' ? (
+                                <Image
+                                  src={weatherIcon}
+                                  alt="Weather Icon"
+                                  width={16}
+                                  height={16}
+                                />
+                              ) : (
+                                <Image
+                                  src="/images/default_image.png"
+                                  alt="Default Icon"
+                                  width={16}
+                                  height={16}
+                                />
+                              )}
+                            </div>
+                            <div className="text-black text-sm font-normal font-varela leading-[18.20px]">
+                              {postTemperature}°
                             </div>
                           </div>
-                          <div className=" text-black text-sm font-normal font-varela leading-[18.20px]">
-                            {postTemperature}°
-                          </div>
                         </div>
-                      </div>
-                    </SwiperSlide>
-                  );
-                })}
-              </Swiper>
-            </div>
-
-            <button
-              onClick={handleCodiClick}
-              className="self-stretch p-3 bg-[#121212] rounded-lg justify-center items-center gap-2 inline-flex"
-            >
-              <div className="text-white text-base font-medium font-['Noto Sans KR'] leading-tight">
-                취향 코디 찾기
+                      </SwiperSlide>
+                    );
+                  })}
+                </Swiper>
               </div>
-            </button>
+              <button
+                onClick={handleCodiClick}
+                className="p-3 bg-[#121212] rounded-lg justify-center items-center gap-2 inline-flex self-stretch md:absolute md:w-[180px] md:h-[49px] md:bottom-[-62px] md:right-[0] md:self-auto hover:bg-[#5eb0ff] active:bg-[#73aee7]" // 클릭 시 색상 #73aee7로 변경
+                style={{ bottom: '-62px', right: '0' }}
+              >
+                <div className="text-white text-base font-medium font-['Noto Sans KR'] leading-tight">
+                  취향 코디 추천받기
+                </div>
+              </button>
+            </div>
+          ) : (
+            <SkeletonLoader type="recommendation" />
+          )}
+        </section>
+
+        <section className="w-full mt-[58px] md:mt-[186px] flex justify-center">
+          <div className="max-w-[878px] w-full">
+            <h2
+              className={`box-sizing-[20.8px] text-[16px] md:text-[34px] text-center font-normal mb-[16px] md:mb-[68px] ${textColor}`}
+            >
+              날씨
+            </h2>
+            <Swiper
+              spaceBetween={4}
+              slidesPerView="auto"
+              centeredSlides={false}
+            >
+              {extraWeatherInfo.map((info, index) => (
+                <SwiperSlide
+                  style={{ width: 'auto', flexShrink: 0 }}
+                  key={index}
+                  className="weather-slide"
+                >
+                  <div className="w-[88px] h-[100px] md:w-[106px] md:h-[118px] relative bg-white/40 rounded-2xl shadow border border-white linear-gradient(37deg, rgba(255,255,255,0.5018601190476191) 0%, rgba(255,255,255,0) 100%) backdrop-blur-[20px] flex flex-col items-center justify-between">
+                    {/* 텍스트 상단 8px 고정 */}
+                    <span className="absolute top-[8px] text-center text-[#121212]/70 text-xs font-normal font-['Noto Sans KR'] leading-none">
+                      {info.label}
+                    </span>
+
+                    {/* 이미지 중앙 정렬 및 원본 크기로 표시 */}
+                    <div className="flex-grow flex justify-center items-center">
+                      <div
+                        className="flex justify-center items-center"
+                        style={{ width: 'auto', height: 'auto' }}
+                      >
+                        <Image
+                          src={info.image}
+                          alt={info.label}
+                          width={20} // 원본 크기 너비
+                          height={32} // 원본 크기 높이
+                          layout="intrinsic"
+                          objectFit="contain"
+                        />
+                      </div>
+                    </div>
+
+                    {/* 하단 텍스트 10px 고정 */}
+                    <span className="absolute bottom-[10px] text-center text-[#121212] text-base font-normal font-['Varela'] leading-tight">
+                      {info.value}
+                    </span>
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
           </div>
         </section>
 
-        <section className="w-full mt-[58px]">
-          <h2
-            className={`box-sizing-[20.8px] text-[16px] text-center font-semibold mb-4 ${textColor}`}
-          >
-            날씨
-          </h2>
-          <Swiper spaceBetween={4} slidesPerView={3}>
-            {extraWeatherInfo.map((info, index) => (
-              <SwiperSlide key={index} className="weather-slide">
-                <div className="w-[88px] h-[100px] relative bg-white/40 rounded-2xl shadow border border-white linear-gradient(37deg, rgba(255,255,255,0.5018601190476191) 0%, rgba(255,255,255,0) 100%) background: rgb(255,255,255) backdrop-blur-[20px] flex flex-col justify-center items-center">
-                  <span className="text-center text-[#121212]/70 text-xs font-normal font-['Noto Sans KR'] leading-none">
-                    {info.label}
-                  </span>
-                  <Image
-                    src={info.image}
-                    alt={info.label}
-                    className="w-5 h-8 mt-1"
-                    width={20}
-                    height={32}
-                  />
-                  <span className="text-center text-[#121212] text-base font-normal font-['Varela'] leading-tight mt-2">
-                    {info.value}
-                  </span>
-                </div>
-              </SwiperSlide>
-            ))}
-            <SwiperSlide className="weather-slide">
-              <div className="w-[88px] h-[100px] relative bg-white/40 rounded-2xl shadow border border-white linear-gradient(37deg, rgba(255,255,255,0.5018601190476191) 0%, rgba(255,255,255,0) 100%) background: rgb(255,255,255) backdrop-blur-[20px] flex flex-col justify-center items-center">
-                <button
-                  onClick={() => setShowModal(true)}
-                  className="w-full h-full flex justify-center items-center"
-                >
-                  <span className="text-[#121212] text-xl">+</span>
-                </button>
-              </div>
-            </SwiperSlide>
-          </Swiper>
-        </section>
-
-        <section className="w-full mt-[18px]">
-          <div className="w-full max-w-[320px] h-[148px] px-2 pt-4 pb-5 bg-white/40 rounded-2xl shadow border border-white/50 linear-gradient(37deg, rgba(255,255,255,0.5018601190476191) 0%, rgba(255,255,255,0) 100%) background: rgb(255,255,255) backdrop-blur-[20px] flex-col justify-start items-start gap-2 inline-flex">
-            <div className="px-2 justify-center items-center gap-2 inline-flex">
+        <section className="w-full mt-[18px] flex justify-center">
+          <div className="w-full max-w-[878px] h-[144px] max-h-[157px] px-2 pt-4 pb-5 bg-white/40 rounded-2xl shadow border border-white/50 linear-gradient(37deg, rgba(255,255,255,0.5018601190476191) 0%, rgba(255,255,255,0) 100%) background: rgb(255,255,255) backdrop-blur-[20px] flex flex-col justify-start items-start gap-2">
+            <div className="w-full flex justify-start pl-2">
               <div className="text-center text-[#1a1a1a] text-xs font-normal font-['Noto Sans KR'] leading-none">
                 시간대별 날씨
               </div>
             </div>
-            <div className="self-stretch justify-start items-center inline-flex overflow-x-auto">
-              <Swiper spaceBetween={10} slidesPerView={6}>
+            <div className="w-full flex justify-center items-center overflow-x-auto">
+              <Swiper
+                spaceBetween={2}
+                slidesPerView="auto"
+                centeredSlides={false}
+              >
                 {hourlyWeather.map((weather, index) => {
+                  const isMidnightTransition =
+                    index > 0 &&
+                    new Date(hourlyWeather[index - 1].DateTime).getHours() ===
+                      23 &&
+                    new Date(weather.DateTime).getHours() === 0;
+
                   const getWeatherIconSrc = (iconNumber: number) => {
                     switch (iconNumber) {
                       case 1:
                       case 2:
                       case 3:
                       case 30:
-                        return '/images/Weather/sun.svg';
+                        return '/images/Weather/sun.png';
                       case 4:
-                        return '/images/Weather/once_cloudy.svg';
+                        return '/images/Weather/once_cloudy.png';
                       case 5:
                       case 6:
-                        return '/images/Weather/thread_fog.svg';
+                        return '/images/Weather/thread_fog.png';
                       case 7:
                       case 8:
-                        return '/images/Weather/blur.svg';
+                        return '/images/Weather/blur.png';
                       case 11:
-                        return '/images/Weather/fog.svg';
+                        return '/images/Weather/fog.png';
                       case 12:
                       case 13:
                       case 14:
                       case 41:
                       case 42:
-                        return '/images/Weather/drizzling.svg';
+                        return '/images/Weather/drizzling.png';
                       case 15:
                       case 16:
                       case 17:
-                        return '/images/Weather/thunderstorm.svg';
+                        return '/images/Weather/thunderstorm.png';
                       case 18:
-                        return '/images/Weather/rain.svg';
+                        return '/images/Weather/rain.png';
                       case 19:
                       case 20:
                       case 21:
-                        return '/images/Weather/snow.svg';
+                        return '/images/Weather/snow.png';
                       case 22:
                       case 23:
                       case 43:
                       case 44:
-                        return '/images/Weather/heavy_snow.svg';
+                        return '/images/Weather/heavy_snow.png';
                       case 24:
                       case 25:
                       case 26:
                       case 29:
-                        return '/images/Weather/sleet.svg';
+                        return '/images/Weather/sleet.png';
                       case 31:
                       case 32:
-                        return '/images/Weather/wind.svg';
+                        return '/images/Weather/wind.png';
                       case 33:
                       case 34:
-                        return '/images/Weather/night.svg';
+                        return '/images/Weather/night.png';
                       case 35:
                       case 36:
-                        return '/images/Weather/once_cloudy_night.svg';
+                        return '/images/Weather/once_cloudy_night.png';
                       case 37:
                       case 38:
-                        return '/images/Weather/once_cloudy.svg';
+                        return '/images/Weather/once_cloudy.png';
                       case 39:
                       case 40:
-                        return '/images/Weather/drizzling_night.svg';
+                        return '/images/Weather/drizzling_night.png';
                       default:
-                        return '/images/Weather/default.svg'; // 기본 이미지
+                        return '/images/Weather/default.png'; // 기본 이미지
                     }
                   };
 
@@ -873,37 +1070,46 @@ const MainPage = () => {
                     return ((fahrenheit - 32) * 5) / 9;
                   };
 
+                  console.log('isMidnightTransition:', isMidnightTransition);
+
                   return (
-                    <SwiperSlide
-                      key={index}
-                      className="flex flex-col items-center justify-center mx-2"
-                    >
-                      <div className="flex flex-col items-center justify-center h-full">
-                        <div className="justify-start items-end inline-flex">
-                          <span className="text-center text-[#121212] text-sm font-normal font-['Varela'] leading-[18.20px]">
-                            {formatTime(weather.DateTime)}
-                          </span>
-                        </div>
-                        <div className="w-[42px] h-[42px] p-1 justify-center items-center inline-flex">
-                          <div className="w-[34px] h-[34px] px-[2.83px] py-[7.08px] bg-white/60 rounded justify-center items-center inline-flex">
-                            <div className="relative w-[28.33px] h-[19.83px]">
-                              <Image
-                                src={getWeatherIconSrc(weather.WeatherIcon)}
-                                alt="날씨 아이콘"
-                                layout="fill"
-                                objectFit="cover"
-                              />
+                    <React.Fragment key={index}>
+                      {isMidnightTransition && (
+                        <div className="w-full h-[2px] my-4 bg-gray-300"></div>
+                      )}
+                      <SwiperSlide
+                        key={index}
+                        style={{ width: 'auto', flexShrink: 0 }}
+                      >
+                        <div className="flex flex-col items-center justify-center mx-2">
+                          <div className="flex flex-col items-center justify-center h-full">
+                            <div className="justify-start items-end inline-flex">
+                              <span className="text-center text-[#121212] text-sm font-normal font-['Varela'] leading-[18.20px]">
+                                {formatTime(weather.DateTime)}
+                              </span>
                             </div>
+                            <div className="w-[42px] h-[42px] p-1 justify-center items-center inline-flex">
+                              <div className="w-[34px] h-[34px] px-[2.83px] py-[7.08px] bg-white/60 rounded justify-center items-center inline-flex">
+                                <div className="relative w-[28.33px] h-[19.83px]">
+                                  <Image
+                                    src={getWeatherIconSrc(weather.WeatherIcon)}
+                                    alt="날씨 아이콘"
+                                    layout="fill"
+                                    objectFit="cover"
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                            <span className="self-stretch text-center text-[#121212] text-base font-normal font-['Varela'] leading-tight">
+                              {Math.round(
+                                fahrenheitToCelsius(weather.Temperature.Value),
+                              )}
+                              °
+                            </span>
                           </div>
                         </div>
-                        <span className="self-stretch text-center text-[#121212] text-base font-normal font-['Varela'] leading-tight">
-                          {Math.round(
-                            fahrenheitToCelsius(weather.Temperature.Value),
-                          )}
-                          °
-                        </span>
-                      </div>
-                    </SwiperSlide>
+                      </SwiperSlide>
+                    </React.Fragment>
                   );
                 })}
               </Swiper>
@@ -925,7 +1131,7 @@ const MainPage = () => {
                   isOpen ? 'rotate-[180deg]' : 'rotate-[-360deg]'
                 }`}
                 fill="none"
-                stroke="currentColor"
+                stroke="#000000" // 검은색으로 변경
                 viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
               >
@@ -947,7 +1153,7 @@ const MainPage = () => {
               animate={{ height: 'auto', opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
               transition={{ duration: 0.5 }}
-              className="w-full mt-8"
+              className="w-full max-w-[878px] mt-8 mb-[120px] mx-auto"
             >
               <div className="w-full h-auto px-2.5 py-5 bg-white/40 rounded-2xl shadow border border-white linear-gradient(37deg, rgba(255,255,255,0.5018601190476191) 0%, rgba(255,255,255,0) 100%) background: rgb(255,255,255) backdrop-blur-[20px] flex-col justify-start items-start inline-flex">
                 {filterWeeklyWeather(weeklyWeather)

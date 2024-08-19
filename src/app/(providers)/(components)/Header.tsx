@@ -68,7 +68,9 @@ const Header = () => {
   const handleLogoClick = () => {
     if (window.location.pathname === '/') {
       window.location.reload();
+      window.location.reload();
     } else {
+      router.push('/');
       router.push('/');
     }
   };
@@ -79,10 +81,12 @@ const Header = () => {
       setIsLoading(false);
       router.push(url);
     }, 2300);
+
   };
 
   if (isLoading) {
     return <LoadingScreen />;
+
   }
 
   return (
