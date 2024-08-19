@@ -95,7 +95,7 @@ function ListSelects({
               )}
             </button>
             {showDropdown && (
-              <div className="absolute top-10 -right-[34px]  w-[288px] h-[175px] rounded-lg z-20 flex-wrap backdrop-blur-[5px] bg-white bg-opacity-90">
+              <div className="absolute top-10 -right-[32px]  w-[288px] h-[175px] rounded-lg z-20 flex-wrap backdrop-blur-[5px] bg-white bg-opacity-90">
                 <div className="flex flex-wrap gap-1 border-b border-gray-300 pb-1 mb-2 w-full p-2 flex-row items-start">
                   {['유형', '날씨', '계절', '스타일', '장소'].map((item) => (
                     <button

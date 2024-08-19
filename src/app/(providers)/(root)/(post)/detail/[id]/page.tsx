@@ -346,7 +346,7 @@ function PostDetail({ params }: { params: { id: string } }) {
 
         {/* 모달 부분 */}
         {modalOpen && (
-          <div className="flex md:hidden inset-0 bg-black/20 z-50 fixed justify-center items-center ">
+          <div className="flex md:hidden inset-0 bg-black/20 z-50 fixed justify-center items-center">
             <div className="flex flex-col background w-[273px] h-[455px] rounded-2xl box-shadow backdrop-filter p-2">
               <button
                 onClick={clickModal}
@@ -392,7 +392,7 @@ function PostDetail({ params }: { params: { id: string } }) {
                 </Swiper>
               </div>
               {/* 카카오톡 공유*/}
-              <div className="flex justify-around items-center px-[25px] mt-5">
+              <div className="flex justify-around items-center px-[25px] mt-5 relative">
                 <div className="flex flex-col items-center">
                   <button
                     onClick={handleShearToKakao}
@@ -414,11 +414,11 @@ function PostDetail({ params }: { params: { id: string } }) {
                       />
                     </svg>
                   </button>
-                  <span className="mt-[7px] text">카카오톡</span>
+                  <span className="mt-[7px] text absolute top-0">카카오톡</span>
                 </div>
 
                 {/* 링크복사 */}
-                <div className="flex flex-col items-center justify-center">
+                <div className="flex flex-col items-center justify-center relative">
                   <button
                     onClick={copyURL}
                     className="w-10 h-10 bg-white text-white rounded-full middle-box-shadow middle-backdrop-filter"
@@ -461,7 +461,7 @@ function PostDetail({ params }: { params: { id: string } }) {
                       />
                     </svg>
                   </button>
-                  <span className="mt-[7px] text">링크복사</span>
+                  <span className="mt-[7px] text absolute top-0">링크복사</span>
                 </div>
               </div>
             </div>
@@ -693,7 +693,7 @@ function PostDetail({ params }: { params: { id: string } }) {
             </div>
             {/* 카카오톡 공유*/}
             <div className="flex justify-around items-center px-[25px] mt-5">
-              <div className="flex flex-col items-center">
+              <div className="flex flex-col items-center relative">
                 <button
                   onClick={handleShearToKakao}
                   className="w-10 h-10 bg-[#FFD65E]/80 text-white rounded-full middle-box-shadow middle-backdrop-filter"
@@ -714,11 +714,11 @@ function PostDetail({ params }: { params: { id: string } }) {
                     />
                   </svg>
                 </button>
-                <span className="mt-[7px] text">카카오톡</span>
+                <span className="mt-[7px] text absolute top-0">카카오톡</span>
               </div>
 
               {/* 링크복사 */}
-              <div className="flex flex-col items-center justify-center">
+              <div className="flex flex-col items-center justify-center relative">
                 <button
                   onClick={copyURL}
                   className="w-10 h-10 bg-white text-white rounded-full middle-box-shadow middle-backdrop-filter"
@@ -761,7 +761,7 @@ function PostDetail({ params }: { params: { id: string } }) {
                     />
                   </svg>
                 </button>
-                <span className="mt-[7px] text">링크복사</span>
+                <span className="mt-[7px] text absolute top-0">링크복사</span>
               </div>
             </div>
           </div>

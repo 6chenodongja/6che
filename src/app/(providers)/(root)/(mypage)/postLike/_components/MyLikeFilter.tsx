@@ -30,7 +30,7 @@ function MyLikeFilter({
   return (
     <div>
       <div className="relative z-10 flex justify-center md:hidden">
-        <div className="flex justify-center items-center shrink-0 gap-[175px] p-2">
+        <div className="flex justify-between items-center shrink-0 w-[304px] p-2">
           <div className="flex justify-center items-center shrink-0">
             <div className="flex justify-center items-center flex-grow-0 flex-shrink-0 relative overflow-hidden px-1 py-1.5 rounded-lg]">
               <p className="flex-grow-0 flex-shrink-0 text-sm text-[#121212]">
