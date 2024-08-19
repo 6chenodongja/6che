@@ -97,19 +97,19 @@ const ProfileForm: React.FC = () => {
 
   return (
     <main className="md:flex flex-col md:w-[480px] md:h-[724px] md:bg-white md:shadow-boxShadowPc md:backdrop-blur-sm md:rounded-3xl md:p-10 md:mt-[100px] md:mb-[200px] mx-auto p-4 sm:p-6 lg:p-8">
+      <header className="w-full h-[44px] py-[6px] px-4 flex justify-between items-center bg-white/50 shadow-xl">
+        <h1 className="text-[16px] font-semibold leading-[130%] tracking-[-0.32px] font-sans">
+          닉네임 / 프로필 수정
+        </h1>
+        <div className="">
+          <Link href={'/mypage'} legacyBehavior>
+            <a>
+              <Image src="x.svg" alt="close" width={24} height={24} />
+            </a>
+          </Link>
+        </div>
+      </header>
       <section className="flex flex-col w-full gap-1.5 py-1.5">
-        <header className="w-full h-[44px] py-[6px] px-4 flex justify-between items-center bg-white/50 shadow-xl">
-          <h1 className="text-[16px] font-semibold leading-[130%] tracking-[-0.32px] font-sans">
-            닉네임 / 프로필 수정
-          </h1>
-          <div className="">
-            <Link href={'/mypage'} legacyBehavior>
-              <a>
-                <Image src="x.svg" alt="close" width={24} height={24} />
-              </a>
-            </Link>
-          </div>
-        </header>
         <div className="grid grid-flow-row ml-4 mt-[26px]">
           <div className="mb-[6px]">
             <div className="flex justify-start items-start self-stretch flex-grow-0 flex-shrink-0 gap-1">
@@ -127,7 +127,7 @@ const ProfileForm: React.FC = () => {
               </div>
             </div>
             {!nicknameAvailable && nickname && (
-              <p className="text-red-500 text-[12px] ml-1 mt-2">
+              <p className="text-[#FF4732]/85 text-[12px] ml-1 mt-2">
                 이미 사용하고 있는 닉네임입니다.
               </p>
             )}

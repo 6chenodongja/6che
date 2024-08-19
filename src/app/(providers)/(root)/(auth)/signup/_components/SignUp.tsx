@@ -86,12 +86,12 @@ function SingUp() {
           회원가입
         </h1>
         <div className="w-full">
-          <div className="py-[6px]">
+          <div className="">
             <label
-              className={`w-full text-[14px] leading-[150%] pl-[2px] ${
+              className={`text-[14px] leading-[150%] ${
                 error.nickname
-                  ? 'w-full text-[12px] leading-[150%] pl-[2px] text-[#FF4732]/85'
-                  : 'w-full text-[12px] font-normal leading-[150%] pl-[2px] text-[#808080]'
+                  ? 'w-full text-[12px] font-semibold leading-[150%] pl-[2px] text-[#FF4732]/85'
+                  : 'w-full text-[12px] font-semibold leading-[150%] pl-[2px] text-[#4d4d4d]'
               }`}
             >
               닉네임
@@ -100,12 +100,12 @@ function SingUp() {
               type="text"
               onChange={handleChange('nickname')}
               value={nickname}
-              className={`w-full h-[48px] border hover:border-blue-500 ${
+              className={`py-3 px-4 w-full h-full border hover:border-blue-500 ${
                 error.nickname ? 'border-[#FF4732]/85' : 'border-[#808080]'
               } rounded-lg focus:outline-none pl-4`}
             />
             {error.nickname && (
-              <p className="pt-2 text-[12px] flex text-[#FF4732]/85">
+              <p className="py-[6px] text-[12px] flex gap-0.5 pb-2 pt-[7px] text-[#FF4732]/85">
                 <Image
                   src="images/ExclamationMarks/Unavailable.svg"
                   alt=""
@@ -117,26 +117,28 @@ function SingUp() {
               </p>
             )}
             {!error.nickname && isNicknameChecked && (
-              <p className="text-[12px] text-black-700">{nicknameMessage}</p>
+              <p className="py-[6px] text-[12px] text-black-700">
+                {nicknameMessage}
+              </p>
             )}
             {!error.nickname && (
-              <p className="text-black-700 text-[12px] flex gap-1">
+              <p className="text-black-700 text-[12px] flex gap-0.5">
                 <Image
                   src="images/ExclamationMarks/ExclamationMarks.svg"
                   alt=""
-                  width={16}
-                  height={16}
+                  width={12}
+                  height={12}
                   className=""
                 />
                 최대 10글자
               </p>
             )}
           </div>
-          <div className="flex flex-col">
-            <label className="w-full font-medium text-sm leading-[21px] tracking-[-0.02em] text-[#4d4d4d]">
+          <div className="flex flex-col justify-center items-center">
+            <label className="w-full text-sm leading-[21px] font-semibold tracking-[-0.02em] text-[#4d4d4d]">
               이메일
             </label>
-            <div className="flex items-center justify-center">
+            <div className="flex items-center justify-center gap-[6px]">
               <input
                 type="text"
                 onChange={(e) => {
@@ -144,55 +146,42 @@ function SingUp() {
                   handleChange('email')(e);
                 }}
                 value={emailId}
-                className="w-full h-[48px] py-3 px-4 border-1 border-black-500 rounded-lg hover:border-blue-500 focus:border-blue-500 focus:outline-none pl-4 mr-[6px]"
+                className="w-full h-full py-3 px-4 border-1 border-black-500 rounded-lg hover:border-blue-500 focus:border-blue-500 focus:outline-none"
               />
-              {emailDomain === '직접 입력' ? (
-                <input
-                  type="text"
-                  onChange={(e) => {
-                    setCustomEmailDomain(e.target.value);
-                    handleChange('email')(e);
-                  }}
-                  value={customEmailDomain}
-                  placeholder="example.com"
-                  className="   border-1 border-black-500 text-bl rounded-lg font-[16px] hover:border-blue-500 focus:border-blue-500 focus:outline-none"
-                />
-              ) : (
-                <select
-                  title="이메일 선택"
-                  onChange={(e) => setEmailDomain(e.target.value)}
-                  value={emailDomain}
-                  className="w-full h-[48px] py-3 px-4 border-1 border-black-500 text-bl rounded-lg font-[16px] hover:border-blue-500 focus:border-blue-500 focus:outline-none cursor-pointer"
-                >
-                  <option value="gmail.com" className="cursor-pointer">
-                    @gmail.com
-                  </option>
-                  <option value="naver.com" className="cursor-pointer">
-                    @naver.com
-                  </option>
-                  <option value="daum.net" className="cursor-pointer">
-                    @daum.net
-                  </option>
-                  <option value="nate.com" className="cursor-pointer">
-                    @nate.com
-                  </option>
-                  <option value="icloud.com" className="cursor-pointer">
-                    @icloud.com
-                  </option>
-                  <option value="hanmail.net" className="cursor-pointer">
-                    @hanmail.net
-                  </option>
-                  <option value="직접 입력" className="">
-                    직접 입력
-                  </option>
-                </select>
-              )}
+              <select
+                title="이메일 선택"
+                onChange={(e) => setEmailDomain(e.target.value)}
+                value={emailDomain}
+                className="w-full h-full py-3 px-4 border-1 border-black-500 rounded-lg hover:border-blue-500 focus:border-blue-500 focus:outline-none"
+              >
+                <option value="gmail.com" className="cursor-pointer">
+                  @gmail.com
+                </option>
+                <option value="naver.com" className="cursor-pointer">
+                  @naver.com
+                </option>
+                <option value="daum.net" className="cursor-pointer">
+                  @daum.net
+                </option>
+                <option value="nate.com" className="cursor-pointer">
+                  @nate.com
+                </option>
+                <option value="icloud.com" className="cursor-pointer">
+                  @icloud.com
+                </option>
+                <option value="hanmail.net" className="cursor-pointer">
+                  @hanmail.net
+                </option>
+                <option value="직접 입력" className="">
+                  직접 입력
+                </option>
+              </select>
             </div>
           </div>
           <div className="">
             <label
-              className={`text-[14px] leading-[150%] ml-[2px] ${
-                error.password ? 'text-[#FF4732]/85' : 'text-[#808080]'
+              className={`text-[14px] font-semibold leading-[150%] ml-[2px] ${
+                error.password ? 'text-[#FF4732]/85' : 'text-[#4d4d4d]'
               }`}
             >
               비밀번호
@@ -218,8 +207,8 @@ function SingUp() {
                 <Image
                   src="images/ExclamationMarks/ExclamationMarks.svg"
                   alt=""
-                  width={16}
-                  height={16}
+                  width={12}
+                  height={12}
                   className=""
                 />
                 특수문자,대문자 포함 8자 이상
@@ -229,7 +218,7 @@ function SingUp() {
 
           <div className="mt-2 text-[#4D4D4D]">
             <label
-              className={`text-[14px] leading-[150%] ${error.passwordConfirm ? 'text-[#FF4732]/85' : 'text-[#808080]'}`}
+              className={`text-[14px] leading-[150%] font-semibold ${error.passwordConfirm ? 'text-[#FF4732]/85' : 'text-[#4d4d4d]'}`}
             >
               비밀번호 확인
             </label>

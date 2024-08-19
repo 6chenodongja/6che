@@ -10,6 +10,4 @@ export async function POST(request: NextRequest) {
   } else {
     return NextResponse.json({ message: '로그아웃 하셨습니다.' }, {status: 200});
   }
-
-  
 }

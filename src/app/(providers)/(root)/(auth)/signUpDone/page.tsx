@@ -1,6 +1,7 @@
 import React from 'react';
 import SingUpDone from './_components/SingUpDone';
 import BottomSheet from './_components/BottomSheet';
+import ProfileSelect from './_components/ProfileSelect';
 
 function SignUpDonePage() {
   return (
