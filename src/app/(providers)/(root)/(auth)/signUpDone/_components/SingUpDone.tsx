@@ -19,11 +19,7 @@ function SingUpDone() {
               width={292}
               height={330}
               className="absolute top-[92px] left-2"
-              className="absolute top-[92px] left-2"
             />
-            <Image
-              src="/images/signUpDone/SignupConfirmationGlow.svg"
-              alt=""
             <Image
               src="/images/signUpDone/SignupConfirmationGlow.svg"
               alt=""
