@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/supabase/client';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import toast, { Toaster } from 'react-hot-toast';
 
 const FindPwForm = () => {
   const [email, setEmail] = useState('');
@@ -51,17 +50,18 @@ const FindPwForm = () => {
 
   return (
     <>
-      <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        hideProgressBar
-        closeOnClick
-        pauseOnHover
-        draggable
+      {/* Toaster 추가 */}
+      <Toaster
+        position="top-right" // 웹에서 오른쪽 상단에 표시되도록 설정
+        reverseOrder={false}
       />
 
       {/* 모바일 화면 (768px 이하) */}
       <div className="md:hidden w-full max-w-[320px] mx-auto flex flex-col items-center min-h-[636px] bg-[#fafafa] mt-10 px-4 pt-[64px]">
+        <Toaster
+          position="bottom-center" // 모바일에서는 하단 중앙에 표시되도록 설정
+          reverseOrder={false}
+        />
         <div className="w-full">
           <h2 className="text-xl text-center font-headline-04  text-[20px] mb-[40px] font-bold">
             아이디 비밀번호 찾기
@@ -71,11 +71,6 @@ const FindPwForm = () => {
             <button
               type="button"
               className="w-[141px] h-[44px] bg-white text-text-default rounded-lg font-normal text-[14px] font-KR-button hover:bg-black-100 hover:text-semantic-color-bg-brand-b active:bg-[#E0E0E0] active:text-blue-400"
-              style={{
-                margin: 0,
-                padding: 0,
-                boxSizing: 'border-box',
-              }}
               onClick={() => router.push('/find-id')}
             >
               아이디
@@ -83,11 +78,6 @@ const FindPwForm = () => {
             <button
               type="button"
               className="w-[141px] h-[44px] bg-black text-white rounded-lg font-normal text-[14px] font-KR-button"
-              style={{
-                margin: 0,
-                padding: 0,
-                boxSizing: 'border-box',
-              }}
               onClick={() => router.push('/find-pw')}
             >
               비밀번호
@@ -95,7 +85,7 @@ const FindPwForm = () => {
           </div>
 
           <div className="mb-1.5">
-            <h3 className="not-italic font-bold lineHeight-130% font-subtitle-KR-medium text-base ">
+            <h3 className="not-italic font-bold lineHeight-130% font-subtitle-KR-medium text-base">
               비밀번호 찾기
             </h3>
             <p className="text-gray-600 mb-9 font-body-KR-small text-[14px] mt-1.5">
@@ -154,24 +144,14 @@ const FindPwForm = () => {
       {/* 데스크탑 화면 (769px 이상) */}
       <div className="hidden md:flex w-full min-h-screen bg-[#fafafa] justify-center items-center relative">
         <div className="absolute mt-[58px] w-[480px] h-[725px] bg-white rounded-3xl shadow-lg p-10">
-          <ToastContainer
-            position="top-right"
-            autoClose={3000}
-            hideProgressBar
-            closeOnClick
-            pauseOnHover
-            draggable
+          <Toaster
+            position="top-right" // 웹에서 오른쪽 상단에 표시되도록 설정
+            reverseOrder={false}
           />
           <h2 className="text-center font-headline-03 text-[24px] mb-[40px] font-bold">
             아이디 비밀번호 찾기
           </h2>
-          <div
-            className="flex justify-center items-center p-1 border border-gray-300 rounded-lg mb-[37px] shadow-sm md:w-[400px] md:h-[54px] gap-[4px]"
-            style={{
-              boxShadow:
-                '0px 0px 1px 0px rgba(0, 0, 0, 0.10), 0px 2px 10px 0px rgba(0, 0, 0, 0.05)',
-            }}
-          >
+          <div className="flex justify-center items-center p-1 border border-gray-300 rounded-lg mb-[37px] shadow-sm md:w-[400px] md:h-[54px] gap-[4px]">
             <button
               type="button"
               className="md:w-[194px] md:h-[46px] bg-white text-text-default rounded-lg font-normal text-[14px] font-KR-button hover:bg-black-100 hover:text-semantic-color-bg-brand-b active:bg-[#E0E0E0] active:text-blue-400"

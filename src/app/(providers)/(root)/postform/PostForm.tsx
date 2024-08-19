@@ -9,8 +9,7 @@ import WeatherDropdown from './components/WeatherDropdown';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/swiper-bundle.css';
 import { useUserStore } from '@/zustand/store/useUserStore';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import toast, { Toaster } from 'react-hot-toast';
 
 const PostFormPage = () => {
   const [images, setImages] = useState<(File | string)[]>([]);
@@ -229,8 +228,25 @@ const PostFormPage = () => {
       console.error('Error inserting/updating data:', result.error);
     } else {
       console.log('Data inserted/updated successfully');
-      toast.success('게시 완료되었습니다');
-      setTimeout(() => {
+      toast.success(
+        <div className="toast-message">
+          <span>게시 완료되었습니다</span>
+          <button
+            onClick={() => {
+              clearTimeout(timeoutId); // 버튼을 클릭하면 자동 리다이렉트를 중지
+              router.push('/myStyle');
+            }}
+            className="text-blue-500 underline ml-2"
+          >
+            내 코디
+          </button>
+        </div>,
+        {
+          duration: 2500, // react-hot-toast에서는 duration을 사용합니다.
+        },
+      );
+
+      const timeoutId = setTimeout(() => {
         if (!sessionStorage.getItem('redirectToMyStyle')) {
           router.push('/list');
         }
@@ -314,6 +330,11 @@ const PostFormPage = () => {
 
   return (
     <>
+      <Toaster
+        position={window.innerWidth < 769 ? 'bottom-center' : 'top-right'}
+        reverseOrder={false}
+      />
+
       <div className="sm:hidden w-full max-w-[320px] mx-auto flex flex-col min-h-[636px] bg-[#fafafa] mt-10 px-4">
         <div className="flex items-center justify-between mb-4 pb-2 border-b pt-14">
           <button
@@ -621,7 +642,7 @@ const PostFormPage = () => {
       {/* 769px 이상 데스크탑 */}
       <div className="hidden sm:flex w-full min-h-screen bg-[#fafafa] justify-center items-center">
         <div className="w-full sm:w-[1240px] sm:h-[725px] bg-white rounded-3xl shadow-lg flex flex-col px-10 pt-0 pb-14">
-          <ToastContainer />
+          <Toaster position="top-right" reverseOrder={false} />
 
           <div className="flex items-center justify-between mb-4 border-b ">
             <button

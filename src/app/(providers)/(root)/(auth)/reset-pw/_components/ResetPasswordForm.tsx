@@ -3,8 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/supabase/client';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import toast, { Toaster } from 'react-hot-toast';
 
 const ResetPasswordForm = () => {
   const [password, setPassword] = useState('');
@@ -91,9 +90,10 @@ const ResetPasswordForm = () => {
 
   return (
     <>
+      <Toaster position="top-right" reverseOrder={false} />
+
       {/* 모바일 화면 (768px 이하) */}
       <div className="md:hidden w-full max-w-[320px] mx-auto flex flex-col items-center min-h-[636px] bg-white px-4">
-        <ToastContainer />
         <div className="w-full">
           <h2 className="font-headline-04 font-bold text-xl text-center mt-[97px] mb-[80px]">
             비밀번호 재설정
@@ -149,7 +149,7 @@ const ResetPasswordForm = () => {
       {/* 데스크탑 화면 (769px 이상) */}
       <div className="hidden md:flex w-full min-h-screen bg-[#fafafa] justify-center items-center relative">
         <div className="absolute mt-[58px] w-[480px] h-[725px] bg-white rounded-3xl shadow-lg p-10">
-          <ToastContainer />
+          <Toaster position="top-right" reverseOrder={false} />
           <h2 className="text-center font-headline-03 text-[24px] mb-[40px] font-bold">
             비밀번호 재설정
           </h2>

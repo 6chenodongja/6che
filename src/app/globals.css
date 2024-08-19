@@ -874,3 +874,21 @@
   cursor: pointer;
 }
 /* 메인 페이지 전용 스타일 */
+
+/* 토스트 알림 */
+/* 데스크탑 설정 */
+.Toastify__toast-container {
+  top: 80px !important; /* 상단 우측에 위치 */
+  right: 20px !important;
+  position: fixed;
+}
+
+/* 모바일 설정 */
+@media (max-width: 768px) {
+  .Toastify__toast-container {
+    bottom: 20px !important; /* 하단 중앙에 위치 */
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    position: fixed;
+  }
+}
