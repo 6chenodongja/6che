@@ -8,7 +8,7 @@ function SingUpDone() {
   const { user } = useUserStore();
 
   return (
-    <main className="relative flex flex-col justify-center items-center md:w-[480px] md:h-[724px] md:bg-white md:shadow-boxShadowPc md:rounded-3xl md:p-10 md:mt-[100px] md:mb-[200px]">
+    <main className="relative flex flex-col justify-center items-center md:w-[480px] md:h-[724px] md:bg-white md:shadow-boxShadowPc md:rounded-3xl">
       <div className="">
         <div className="text-center">
           <div className="w-full h-full flex justify-center items-center top-0 left-0">

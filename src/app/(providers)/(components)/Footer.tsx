@@ -9,14 +9,14 @@ import LoginModalProps from '@/components/Modal/LoginModal';
 import { useRouter } from 'next/navigation';
 
 const Footer = () => {
-  const { isLoggedIn } = useUserStore();
+  const { user } = useUserStore();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const router = useRouter();
 
   const handleMypageClick = (
     e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
   ) => {
-    if (!isLoggedIn) {
+    if (!user) {
       e.preventDefault();
       setIsModalOpen(true);
     }

@@ -4,6 +4,8 @@ import { useSignUpForm } from 'hooks/useSignUpForm';
 import Image from 'next/image';
 import axios from 'axios';
 import { useUserStore } from '@/zustand/store/useUserStore';
+import { useState } from 'react';
+import { emailDomains } from '@/utils/emailDomains';
 
 function SingUp() {
   const {
@@ -15,7 +17,7 @@ function SingUp() {
     passwordConfirm,
     isOver,
     error,
-    // isNicknameValid,
+    isNicknameValid,
     isNicknameChecked,
     nicknameMessage,
     setEmailId,
@@ -24,9 +26,11 @@ function SingUp() {
     setIsOver,
     handleChange,
     // handleEmailDomainChange,
-    // checkNickname,
+    checkNickname,
     isFormValid,
+    checkEmail,
   } = useSignUpForm();
+
   const router = useRouter();
   const { setUser } = useUserStore();
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -80,13 +84,13 @@ function SingUp() {
   };
 
   return (
-    <main className="flex flex-col justify-center items-center md:w-[480px] md:h-[724px] md:bg-white md:shadow-boxShadowPc md:backdrop-blur-sm md:rounded-3xl md:p-10 md:mt-[100px] md:mb-[200px]">
+    <main className="flex flex-col justify-center items-center md:w-[480px] md:h-[724px] md:bg-white md:shadow-boxShadowPc md:backdrop-blur-sm md:rounded-3xl md:p-10">
       <form onSubmit={onSubmit} className="h-full w-full space-y-4">
         <h1 className="text-[20px] text-center text-[#121212] font-bold leading-[130%] tracking-[-0.4px] w-full">
           회원가입
         </h1>
         <div className="w-full">
-          <div className="">
+          <div className="pb-3">
             <label
               className={`text-[14px] leading-[150%] ${
                 error.nickname
@@ -122,7 +126,7 @@ function SingUp() {
               </p>
             )}
             {!error.nickname && (
-              <p className="text-black-700 text-[12px] flex gap-0.5">
+              <p className="text-black-700 text-[12px] flex gap-0.5 pt-[6px]">
                 <Image
                   src="images/ExclamationMarks/ExclamationMarks.svg"
                   alt=""
@@ -130,7 +134,7 @@ function SingUp() {
                   height={12}
                   className=""
                 />
-                최대 10글자
+                최대 8글자
               </p>
             )}
           </div>
@@ -178,7 +182,7 @@ function SingUp() {
               </select>
             </div>
           </div>
-          <div className="">
+          <div className="pt-3">
             <label
               className={`text-[14px] font-semibold leading-[150%] ml-[2px] ${
                 error.password ? 'text-[#FF4732]/85' : 'text-[#4d4d4d]'
@@ -238,7 +242,7 @@ function SingUp() {
               </p>
             )}
           </div>
-          <div className="flex items-start justify-start px-1 py-2 cursor-pointer">
+          <div className="flex items-start justify-start px-1 py-2 cursor-pointer pt-[35px] pb-[10px]">
             <input
               type="checkbox"
               id="over14"

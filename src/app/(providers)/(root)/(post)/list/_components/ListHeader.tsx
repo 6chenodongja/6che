@@ -7,7 +7,7 @@ function ListHeader() {
   const [temperature, setTemperature] = useState<string | null>(null);
   // 모달 추가
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { isLoggedIn } = useUserStore();
+  const { user } = useUserStore();
   const router = useRouter();
   useEffect(() => {
     const fetchLocationAndWeather = async () => {
@@ -44,7 +44,7 @@ function ListHeader() {
 
   // 모달 오픈/닫기 함수
   const openModal = () => {
-    if (!isLoggedIn) {
+    if (!user) {
       setIsModalOpen(true);
     } else {
       router.replace('/postform');

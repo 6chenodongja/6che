@@ -78,10 +78,9 @@ function PostItem({ post, isLiked, handleLike }: PostProps) {
               {/* 날짜이모지와 닉네임 유저가 선택한 프로필로 변경  */}
               <span className="font-bold text-[14px] flex flex-row gap-[4px]">
                 <div className="w-[20px] h-[20px] p-[1px] flex justify-center items-center icon">
-                  {/* <ListNicknameIcon src={user?.profileImage} /> */}
-                  {user?.profileImage && (
+                  {post.users?.avatar && (
                     <Image
-                      src={user.profileImage}
+                      src={post.users?.avatar}
                       alt="profile-icon"
                       width={24}
                       height={24}

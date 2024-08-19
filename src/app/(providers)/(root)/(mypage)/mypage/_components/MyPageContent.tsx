@@ -37,9 +37,9 @@ function MyPageContent() {
   const closeModal = () => setIsModalOpen(false);
 
   return (
-    <div className="w-full max-w-[1280px] mx-auto md:flex flex-col xl:flex md:shadow-boxShadowPc md:backdrop-blur-sm md:rounded-3xl md:p-10 md:mt-[30px] md:mb-[200px] p-4">
+    <div className="w-full max-w-[1280px] mx-auto flex flex-col xl:flex p-4">
       <div className="w-full mb-3">
-        <div className="flex flex-col items-start bg-white p-4 rounded-[14px] shadow-md">
+        <div className="flex flex-col items-start bg-white p-4 rounded-[14px]">
           <div className="flex justify-between items-center w-full">
             <div className="flex items-center gap-2">
               {user?.profileImage && (

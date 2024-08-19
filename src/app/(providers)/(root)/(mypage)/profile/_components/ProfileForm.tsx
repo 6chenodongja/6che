@@ -96,8 +96,8 @@ const ProfileForm: React.FC = () => {
   };
 
   return (
-    <main className="md:flex flex-col md:w-[480px] md:h-[724px] md:bg-white md:shadow-boxShadowPc md:backdrop-blur-sm md:rounded-3xl md:p-10 md:mt-[100px] md:mb-[200px] mx-auto p-4 sm:p-6 lg:p-8">
-      <header className="w-full h-[44px] py-[6px] px-4 flex justify-between items-center bg-white/50 shadow-xl">
+    <main className="border md:flex flex-col md:w-[480px] md:h-[724px] md:bg-white md:shadow-boxShadowPc md:backdrop-blur-sm md:rounded-3xl md:p-10 md:mt-[100px] md:mb-[200px] mx-auto p-4 sm:p-6 lg:p-8">
+      <header className="fixed top-0 left-0 w-full h-[44px] py-[6px] px-4 flex justify-between items-center bg-white/50 shadow-xl">
         <h1 className="text-[16px] font-semibold leading-[130%] tracking-[-0.32px] font-sans">
           닉네임 / 프로필 수정
         </h1>
@@ -154,12 +154,12 @@ const ProfileForm: React.FC = () => {
         </div>
       </section>
       <section className="flex flex-col justify-start items-center gap-2 py-1.5 mt-[32px]">
-        <header className="flex justify-start items-center self-stretch flex-grow-0 flex-shrink-0 gap-2 pl-0.5">
-          <h2 className="flex-grow-0 flex-shrink-0 text-sm font-medium ml-4 mb-[8px] text-[#4d4d4d]">
+        <header className="flex justify-start self-stretch flex-grow-0 flex-shrink-0 gap-2 pl-0.5">
+          <h2 className="flex-grow-0 flex-shrink-0 text-sm font-medium text-[#4d4d4d]">
             프로필
           </h2>
         </header>
-        <div className="grid grid-cols-5 gap-2.5 w-full h-full pl-[19px] pr-4 rounded-2xl bg-white shadow-[0_0_2px_0_rgba(0, 0, 0, 0.151),0_2px_20px_0_rgba(18, 18, 18, 0.178)] cursor-pointer">
+        <div className="grid grid-cols-5 gap-2.5 w-full h-full pl-[19px] pr-4 py-4 rounded-2xl bg-white shadow-[0_0_2px_0_rgba(0, 0, 0, 0.151),0_2px_20px_0_rgba(18, 18, 18, 0.178)] cursor-pointer">
           {profileIcons.map((icon, index) => (
             <Image
               key={index}

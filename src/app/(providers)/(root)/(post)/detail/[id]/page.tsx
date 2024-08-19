@@ -275,10 +275,10 @@ function PostDetail({ params }: { params: { id: string } }) {
           <div className="flex flex-col justify-start items-start w-72 relative gap-2.5 mt-2 m-4">
             <div className="flex justify-between items-center self-stretch flex-grow-0 flex-shrink-0">
               <div className="flex justify-start items-center flex-grow-0 flex-shrink-0 relative gap-[5px]">
-                {user?.profileImage && (
+                {DetailList?.users?.avatar && (
                   <Image
-                    src={user.profileImage}
-                    alt="프로필 이미지"
+                    src={DetailList?.users?.avatar}
+                    alt="profile-icon"
                     width={24}
                     height={24}
                   />
