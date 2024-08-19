@@ -1,9 +1,15 @@
 import React, { useState, useEffect } from 'react';
+import LoginModalProps from '@/components/Modal/LoginModal';
+import { useUserStore } from '@/zustand/store/useUserStore';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
 function ListHeader() {
   const [temperature, setTemperature] = useState<string | null>(null);
-
+  // 모달 추가
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { isLoggedIn } = useUserStore();
+  const router = useRouter();
   useEffect(() => {
     const fetchLocationAndWeather = async () => {
       try {
@@ -37,6 +43,19 @@ function ListHeader() {
     fetchLocationAndWeather();
   }, []);
 
+  // 모달 오픈/닫기 함수
+  const openModal = () => {
+    if (!isLoggedIn) {
+      setIsModalOpen(true);
+    } else {
+      router.replace('/postform');
+    }
+  };
+  const closeModal = () => setIsModalOpen(false);
+
+  const handlerLoginModal = () => {
+    closeModal();
+  };
   return (
     <div className="mx-[16px]">
       <div
@@ -252,6 +271,13 @@ function ListHeader() {
           </svg>
         </div>
       </div>
+      {isModalOpen && (
+        <LoginModalProps
+          isOpen={isModalOpen}
+          onConfirm={handlerLoginModal}
+          onClose={closeModal}
+        />
+      )}
     </div>
   );
 }

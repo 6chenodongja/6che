@@ -9,7 +9,7 @@ function DeleteUser() {
   const router = useRouter();
   const handlerDelete = async () => {
     try {
-      const res = await axios.delete('/api/auth/deletUserId', {
+      const res = await axios.delete('/api/auth/deletesUserId', {
         data: { userId: user?.id },
       });
       alert('회원 탈퇴 성공 하셨습니다.');

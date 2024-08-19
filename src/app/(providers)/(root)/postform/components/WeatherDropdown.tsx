@@ -30,6 +30,7 @@ const CustomTextField = styled(TextField)({
   '& .MuiOutlinedInput-root': {
     '& fieldset': {
       borderColor: 'black-300',
+      borderRadius: '8px',
     },
     '&:hover fieldset': {
       borderColor: 'black',
@@ -39,8 +40,9 @@ const CustomTextField = styled(TextField)({
       borderColor: 'black',
       borderWidth: '1px',
     },
-    height: '44px',
+    height: '45px',
     width: '141px',
+    borderRadius: '8px',
   },
   '& .MuiInputBase-input': {
     padding: '10px 14px',
@@ -133,7 +135,7 @@ const WeatherDropdown = ({
               variant="outlined"
               InputProps={{
                 ...params.InputProps,
-                className: 'h-11 w-36',
+                className: 'h-11 w-36 ',
               }}
             />
           )}
@@ -175,7 +177,7 @@ const WeatherDropdown = ({
               variant="outlined"
               InputProps={{
                 ...params.InputProps,
-                className: 'h-11 w-36',
+                className: 'h-141 w-141 ',
               }}
             />
           )}

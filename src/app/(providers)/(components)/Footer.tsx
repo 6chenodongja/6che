@@ -4,9 +4,14 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { LogoText } from '../../../icons/LogoText';
-import { usePathname } from 'next/navigation';
+import { useUserStore } from '@/zustand/store/useUserStore';
+import LoginModalProps from '@/components/Modal/LoginModal';
+import { usePathname, useRouter } from 'next/navigation';
 
 const Footer = () => {
+  const { isLoggedIn } = useUserStore();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const router = useRouter();
   const pathname = usePathname();
   const isDetailPage = pathname?.startsWith('/detail');
   const [isDetailMobile, setIsDetailMobile] = useState(false);
@@ -28,202 +33,139 @@ const Footer = () => {
     return <></>;
   }
 
-  const linkStyle = {
-    color: 'var(--text, #4D4D4D)',
-    fontFamily: '"Noto Sans KR"',
-    fontSize: '16px',
-    fontStyle: 'normal',
-    fontWeight: 600,
-    lineHeight: '150%',
-    letterSpacing: '-0.28px',
+  const handleMypageClick = (
+    e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
+  ) => {
+    if (!isLoggedIn) {
+      e.preventDefault();
+      setIsModalOpen(true);
+    }
   };
 
-  const smallLinkStyle = {
-    color: 'var(--text, #4D4D4D)',
-    fontFamily: '"Noto Sans KR"',
-    fontSize: '13px',
-    fontStyle: 'normal',
-    fontWeight: 400,
-    lineHeight: '130%',
-    letterSpacing: '-0.24px',
-    opacity: '0.7',
+  const closeModal = () => {
+    setIsModalOpen(false); // 모달 닫기
   };
 
-  const lastlinkStyle = {
-    color: 'var(--text, #4D4D4D)',
-    fontFamily: '"Noto Sans KR"',
-    fontSize: '14px',
-    fontStyle: 'normal',
-    fontWeight: 400,
-    lineHeight: '109%',
-    letterSpacing: '-0.24px',
-    opacity: '0.7',
+  const handleConfirm = () => {
+    closeModal();
+    router.push('/login'); // 로그인 페이지로 이동
   };
 
   return (
-    <footer className="w-full bg-white py-4 flex flex-col items-start mt-0 md:flex-row md:items-center md:justify-between md:px-16">
-      {/* 로고와 "홈" 사이 간격을 20px로 조정 */}
-      <nav className="flex flex-col items-start space-y mb-4 pl-5 md:flex-row md:space-y-0 md:space-x-10">
-        <LogoText className="w-24 h-10 mb-[10px] ml-[-7px] mt-10 md:mt-0" />
+    <footer className="footer-container">
+      <div className="footer-content">
+        {/* 첫 번째 섹션: 로고와 네비게이션 */}
+        <div className="develop-div develop2-div">
+          <LogoText className="logo" />
 
-        {/* 홈부터 마이페이지까지 간격을 10px로 조정 */}
-        <Link
-          href="/"
-          className="mb-[10px] md:mb-0"
-          style={{ ...linkStyle, marginLeft: '-5px' }}
-        >
-          홈
-        </Link>
-        <Link
-          href="/"
-          className="mb-[10px] md:mb-0"
-          style={{ ...linkStyle, marginLeft: '-5px' }}
-        >
-          코디
-        </Link>
-        <Link
-          href="/thermometer-style"
-          className="mb-[10px] md:mb-0"
-          style={{ ...linkStyle, marginLeft: '-5px' }}
-        >
-          기온 별 옷차림
-        </Link>
-        <Link
-          href="/survey"
-          className="mb-[10px] md:mb-0"
-          style={{ ...linkStyle, marginLeft: '-5px' }}
-        >
-          취향 코디
-        </Link>
-        <Link
-          href="/mypage"
-          className="mb-[8px] md:mb-0"
-          style={{ ...linkStyle, marginLeft: '-5px' }}
-        >
-          마이페이지
-        </Link>
-
-        {/* "마이페이지"와 "좋아요한 코디" 간격을 8px로 조정 */}
-        <Link
-          href="/mypage"
-          className="mb-[5px] md:mb-0"
-          style={{ ...smallLinkStyle, marginLeft: '-5px' }}
-        >
-          좋아요한 코디
-        </Link>
-
-        {/* "좋아요한 코디"와 "내 코디" 간격을 6px로 조정 */}
-        <Link href="/mypage" style={{ ...smallLinkStyle, marginLeft: '-5px' }}>
-          내 코디
-        </Link>
-      </nav>
-      <hr className="w-72 h-[2px] flex-shrink-0 self-stretch mx-auto my-2 border-0 bg-[rgba(230,230,230,0.60)] md:hidden" />
-
-      <div className="flex flex-col items-start text-gray-500 ml-5 md:ml-0 md:flex-row md:items-center md:space-x-10">
-        <div
-          className="flex items-center mb-2 cursor-pointer md:mb-0"
-          onClick={() =>
-            window.open(
-              'https://github.com/6chenodongja/6che/tree/main',
-              '_blank',
-            )
-          }
-        >
-          <Image
-            src="/images/github.svg"
-            alt="GitHub"
-            width={24}
-            height={24}
-            className="mr-2 ml-[-8px] mt-4 md:mt-0"
-          />
-          <span
-            className="text-base font-normal mt-4 leading-[100%] text-[#4d4d4d] font-['Noto Sans KR'] md:mt-0"
-            style={{
-              fontSize: '16px',
-              letterSpacing: '-0.32px',
-              fontWeight: '600',
-              marginLeft: '-5px',
-            }}
-          >
-            6체노동자
-          </span>
+          <nav className="menu-div">
+            <ul className="menu2-div flex flex-col items-start space-y-2 md:flex-row md:space-y-0 md:space-x-[18px]">
+              <li>
+                <Link href="/" className="footer-link footer-text-style">
+                  홈
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/"
+                  className="footer-link footer-text-style text-item"
+                >
+                  코디
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/thermometer-style"
+                  className="footer-link footer-text-style text2-item "
+                >
+                  기온 별 옷차림
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/survey"
+                  className="footer-link footer-text-style text3-item"
+                >
+                  취향 코디
+                </Link>
+              </li>
+              <li className="footer-text-style flex flex-col items-start text4-item">
+                <Link
+                  href="/mypage"
+                  className="footer-link mybtn"
+                  onClick={handleMypageClick}
+                >
+                  마이페이지
+                </Link>
+                <ul className="flex flex-col items-start space-y-[4px] footer-text-style2 mybtn">
+                  <li>
+                    <Link
+                      href="/mypage"
+                      className="footer-link footer-text2 footer-text-style2 mybtn"
+                    >
+                      좋아요한 코디
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/mypage"
+                      className="footer-link footer-text2 mb-[32px]"
+                    >
+                      내 코디
+                    </Link>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </nav>
         </div>
-        <div className="text-left flex flex-col items-start md:flex-row md:items-center md:space-x-4">
-          <div className="flex items-center mb-2 md:mb-0">
-            <span
-              className="text-xs font-normal text-[#4d4d4d] font-['Noto Sans KR']"
-              style={{
-                fontStyle: 'normal',
-                fontWeight: 400,
-                lineHeight: '130%',
-                letterSpacing: '-0.24px',
-                opacity: '0.7',
-                marginLeft: '-5px',
-              }}
-            >
-              개발:
-            </span>
-            <span
-              className="ml-2 text-sm font-normal text-[#4d4d4d] font-['Noto Sans KR']"
-              style={{ ...lastlinkStyle, marginLeft: '5px' }}
-            >
-              주현우
-            </span>
-            <span
-              className="ml-2 text-sm font-normal text-[#4d4d4d] font-['Noto Sans KR']"
-              style={{ ...lastlinkStyle, marginLeft: '5px' }}
-            >
-              전은겸
-            </span>
-            <span
-              className="ml-2 text-sm font-normal text-[#4d4d4d] font-['Noto Sans KR']"
-              style={{ ...lastlinkStyle, marginLeft: '5px' }}
-            >
-              김성구
-            </span>
-            <span
-              className="ml-2 text-sm font-normal text-[#4d4d4d] font-['Noto Sans KR']"
-              style={{ ...lastlinkStyle, marginLeft: '5px' }}
-            >
-              석재영
-            </span>
-            <span
-              className="ml-2 text-sm font-normal text-[#4d4d4d] font-['Noto Sans KR']"
-              style={{ ...lastlinkStyle, marginLeft: '5px' }}
-            >
-              한소영
-            </span>
+
+        <hr className="hr-class" />
+
+        {/* 두 번째 섹션: 6체노동자 정보 */}
+        <div className="design-div">
+          <div className="footer-gitcontent">
+            <Image
+              src="/images/github.svg"
+              alt="GitHub"
+              width={24}
+              height={24}
+              className="footer-icon"
+            />
+            <span className="footer-gitname">6체노동자</span>
           </div>
 
-          <div className="flex items-center md:ml-10">
-            <span
-              className="text-xs font-normal text-[#4d4d4d] font-['Noto Sans KR']"
-              style={{
-                fontStyle: 'normal',
-                fontWeight: 400,
-                lineHeight: '130%',
-                letterSpacing: '-0.24px',
-                opacity: '0.7',
-                marginLeft: '-5px',
-              }}
-            >
-              디자인:
-            </span>
-            <span
-              className="ml-2 text-sm font-normal text-[#4d4d4d] font-['Noto Sans KR']"
-              style={{ ...lastlinkStyle, marginLeft: '4px' }}
-            >
-              김윤하
-            </span>
-          </div>
+          <ul className="dev-div">
+            <li className="develop-div ">
+              <span className="develop ">개발:</span>
+              <span className="ml-[4px] footer-text-last">주현우</span>
+              <span className="ml-[6px] footer-text-last">전은겸</span>
+              <span className="ml-[6px] footer-text-last">김성구</span>
+              <span className="ml-[6px] footer-text-last">석재영</span>
+              <span className="ml-[6px] footer-text-last">한소영</span>
+            </li>
+          </ul>
+
+          <ul className="design2-div">
+            <li className="flex items-start">
+              <span className="design">디자인:</span>
+              <span className="design-name">김윤하</span>
+            </li>
+          </ul>
+          <p className="footer-designdiv">
+            © 2024. 김윤하 all rights reserved.
+          </p>
         </div>
-        <p
-          className="text-left mt-8 mb-20 text-sm font-normal text-[#4d4d4d] font-['Noto Sans KR'] md:mt-0 md:mb-0"
-          style={{ ...lastlinkStyle, marginLeft: '-5px' }}
-        >
-          © 2024. 김윤하 all rights reserved.
-        </p>
       </div>
+
+      {/* 로그인 모달 추가 */}
+      {isModalOpen && (
+        <LoginModalProps
+          isOpen={isModalOpen}
+          onConfirm={handleConfirm} // 로그인 버튼 클릭 시 동작
+          onClose={closeModal} // 모달 닫기
+        />
+      )}
     </footer>
   );
 };

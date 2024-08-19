@@ -5,10 +5,12 @@ import PostForm from './PostForm';
 
 function PostFormPage() {
   return (
-    <div className="bg-[#fafafa] flex flex-col justify-center items-center w-full min-h-screen p-0 m-0">
-      <main className="bg-[#fafafa] flex flex-col justify-center items-center w-full min-h-screen p-0 m-0">
+    <div className="flex flex-col min-h-screen bg-neutral-50">
+      <div className="hidden md:block w-full"></div>
+      <main className="flex-grow flex justify-center items-center w-full md:mt-[46px] md:mb-[199px]">
         <PostForm />
       </main>
+      <div className="hidden md:block w-full"></div>
     </div>
   );
 }

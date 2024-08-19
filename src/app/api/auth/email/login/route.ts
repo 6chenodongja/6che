@@ -18,7 +18,6 @@ export async function POST(request: NextRequest) {
   }
 
   const user = data.user;
-
   if (user) {
     const { id, email, user_metadata } = user;
     return NextResponse.json({

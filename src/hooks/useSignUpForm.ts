@@ -19,6 +19,7 @@ export const useSignUpForm = () => {
   });
   const [isNicknameValid, setIsNicknameValid] = useState<boolean>(false);
   const [isNicknameChecked, setIsNicknameChecked] = useState<boolean>(false);
+  const [isEmailChecked, setIsEmailChecked] = useState()
   const [nicknameMessage, setNicknameMessage] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -69,8 +70,8 @@ export const useSignUpForm = () => {
         if (!value.includes('@')) {
           setEmailId(value);
         }
-        const email = `${emailId}@${emailDomain === '직접 입력' ? customEmailDomain : emailDomain}`;
-        newState.email = verifyField(name, email);
+        // const email = `${emailId}@${emailDomain === '직접 입력' ? customEmailDomain : emailDomain}`;
+        // newState.email = verifyField(name, email);
         break;
       case 'password':
         setPassword(value);
@@ -88,7 +89,7 @@ export const useSignUpForm = () => {
   };
 
   const handleEmailDomainChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = e.target.value;
+    const value = e.target.value.replace('@', '');
     setEmailDomain(value);
     if (value !== '직접 입력') {
       setCustomEmailDomain('');
@@ -124,7 +125,6 @@ export const useSignUpForm = () => {
     setCustomEmailDomain,
     setIsOver,
     handleChange,
-    handleEmailDomainChange,
     checkNickname: debounceCheckNickname,
     isFormValid,
   };

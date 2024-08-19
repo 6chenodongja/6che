@@ -1,18 +1,17 @@
 'use client';
 
 import React from 'react';
-import Header from 'app/(providers)/(components)/Header';
-import Footer from 'app/(providers)/(components)/Footer';
+
 import EmailConfirm from './_components/EmailConfirm';
 
 function EmailConfirmPage() {
   return (
-    <div className="container flex flex-col justify-between items-center w-full min-h-screen bg-neutral-50">
-      <Header />
-      <main className="flex-grow flex flex-col justify-center items-center w-full">
+    <div className="flex flex-col min-h-screen bg-neutral-50">
+      <div className="hidden md:block w-full"></div>
+      <main className="flex-grow flex justify-center items-center w-full md:mt-[46px] md:mb-[199px]">
         <EmailConfirm />
       </main>
-      <Footer />
+      <div className="hidden md:block w-full"></div>
     </div>
   );
 }
