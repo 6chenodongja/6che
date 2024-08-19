@@ -225,8 +225,14 @@ function PostDetail({ params }: { params: { id: string } }) {
                 >
                   삭제
                 </button>
-                <button
+                {/* <button
                   onClick={() => router.push(`/edit/${params.id}`)}
+                  className="flex justify-center items-center bg-[#121212] text-white mr-4 rounded-xl px-[10px] py-[8px]"
+                >
+                  수정
+                </button> */}
+                <button
+                  onClick={() => router.push(`/postform?id=${params.id}`)} // 게시글 ID를 쿼리 파라미터로 전달
                   className="flex justify-center items-center bg-[#121212] text-white mr-4 rounded-xl px-[10px] py-[8px]"
                 >
                   수정

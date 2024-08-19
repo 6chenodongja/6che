@@ -13,7 +13,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const PostFormPage = () => {
-  const [images, setImages] = useState<File[]>([]);
+  const [images, setImages] = useState<(File | string)[]>([]);
   const [description, setDescription] = useState('');
   const [gender, setGender] = useState('');
   const [style, setStyle] = useState<string[]>([]);
@@ -30,6 +30,7 @@ const PostFormPage = () => {
   const [locationError, setLocationError] = useState(false);
   const [imageError, setImageError] = useState(false);
   const { user } = useUserStore();
+  const [postId, setPostId] = useState<string | null>(null);
 
   const initialStyles = [
     '스트릿',
@@ -59,16 +60,41 @@ const PostFormPage = () => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
-    let timers: NodeJS.Timeout[] = [];
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get('id');
+      setPostId(id);
+      if (id) {
+        const fetchPostDetail = async () => {
+          const { data: postDetail, error } = await supabase
+            .from('posts')
+            .select('*, users(*)')
+            .eq('id', id)
+            .single();
 
-    if (seasonError) timers.push(setTimeout(() => setSeasonError(false), 1000));
-    if (styleError) timers.push(setTimeout(() => setStyleError(false), 1000));
-    if (locationError)
-      timers.push(setTimeout(() => setLocationError(false), 1000));
-    if (imageError) timers.push(setTimeout(() => setImageError(false), 1000));
+          if (error) {
+            console.error(
+              '게시글 데이터를 불러오는 중 오류가 발생했습니다:',
+              error,
+            );
+          } else if (postDetail) {
+            setDescription(postDetail.comment ?? '');
+            setGender(postDetail.gender ?? '');
+            setStyle(postDetail.style ? postDetail.style.split(',') : []);
+            setSeasons(postDetail.seasons ? postDetail.seasons.split(',') : []);
+            setLocations(
+              postDetail.locations ? postDetail.locations.split(',') : [],
+            );
+            setWeatherIcon(postDetail.weather?.split(' ')[0] || '');
+            setTemperature(postDetail.weather?.split(' ')[1] || '');
+            setImages(postDetail.image_url?.split(',') || []);
+          }
+        };
 
-    return () => timers.forEach(clearTimeout);
-  }, [seasonError, styleError, locationError, imageError]);
+        fetchPostDetail();
+      }
+    }
+  }, []);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -119,52 +145,133 @@ const PostFormPage = () => {
   const handleSubmit = async () => {
     // 필수 필드 체크
     if (images.length === 0) {
-      toast.error('최소 1개 이미지를 업로드해야 합니다.');
+      toast.error(
+        <div className="toast-message">
+          <span>최소 1개 이미지를 업로드해야 합니다.</span>
+        </div>,
+        {
+          autoClose: 2500,
+          icon: false,
+          closeButton: false,
+          className:
+            'custom-toast bg-white text-black rounded-lg shadow-md p-4',
+        },
+      );
       return;
     }
     if (!description.trim()) {
-      toast.error('글 작성을 해야 합니다.');
+      toast.error(
+        <div className="toast-message">
+          <span>글 작성을 해야 합니다.</span>
+        </div>,
+        {
+          autoClose: 2500,
+          icon: false,
+          closeButton: false,
+          className:
+            'custom-toast bg-white text-black rounded-lg shadow-md p-4',
+        },
+      );
       return;
     }
     if (!gender) {
-      toast.error('유형을 선택해야 합니다.');
+      toast.error(
+        <div className="toast-message">
+          <span>유형을 선택해야 합니다.</span>
+        </div>,
+        {
+          autoClose: 2500,
+          icon: false,
+          closeButton: false,
+          className:
+            'custom-toast bg-white text-black rounded-lg shadow-md p-4',
+        },
+      );
       return;
     }
     if (!weatherIcon || !temperature) {
-      toast.error('날씨와 기온을 선택해야 합니다.');
+      toast.error(
+        <div className="toast-message">
+          <span>날씨와 기온을 선택해야 합니다.</span>
+        </div>,
+        {
+          autoClose: 2500,
+          icon: false,
+          closeButton: false,
+          className:
+            'custom-toast bg-white text-black rounded-lg shadow-md p-4',
+        },
+      );
       return;
     }
     if (seasons.length === 0) {
-      toast.error('계절을 선택해야 합니다.');
+      toast.error(
+        <div className="toast-message">
+          <span>계절을 선택해야 합니다.</span>
+        </div>,
+        {
+          autoClose: 2500,
+          icon: false,
+          closeButton: false,
+          className:
+            'custom-toast bg-white text-black rounded-lg shadow-md p-4',
+        },
+      );
       return;
     }
     if (style.length === 0) {
-      toast.error('스타일을 선택해야 합니다.');
+      toast.error(
+        <div className="toast-message">
+          <span>스타일을 선택해야 합니다.</span>
+        </div>,
+        {
+          autoClose: 2500,
+          icon: false,
+          closeButton: false,
+          className:
+            'custom-toast bg-white text-black rounded-lg shadow-md p-4',
+        },
+      );
       return;
     }
     if (locations.length === 0) {
-      toast.error('활동을 선택해야 합니다.');
+      toast.error(
+        <div className="toast-message">
+          <span>활동을 선택해야 합니다.</span>
+        </div>,
+        {
+          autoClose: 2500,
+          icon: false,
+          closeButton: false,
+          className:
+            'custom-toast bg-white text-black rounded-lg shadow-md p-4',
+        },
+      );
       return;
     }
 
     // 이미지 업로드
     const uploadedImageUrls: string[] = [];
     for (const image of images) {
-      const uniqueFileName = `${Date.now()}_${image.name}`;
-      const { data, error } = await supabase.storage
-        .from('images')
-        .upload(`public/${uniqueFileName}`, image);
+      if (image instanceof File) {
+        const uniqueFileName = `${Date.now()}_${image.name}`;
+        const { data, error } = await supabase.storage
+          .from('images')
+          .upload(`public/${uniqueFileName}`, image);
 
-      if (error) {
-        console.error('Error uploading image:', error);
-        continue;
+        if (error) {
+          console.error('Error uploading image:', error);
+          continue;
+        }
+
+        const imageUrl = supabase.storage.from('images').getPublicUrl(data.path)
+          .data.publicUrl;
+
+        console.log('Uploaded Image URL:', imageUrl);
+        uploadedImageUrls.push(imageUrl);
+      } else {
+        uploadedImageUrls.push(image);
       }
-
-      const imageUrl = supabase.storage.from('images').getPublicUrl(data.path)
-        .data.publicUrl;
-
-      console.log('Uploaded Image URL:', imageUrl);
-      uploadedImageUrls.push(imageUrl);
     }
 
     let weatherInfo = `${weatherIcon || ''} ${temperature || ''}`;
@@ -188,14 +295,17 @@ const PostFormPage = () => {
       weather: weatherInfo,
     };
 
-    const { error: postError } = await supabase
-      .from('posts')
-      .insert([postData]);
-
-    if (postError) {
-      console.error('Error inserting data:', postError);
+    let result;
+    if (postId) {
+      result = await supabase.from('posts').update(postData).eq('id', postId);
     } else {
-      console.log('Data inserted successfully');
+      result = await supabase.from('posts').insert([postData]);
+    }
+
+    if (result.error) {
+      console.error('Error inserting/updating data:', result.error);
+    } else {
+      console.log('Data inserted/updated successfully');
       toast.success(
         <div className="toast-message">
           <span>게시 완료되었습니다</span>
@@ -298,7 +408,7 @@ const PostFormPage = () => {
   return (
     <>
       <div className="sm:hidden w-full max-w-[320px] mx-auto flex flex-col min-h-[636px] bg-[#fafafa] mt-10 px-4">
-        <div className="flex items-center justify-between mb-4 pb-2 border-b">
+        <div className="flex items-center justify-between mb-4 pb-2 border-b pt-14">
           <button
             type="button"
             onClick={() => router.push('/list')}
@@ -309,21 +419,14 @@ const PostFormPage = () => {
               alt="Back"
               width={34}
               height={34}
-              className="mr-[4px] ml-[10px] mt-[10px] mb-[10px]"
+              className=" mt-[10px] mb-[10px]"
             />
           </button>
-          <div className="flex-grow text-center">
-            <h2 className="font-subtitle-KR-medium font-medium text-base leading-130 tracking--0.32 text-black opacity-sds-size-stroke-border">
+          <div className="flex-grow text-center font-semibold">
+            <h2 className="font-subtitle-KR-medium font-semibold text-base leading-130 tracking--0.32 text-black opacity-sds-size-stroke-border">
               코디 등록
             </h2>
           </div>
-          <button
-            type="button"
-            onClick={handleSubmit}
-            className="flex justify-center items-center py-sds-200 px-blur-10 gap-4 rounded-[8px] opacity-sds-stroke-border bg-black text-white font-KR-button"
-          >
-            완료
-          </button>
         </div>
 
         <div className="mb-4 flex flex-col items-start">
@@ -336,7 +439,7 @@ const PostFormPage = () => {
             {images.length < 3 && (
               <SwiperSlide className="!w-auto">
                 <div
-                  className="w-24 h-32 bg-black flex flex-col justify-center items-center border border-gray-300 cursor-pointer flex-shrink-0 rounded-md mt-[33px]"
+                  className="w-24 h-32 bg-black flex flex-col justify-center items-center border border-gray-300 cursor-pointer flex-shrink-0 rounded-md mt-[18px]"
                   onClick={(e) => {
                     e.stopPropagation();
                     fileInputRef.current?.click();
@@ -366,9 +469,13 @@ const PostFormPage = () => {
             )}
             {images.map((image, index) => (
               <SwiperSlide key={index} className="!w-auto">
-                <div className="relative w-24 h-32 mt-[33px]">
+                <div className="relative w-24 h-32 mt-[18px]">
                   <Image
-                    src={URL.createObjectURL(image)}
+                    src={
+                      typeof image === 'string'
+                        ? image
+                        : URL.createObjectURL(image)
+                    }
                     alt={`Uploaded ${index}`}
                     width={102}
                     height={120}
@@ -418,7 +525,7 @@ const PostFormPage = () => {
         </div>
 
         <div className="mb-8">
-          <div className="text-[#4d4d4d]  font-subtitle-KR-small text-sm not-italic font-medium  leading-[150%] tracking-[-0.28px]">
+          <div className="text-[#4d4d4d]  font-subtitle-KR-small text-sm not-italic font-medium  leading-[150%] tracking-[-0.28px] ">
             유형
           </div>
           <div className="flex gap-2 mt-1 font-body-KR-small text-sm font-normal -text--text">
@@ -439,8 +546,8 @@ const PostFormPage = () => {
           </div>
         </div>
 
-        <div className="mb-8">
-          <div className="text-[#4d4d4d] font-subtitle-KR-small text-sm not-italic font-medium  leading-[150%] tracking-[-0.28px]">
+        <div className="mb-8 leading-normal">
+          <div className="text-[#4d4d4d] font-subtitle-KR-small text-sm not-italic font-medium  leading-normal tracking-[-0.28px] ">
             날씨
           </div>
           <WeatherDropdown
@@ -449,12 +556,12 @@ const PostFormPage = () => {
           />
         </div>
 
-        <div className="mb-8">
+        <div className="mb-8 leading-normal">
           <div className="flex items-baseline">
-            <div className="text-[#4d4d4d] font-subtitle-KR-small text-sm not-italic font-medium  leading-[150%] tracking-[-0.28px]">
+            <div className="text-[#4d4d4d] font-subtitle-KR-small text-sm not-italic font-medium  leading-normal tracking-[-0.28px] mr-[2px]">
               계절
             </div>
-            <div className="ml-2 text-[#4d4d4d] font-normal text-sm not-italic leading-[150%] tracking-[-0.28px]">
+            <div className="ml-2 text-[#4d4d4d] font-normal text-sm not-italic leading-normal tracking-[-0.28px]">
               (최대 2개)
             </div>
           </div>
@@ -484,10 +591,10 @@ const PostFormPage = () => {
         <div className="mb-8">
           <div className="flex items-center justify-between">
             <div className="flex items-baseline">
-              <div className="text-[#4d4d4d] font-subtitle-KR-small text-sm not-italic font-medium  leading-[150%] tracking-[-0.28px]">
+              <div className="text-[#4d4d4d] font-subtitle-KR-small text-sm not-italic font-medium leading-normal tracking-[-0.28px]">
                 스타일
               </div>
-              <div className="ml-2 text-sm text-[#4d4d4d] font-normal not-italic leading-[150%] tracking-[-0.28px]">
+              <div className="ml-2 text-sm text-[#4d4d4d] font-normal not-italic leading-normal tracking-[-0.28px]">
                 (최대 2개)
               </div>
             </div>
@@ -543,7 +650,7 @@ const PostFormPage = () => {
         <div className="mb-8">
           <div className="flex items-center justify-between">
             <div className="flex items-baseline">
-              <div className="text-[#4d4d4d] font-subtitle-KR-small text-sm not-italic font-medium leading-[150%] tracking-[-0.28px]">
+              <div className="text-[#4d4d4d] font-subtitle-KR-small text-sm not-italic font-medium leading-normal tracking-[-0.28px]">
                 활동
               </div>
               <div className="ml-1 text-[#4d4d4d] text-sm">(최대 2개)</div>
@@ -596,12 +703,19 @@ const PostFormPage = () => {
             </div>
           )}
         </div>
+        <button
+          type="button"
+          onClick={handleSubmit}
+          className="w-[288px] h-[49px] flex justify-center items-center  gap-4 rounded-[8px]  bg-black text-white font-KR-button mb-[62px] mt-[12px]"
+        >
+          완료
+        </button>
       </div>
-
+      {/* 769px 이상 데스크탑 */}
       <div className="hidden sm:flex w-full min-h-screen bg-[#fafafa] justify-center items-center">
-        <div className="w-full sm:w-[1240px] sm:h-[725px] bg-white rounded-lg shadow-lg flex flex-col p-6">
+        <div className="w-full sm:w-[1240px] sm:h-[725px] bg-white rounded-3xl shadow-lg flex flex-col px-10 pt-0 pb-14">
           <ToastContainer
-            position="bottom-center"
+            position="top-right"
             autoClose={2500}
             hideProgressBar
             newestOnTop
@@ -611,7 +725,8 @@ const PostFormPage = () => {
             draggable
             pauseOnHover
           />
-          <div className="flex items-center justify-between mb-4 pb-2 border-b">
+
+          <div className="flex items-center justify-between mb-4 border-b ">
             <button
               type="button"
               onClick={() => router.push('/list')}
@@ -622,26 +737,27 @@ const PostFormPage = () => {
                 alt="Back"
                 width={34}
                 height={34}
-                className="mr-[4px] ml-[10px] mt-[10px] mb-[10px]"
+                className=" pb-[11px] pt-[11px]"
               />
             </button>
             <div className="flex-grow text-center">
-              <h2 className="font-subtitle-KR-medium font-bold text-[16px] leading-130 tracking--0.32 text-black opacity-sds-size-stroke-border">
+              <h2 className="font-subtitle-KR-medium font-semibold text-[16px] leading-[130%] tracking-[-0.32px] text-black opacity-sds-size-stroke-border pb-[11px] pt-[11px]">
                 코디 등록
               </h2>
             </div>
             <button
               type="button"
               onClick={handleSubmit}
-              className="flex justify-center items-center py-sds-200 px-blur-10 gap-4 rounded-[8px] opacity-sds-stroke-border bg-black text-white font-KR-button"
+              className="flex justify-center items-center h-[34px] w-[46px] rounded-[8px] bg-black text-white font-KR-button md:text-[14px] md:h-[34px] md:w-[46px] pb-[11px] pt-[11px]"
             >
               완료
             </button>
           </div>
+
           <div className="flex flex-col items-start sm:flex-row sm:justify-between sm:w-[1240px] sm:h-[725px] mx-auto">
-            <div className="mb-4 flex flex-col items-start w-full sm:w-[65%]">
+            <div className="mb-4 flex flex-col items-start w-full sm:w-[65%] ">
               <Swiper
-                spaceBetween={3}
+                spaceBetween={5}
                 slidesPerView={'auto'}
                 freeMode={true}
                 className="w-full"
@@ -649,7 +765,7 @@ const PostFormPage = () => {
                 {images.length < 3 && (
                   <SwiperSlide className="!w-auto">
                     <div
-                      className="w-24 h-32 bg-black flex flex-col justify-center items-center cursor-pointer flex-shrink-0 rounded-md mt-[33px] sm:w-[248px] sm:h-[68px]"
+                      className="overflow:hidden rounded-xl w-24 h-32 bg-black flex flex-col justify-center items-center border border-gray-300 cursor-pointer flex-shrink-0 mt-[18px] sm:w-[242px] sm:h-[345px]" /* 실선과의 간격을 18px로 조정 */
                       onClick={(e) => {
                         e.stopPropagation();
                         fileInputRef.current?.click();
@@ -671,21 +787,25 @@ const PostFormPage = () => {
                         sizes="100vw"
                         className="text-white filter invert"
                       />
-                      <div className="text-sm text-white mt-1">
-                        사진 업로드 0/3
+                      <div className="font-body-KR-medium text-base font-normal leading-[150%] -tracking-0.32  text-white mt-1">
+                        사진 업로드 {images.length}/3
                       </div>
                     </div>
                   </SwiperSlide>
                 )}
                 {images.map((image, index) => (
                   <SwiperSlide key={index} className="!w-auto">
-                    <div className="relative w-24 h-32 mt-[33px] sm:w-[242px] sm:h-[345px]">
+                    <div className="relative w-24 h-32 sm:mt-[18px] sm:w-[242px] sm:h-[345px] rounded-[12px] overflow:hidden">
                       <Image
-                        src={URL.createObjectURL(image)}
+                        src={
+                          typeof image === 'string'
+                            ? image
+                            : URL.createObjectURL(image)
+                        }
                         alt={`Uploaded ${index}`}
                         width={242}
                         height={345}
-                        className="w-full h-full object-cover border border-gray-300 rounded-md"
+                        className="w-full h-full object-cover border border-gray-300 rounded-xl overflow:hidden"
                       />
                       <button
                         type="button"
@@ -713,17 +833,18 @@ const PostFormPage = () => {
                   최대 3개의 이미지만 업로드할 수 있습니다.
                 </div>
               )}
-              <div className="mt-4 sm:mt-10 sm:w-[734px] sm:h-[210px] ">
-                <div className="border-t border-black-100 pt-2 pb-0"></div>
+
+              <div className="md:mt-4 sm:mt-10 sm:w-[734px] sm:h-[210px]">
+                <div className="border-t border-black-100 pt-2 pb-0 md:mt-0"></div>
                 <div className="relative">
                   <textarea
                     value={description}
                     onChange={handleDescriptionChange}
-                    className="w-[744px] h-[210px] p-2 pt-1 border-none border-b border-black-100 placeholder-black-300 resize-none focus:outline-none focus:border-transparent bg-transparent"
+                    className="w-[744px] h-[144px] p-2 pt-1 border-none border-b border-black-100 placeholder-black-300 resize-none focus:outline-none focus:border-transparent bg-transparent"
                     placeholder="스타일에 대한 이야기를 써주세요"
                     maxLength={200}
                     required
-                    style={{ marginTop: '1px' }}
+                    style={{ marginTop: '0px' }}
                   />
                   <div className="text-right mt-1 text-black-600 font-normal font-temperature-14 text-sm">
                     {description.length}/200
@@ -735,7 +856,7 @@ const PostFormPage = () => {
             </div>
 
             <div className="mb-8 sm:w-[35%] sm:ml-6">
-              <div className="text-[#4d4d4d]  font-subtitle-KR-small text-sm not-italic font-bold leading-[150%] tracking-[-0.28px]">
+              <div className="text-[#4d4d4d]  font-subtitle-KR-small text-sm not-italic font-bold leading-normal tracking-[-0.28px] transform translate-x-[2px]">
                 유형
               </div>
               <div className="flex flex-wrap gap-2 mt-1 font-body-KR-small text-sm font-normal text-[#4d4d4d] sm:gap-[6px] sm:max-w-[354px]">
@@ -755,7 +876,7 @@ const PostFormPage = () => {
                 ))}
               </div>
 
-              <div className="mt-8 text-[#4d4d4d] font-subtitle-KR-small text-sm not-italic font-bold leading-[150%] tracking-[-0.28px]">
+              <div className="mt-8 text-[#4d4d4d] font-subtitle-KR-small text-sm not-italic font-bold leading-normal tracking-[-0.28px] transform translate-x-[2px]">
                 날씨
               </div>
               <WeatherDropdown
@@ -765,10 +886,10 @@ const PostFormPage = () => {
 
               <div className="mt-8">
                 <div className="flex items-baseline">
-                  <div className="text-[#4d4d4d] font-subtitle-KR-small text-sm not-italic font-bold leading-[150%] tracking-[-0.28px]">
+                  <div className="text-[#4d4d4d] font-subtitle-KR-small text-sm not-italic font-bold leading-normal tracking-[-0.28px] transform translate-x-[2px]">
                     계절
                   </div>
-                  <div className="ml-2 text-[#4d4d4d] font-medium text-sm not-italic leading-[150%] tracking-[-0.28px]">
+                  <div className="ml-2 text-[#4d4d4d] font-medium text-sm not-italic leading-normal tracking-[-0.28px]">
                     (최대 2개)
                   </div>
                 </div>
@@ -798,10 +919,10 @@ const PostFormPage = () => {
               <div className="mt-8">
                 <div className="flex items-center justify-between relative">
                   <div className="flex items-baseline">
-                    <div className="text-[#4d4d4d] font-subtitle-KR-small text-sm not-italic font-bold leading-[150%] tracking-[-0.28px]">
+                    <div className="text-[#4d4d4d] font-subtitle-KR-small text-sm not-italic font-bold leading-normal tracking-[-0.28px] transform translate-x-[2px]">
                       스타일
                     </div>
-                    <div className="ml-2 text-sm text-[#4d4d4d] font-medium not-italic leading-[150%] tracking-[-0.28px]">
+                    <div className="ml-2 text-sm text-[#4d4d4d] font-medium not-italic leading-normal tracking-[-0.28px]">
                       (최대 2개)
                     </div>
                   </div>
@@ -857,7 +978,7 @@ const PostFormPage = () => {
               <div className="mt-8">
                 <div className="flex items-center justify-between relative">
                   <div className="flex items-baseline">
-                    <div className="text-[#4d4d4d] font-subtitle-KR-small text-sm not-italic font-bold leading-[150%] tracking-[-0.28px]">
+                    <div className="text-[#4d4d4d] font-subtitle-KR-small text-sm not-italic font-bold leading-normal tracking-[-0.28px] transform translate-x-[2px]">
                       활동
                     </div>
                     <div className="ml-1 text-[#4d4d4d] text-sm">

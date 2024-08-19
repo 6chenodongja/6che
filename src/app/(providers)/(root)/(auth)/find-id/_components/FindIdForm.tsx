@@ -34,7 +34,7 @@ const FindIdForm = () => {
       }
     } catch (error) {
       console.error('Error:', error);
-      alert('서버와의 통신 중 오류가 발생했습니다.');
+      alert('서버와의 통신 중 오류가 발생했습니다');
     }
   };
 
