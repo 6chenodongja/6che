@@ -15,7 +15,6 @@ import { IconLogin } from '../../../../icons/IconLogin';
 import { IconLocation } from '../../../../icons/IconLocation';
 import { motion, AnimatePresence } from 'framer-motion';
 import Header from '../../(components)/Header';
-import Footer from '../../(components)/Footer';
 import { supabase } from '@/supabase/client';
 import BottomSheet from './components/BottomSheet';
 
@@ -1025,8 +1024,6 @@ const MainPage = () => {
           )}
         </AnimatePresence>
       </main>
-      <Footer />
-
       {showModal && (
         <BottomSheet
           onClose={() => setShowModal(false)}
@@ -1035,6 +1032,7 @@ const MainPage = () => {
         />
       )}
     </div>
+    
   );
 };
 

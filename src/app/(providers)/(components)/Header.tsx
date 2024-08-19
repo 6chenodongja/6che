@@ -18,10 +18,17 @@ const Header = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { user, setUser } = useUserStore();
   const [loginModal, setLoginModal] = useState(false);
+  const [activeLink, setActiveLink] = useState(''); // 활성화된 링크 상태 관리
   const router = useRouter();
+
   const handleLoginModal = () => setLoginModal(!loginModal);
   const handleMenuToggle = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  const handleLinkClick = (link: string) => {
+    setActiveLink(link); // 클릭한 링크를 활성화 상태로 설정
+    router.push(link); // 링크로 이동
   };
 
   useEffect(() => {
@@ -75,12 +82,11 @@ const Header = () => {
 
   return (
     <>
-      <header className="w-full fixed top-0 z-50 h-[60px]">
+      <header className="w-full fixed top-0 z-50 h-[60px] bg-white header">
         <div
-          className="absolute w-full h-full bg-rgba(255, 255, 255, 0.70))"
+          className="absolute w-full h-full bg-white "
           style={{
             boxShadow: '0px 2px 10px 0px rgba(0, 0, 0, 0.05)',
-            backdropFilter: 'blur(7px)',
           }}
         ></div>
         <div className="relative w-full h-full flex items-center px-4">
@@ -123,18 +129,46 @@ const Header = () => {
             )}
           </div>
           <div className="hidden md:flex md:absolute md:left-1/2 md:transform md:-translate-x-1/2">
-            <ul className="flex space-x-8">
+            <ul className="flex space-x-2">
               <li>
-                <Link href="/">홈</Link>
+                <button
+                  onClick={() => handleLinkClick('/')}
+                  className={`nav-button ${
+                    activeLink === '/' ? 'active-link' : ''
+                  }`}
+                >
+                  홈
+                </button>
               </li>
               <li>
-                <Link href="/list">코디</Link>
+                <button
+                  onClick={() => handleLinkClick('/list')}
+                  className={`nav-button ${
+                    activeLink === '/list' ? 'active-link' : ''
+                  }`}
+                >
+                  코디
+                </button>
               </li>
               <li>
-                <Link href="/thermometer-style">옷차림</Link>
+                <button
+                  onClick={() => handleLinkClick('/thermometer-style')}
+                  className={`nav-button ${
+                    activeLink === '/thermometer-style' ? 'active-link' : ''
+                  }`}
+                >
+                  옷차림
+                </button>
               </li>
               <li>
-                <Link href="/survey">취향 코디</Link>
+                <button
+                  onClick={() => handleLinkClick('/survey')}
+                  className={`nav-button ${
+                    activeLink === '/survey' ? 'active-link' : ''
+                  }`}
+                >
+                  취향 코디
+                </button>
               </li>
             </ul>
           </div>
