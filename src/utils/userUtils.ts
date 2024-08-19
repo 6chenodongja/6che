@@ -1,4 +1,4 @@
-import { supabase } from "@/supabase/client";
+import { createClient, supabase } from "@/supabase/client";
 
 
 export const updateUserProfile = async (updates: Record<string, any>, userId: string) => {
@@ -24,6 +24,22 @@ export const checkNicknameAvailability = async (nickname: string) => {
 
   if (error) {
     console.error('Error checking nickname:', error);
+    return false;
+  }
+
+  return data.length === 0;
+};
+
+export const checkEmailDuplication = async (email: string): Promise<boolean> => {
+  const supabase = createClient();
+  
+  const { data, error } = await supabase
+    .from('users')
+    .select('id')
+    .eq('email', email);
+
+  if (error) {
+    console.error('이메일 중복 체크 중 에러가 발생했습니다:', error);
     return false;
   }
 

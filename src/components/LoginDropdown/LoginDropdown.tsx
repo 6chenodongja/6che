@@ -13,13 +13,13 @@ function LoginDropdown() {
   const toggleDropdown = () => setIsOpen(!isOpen);
 
   return (
-    <main className="">
+    <main className="flex flex-col">
       <div className="inline-block ">
-        <div className="w-[40px] h-[40px] shadow-[0_0_10px_0_rgba(0,0,0,0.08),0_2px_20px_0_rgba(18,18,18,0.15)] rounded-lg">
+        <div className="shadow-[0_0_10px_0_rgba(0,0,0,0.08),0_2px_20px_0_rgba(18,18,18,0.15)] rounded-lg">
           <button
             title="프로필 아이콘"
             onClick={toggleDropdown}
-            className="flex items-center justify-between bg-white rounded-md p-[7px]"
+            className="flex items-center justify-between bg-white rounded-md p-[2px]"
           >
             {user?.profileImage && (
               <Image
@@ -39,17 +39,17 @@ function LoginDropdown() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.2 }}
-              className="w-[128px] h-[170px] origin-top-right absolute right-0 rounded-2xl shadow-lg bg-white/70 backdrop-blur-[10px]"
+              className="px-[6px] pt-[18px] pb-2 origin-top-right absolute right-0 top-[69px] rounded-2xl shadow-lg bg-white/70 backdrop-blur-[10px]"
             >
               <div className="flex flex-col">
-                <ul className="px-[6px] py-[16px] flex flex-col pl-[14px]">
+                <ul className=" w-full flex flex-col">
                   <li className="flex items-center h-[34px]">
                     {user?.profileImage && (
                       <Image
                         src={user.profileImage}
                         alt="프로필 이미지"
-                        width={24}
-                        height={24}
+                        width={20}
+                        height={20}
                         className="rounded-md shadow-[0_0_4px_0_rgba(18,18,18,0.1)]"
                       />
                     )}

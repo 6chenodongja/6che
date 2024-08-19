@@ -193,7 +193,11 @@ const ResetPasswordForm = () => {
             </div>
             <button
               type="submit"
-              className="font-button w-full py-2 bg-black text-white rounded-lg hover:bg-blue-500 "
+              className="w-[400px] h-[49px] py-2 rounded-lg font-button bg-black text-white hover:bg-blue-400 active:bg-[#73aee7]"
+              style={{
+                width: '400px !important',
+                height: '49px !important',
+              }}
             >
               재설정
             </button>
