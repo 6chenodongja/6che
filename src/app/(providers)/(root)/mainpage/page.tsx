@@ -544,6 +544,7 @@ const MainPage = () => {
               right: '-84px',
               width: '94px',
               height: '94px',
+              zIndex: 0, // 뒤쪽에 배치
             }}
           >
             <Image
@@ -811,7 +812,8 @@ const MainPage = () => {
 
         <section className="w-full max-w-[878px] mt-[5px] relative">
           {filteredPosts.length > 0 ? (
-            <div className="w-full h-auto px-4 pt-4 pb-5 bg-white/40 rounded-2xl shadow border border-white bg-gradient-to-r from-white/50 to-transparent backdrop-blur-[20px] flex flex-col justify-start items-start relative">
+            <div className="w-full h-auto px-4 pt-4 pb-5 bg-white/40 rounded-2xl shadow border border-white background: linear-gradient(37deg, rgba(255,255,255,0.5018601190476191) 0%, rgba(255,255,255,0) 100%) from-white/50 to-transparent backdrop-blur-[20px] flex flex-col justify-start items-start relative">
+              {' '}
               <div className="self-stretch justify-between items-center inline-flex mb-[14px]">
                 <div className="h-[21px] px-2 justify-center items-center flex">
                   <div className="text-[#121212] text-base font-weight:500px font-semibold font-['NotoSansKR'] leading-tight">
@@ -837,10 +839,9 @@ const MainPage = () => {
                   </div>
                 </div>
               </div>
-
               <div className="self-stretch rounded-lg justify-start items-start inline-flex overflow-hidden mb-[14px]">
                 <Swiper
-                  spaceBetween={4}
+                  spaceBetween={4} // 모든 화면 크기에서 기본 간격을 4px로 설정
                   slidesPerView="auto"
                   centeredSlides={false}
                   pagination={{ clickable: true }}
@@ -866,22 +867,22 @@ const MainPage = () => {
                       <SwiperSlide
                         key={index}
                         style={{
-                          width: '117.6px',
+                          width: 'auto',
                           flexShrink: 0,
                         }}
+                        className="swiper-slide"
                       >
                         <div
-                          className="w-[113.6px] h-40 relative rounded-lg overflow-hidden cursor-pointer bg-gradient-to-r from-white/50 to-transparent backdrop-blur-[20px]"
+                          className="relative rounded-lg overflow-hidden cursor-pointer bg-gradient-to-r from-white/50 to-transparent backdrop-blur-[20px] 
+      w-[113.6px] h-[160px] md:w-[186px] md:h-[260px]"
                           onClick={() => router.push(`/detail/${post.id}`)}
                         >
                           <Image
                             src={imageUrl as string}
                             alt={`추천 코디 ${index + 1}`}
-                            className="w-[113.6px] h-40 object-cover"
-                            width={113.6}
-                            height={160}
+                            layout="fill"
+                            objectFit="cover"
                           />
-
                           <div className="px-1 py-px left-[10px] top-[10px] absolute bg-white/50 rounded border border-white/60 justify-start items-center gap-0.5 inline-flex">
                             <div className="w-4 h-4 bg-white rounded-sm backdrop-blur-[20px] justify-center items-center flex">
                               {weatherIcon && weatherIcon !== 'undefined' ? (
@@ -910,11 +911,9 @@ const MainPage = () => {
                   })}
                 </Swiper>
               </div>
-
-              {/* 769px 이상일 때 버튼 위치 조정 */}
               <button
                 onClick={handleCodiClick}
-                className="p-3 bg-[#121212] rounded-lg justify-center items-center gap-2 inline-flex self-stretch md:absolute md:w-[180px] md:h-[49px] md:bottom-[-62px] md:right-[0] md:self-auto"
+                className="p-3 bg-[#121212] rounded-lg justify-center items-center gap-2 inline-flex self-stretch md:absolute md:w-[180px] md:h-[49px] md:bottom-[-62px] md:right-[0] md:self-auto hover:bg-[#5eb0ff] active:bg-[#73aee7]" // 클릭 시 색상 #73aee7로 변경
                 style={{ bottom: '-62px', right: '0' }}
               >
                 <div className="text-white text-base font-medium font-['Noto Sans KR'] leading-tight">
@@ -945,18 +944,31 @@ const MainPage = () => {
                   key={index}
                   className="weather-slide"
                 >
-                  <div className="w-[88px] h-[100px] md:w-[106px] md:h-[118px] relative bg-white/40 rounded-2xl shadow border border-white linear-gradient(37deg, rgba(255,255,255,0.5018601190476191) 0%, rgba(255,255,255,0) 100%) background: rgb(255,255,255) backdrop-blur-[20px] flex flex-col justify-center items-center">
-                    <span className="text-center text-[#121212]/70 text-xs font-normal font-['Noto Sans KR'] leading-none">
+                  <div className="w-[88px] h-[100px] md:w-[106px] md:h-[118px] relative bg-white/40 rounded-2xl shadow border border-white linear-gradient(37deg, rgba(255,255,255,0.5018601190476191) 0%, rgba(255,255,255,0) 100%) backdrop-blur-[20px] flex flex-col items-center justify-between">
+                    {/* 텍스트 상단 8px 고정 */}
+                    <span className="absolute top-[8px] text-center text-[#121212]/70 text-xs font-normal font-['Noto Sans KR'] leading-none">
                       {info.label}
                     </span>
-                    <Image
-                      src={info.image}
-                      alt={info.label}
-                      className="w-5 h-8 mt-[7px]"
-                      width={20}
-                      height={32}
-                    />
-                    <span className="text-center text-[#121212] text-base font-normal font-['Varela'] leading-tight mt-1">
+
+                    {/* 이미지 중앙 정렬 및 원본 크기로 표시 */}
+                    <div className="flex-grow flex justify-center items-center">
+                      <div
+                        className="flex justify-center items-center"
+                        style={{ width: 'auto', height: 'auto' }}
+                      >
+                        <Image
+                          src={info.image}
+                          alt={info.label}
+                          width={20} // 원본 크기 너비
+                          height={32} // 원본 크기 높이
+                          layout="intrinsic"
+                          objectFit="contain"
+                        />
+                      </div>
+                    </div>
+
+                    {/* 하단 텍스트 10px 고정 */}
+                    <span className="absolute bottom-[10px] text-center text-[#121212] text-base font-normal font-['Varela'] leading-tight">
                       {info.value}
                     </span>
                   </div>
