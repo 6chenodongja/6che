@@ -155,7 +155,6 @@ export const useSignUpForm = () => {
         debounceCheckEmail(value);
 
         if(emailDomain === '직접 입력') {
-          console.log('직접입력일 때', name, value)
           newState.email = verifyField(name, value);
         }
         break;
