@@ -1440,7 +1440,7 @@ const PostFormPage = () => {
   return (
     <>
       <div className="sm:hidden w-full max-w-[320px] mx-auto flex flex-col min-h-[636px] bg-[#fafafa] mt-10 px-4">
-        <div className="flex items-center justify-between mb-4 pb-2 border-b">
+        <div className="flex items-center justify-between mb-4 pb-2 border-b pt-14">
           <button
             type="button"
             onClick={() => router.push('/list')}
@@ -1451,7 +1451,7 @@ const PostFormPage = () => {
               alt="Back"
               width={34}
               height={34}
-              className="mr-[4px] ml-[10px] mt-[10px] mb-[10px]"
+              className=" mt-[10px] mb-[10px]"
             />
           </button>
           <div className="flex-grow text-center font-semibold">
@@ -1471,7 +1471,7 @@ const PostFormPage = () => {
             {images.length < 3 && (
               <SwiperSlide className="!w-auto">
                 <div
-                  className="w-24 h-32 bg-black flex flex-col justify-center items-center border border-gray-300 cursor-pointer flex-shrink-0 rounded-md mt-[18px]" // 실선과의 간격을 18px로 조정
+                  className="w-24 h-32 bg-black flex flex-col justify-center items-center border border-gray-300 cursor-pointer flex-shrink-0 rounded-md mt-[18px]"
                   onClick={(e) => {
                     e.stopPropagation();
                     fileInputRef.current?.click();
@@ -1757,7 +1757,7 @@ const PostFormPage = () => {
             draggable
             pauseOnHover
           />
-          <div className="flex items-center justify-between mb-4 pb-2 border-b">
+          {/* <div className="flex items-center justify-between mb-4 pb-2 border-b">
             <button
               type="button"
               onClick={() => router.push('/list')}
@@ -1780,6 +1780,35 @@ const PostFormPage = () => {
               type="button"
               onClick={handleSubmit}
               className="flex justify-center items-center py-sds-200 px-blur-10 gap-4 rounded-[8px]  bg-black text-white font-KR-button"
+            >
+              완료
+            </button>
+          </div>
+ */}
+
+          <div className="flex items-center justify-between mb-4 border-b ">
+            <button
+              type="button"
+              onClick={() => router.push('/list')}
+              className="flex items-center"
+            >
+              <Image
+                src="/images/Thermometer/arrow_Left.svg"
+                alt="Back"
+                width={34}
+                height={34}
+                className=" pb-[11px] pt-[11px]"
+              />
+            </button>
+            <div className="flex-grow text-center">
+              <h2 className="font-subtitle-KR-medium font-semibold text-[16px] leading-[130%] tracking-[-0.32px] text-black opacity-sds-size-stroke-border pb-[11px] pt-[11px]">
+                코디 등록
+              </h2>
+            </div>
+            <button
+              type="button"
+              onClick={handleSubmit}
+              className="flex justify-center items-center h-[34px] w-[46px] rounded-[8px] bg-black text-white font-KR-button md:text-[14px] md:h-[34px] md:w-[46px] pb-[11px] pt-[11px]"
             >
               완료
             </button>
