@@ -14,14 +14,13 @@
 @media (min-width: 768px) {
   .header {
     position: absolute;
-  }  
+  }
 }
 
 /* 기본 버튼 스타일 */
 .nav-button {
-
-  width: 75px; 
-  height: 36px; 
+  width: 75px;
+  height: 36px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -773,7 +772,6 @@
   margin-top: 20px;
 }
 
-
 /* X 버튼 스타일 */
 .navbar-close {
   position: absolute;
@@ -1197,7 +1195,7 @@
     margin-bottom: 7px;
     background-color: #fafafa;
     height: 130vh;
-    max-width: 1920px;
+    max-width: 2560px;
   }
 
   .survey-imgae {
