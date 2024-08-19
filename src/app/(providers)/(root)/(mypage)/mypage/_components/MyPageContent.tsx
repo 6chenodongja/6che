@@ -51,7 +51,7 @@ function MyPageContent() {
                 />
               )}
               <div className="flex justify-start items-center self-stretch flex-grow-0 flex-shrink-0">
-                <span className="flex-grow-0 flex-shrink-0 text-lg font-semibold text-[18px] mb:text-[20px] leading-[23.4px] tracking-[-0.36px] text-left text-[#121212]">
+                <span className="flex-grow-0 flex-shrink-0 text-lg font-semibold text-[16px] mb:text-[20px] leading-[23.4px] tracking-[-0.36px] text-left text-[#121212]">
                   {user?.nickname}
                 </span>
                 <span className="flex-grow-0 flex-shrink-0 text-lg text-left text-[18px] font-normal text-[#121212]">

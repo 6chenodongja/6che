@@ -5,6 +5,8 @@ export interface ErrorState {
   email: string;
   password: string;
   passwordConfirm: string;
+  domain?: string;
+  verificationMessage?:string;
 }
 
 export interface VerificationRule {
@@ -22,6 +24,12 @@ export const verificationRules: { [key: string]: VerificationRule[] } = {
   email: [
     {
       validator: (value: string) => /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/.test(value),
+      message: '유효한 이메일 주소를 입력해주세요.',
+    },
+  ],
+  domain: [
+    {
+      validator: (value: string) => /$/.test(value),
       message: '유효한 이메일 주소를 입력해주세요.',
     },
   ],
@@ -51,6 +59,7 @@ export const verifyField = (name: string, value: string, fields?: { password: st
   const rules = verificationRules[name];
   for (const rule of rules) {
     if (!rule.validator(value, fields)) {
+      console.log('rule.message',rule.message)
       return rule.message;
     }
   }
@@ -74,6 +83,7 @@ export const checkNicknameDuplication = async (nickname: string): Promise<boolea
 };
 
 export const checkEmailDuplication = async (email: string): Promise<boolean> => {
+  // console.log('verification checkEmailDuplication ==>',email)
   const supabase = createClient();
   
   const { data, error } = await supabase
@@ -86,5 +96,6 @@ export const checkEmailDuplication = async (email: string): Promise<boolean> => 
     return false;
   }
 
-  return data.length === 0;
+  console.log(data.length >= 0,data,'중복되면 true, 중복이 아니면 false')
+  return data.length >= 1; // 중복되면 true, 중복이 아니면 false
 };

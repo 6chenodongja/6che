@@ -4,8 +4,6 @@ import { useSignUpForm } from 'hooks/useSignUpForm';
 import Image from 'next/image';
 import axios from 'axios';
 import { useUserStore } from '@/zustand/store/useUserStore';
-import { useState } from 'react';
-import { emailDomains } from '@/utils/emailDomains';
 
 function SingUp() {
   const {
@@ -17,18 +15,13 @@ function SingUp() {
     passwordConfirm,
     isOver,
     error,
-    isNicknameValid,
     isNicknameChecked,
     nicknameMessage,
-    setEmailId,
-    setEmailDomain,
-    setCustomEmailDomain,
     setIsOver,
     handleChange,
-    // handleEmailDomainChange,
-    checkNickname,
     isFormValid,
-    checkEmail,
+    isEmailChecked,
+    emailMessage,
   } = useSignUpForm();
 
   const router = useRouter();
@@ -83,19 +76,59 @@ function SingUp() {
     }
   };
 
+  const emailErrorMessage = () => {
+    if (error.email) {
+      return (
+        <>
+          <p className="py-[6px] text-[12px] flex gap-0.5 pb-2 pt-[7px] text-[#FF4732]/85">
+            <Image
+              src="images/ExclamationMarks/Unavailable.svg"
+              alt=""
+              width={12}
+              height={12}
+              className=""
+            />
+            {error.email}
+          </p>
+        </>
+      );
+    }
+
+    if (error.verificationMessage && emailDomain === '직접 입력') {
+      return (
+        <p className="py-[6px] text-[12px] flex gap-0.5 pb-2 pt-[7px] text-[#FF4732]/85">
+          <Image
+            src="images/ExclamationMarks/Unavailable.svg"
+            alt=""
+            width={12}
+            height={12}
+            className=""
+          />
+          {error.verificationMessage}
+        </p>
+      );
+    }
+
+    if (!error.email && isEmailChecked) {
+      <p className="py-[6px] text-[12px] text-black-700">{emailMessage}</p>;
+    }
+
+    return null;
+  };
+
   return (
-    <main className="flex flex-col justify-center items-center md:w-[480px] md:h-[724px] md:bg-white md:shadow-boxShadowPc md:backdrop-blur-sm md:rounded-3xl md:p-10">
+    <main className="p-4 w-full flex flex-col justify-center items-center md:w-[480px] md:h-auto md:bg-white md:shadow-boxShadowPc md:backdrop-blur-sm md:rounded-3xl md:p-10">
       <form onSubmit={onSubmit} className="h-full w-full space-y-4">
-        <h1 className="text-[20px] text-center text-[#121212] font-bold leading-[130%] tracking-[-0.4px] w-full">
+        <h1 className="font-sans text-[20px] md:text-[24px] md:mb-10 text-center text-[#121212] font-bold leading-[130%] tracking-[-0.4px] md:tracking-[-0.48px] w-full md:pt-4">
           회원가입
         </h1>
         <div className="w-full">
           <div className="pb-3">
             <label
-              className={`text-[14px] leading-[150%] ${
+              className={`text-[14px] pl-[2px] ${
                 error.nickname
-                  ? 'w-full text-[12px] font-semibold leading-[150%] pl-[2px] text-[#FF4732]/85'
-                  : 'w-full text-[12px] font-semibold leading-[150%] pl-[2px] text-[#4d4d4d]'
+                  ? 'w-full text-[14px] font-semibold leading-[150%] pl-[2px] pb-[6px] text-[#FF4732]/85'
+                  : 'w-full text-[14px] font-semibold leading-[150%] pl-[2px] pb-[6px] text-[#4d4d4d]'
               }`}
             >
               닉네임
@@ -146,7 +179,6 @@ function SingUp() {
               <input
                 type="text"
                 onChange={(e) => {
-                  setEmailId(e.target.value);
                   handleChange('email')(e);
                 }}
                 value={emailId}
@@ -154,32 +186,64 @@ function SingUp() {
               />
               <select
                 title="이메일 선택"
-                onChange={(e) => setEmailDomain(e.target.value)}
+                onChange={(e) => {
+                  handleChange('domain')(e);
+                }}
                 value={emailDomain}
                 className="w-full h-full py-3 px-4 border-1 border-black-500 rounded-lg hover:border-blue-500 focus:border-blue-500 focus:outline-none"
               >
-                <option value="gmail.com" className="cursor-pointer">
+                <option value="@gmail.com" className="cursor-pointer">
                   @gmail.com
                 </option>
-                <option value="naver.com" className="cursor-pointer">
+                <option value="@naver.com" className="cursor-pointer">
                   @naver.com
                 </option>
-                <option value="daum.net" className="cursor-pointer">
+                <option value="@daum.net" className="cursor-pointer">
                   @daum.net
                 </option>
-                <option value="nate.com" className="cursor-pointer">
+                <option value="@nate.com" className="cursor-pointer">
                   @nate.com
                 </option>
-                <option value="icloud.com" className="cursor-pointer">
+                <option value="@icloud.com" className="cursor-pointer">
                   @icloud.com
                 </option>
-                <option value="hanmail.net" className="cursor-pointer">
+                <option value="@hanmail.net" className="cursor-pointer">
                   @hanmail.net
                 </option>
                 <option value="직접 입력" className="">
                   직접 입력
                 </option>
               </select>
+              {emailErrorMessage()}
+              {/* {error.email && (
+                <p className="py-[6px] text-[12px] flex gap-0.5 pb-2 pt-[7px] text-[#FF4732]/85">
+                  <Image
+                    src="images/ExclamationMarks/Unavailable.svg"
+                    alt=""
+                    width={12}
+                    height={12}
+                    className=""
+                  />
+                  {error.email}
+                </p>
+              )}
+              {error.verificationMessage && emailDomain === '직접 입력' && (
+                <p className="py-[6px] text-[12px] flex gap-0.5 pb-2 pt-[7px] text-[#FF4732]/85">
+                  <Image
+                    src="images/ExclamationMarks/Unavailable.svg"
+                    alt=""
+                    width={12}
+                    height={12}
+                    className=""
+                  />
+                  {error.verificationMessage}
+                </p>
+              )}
+              {!error.email && isEmailChecked && (
+                <p className="py-[6px] text-[12px] text-black-700">
+                  {emailMessage} 사용가능
+                </p>
+              )} */}
             </div>
           </div>
           <div className="pt-3">
@@ -199,15 +263,17 @@ function SingUp() {
               } rounded-lg focus:outline-none pl-4`}
             />
             {error.password && (
-              <p className="mt-2 text-[12px] flex text-[#FF4732]/85">
+              <p className="text-[12px] flex text-[#FF4732]/85 pt-[6px]">
                 {error.password}
               </p>
             )}
-            {/* {!error.password && password && (
-            <p className="mt-2 text-[12px] text-black-700">{error.password}</p>
-          )} */}
+            {!error.password && password && (
+              <p className="mt-2 text-[12px] text-black-700">
+                {error.password}
+              </p>
+            )}
             {!error.password && !password && (
-              <p className="text-black-700 text-[12px] flex gap-1">
+              <p className="text-black-700 text-[12px] flex gap-1 pt-[6px]">
                 <Image
                   src="images/ExclamationMarks/ExclamationMarks.svg"
                   alt=""
@@ -219,8 +285,7 @@ function SingUp() {
               </p>
             )}
           </div>
-
-          <div className="mt-2 text-[#4D4D4D]">
+          <div className="text-[#4D4D4D] py-[6px]">
             <label
               className={`text-[14px] leading-[150%] font-semibold ${error.passwordConfirm ? 'text-[#FF4732]/85' : 'text-[#4d4d4d]'}`}
             >
@@ -237,12 +302,12 @@ function SingUp() {
               } rounded-lg focus:outline-none pl-4`}
             />
             {error.passwordConfirm && (
-              <p className="text-[#FF4732]/85 text-[12px]">
+              <p className="text-[#FF4732]/85 text-[12px] pt-[6px]">
                 {error.passwordConfirm}
               </p>
             )}
           </div>
-          <div className="flex items-start justify-start px-1 py-2 cursor-pointer pt-[35px] pb-[10px]">
+          <div className="flex items-center px-1 py-2 cursor-pointer mt-[37px] mb-[10px]">
             <input
               type="checkbox"
               id="over14"
@@ -257,13 +322,15 @@ function SingUp() {
               [필수] 만 14세 이상입니다.
             </label>
           </div>
-          <button
-            type="submit"
-            className={`py-3 px-4 w-full h-[49px] rounded-lg ${isFormValid ? 'bg-[#121212] text-white' : 'bg-black-100 text-black-300'}`}
-            disabled={!isFormValid}
-          >
-            회원가입
-          </button>
+          <div className="mb-[100px]">
+            <button
+              type="submit"
+              className={`py-3 px-4 w-full h-[49px] rounded-lg ${isFormValid ? 'bg-[#121212] text-white' : 'bg-black-100 text-black-300'}`}
+              disabled={!isFormValid}
+            >
+              회원가입
+            </button>
+          </div>
         </div>
       </form>
     </main>

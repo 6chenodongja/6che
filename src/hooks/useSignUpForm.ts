@@ -22,6 +22,7 @@ export const useSignUpForm = () => {
     email: '',
     password: '',
     passwordConfirm: '',
+    verificationMessage:'',
   });
   const [isNicknameValid, setIsNicknameValid] = useState<boolean>(false);
   const [isNicknameChecked, setIsNicknameChecked] = useState<boolean>(false);
@@ -30,6 +31,9 @@ export const useSignUpForm = () => {
   const [emailMessage, setEmailMessage] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isEmailValid, setIsEmailValid] = useState<boolean>(false);
+
+
+
 
   const debounceCheckNickname = useCallback(
     debounce(async (nickname: string) => {
@@ -61,7 +65,7 @@ export const useSignUpForm = () => {
     }, 200),
     []
   );
-
+  //이메일
   const debounceCheckEmail = useCallback(
     debounce(async (email: string) => {
       if (email.trim() === '') {
@@ -72,9 +76,16 @@ export const useSignUpForm = () => {
         setEmailMessage('');
         return;
       }
+      
+      let emailAddress;
+      if (emailDomain === '직접 입력') {
+        emailAddress = email
+      } else {
+        emailAddress = `${email}${emailDomain}`
+      }
       // TODO: 도메인도 같이 체크해야 함
-      const isAvailable = await checkEmailDuplication(email);
-      if (!isAvailable) {
+      const isDuplicate = await checkEmailDuplication(emailAddress);
+      if (isDuplicate) {
         setError((prevState) => ({
           ...prevState,
           email: '사용 불가능한 이메일입니다.',
@@ -91,10 +102,43 @@ export const useSignUpForm = () => {
       }
       setIsEmailChecked(true);
     }, 200),
-    []
+    [emailDomain]
+  );
+  
+
+  //도메인
+  const debounceCheckDomain = useCallback( 
+    debounce(async (domain: string) => {
+      if(emailDomain === '직접 입력') return
+      if (domain.trim() === '') {
+        setError((prevState) => ({
+          ...prevState,
+          domain: '',
+        }));
+        setEmailMessage('');
+        return;
+      }
+      const emailAddress = `${emailId}${domain}`
+      const isDuplicate = await checkEmailDuplication(emailAddress);
+      if (isDuplicate) {
+        setError((prevState) => ({
+          ...prevState,
+          email: '사용 불가능한 이메일입니다.',
+        }));
+        setEmailMessage('');
+      } else {
+        setError((prevState) => ({
+          ...prevState,
+          email: '',
+        }));
+        setEmailMessage('사용 가능한 이메일입니다.');
+      }
+      setIsEmailChecked(true);
+    }, 200),
+    [emailId]
   );
 
-  const handleChange = (name: keyof ErrorState) => (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (name: keyof ErrorState) => (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
     const value = e.target.value;
     let newState: ErrorState = { ...error };
     switch (name) {
@@ -107,9 +151,18 @@ export const useSignUpForm = () => {
         break;
       case 'email':
         setEmailId(value);
-        setIsEmailChecked(false);
         setEmailMessage('');
         debounceCheckEmail(value);
+
+        if(emailDomain === '직접 입력') {
+          console.log('직접입력일 때', name, value)
+          newState.email = verifyField(name, value);
+        }
+        break;
+      case 'domain':
+        setEmailDomain(value);
+        setEmailMessage('');
+        debounceCheckDomain(value);
         break;
       case 'password':
         setPassword(value);
@@ -146,14 +199,13 @@ export const useSignUpForm = () => {
     isNicknameChecked,
     nicknameMessage,
     isLoading,
-    setEmailId,
-    setEmailDomain,
     setCustomEmailDomain,
     setIsOver,
     handleChange,
     checkNickname: debounceCheckNickname,
     isFormValid,
     checkEmail: debounceCheckEmail,
+    checkDomain:debounceCheckDomain,
     isEmailChecked,
     emailMessage,
   };
