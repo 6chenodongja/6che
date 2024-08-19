@@ -1285,6 +1285,8 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    position: relative;
+    top: 45px;
   }
 
   .question-container > div {
@@ -1473,7 +1475,7 @@
     height: 40px;
   }
 
-  .grid {
+  .question-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 8px;
