@@ -27,12 +27,16 @@ const profileIcons = [
   '/images/Weather/rain.svg',
 ];
 
-const BottomSheet = () => {
+const ProfileSelect = () => {
   const [profileIcon, setProfileIcon] = useState<string>('');
   const supabase = createClient();
   const [isVisible, setIsVisible] = useState<boolean>(true);
   const [isClosing, setIsClosing] = useState<boolean>(false);
   const { user, setUser } = useUserStore();
+
+  const handleClose = () => {
+    setIsClosing((prev) => !prev);
+  };
 
   const handleProfileIconSelect = (icon: string) => {
     setProfileIcon(icon);
@@ -64,59 +68,51 @@ const BottomSheet = () => {
     handleClose();
   };
 
-  const handleClose = () => {
-    setIsClosing(true);
-    setTimeout(() => {
-      setIsVisible(false);
-    }, 500); // 애니메이션 지속 시간 후에 컴포넌트를 숨김
-  };
-
   return (
-    <div
-      className={`md:hidden flex fixed inset-0 z-50 items-end justify-center w-full ${isVisible ? 'bg-black bg-opacity-50' : 'bg-transparent'} transition-opacity duration-500`}
-      style={{
-        visibility: isVisible ? 'visible' : 'hidden',
-        opacity: isVisible ? 1 : 0,
-      }}
+    <main
+      className={`hidden absolute left-0 top-0 flex-col justify-center items-center lg:w-full lg:h-full lg:flex ${isClosing ? 'lg:!hidden' : ''}`}
     >
-      <motion.div
-        initial={{ y: '500%' }}
-        animate={{ y: isClosing ? '500%' : 0 }}
-        transition={{ type: 'spring', stiffness: 200, damping: 40 }}
-        className="flex flex-col justify-center rounded-t-2xl py-[30px] w-full px-4 bg-white/70 backdrop-blur-[10px]"
-      >
-        <div className="flex flex-col gap-0.5">
-          <div className="text-center">
-            <h1 className="text-[18px] font-semibold li">프로필 선택</h1>
+      <div className="flex flex-col rounded-3xl py-[30px] px-4 bg-white/70 backdrop-blur-[10px] lg:w-full lg:h-full lg:bg-white">
+        <div className="flex flex-col justify-between w-full">
+          <div className="text-center pb-[120px]">
+            <h1 className="text-[24px] font-bold pb-3">프로필 선택</h1>
+            <h2 className="text-[14px] font-normal">
+              프로필은 마이페이지에서 변경할 수 있습니다
+            </h2>
           </div>
-          <form className="w-full h-full" onSubmit={handleSubmit}>
-            <div className="grid grid-cols-5 h-full py-4 pl-[19px] pr-4 rounded-2xl cursor-pointer">
+          <form className="" onSubmit={handleSubmit}>
+            <div className="grid grid-cols-6 cursor-pointer px-5 gap-x-auto gap-y-8">
               {profileIcons.map((icon, index) => (
-                <Image
+                <div
                   key={index}
-                  src={icon}
-                  alt={`profile-icon-${index}`}
-                  width={22}
-                  height={22}
-                  className={`border-2 rounded-md p-1 w-full ${profileIcon === icon ? 'border-[#7EC5FF]/60' : 'border-transparent'}`}
-                  onClick={() => handleProfileIconSelect(icon)}
-                />
+                  className="w-[52px] h-[52px] justify-self-center"
+                >
+                  <Image
+                    src={icon}
+                    alt={`profile-icon-${index}`}
+                    width={34}
+                    height={34}
+                    className={`border-2 rounded-md p-1 w-full ${profileIcon === icon ? 'border-[#7EC5FF]/60' : 'border-transparent'}`}
+                    onClick={() => handleProfileIconSelect(icon)}
+                  />
+                </div>
               ))}
             </div>
-            <div className="flex justify-center items-center pt-1">
+            <div className="flex justify-center items-center pt-[134px]">
               <button
                 type="submit"
-                className="font-sans py-[16px] px-3 w-full rounded-lg shadow-sm text-center font-semibold text-[white] bg-[#121212] hover:bg-[#5EB0FFCC]"
+                className="font-sans w-full py-[16px] px-3 rounded-lg shadow-sm text-center font-semibold text-[white] bg-[#121212] hover:bg-[#5EB0FFCC]"
               >
                 선택 완료
               </button>
             </div>
           </form>
         </div>
-      </motion.div>
-      {/* <BottomSheetPopup show={} onClose={} /> */}
-    </div>
+      </div>
+
+      {/* <button onClick={handleClose}>선택</button> */}
+    </main>
   );
 };
 
-export default BottomSheet;
+export default ProfileSelect;

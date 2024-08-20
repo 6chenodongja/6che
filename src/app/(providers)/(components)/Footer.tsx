@@ -9,7 +9,7 @@ import LoginModalProps from '@/components/Modal/LoginModal';
 import { usePathname, useRouter } from 'next/navigation';
 
 const Footer = () => {
-  const { isLoggedIn } = useUserStore();
+  const { user } = useUserStore();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
@@ -36,7 +36,7 @@ const Footer = () => {
   const handleMypageClick = (
     e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
   ) => {
-    if (!isLoggedIn) {
+    if (!user) {
       e.preventDefault();
       setIsModalOpen(true);
     }
@@ -96,20 +96,22 @@ const Footer = () => {
                   onClick={handleMypageClick}
                 >
                   마이페이지
-                </Link>
+               </Link>
                 <ul className="flex flex-col items-start space-y-[4px] footer-text-style2 mybtn">
                   <li>
                     <Link
-                      href="/mypage"
                       className="footer-link footer-text2 footer-text-style2 mybtn mybtn-second"
+                      href="/postLike"
+                      onClick={handleMypageClick}
                     >
                       좋아요한 코디
                     </Link>
                   </li>
                   <li>
                     <Link
-                      href="/mypage"
                       className="footer-link footer-item-my footer-text2 mb-[32px] mybtn-second"
+                      href="/myStyle"
+                      onClick={handleMypageClick}
                     >
                       내 코디
                     </Link>
