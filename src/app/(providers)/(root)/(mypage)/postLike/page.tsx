@@ -2,10 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import Footer from 'app/(providers)/(components)/Footer';
 import { supabase } from '@/supabase/client';
 import { useUserStore } from '@/zustand/store/useUserStore';
-import Header from 'app/(providers)/(components)/Header';
 import { postLikedItem } from '../../../../../../types/post';
 import MyListPage from './_components/MyListPage';
 import MyNotLikeHeader from './_components/MyNotLikeHeader';

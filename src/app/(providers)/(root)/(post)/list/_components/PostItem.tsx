@@ -1,7 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import LikeButton from './LikeButton';
-import ListNicknameIcon from './icons/ListNicknameIcon';
 import ListLiveLikedIcon from './icons/ListLiveLikedIcon';
 import { PostItemType } from '../../../../../../../types/post';
 import { useUserStore } from '@/zustand/store/useUserStore';
@@ -82,8 +81,8 @@ function PostItem({ post, isLiked, handleLike }: PostProps) {
           <div className="text-sm">
             <span className="flex justify-between">
               {/* 날짜이모지와 닉네임 유저가 선택한 프로필로 변경  */}
-              <span className="font-bold text-[14px] flex flex-row gap-[4px]">
-                <div className="w-[20px] h-[20px] p-[1px] flex justify-center items-center icon">
+              <span className="font-semibold text-[14px] flex flex-row gap-[4px] font-KR">
+                <div className="w-[20px] h-[20px] p-[1px] flex justify-center items-center">
                   {post.users?.avatar && (
                     <Image
                       src={post.users?.avatar}

@@ -247,12 +247,12 @@ function ListHeader() {
           </div>
         </div>
         <div className="flex justify-center items-center flex-grow-0 flex-shrink-0 relative overflow-hidden gap-1 p-2 rounded-lg bg-[#121212]">
-          <button
-            onClick={openModal}
+          <Link
+            href={'/postform'}
             className="flex-grow-0 flex-shrink-0 text-sm text-left text-white"
           >
             코디 등록
-          </button>
+          </Link>
           <svg
             width={18}
             height={18}
