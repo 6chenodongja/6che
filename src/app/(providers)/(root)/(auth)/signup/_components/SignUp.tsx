@@ -158,9 +158,13 @@ function SingUp() {
                 value={emailDomain}
                 className="w-full h-[48px] py-3 px-4 box-border border-1 border-black-500 rounded-lg hover:border-blue-500 focus:border-blue-500 focus:outline-none"
               >
-                {emailDomains.map((emailDomain) => {
+                {emailDomains.map((emailDomain, emails) => {
                   return (
-                    <option value={emailDomain} className="cursor-pointer">
+                    <option
+                      key={emails}
+                      value={emailDomain}
+                      className="cursor-pointer"
+                    >
                       {emailDomain}
                     </option>
                   );
