@@ -131,12 +131,12 @@ const Header = () => {
               <div className="flex gap-1">
                 <button
                   onClick={handleLoginModal}
-                  className="font-NotoSansKR tracking-[-0.28px] leading-[130%] py-[11px] text-[14px]  font-normal px-4 rounded-lg bg-[#298CFF]/80 text-white"
+                  className="font-NotoSansKR tracking-[-0.28px] leading-[130%] py-[11px] text-[14px]  font-normal px-4 rounded-lg bg-[#298CFF]/80 hover:bg-[#5EB0FF]/80 focus:bg-black-500/50 text-white"
                 >
                   로그인
                 </button>
                 <Link href={'/signup'} className="">
-                  <button className="font-NotoSansKR tracking-[-0.28px] leading-[130%] py-[11px] px-4 text-[14px] border-1 border-[#5EB0FF]/80 font-normal rounded-lg text-[#5EB0FF]/80">
+                  <button className="font-NotoSansKR font-semibold tracking-[-0.28px] leading-[130%] py-[11px] px-4 text-[14px] border-1 border-[#5EB0FF]/80 hover:bg-[##E6E6E6] focus:bg-[##b3b3b3] rounded-lg text-[#5EB0FF]/80">
                     회원가입
                   </button>
                 </Link>

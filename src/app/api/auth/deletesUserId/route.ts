@@ -6,9 +6,7 @@ export async function DELETE(request: NextRequest) {
   const userId = reqData.userId as any;
   const supabase = createSupabaseClientForUserDeletion();
   const {data: { user }} = await supabase.auth.getUser()
-  
   const { data, error } = await supabase.auth.admin.deleteUser(user?.id!);
-
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 401 });
   } else {

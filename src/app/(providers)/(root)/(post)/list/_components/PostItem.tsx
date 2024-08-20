@@ -85,7 +85,7 @@ function PostItem({ post, isLiked, handleLike }: PostProps) {
                 <div className="w-[20px] h-[20px] p-[1px] flex justify-center items-center">
                   {user?.profileImage && (
                     <Image
-                      src={user.profileImage}
+                      src={post.users?.avatar}
                       alt="profile-icon"
                       width={24}
                       height={24}

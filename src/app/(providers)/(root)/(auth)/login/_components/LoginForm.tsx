@@ -9,7 +9,6 @@ import { useUserStore } from '@/zustand/store/useUserStore';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { createAuthClient } from '@/supabase/client';
-import LoginPopup from './LoginPopup';
 
 function LoginForm() {
   const emailRef = useRef<HTMLInputElement>(null);
@@ -161,7 +160,7 @@ function LoginForm() {
         <div className="flex flex-col gap-2 justify-center items-center mb-[100px]">
           <button
             onClick={() => handleSocialLogin('google')}
-            className="bg-white border-1 hover:bg-[#ccc] hover:bg-opacity-70 border-[#121212]/15 text-[#4D4D4D] font-bold rounded-xl flex h-[49px] items-center justify-center w-full"
+            className="bg-white border-1 text-center hover:bg-[#ccc] hover:bg-opacity-70 gap-2 border-[#121212]/15 text-[#4D4D4D] font-bold rounded-xl flex h-[49px] items-center justify-center w-full"
           >
             <Image
               src="images/login/Logo_Google.svg"
@@ -173,7 +172,7 @@ function LoginForm() {
           </button>
           <button
             onClick={() => handleSocialLogin('kakao')}
-            className="bg-[#FFD65E] hover:bg-[#ccc] hover:bg-opacity-70 text-[#4D4D4D] font-bold rounded-xl  flex h-[49px] items-center justify-center w-full"
+            className="bg-[#FFD65E] text-center hover:bg-[#ccc] hover:bg-opacity-70 text-[#4D4D4D] font-bold rounded-xl  flex h-[49px] items-center justify-center w-full gap-2"
           >
             <Image
               src="images/login/Logo_Kakao.svg"

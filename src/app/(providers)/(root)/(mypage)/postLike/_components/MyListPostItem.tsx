@@ -50,7 +50,14 @@ function MyListPostItem({ post, isLiked, handleLike }: PostProps) {
               {/* 날짜이모지와 닉네임  */}
               <span className="font-bold text-[14px] flex flex-row gap-[4px]">
                 <div className="w-[20px] h-[20px] p-[1px] flex justify-center items-center icon">
-                  <ListNicknameIcon />
+                  {post.posts?.users?.avatar && (
+                    <Image
+                      src={post.posts?.users?.avatar}
+                      alt="profile-icon"
+                      width={24}
+                      height={24}
+                    />
+                  )}
                 </div>
                 <span
                   className="overflow-hidden whitespace-nowrap text-ellipsis"

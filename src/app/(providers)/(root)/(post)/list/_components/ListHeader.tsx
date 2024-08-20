@@ -8,7 +8,7 @@ function ListHeader() {
   const [temperature, setTemperature] = useState<string | null>(null);
   // 모달 추가
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { isLoggedIn } = useUserStore();
+  const { user } = useUserStore();
   const router = useRouter();
   useEffect(() => {
     const fetchLocationAndWeather = async () => {
@@ -45,7 +45,7 @@ function ListHeader() {
 
   // 모달 오픈/닫기 함수
   const openModal = () => {
-    if (!isLoggedIn) {
+    if (!user) {
       setIsModalOpen(true);
     } else {
       router.replace('/postform');
@@ -246,7 +246,7 @@ function ListHeader() {
             </p>
           </div>
         </div>
-        <div className="flex justify-center items-center flex-grow-0 flex-shrink-0 relative overflow-hidden gap-1 p-2 rounded-lg bg-[#121212] transition duration-100 hover:bg-[#5EB0FF]">
+        <div className="flex justify-center items-center flex-grow-0 flex-shrink-0 relative overflow-hidden gap-1 p-2 rounded-lg bg-[#121212]">
           <Link
             href={'/postform'}
             className="flex-grow-0 flex-shrink-0 text-sm text-left text-white"
