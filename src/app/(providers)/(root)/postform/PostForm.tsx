@@ -328,31 +328,36 @@ const PostFormPage = () => {
         : 'border-gray-100 bg-gray-100 text-black'
     }`;
 
+  const [toasterPosition, setToasterPosition] = useState<
+    'bottom-center' | 'top-right'
+  >('top-right');
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const position = window.innerWidth < 769 ? 'bottom-center' : 'top-right';
+      setToasterPosition(position);
+    }
+  }, []);
+
   return (
-    <>
-      {typeof window !== 'undefined' && (
-        <Toaster
-          position={window.innerWidth < 769 ? 'bottom-center' : 'top-right'}
-          reverseOrder={false}
-        />
-      )}
+    <div>
+      <Toaster position={toasterPosition} reverseOrder={false} />
 
       <div className="sm:hidden w-full max-w-[320px] mx-auto flex flex-col min-h-[636px] bg-[#fafafa] mt-10 px-4">
-        <div className="flex items-center justify-between mb-4 pb-2 border-b pt-14">
+        <div className="relative flex items-center justify-center mb-4 pb-2 border-b pt-14">
           <button
             type="button"
             onClick={() => router.push('/list')}
-            className="flex items-center"
+            className="absolute left-0 flex items-center"
           >
             <Image
               src="/images/Thermometer/arrow_Left.svg"
               alt="Back"
               width={34}
               height={34}
-              className=" mt-[10px] mb-[10px]"
+              className="mt-[10px] mb-[10px]"
             />
           </button>
-          <div className="flex-grow text-center font-semibold">
+          <div className="text-center font-semibold">
             <h2 className="font-subtitle-KR-medium font-semibold text-base leading-130 tracking--0.32 text-black opacity-sds-size-stroke-border">
               코디 등록
             </h2>
@@ -644,10 +649,17 @@ const PostFormPage = () => {
       </div>
       {/* 769px 이상 데스크탑 */}
       <div className="hidden sm:flex w-full min-h-screen bg-[#fafafa] justify-center items-center">
-        <div className="w-full sm:w-[1240px] sm:h-[725px] bg-white rounded-3xl shadow-lg flex flex-col px-10 pt-0 pb-14">
+        <div
+          className="w-full sm:w-[1240px] bg-white rounded-3xl shadow-lg flex flex-col px-10 pt-0 pb-14"
+          style={{
+            margin: 'auto',
+            maxHeight: 'calc(100vh - 50px)', // 헤더와의 간격을 동일하게 유지
+            minHeight: 'calc(100vh - 50px)', // 최소 높이도 동일하게 적용
+          }}
+        >
           <Toaster position="top-right" reverseOrder={false} />
 
-          <div className="flex items-center justify-between mb-4 border-b ">
+          <div className="flex items-center justify-between mb-4 border-b">
             <button
               type="button"
               onClick={() => router.push('/list')}
@@ -658,7 +670,7 @@ const PostFormPage = () => {
                 alt="Back"
                 width={34}
                 height={34}
-                className=" pb-[11px] pt-[11px]"
+                className="pb-[11px] pt-[11px]"
               />
             </button>
             <div className="flex-grow text-center">
@@ -666,6 +678,7 @@ const PostFormPage = () => {
                 코디 등록
               </h2>
             </div>
+
             <button
               type="button"
               onClick={handleSubmit}
@@ -958,7 +971,7 @@ const PostFormPage = () => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

@@ -125,17 +125,18 @@ const Header = () => {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
+                border: 'none',
+                background: 'none',
+                cursor: 'pointer',
               }}
             >
-              <object
-                data="/images/menu.svg"
-                type="image/svg+xml"
-                width="28"
-                height="28"
-                aria-label="메뉴"
-              >
-                <span>메뉴</span>
-              </object>
+              <Image
+                src="/images/menu.svg"
+                alt="메뉴"
+                width={28}
+                height={28}
+                sizes="100vw"
+              />
             </button>
           </div>
           <div className="md:flex-1 flex justify-center md:justify-start">
