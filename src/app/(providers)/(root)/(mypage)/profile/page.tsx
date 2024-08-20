@@ -3,7 +3,7 @@ import ProfileForm from './_components/ProfileForm';
 
 function ProfileFormPage() {
   return (
-    <main className="container flex flex-col justify-between w-full min-h-screen bg-neutral-50">
+    <main className="flex justify-center items-center w-full pt-[100px] pb-[200px] min-h-screen bg-neutral-50">
       <ProfileForm />
     </main>
   );

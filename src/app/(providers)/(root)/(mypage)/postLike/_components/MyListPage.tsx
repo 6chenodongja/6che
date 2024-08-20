@@ -1,8 +1,6 @@
 'use client';
 import React, { useCallback } from 'react';
 import _ from 'lodash';
-import Header from 'app/(providers)/(components)/Header';
-import Footer from 'app/(providers)/(components)/Footer';
 import { postLikedItem } from '../../../../../../../types/post';
 import { supabase } from '@/supabase/client';
 import { useUserStore } from '@/zustand/store/useUserStore';
@@ -10,6 +8,7 @@ import MyListPostItem from './MyListPostItem';
 import ScrollButtons from 'app/(providers)/(root)/(post)/list/_components/ScrollButtons';
 import MySelectPage from './MySelectPage';
 import MyLikeHeader from './MyLikeHeader';
+import Link from 'next/link';
 
 interface PostsProps {
   posts: postLikedItem[];
@@ -76,25 +75,76 @@ function MyListPage({ posts, setPosts }: PostsProps) {
   );
 
   return (
-    <div className="container mx-auto h-auto bg-[#FAFAFA]">
-      <Header />
-      <MyLikeHeader />
-      <MySelectPage />
-      <div className="grid grid-cols-2 gap-y-2 gap-x-2 w-[288px] mx-auto">
-        {posts.map((post) => (
-          <MyListPostItem
-            post={post}
-            key={post.id}
-            isLiked={likedPosts.some(
-              (likedPost) => likedPost.post_id === post.id,
-            )}
-            handleLike={handleLike}
-          />
-        ))}
-        <ScrollButtons />
+    <div className="bg-[#FAFAFA]">
+      <div className="flex justify-center flex-col md:hidden">
+        <div className="flex justify-center md:hidden">
+          <MyLikeHeader />
+        </div>
+        <MySelectPage />
+        <div className="grid grid-cols-2 gap-y-2 gap-x-2 w-[288px] mx-auto">
+          {posts.map((post) => (
+            <MyListPostItem
+              post={post}
+              key={post.id}
+              isLiked={likedPosts.some(
+                (likedPost) => likedPost.post_id === post.id,
+              )}
+              handleLike={handleLike}
+            />
+          ))}
+          <ScrollButtons />
+        </div>
       </div>
-      <div>
-        <Footer />
+
+      {/* 768이상 해상도 디자인 */}
+      <div className="hidden md:flex md:justify-center">
+        <div className="flex justify-center">
+          <div className="md:w-[220px] md:h-[170px] md:px-[8xp] md:py-[16px] md:flex md:flex-col md:rounded-[12px] md:opacity-50 md:gap-[4px] md:mt-[20px] md:justify-around md:shadow-[0_2px_10px_0_rgba(0,0,0,0.05)] bg-[#FFF]">
+            <Link href={'/mypage'}>
+              <p className="flex px-[16px] items-center font-KR text-[14px] font-medium leading-[18.2px] -tracking-[0.28] text-[#4D4D4D]">
+                마이페이지
+              </p>
+            </Link>
+            <p className="flex px-[16px] items-center flex-row justify-between text-[#298CFF] font-bold">
+              좋아요한 코디
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="22"
+                height="22"
+                viewBox="0 0 22 22"
+                fill="none"
+              >
+                <path
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                  d="M8.51849 4.85149C8.87647 4.49351 9.45687 4.49351 9.81485 4.85149L15.3148 10.3515C15.6728 10.7095 15.6728 11.2899 15.3148 11.6479L9.81485 17.1479C9.45687 17.5058 8.87647 17.5058 8.51849 17.1479C8.1605 16.7899 8.1605 16.2095 8.51849 15.8515L13.3703 10.9997L8.51849 6.14786C8.1605 5.78988 8.1605 5.20947 8.51849 4.85149Z"
+                  fill="#298CFF"
+                  fillOpacity="0.8"
+                />
+              </svg>
+            </p>
+            <Link href={'/myStyle'}>
+              <p className="flex px-[16px] items-center self-stretch text-[16px] font-semibold">
+                내 코디
+              </p>
+            </Link>
+          </div>
+        </div>
+        <div className="md:flex md:flex-col md:PostLike-container justify-start">
+          <MySelectPage />
+          <div className="postLike-grid grid grid-cols-2 mx-[20px] gap-[20px]">
+            {posts.map((post) => (
+              <MyListPostItem
+                post={post}
+                key={post.id}
+                isLiked={likedPosts.some(
+                  (likedPost) => likedPost.post_id === post.id,
+                )}
+                handleLike={handleLike}
+              />
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );

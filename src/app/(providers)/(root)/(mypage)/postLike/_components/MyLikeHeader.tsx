@@ -11,10 +11,10 @@ function MyLikeHeader() {
   };
 
   return (
-    <div className="relative">
-      <div className="my-style-page-header px-[4px] py-[16px] w-[288px] mx-auto mt-[-44px] rounded-lg shadow-md bg-white">
+    <div>
+      <div className="block md:hidden my-style-page-header px-[4px] py-[16px] w-[288px] mt-[16px] mx-auto rounded-lg shadow-md bg-white relative">
         <header
-          className="myPage-Liked-style flex px-2 items-center self-stretch pt-1 w-full justify-between font-bold"
+          className="flex myPage-Liked-style px-2 items-center self-stretch pt-1 w-full justify-between font-bold"
           style={{
             cursor: 'pointer',
           }}
@@ -32,7 +32,7 @@ function MyLikeHeader() {
             <path
               fillRule="evenodd"
               clipRule="evenodd"
-              d="M10.3519 6.68499C10.7098 6.32701 11.2902 6.32701 11.6482 6.68499L17.1482 12.185C17.5062 12.543 17.5062 13.1234 17.1482 13.4814C16.7902 13.8393 16.2098 13.8393 15.8519 13.4814L11 8.62953L6.14822 13.4814C5.79024 13.8393 5.20984 13.8393 4.85186 13.4814C4.49388 13.1234 4.49388 12.543 4.85186 12.185L10.3519 6.68499Z"
+              d="M4.85174 8.51849C5.20972 8.1605 5.79012 8.1605 6.1481 8.51849L10.9999 13.3703L15.8517 8.51849C16.2097 8.1605 16.7901 8.1605 17.1481 8.51849C17.5061 8.87647 17.5061 9.45687 17.1481 9.81485L11.6481 15.3148C11.2901 15.6728 10.7097 15.6728 10.3517 15.3148L4.85174 9.81485C4.49376 9.45687 4.49376 8.87647 4.85174 8.51849Z"
               fill="#121212"
             />
           </svg>

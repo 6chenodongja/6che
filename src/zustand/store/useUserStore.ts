@@ -11,10 +11,8 @@ type User = {
 
 interface UserState {
   user: User | null;
-  isLoggedIn: boolean;
   setUser: (user: User) => void;
   clearUser: () => void;
-  setIsLoggedIn: (isLoggedIn: boolean) => void;
 }
 
 export const useUserStore = create<UserState>()(
@@ -22,10 +20,8 @@ export const useUserStore = create<UserState>()(
     persist(
       (set) => ({
         user: null,
-        isLoggedIn: false,
         setUser: (user) => set({ user }),
-        clearUser: () => set({ user: null, isLoggedIn: false }),
-        setIsLoggedIn: (isLoggedIn) => set({ isLoggedIn }),
+        clearUser: () => set({ user: null }),
       }), 
       { name: 'user-storage' },
     ),

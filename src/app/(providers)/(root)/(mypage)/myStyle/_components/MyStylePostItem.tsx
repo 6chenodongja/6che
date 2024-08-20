@@ -28,7 +28,10 @@ function MyStylePostItem({
 
   return (
     <div>
-      <div key={post.id} className="relative w-[140px] object-cover">
+      <div
+        key={post.id}
+        className="relative w-[140px] object-cover md:w-[234px]"
+      >
         {post.image_url && (
           <Image
             src={post.image_url.split(',')[0]}
@@ -36,7 +39,7 @@ function MyStylePostItem({
             width={100}
             height={100}
             sizes="100"
-            className="w-[140px] h-[200px] object-cover rounded-lg"
+            className="w-[140px] h-[200px] object-cover rounded-lg md:w-[234px] md:h-[389px]"
             priority
           />
         )}
@@ -46,7 +49,7 @@ function MyStylePostItem({
           </div>
           26°
         </div>
-        <div className="absolute top-2 left-[115px]">
+        <div className="absolute top-2 right-[10px]">
           <input type="checkbox" checked={isChecked} onChange={handleCheck} />
         </div>
 

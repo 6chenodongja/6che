@@ -87,7 +87,6 @@ const ProfileForm: React.FC = () => {
       updates['avatar'] = profileIcon;
     }
     if (!user) return;
-    console.log(updates, user);
     setUser({
       ...user,
       nickname: updates.nick_name || user.nickname,
@@ -97,43 +96,44 @@ const ProfileForm: React.FC = () => {
   };
 
   return (
-    <main className="">
-      <section className="flex flex-col justify-start items-start w-72 gap-1.5 py-1.5">
-        <header className="flex justify-between items-center w-80 h-14 px-4 py-1.5 bg-white/50 shadow-xl">
-          <h1 className="flex-grow-0 flex-shrink-0 font-black text-left text-black text-[16px] leading-[20.8px] tracking-[-0.02em]">
-            닉네임 / 프로필 수정
-          </h1>
-          <div className="">
-            <div className="">
-              <Link href={'/mypage'} legacyBehavior>
-                <a>
-                  <Image src="x.svg" alt="close" width={24} height={24} />
-                </a>
-              </Link>
-            </div>
-          </div>
-        </header>
-        <div className="grid grid-flow-row ml-4 mt-[26px]">
+    <main className="bg-[#fbfbfb] fixed left-0 top-0 justify-center rounded-md items-center w-full h-full z-[60] md:bg-white md:relative flex-col md:w-[480px] md:shadow-boxShadowPc md:backdrop-blur-sm md:rounded-3xl overflow-hidden md:pb-[56px]">
+      <header className="w-full h-[56px] py-[6px] px-4 flex justify-between items-center bg-white md:border-b shadow-[0px_2px_5px_0px_rgba(0,0,0,0.05)] md:h-[62px]">
+        <h1 className="text-[16px] font-semibold leading-[130%] tracking-[-0.32px] font-sans">
+          닉네임 / 프로필 수정
+        </h1>
+        <div className="">
+          <Link href={'/mypage'} legacyBehavior>
+            <a>
+              <Image src="x.svg" alt="close" width={24} height={24} />
+            </a>
+          </Link>
+        </div>
+      </header>
+      <section className="flex flex-col w-full gap-1.5 py-1.5 px-4 md:px-[40px]">
+        <div className="grid grid-flow-row mt-[26px]">
           <div className="mb-[6px]">
-            <header className="flex justify-start items-center self-stretch flex-grow-0 gap-2 pl-0.5">
-              <h1 className="flex-grow-0 flex-shrink-0 font-bold mb-[6px] text-[14px] leading-[21px] tracking-[-0.02em] text-left text-[#4d4d4d]">
-                닉네임
-              </h1>
-            </header>
             <div className="flex justify-start items-start self-stretch flex-grow-0 flex-shrink-0 gap-1">
-              <div className="flex justify-start items-center flex-grow overflow-hidden rounded-lg bg-white/50 border border-[#808080]">
+              <div className="flex-col justify-start items-start flex-grow">
+                <label className="flex-grow-0 flex-shrink-0 font-medium text-[14px] pl-[2px] leading-[21px] tracking-[-0.02em] text-[#4d4d4d]">
+                  닉네임
+                </label>
                 <input
                   type="text"
                   value={nickname}
                   onChange={handleNicknameChange}
-                  className="flex-grow w-[288px] h-[48px] text-left text-[#b3b3b3] pl-3"
+                  className="w-full py-3 px-4 pl-3 border border-[#808080] rounded-lg hover:border-blue-500 focus:border-blue-500 focus:outline-none"
                   placeholder="최대 8글자"
                 />
               </div>
             </div>
             {!nicknameAvailable && nickname && (
-              <p className="text-red-500 mt-2">
+              <p className="text-[#FF4732]/85 text-[12px] ml-1 mt-2">
                 이미 사용하고 있는 닉네임입니다.
+              </p>
+            )}
+            {nicknameAvailable && nickname && (
+              <p className="text-red-500 text-[12px] ml-1 mt-2">
+                사용 가능한 닉네임이에요.
               </p>
             )}
           </div>
@@ -141,7 +141,7 @@ const ProfileForm: React.FC = () => {
 
         <div className="flex justify-start items-center self-stretch flex-grow-0 flex-shrink-0  gap-0.5">
           <div className="flex gap-1 flex-grow w-[268px] text-xs text-left text-[#4d4d4d]">
-            <span className="ml-[16px]">
+            <span>
               <Image
                 src="images/ExclamationMarks/ExclamationMarks.svg"
                 alt=""
@@ -153,13 +153,13 @@ const ProfileForm: React.FC = () => {
           </div>
         </div>
       </section>
-      <section className="flex flex-col justify-start items-center gap-2 py-1.5 mt-[32px]">
-        <header className="flex justify-start items-center self-stretch flex-grow-0 flex-shrink-0 gap-2 pl-0.5">
-          <h2 className="flex-grow-0 flex-shrink-0 text-sm font-medium ml-4 mb-[8px] text-[#4d4d4d]">
+      <section className="flex flex-col justify-start items-center gap-2 py-1.5 mt-[32px] px-4 md:px-[40px]">
+        <header className="flex justify-start self-stretch flex-grow-0 flex-shrink-0 gap-2 pl-0.5">
+          <h2 className="flex-grow-0 flex-shrink-0 text-sm font-medium text-[#4d4d4d]">
             프로필
           </h2>
         </header>
-        <div className="grid grid-cols-5 gap-2.5 w-72 h-56 pl-[19px] pr-[19px] pt-[16px] pb-[16px] rounded-2xl bg-white shadow-[0_0_2px_0_rgba(0, 0, 0, 0.151),0_2px_20px_0_rgba(18, 18, 18, 0.178)]">
+        <div className="grid grid-cols-5 gap-2.5 w-full h-full pl-[19px] pr-4 py-4 rounded-2xl bg-white shadow-[0_0_2px_0_rgba(0, 0, 0, 0.151),0_2px_20px_0_rgba(18, 18, 18, 0.178)] cursor-pointer">
           {profileIcons.map((icon, index) => (
             <Image
               key={index}
@@ -167,14 +167,14 @@ const ProfileForm: React.FC = () => {
               alt={`profile-icon-${index}`}
               width={34}
               height={34}
-              className={`border-2 rounded-md ${profileIcon === icon ? 'border-blue-200' : 'border-transparent'}`}
+              className={`border-2 rounded-md ${profileIcon === icon ? 'border-blue-200' : 'border-transparent'} mx-auto`}
               onClick={() => handleProfileIconSelect(icon)}
             />
           ))}
         </div>
         <button
           onClick={handleSubmit}
-          className="bg-black text-white p-4 mt-[52px] w-[288px] border rounded-xl hover:bg-blue-400"
+          className="bg-black text-white w-full p-4 mt-[52px] border rounded-xl hover:bg-blue-400"
           disabled={!nicknameAvailable}
         >
           <Link href={'/mypage'} className="w-full h-full">

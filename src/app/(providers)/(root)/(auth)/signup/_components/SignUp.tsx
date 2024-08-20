@@ -1,11 +1,9 @@
 'use client';
-
-import { createClient } from '@/supabase/client';
 import { useRouter } from 'next/navigation';
-import { emailDomains } from '@/utils/emailDomains';
 import { useSignUpForm } from 'hooks/useSignUpForm';
-import { useUserStore } from '@/zustand/store/useUserStore';
 import Image from 'next/image';
+import axios from 'axios';
+import { useUserStore } from '@/zustand/store/useUserStore';
 
 function SingUp() {
   const {
@@ -17,29 +15,25 @@ function SingUp() {
     passwordConfirm,
     isOver,
     error,
-    isNicknameValid,
     isNicknameChecked,
     nicknameMessage,
-    setEmailId,
-    setEmailDomain,
-    setCustomEmailDomain,
     setIsOver,
     handleChange,
-    handleEmailDomainChange,
-    checkNickname,
     isFormValid,
+    isEmailChecked,
+    emailMessage,
   } = useSignUpForm();
 
-  const supabase = createClient();
   const router = useRouter();
   const { setUser } = useUserStore();
-
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     if (!isNicknameChecked) {
       alert('닉네임 중복 확인을 해주세요.');
       return;
     }
+
     if (
       emailId === '' ||
       (emailDomain === '직접 입력' && customEmailDomain === '') ||
@@ -55,167 +49,262 @@ function SingUp() {
       return;
     }
 
-    const email = `${emailId}@${emailDomain === '직접 입력' ? customEmailDomain : emailDomain}`;
+    const selectedEmailDomain =
+      emailDomain === '직접 입력' ? customEmailDomain : emailDomain;
+    const email = `${emailId}${selectedEmailDomain}`;
 
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: {
-          name: nickname,
-        },
-      },
-    });
-    if (data.user) {
-      setUser({
-        id: data.user.id,
-        nickname: data.user.user_metadata.name,
-        email: data.user.user_metadata.email,
-        provider: '',
-        profileImage: data.user.user_metadata.avatar,
+    try {
+      const response = await axios.post('/api/auth/email/sign-up', {
+        email,
+        password,
+        nickname,
       });
+
+      if (response.data) {
+        const { user } = response.data;
+
+        setUser({
+          id: user.id,
+          nickname: user.user_metadata.name,
+          email: user.email,
+          provider: user.app_metadata.provider,
+        });
+        router.replace('/signUpDone');
+      }
+    } catch (error) {
+      console.error('회원가입을 실패 했어요', error);
     }
-
-    if (error) {
-      return alert('이미 가입한 계정의 이메일이에요');
-    }
-
-    alert('회원가입이 완료 되었습니다.');
-
-    router.replace('/signUpDone');
   };
 
   return (
-    <main className="flex items-center space-x-2 bg-white bg-opacity-30 pt-[64px] pb-[100px] px-4">
-      <form onSubmit={onSubmit} className="">
-        <h1 className="text-[20px] text-center text-[#121212] font-bold leading-[130%] tracking-[-0.4px] mb-5">
+    <main className="p-4 w-full flex flex-col justify-center items-center md:w-[480px] md:h-auto md:bg-white md:shadow-boxShadowPc md:backdrop-blur-sm md:rounded-3xl md:px-10">
+      <form onSubmit={onSubmit} className="h-full w-full space-y-4">
+        <h1 className="font-sans text-[20px] md:text-[24px] text-center text-[#121212] font-bold leading-[130%] tracking-[-0.4px] md:tracking-[-0.48px] w-full md:pt-[56px] md:pb-10">
           회원가입
         </h1>
-        <div className="">
-          <div className="grid grid-cols-3 gap-2">
-            <label className="col-span-2 text-[14px] leading-[150%] ml-[2px] text-[#4D4D4D]">
+        <div className="w-full">
+          <div className="py-[6px]">
+            <label
+              className={`text-[14px] pl-[2px] mb-[6px] w-full ${
+                error.nickname
+                  ? 'w-full text-[14px] font-semibold leading-[150%] pl-[2px] text-[#FF4732]/85'
+                  : 'w-full text-[14px] font-semibold leading-[150%] pl-[2px] text-[#4d4d4d]'
+              }`}
+            >
               닉네임
             </label>
             <input
               type="text"
-              maxLength={10}
               onChange={handleChange('nickname')}
               value={nickname}
-              className="col-span-2 w-[288px] h-[48px] border border-black-500 rounded-lg hover:border-blue-500 focus:border-blue-500 focus:outline-none pl-4"
+              className={`py-3 px-4 w-full h-full border hover:border-blue-500 ${
+                error.nickname ? 'border-[#FF4732]/85' : 'border-[#808080]'
+              } rounded-lg focus:outline-none pl-4`}
             />
-            {/* <button
-              type="button"
-              onClick={() => checkNickname(nickname)}
-              className={`col-span-1 w-[56px] h-[48px] text-[12px]  text-center text-[#B3B3B3] rounded-lg ml-[35px]  ${isNicknameValid ? 'bg-[#121212] text-white' : 'bg-[#E6E6E6]'}`}
-            >
-              {isNicknameValid ? '재확인' : '중복확인'}
-            </button> */}
+            {error.nickname && (
+              <p className="py-[6px] text-[12px] flex gap-0.5 pb-2 pt-[7px] text-[#FF4732]/85">
+                <Image
+                  src="images/ExclamationMarks/Unavailable.svg"
+                  alt=""
+                  width={12}
+                  height={12}
+                  className=""
+                />
+                {error.nickname}
+              </p>
+            )}
+            {!error.nickname && isNicknameChecked && (
+              <p className="py-[6px] text-[12px] text-black-700">
+                {nicknameMessage}
+              </p>
+            )}
+            {!error.nickname && (
+              <p className="text-black-700 text-[12px] flex gap-0.5 pt-[6px]">
+                <Image
+                  src="images/ExclamationMarks/ExclamationMarks.svg"
+                  alt=""
+                  width={12}
+                  height={12}
+                  className=""
+                />
+                최대 8글자
+              </p>
+            )}
           </div>
-          {error.nickname && (
-            <p className="text-red-500 mt-2">{error.nickname}</p>
-          )}
-          {!error.nickname && isNicknameChecked && (
-            <p className="red-500 mt-2">{nicknameMessage}</p>
-          )}
-          {!error.nickname && !isNicknameChecked && (
-            <p className="text-black-700 mt-[7px] text-[12px] flex">
-              <Image
-                src="images/ExclamationMarks/ExclamationMarks.svg"
-                alt=""
-                width={12}
-                height={12}
-                className="mr-[3px]"
-              />
-              최대 10글자
-            </p>
-          )}
-        </div>
-        <div className="">
-          <label className="font-medium text-sm leading-[21px] tracking-[-0.02em] text-[#4d4d4d]">
-            이메일
-          </label>
           <div className="">
-            <input
-              type="text"
-              onChange={(e) => {
-                setEmailId(e.target.value);
-                handleChange('email')(e);
-              }}
-              value={emailId}
-              className="w-[141px] h-[48px] p-2 border-1 border-black-500 rounded-lg hover:border-blue-500 focus:border-blue-500 focus:outline-none pl-4 mr-[6px]"
-            />
-            {emailDomain === '직접 입력' ? (
+            <p className="w-full text-sm pb-[6px] leading-[21px] font-semibold tracking-[-0.02em] text-[#4d4d4d]">
+              이메일
+            </p>
+            <div className="flex flex-row items-center justify-center gap-[6px]">
               <input
                 type="text"
                 onChange={(e) => {
-                  setCustomEmailDomain(e.target.value);
                   handleChange('email')(e);
                 }}
-                value={customEmailDomain}
-                className="w-[141px] h-[48px] p-2 border-1 border-black-500 rounded-lg font-[16px] hover:border-blue-500 focus:border-blue-500 focus:outline-none"
+                value={emailId}
+                className="w-full h-[48px] py-3 px-4 border-1 border-black-500 rounded-lg hover:border-blue-500 focus:border-blue-500 focus:outline-none"
               />
-            ) : (
               <select
-                title="email select"
-                onChange={handleEmailDomainChange}
+                title="이메일 선택"
+                onChange={(e) => {
+                  handleChange('domain')(e);
+                }}
                 value={emailDomain}
-                className="w-[141px] h-[48px] p-2 border-1 border-black-500 text-bl rounded-lg font-[16px] hover:border-blue-500 focus:border-blue-500 focus:outline-none"
+                className="w-full h-[48px] py-3 px-4 box-border border-1 border-black-500 rounded-lg hover:border-blue-500 focus:border-blue-500 focus:outline-none"
               >
-                {emailDomains.map((domain) => (
-                  <option key={domain} value={domain}>
-                    {domain}
-                  </option>
-                ))}
+                <option value="@gmail.com" className="cursor-pointer">
+                  @gmail.com
+                </option>
+                <option value="@naver.com" className="cursor-pointer">
+                  @naver.com
+                </option>
+                <option value="@daum.net" className="cursor-pointer">
+                  @daum.net
+                </option>
+                <option value="@nate.com" className="cursor-pointer">
+                  @nate.com
+                </option>
+                <option value="@icloud.com" className="cursor-pointer">
+                  @icloud.com
+                </option>
+                <option value="@hanmail.net" className="cursor-pointer">
+                  @hanmail.net
+                </option>
+                {/* <option value="직접 입력" className="">
+                  직접 입력
+                </option> */}
               </select>
+            </div>
+            <div className="">
+              {error.email && (
+                <p className="py-[6px] text-[12px] flex gap-0.5 pb-2 pt-[7px] text-[#FF4732]/85">
+                  <Image
+                    src="images/ExclamationMarks/Unavailable.svg"
+                    alt=""
+                    width={12}
+                    height={12}
+                    className=""
+                  />
+                  {error.email}
+                </p>
+              )}
+              {error.verificationMessage && emailDomain === '직접 입력' && (
+                <p className="py-[6px] text-[12px] flex gap-0.5 pb-2 pt-[7px] text-[#FF4732]/85">
+                  <Image
+                    src="images/ExclamationMarks/Unavailable.svg"
+                    alt=""
+                    width={12}
+                    height={12}
+                    className=""
+                  />
+                  {error.verificationMessage}
+                </p>
+              )}
+              {!error.email && isEmailChecked && (
+                <p className="py-[6px] text-[12px] text-black-700">
+                  {emailMessage}
+                </p>
+              )}
+              {error.email && (
+                <p className="text-black-700 text-[12px] flex gap-0.5 pt-[6px]">
+                  <Image
+                    src="images/ExclamationMarks/ExclamationMarks.svg"
+                    alt=""
+                    width={12}
+                    height={12}
+                    className=""
+                  />
+                  최대 8글자
+                </p>
+              )}
+            </div>
+          </div>
+          <div className="py-[6px]">
+            <label
+              className={`text-[14px] font-semibold leading-[150%] ml-[2px] ${
+                error.password ? 'text-[#FF4732]/85' : 'text-[#4d4d4d]'
+              }`}
+            >
+              비밀번호
+            </label>
+            <input
+              type="password"
+              onChange={handleChange('password')}
+              value={password}
+              className={`w-full h-[48px] py-3 px-4 border hover:border-blue-500 ${
+                error.password ? 'border-[#FF4732]/85' : 'border-[#808080]'
+              } rounded-lg focus:outline-none pl-4`}
+            />
+            {error.password && (
+              <p className="text-[12px] flex text-[#FF4732]/85 pt-[6px]">
+                {error.password}
+              </p>
+            )}
+            {!error.password && password && (
+              <p className="mt-2 text-[12px] text-black-700">
+                {error.password}
+              </p>
+            )}
+            {!error.password && !password && (
+              <p className="text-black-700 text-[12px] flex gap-1 pt-[6px]">
+                <Image
+                  src="images/ExclamationMarks/ExclamationMarks.svg"
+                  alt=""
+                  width={12}
+                  height={12}
+                  className=""
+                />
+                특수문자,대문자 포함 8자 이상
+              </p>
             )}
           </div>
-          {/* {error.email && <p className="text-red-500 mt-2">{error.email}</p>} */}
+          <div className="text-[#4D4D4D] py-[6px]">
+            <label
+              className={`text-[14px] leading-[150%] font-semibold ${error.passwordConfirm ? 'text-[#FF4732]/85' : 'text-[#4d4d4d]'}`}
+            >
+              비밀번호 확인
+            </label>
+            <input
+              type="password"
+              value={passwordConfirm}
+              onChange={handleChange('passwordConfirm')}
+              className={`py-3 px-4 w-full h-[48px] border hover:border-blue-500 ${
+                error.passwordConfirm
+                  ? 'border-[#FF4732]/85'
+                  : 'border-[#808080]'
+              } rounded-lg focus:outline-none pl-4`}
+            />
+            {error.passwordConfirm && (
+              <p className="text-[#FF4732]/85 text-[12px] pt-[6px]">
+                {error.passwordConfirm}
+              </p>
+            )}
+          </div>
+          <div className="flex items-center px-1 py-2 cursor-pointer mt-[37px] mb-[10px]">
+            <input
+              type="checkbox"
+              id="over14"
+              checked={isOver}
+              onChange={(e) => setIsOver(e.target.checked)}
+              className="w-[18px] h-[18px]"
+            />
+            <label
+              htmlFor="over14"
+              className="text-[14px] pl-[6px] text-[#808080] focus:text-[#121212]"
+            >
+              [필수] 만 14세 이상입니다.
+            </label>
+          </div>
+          <div className="mb-[100px]">
+            <button
+              type="submit"
+              className={`py-3 px-4 w-full h-[49px] rounded-lg ${isFormValid ? 'bg-[#121212] text-white' : 'bg-black-100 text-black-300 hover:bg-[#5EB0FF]/80'}`}
+              disabled={!isFormValid}
+            >
+              회원가입
+            </button>
+          </div>
         </div>
-        <div className="mt-2 text-[#4D4D4D]">
-          <label className="w-[39px] h-[21px] text-[14px] leading-[150%]">
-            비밀번호
-          </label>
-          <input
-            type="password"
-            onChange={handleChange('password')}
-            value={password}
-            className="w-[288px] h-[48px] border-1 border-black-500 rounded-lg hover:border-blue-500 focus:border-blue-500 focus:outline-none pl-4"
-          />
-          {error.password && <p className="">{error.password}</p>}
-        </div>
-        <div className="mt-2 text-[#4D4D4D]">
-          <label className="w-[39px] h-[21px] text-[14px] leading-[150%]">
-            비밀번호 확인
-          </label>
-          <input
-            type="password"
-            value={passwordConfirm}
-            onChange={handleChange('passwordConfirm')}
-            className="w-[288px] h-[48px] border-1 border-black-500 rounded-lg hover:border-blue-500 focus:border-blue-500 focus:outline-none pl-4"
-          />
-          {error.passwordConfirm && (
-            <p className="text-red-500 mt-2">{error.passwordConfirm}</p>
-          )}
-        </div>
-        <div className="mt-[49px] mb-[10px] flex">
-          <input
-            type="checkbox"
-            id="over14"
-            checked={isOver}
-            onChange={(e) => setIsOver(e.target.checked)}
-            className="w-[18px] h-[18px]"
-          />
-          <label htmlFor="over14" className="text-[14px] ml-[6px]">
-            [필수] 만 14세 이상입니다.
-          </label>
-        </div>
-        <button
-          type="submit"
-          className={`w-[288px] h-[49px] rounded-lg ${isFormValid ? 'bg-[#121212] text-white' : 'bg-black-100 text-black-300'}`}
-          disabled={!isFormValid}
-        >
-          회원가입
-        </button>
       </form>
     </main>
   );

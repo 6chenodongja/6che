@@ -1,16 +1,15 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import Image from 'next/image';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/supabase/client';
-import { Toaster, toast } from 'react-hot-toast';
+import toast, { Toaster } from 'react-hot-toast';
 
 const ResetPasswordForm = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [passwordMessage, setPasswordMessage] =
-    useState('특수문자,대문자 포함 8자 이상');
+    useState('특수문자, 대문자 포함 8자 이상');
   const [token, setToken] = useState<{
     access_token: string;
     refresh_token: string;
@@ -84,72 +83,128 @@ const ResetPasswordForm = () => {
       console.error('비밀번호 업데이트 오류:', error);
       toast.error('현재 비밀번호와 신규 비밀번호가 동일합니다.');
     } else {
-      toast.success('비밀번호가 성공적으로 업데이트되었습니다.');
+      toast.success('비밀번호가 재설정 되었습니다.');
       setTimeout(() => router.push('/login'), 2000);
     }
   };
 
   return (
-    <div className="w-full max-w-[320px] mx-auto flex flex-col items-center min-h-[636px] bg-white px-4">
-      <Toaster position="bottom-center" reverseOrder={false} />
-      <div className="w-full">
-        <h2 className="font-headline-04 font-bold text-xl text-center mt-[97px] mb-[80px]">
-          비밀번호 재설정
-        </h2>
-        <form onSubmit={handleSubmit} className="w-full max-w-sm">
-          <div className="mb-4">
-            <label
-              htmlFor="password"
-              className="block text-[#4d4d4d] font-subtitle-KR-small font-medium text-sm"
+    <>
+      <Toaster position="top-right" reverseOrder={false} />
+
+      {/* 모바일 화면 (768px 이하) */}
+      <div className="md:hidden w-full max-w-[320px] mx-auto flex flex-col items-center min-h-[636px] bg-white px-4">
+        <div className="w-full">
+          <h2 className="font-headline-04 font-bold text-xl text-center mt-[97px] mb-[80px]">
+            비밀번호 재설정
+          </h2>
+          <form onSubmit={handleSubmit} className="w-full max-w-sm">
+            <div className="mb-4">
+              <label
+                htmlFor="password"
+                className="block text-[#4d4d4d] font-subtitle-KR-small font-medium text-sm"
+              >
+                비밀번호
+              </label>
+              <input
+                type="password"
+                id="password"
+                value={password}
+                onChange={handlePasswordChange}
+                className="w-full px-3 py-2 border rounded-lg hover:border-blue-500 focus:border-blue-500 focus:outline-none"
+                required
+              />
+              {passwordMessage && (
+                <div className="flex mt-1 text-xs font-normal text-black-700 font-caption">
+                  <span>{passwordMessage}</span>
+                </div>
+              )}
+            </div>
+            <div className="mb-[80px]">
+              <label
+                htmlFor="confirmPassword"
+                className="block text-[#4d4d4d] font-subtitle-KR-small font-medium text-sm"
+              >
+                비밀번호 확인
+              </label>
+              <input
+                type="password"
+                id="confirmPassword"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                className="w-full px-3 py-2 border rounded-lg hover:border-blue-500 focus:border-blue-500 focus:outline-none mt-[6px]"
+                required
+              />
+            </div>
+            <button
+              type="submit"
+              className="font-button w-full py-2 bg-black text-white rounded-lg hover:bg-blue-500 "
             >
-              비밀번호
-            </label>
-            <input
-              type="password"
-              id="password"
-              value={password}
-              onChange={handlePasswordChange}
-              className="w-full px-3 py-2 border rounded-lg hover:border-blue-500 focus:border-blue-500 focus:outline-none"
-              required
-            />
-            {passwordMessage && (
-              <div className="flex mt-1 text-xs font-normal text-black-700 font-caption">
-                <Image
-                  src="/images/pwmessage/info.svg"
-                  alt="Info"
-                  width={16}
-                  height={16}
-                  className="mr-[2px]"
-                />
-                <span>{passwordMessage}</span>
-              </div>
-            )}
-          </div>
-          <div className="mb-[80px]">
-            <label
-              htmlFor="confirmPassword"
-              className="block text-[#4d4d4d] font-subtitle-KR-small font-medium text-sm"
-            >
-              비밀번호 확인
-            </label>
-            <input
-              type="password"
-              id="confirmPassword"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              className="w-full px-3 py-2 border rounded-lg hover:border-blue-500 focus:border-blue-500 focus:outline-none mt-[6px]"
-              required
-            />
-          </div>
-          <button
-            type="submit"
-            className="font-button w-full py-2 bg-black text-white rounded-lg hover:bg-blue-500 "
-          >
-            재설정
-          </button>
-        </form>
+              재설정
+            </button>
+          </form>
+        </div>
       </div>
-    </div>
+
+      {/* 데스크탑 화면 (769px 이상) */}
+      <div className="hidden md:flex w-full min-h-screen bg-[#fafafa] justify-center items-center relative">
+        <div className="absolute mt-[58px] w-[480px] h-[725px] bg-white rounded-3xl shadow-lg p-10">
+          <Toaster position="top-right" reverseOrder={false} />
+          <h2 className="text-center font-headline-03 text-[24px] mb-[40px] font-bold">
+            비밀번호 재설정
+          </h2>
+          <form onSubmit={handleSubmit} className="w-full max-w-sm">
+            <div className="mb-4">
+              <label
+                htmlFor="password"
+                className="block text-[#4d4d4d] font-subtitle-KR-small font-medium text-sm"
+              >
+                비밀번호
+              </label>
+              <input
+                type="password"
+                id="password"
+                value={password}
+                onChange={handlePasswordChange}
+                className="w-full px-3 py-2 border rounded-lg hover:border-blue-500 focus:border-blue-500 focus:outline-none"
+                required
+              />
+              {passwordMessage && (
+                <div className="flex mt-1 text-xs font-normal text-black-700 font-caption">
+                  <span>{passwordMessage}</span>
+                </div>
+              )}
+            </div>
+            <div className="mb-[80px]">
+              <label
+                htmlFor="confirmPassword"
+                className="block text-[#4d4d4d] font-subtitle-KR-small font-medium text-sm"
+              >
+                비밀번호 확인
+              </label>
+              <input
+                type="password"
+                id="confirmPassword"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                className="w-full px-3 py-2 border rounded-lg hover:border-blue-500 focus:border-blue-500 focus:outline-none mt-[6px]"
+                required
+              />
+            </div>
+            <button
+              type="submit"
+              className="w-[400px] h-[49px] py-2 rounded-lg font-button bg-black text-white hover:bg-blue-400 active:bg-[#73aee7]"
+              style={{
+                width: '400px !important',
+                height: '49px !important',
+              }}
+            >
+              재설정
+            </button>
+          </form>
+        </div>
+      </div>
+    </>
   );
 };
 

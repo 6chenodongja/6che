@@ -12,9 +12,13 @@ interface PostProps {
 }
 
 function MyListPostItem({ post, isLiked, handleLike }: PostProps) {
+  const nickname = post.posts?.users?.nick_name || '';
   return (
     <div>
-      <div key={post.id} className="relative w-[140px] object-cover">
+      <div
+        key={post.id}
+        className="relative w-[140px] object-cover md:w-[234px]"
+      >
         {post.posts?.image_url && (
           <Image
             src={post.posts.image_url.split(',')[0]}
@@ -22,7 +26,7 @@ function MyListPostItem({ post, isLiked, handleLike }: PostProps) {
             width={100}
             height={100}
             sizes="100"
-            className="w-[140px] h-[200px] object-cover rounded-lg"
+            className="w-[140px] h-[200px] object-cover rounded-lg md:w-[234px] md:h-[389px] md:rounded-lg"
             priority
           />
         )}
@@ -46,9 +50,25 @@ function MyListPostItem({ post, isLiked, handleLike }: PostProps) {
               {/* 날짜이모지와 닉네임  */}
               <span className="font-bold text-[14px] flex flex-row gap-[4px]">
                 <div className="w-[20px] h-[20px] p-[1px] flex justify-center items-center icon">
-                  <ListNicknameIcon />
+                  {post.posts?.users?.avatar && (
+                    <Image
+                      src={post.posts?.users?.avatar}
+                      alt="profile-icon"
+                      width={24}
+                      height={24}
+                    />
+                  )}
                 </div>
-                {post.posts?.users?.nick_name}
+                <span
+                  className="overflow-hidden whitespace-nowrap text-ellipsis"
+                  style={{
+                    maxWidth: '100px',
+                  }}
+                >
+                  {nickname.length > 6
+                    ? `${nickname.slice(0, 6)}...`
+                    : nickname}
+                </span>
               </span>
               <span className="flex flex-row text-[12px]  justify-center items-center">
                 <ListLiveLikedIcon />
