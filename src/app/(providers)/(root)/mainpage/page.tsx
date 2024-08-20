@@ -275,7 +275,7 @@ const SkeletonLoader = ({ type }: { type: string }) => {
 };
 
 // MainPage 컴포넌트
-const MainPage = () => {
+const MainPage = ({ isNightTime }: { isNightTime: boolean }) => {
   const [filteredPosts, setFilteredPosts] = useState<Post[]>([]);
   const [weather, setWeather] = useState<any>(null);
   const [difference, setDifference] = useState<number | null>(null);
@@ -482,10 +482,9 @@ const MainPage = () => {
       }
     };
 
-    const isNightTime = currentHours >= 18 || currentHours < 7;
     setTextColor(isNightTime ? 'text-white' : 'text-[#121212]');
     setBackgroundStyle({ background: getBackgroundByTime(currentHours) });
-  }, []);
+  }, [isNightTime]);
 
   const handleElementSelection = (elements: string[]) => {
     setSelectedWeatherElements(elements);
@@ -547,18 +546,8 @@ const MainPage = () => {
             }}
           >
             <Image
-              src={(() => {
-                const currentHours = new Date().getHours();
-                return currentHours >= 18 || currentHours < 7
-                  ? '/images/Up_Moon.svg'
-                  : '/images/Up_Sun.svg';
-              })()}
-              alt={(() => {
-                const currentHours = new Date().getHours();
-                return currentHours >= 18 || currentHours < 7
-                  ? 'Up_Moon'
-                  : 'Up_Sun';
-              })()}
+              src={isNightTime ? '/images/Up_Moon.svg' : '/images/Up_Sun.svg'}
+              alt={isNightTime ? 'Up_Moon' : 'Up_Sun'}
               className="object-contain"
               width={94}
               height={94}
@@ -659,7 +648,7 @@ const MainPage = () => {
         </div>
 
         <h2
-          className={`${textColor} text-base font-black font-['Noto Sans KR'] leading-tight mt-[34px] block md:hidden`}
+          className={`${textColor} text-base font-weight:500px font-['Noto Sans KR'] leading-tight mt-[34px] block md:hidden`}
         >
           오늘 옷차림
         </h2>
@@ -1179,7 +1168,7 @@ const MainPage = () => {
                       <div className="justify-center items-center gap-[11px] flex">
                         <div className="justify-start items-center gap-1 flex">
                           <div className="w-8 h-8 p-0.5 justify-center items-center flex">
-                            <div className="w-7 h-7 px-[2.33px] py-[5.83px] bg-white/60 rounded justify-center items-center inline-flex">
+                            {/* <div className="w-7 h-7 px-[2.33px] py-[5.83px] bg-white/60 rounded justify-center items-center inline-flex">
                               <div className="relative w-[23.33px] h-[16.33px]">
                                 <Image
                                   src="/images/Weather/sunset.svg"
@@ -1188,7 +1177,7 @@ const MainPage = () => {
                                   objectFit="cover"
                                 />
                               </div>
-                            </div>
+                            </div> */}
                           </div>
                           <div className="text-center text-black text-base font-normal font-['Varela'] leading-tight">
                             {Math.round(
@@ -1202,7 +1191,7 @@ const MainPage = () => {
                         <div className="w-0.5 h-6 bg-[#e6e6e6]/60 rounded-sm" />
                         <div className="justify-start items-center gap-1.5 flex">
                           <div className="w-8 h-8 p-0.5 justify-center items-center flex">
-                            <div className="w-7 h-7 px-[3.50px] pt-[3.50px] pb-[3.28px] bg-white/60 rounded justify-center items-center inline-flex">
+                            {/* <div className="w-7 h-7 px-[3.50px] pt-[3.50px] pb-[3.28px] bg-white/60 rounded justify-center items-center inline-flex">
                               <div className="relative w-[21px] h-[21.22px]">
                                 <Image
                                   src="/images/Weather/sunrise.svg"
@@ -1211,7 +1200,7 @@ const MainPage = () => {
                                   objectFit="cover"
                                 />
                               </div>
-                            </div>
+                            </div> */}
                           </div>
                           <div className="text-center text-black text-base font-normal font-['Varela'] leading-tight">
                             {Math.round(
