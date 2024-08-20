@@ -9,6 +9,7 @@ import { useUserStore } from '@/zustand/store/useUserStore';
 import { supabase } from '@/supabase/client';
 import LoginModalProps from '@/components/Modal/LoginModal';
 
+// 설문
 interface Post {
   id: string;
   image_url: string | null;
