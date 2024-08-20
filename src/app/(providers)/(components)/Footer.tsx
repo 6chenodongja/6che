@@ -96,7 +96,7 @@ const Footer = () => {
                   onClick={handleMypageClick}
                 >
                   마이페이지
-               </Link>
+                </Link>
                 <ul className="flex flex-col items-start space-y-[4px] footer-text-style2 mybtn">
                   <li>
                     <Link
