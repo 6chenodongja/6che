@@ -184,7 +184,7 @@
     line-height: 130%;
     letter-spacing: -0.24px;
     opacity: 0.7;
-    top: 1px;
+    top: 0px;
     left: -1px;
     position: relative;
   }
@@ -209,6 +209,12 @@
     line-height: 130%;
     letter-spacing: -0.24px;
     opacity: 0.7;
+    top: 6px;
+    position: relative;
+  }
+  .footer-item-my{
+    position: relative;
+    top: 1px;
   }
 
   .footer-designdiv {
@@ -295,6 +301,11 @@
   .mybtn {
     position: relative;
     top: 3px;
+  }
+
+  .mybtn-second{
+    position: relative;
+    top: 8px;
   }
 
   .text-item {
@@ -1285,6 +1296,8 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    position: relative;
+    top: 45px;
   }
 
   .question-container > div {

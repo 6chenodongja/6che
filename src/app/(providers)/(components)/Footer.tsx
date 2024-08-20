@@ -96,12 +96,12 @@ const Footer = () => {
                   onClick={handleMypageClick}
                 >
                   마이페이지
-                </Link>
+               </Link>
                 <ul className="flex flex-col items-start space-y-[4px] footer-text-style2 mybtn">
                   <li>
                     <Link
+                      className="footer-link footer-text2 footer-text-style2 mybtn mybtn-second"
                       href="/postLike"
-                      className="footer-link footer-text2 footer-text-style2 mybtn"
                       onClick={handleMypageClick}
                     >
                       좋아요한 코디
@@ -109,8 +109,8 @@ const Footer = () => {
                   </li>
                   <li>
                     <Link
+                      className="footer-link footer-item-my footer-text2 mb-[32px] mybtn-second"
                       href="/myStyle"
-                      className="footer-link footer-text2 mb-[32px]"
                       onClick={handleMypageClick}
                     >
                       내 코디
