@@ -4,6 +4,7 @@ import { useSignUpForm } from 'hooks/useSignUpForm';
 import Image from 'next/image';
 import axios from 'axios';
 import { useUserStore } from '@/zustand/store/useUserStore';
+import { emailDomains } from '@/utils/emailDomains';
 
 function SingUp() {
   const {
@@ -77,18 +78,21 @@ function SingUp() {
   };
 
   return (
-    <main className="p-4 w-full flex flex-col justify-center items-center md:w-[480px] md:h-auto md:bg-white md:shadow-boxShadowPc md:backdrop-blur-sm md:rounded-3xl md:px-10">
-      <form onSubmit={onSubmit} className="h-full w-full space-y-4">
-        <h1 className="font-sans text-[20px] md:text-[24px] text-center text-[#121212] font-bold leading-[130%] tracking-[-0.4px] md:tracking-[-0.48px] w-full md:pt-[56px] md:pb-10">
+    <main className="block px-4 items-center justify-center space-x-2 md:py-10 md:flex md:w-full md:h-full">
+      <form
+        onSubmit={onSubmit}
+        className="h-full w-full md:w-[480px] md:h-[742px] md:bg-white md:px-10 md:rounded-3xl md:py-14"
+      >
+        <h1 className="md:font-body-KR-medium text-[20px] md:text-[24px] md:pb-[24px] text-center text-[#121212] font-bold leading-[130%] tracking-[-0.4px] md:tracking-[-0.48px]">
           회원가입
         </h1>
         <div className="w-full">
-          <div className="py-[6px]">
+          <div className="tracking-[-0.02px] py-[6px]">
             <label
-              className={`text-[14px] pl-[2px] mb-[6px] w-full ${
+              className={`pl-[2px] font-KR font-medium text-xs md:text-sm leading-[21px] tracking--0.02 ${
                 error.nickname
-                  ? 'w-full text-[14px] font-semibold leading-[150%] pl-[2px] text-[#FF4732]/85'
-                  : 'w-full text-[14px] font-semibold leading-[150%] pl-[2px] text-[#4d4d4d]'
+                  ? 'pl-[2px] font-KR font-medium text-xs md:text-sm leading-[21px] tracking--0.02 text-[#FF4732]/85'
+                  : 'pl-[2px] font-KR font-medium text-xs md:text-sm leading-[21px] tracking--0.02 text-[#4d4d4d]'
               }`}
             >
               닉네임
@@ -98,28 +102,30 @@ function SingUp() {
               onChange={handleChange('nickname')}
               value={nickname}
               className={`py-3 px-4 w-full h-full border hover:border-blue-500 ${
-                error.nickname ? 'border-[#FF4732]/85' : 'border-[#808080]'
+                error.nickname
+                  ? 'border-[#FF4732]/85 font-KR font-medium text-xs md:text-sm'
+                  : 'border-[#808080] font-KR font-medium text-xs md:text-sm'
               } rounded-lg focus:outline-none pl-4`}
             />
             {error.nickname && (
-              <p className="py-[6px] text-[12px] flex gap-0.5 pb-2 pt-[7px] text-[#FF4732]/85">
+              <p className="font-KR py-[6px] text-[12px] flex gap-0.5 text-[#FF4732]/85">
                 <Image
                   src="images/ExclamationMarks/Unavailable.svg"
                   alt=""
                   width={12}
                   height={12}
-                  className=""
+                  className="flex"
                 />
                 {error.nickname}
               </p>
             )}
             {!error.nickname && isNicknameChecked && (
-              <p className="py-[6px] text-[12px] text-black-700">
+              <p className="py-[6px] text-[12px] text-black-700 font-KR font-medium text-xs tracking--0.02 md:text-sm leading-[21px]">
                 {nicknameMessage}
               </p>
             )}
             {!error.nickname && (
-              <p className="text-black-700 text-[12px] flex gap-0.5 pt-[6px]">
+              <p className="font-KR tracking--0.02font-KR font-medium text-xs leading-[21px] tracking--0.02 text-black-700 text-[12px] flex gap-0.5 pt-[6px]">
                 <Image
                   src="images/ExclamationMarks/ExclamationMarks.svg"
                   alt=""
@@ -132,7 +138,7 @@ function SingUp() {
             )}
           </div>
           <div className="">
-            <p className="w-full text-sm pb-[6px] leading-[21px] font-semibold tracking-[-0.02em] text-[#4d4d4d]">
+            <p className="pl-[2px] md:text-sm  tracking--0.02 font-KR w-full text-sm pb-[6px] leading-[21px] font-semibold tracking-[-0.02em] text-[#4d4d4d]">
               이메일
             </p>
             <div className="flex flex-row items-center justify-center gap-[6px]">
@@ -152,27 +158,13 @@ function SingUp() {
                 value={emailDomain}
                 className="w-full h-[48px] py-3 px-4 box-border border-1 border-black-500 rounded-lg hover:border-blue-500 focus:border-blue-500 focus:outline-none"
               >
-                <option value="@gmail.com" className="cursor-pointer">
-                  @gmail.com
-                </option>
-                <option value="@naver.com" className="cursor-pointer">
-                  @naver.com
-                </option>
-                <option value="@daum.net" className="cursor-pointer">
-                  @daum.net
-                </option>
-                <option value="@nate.com" className="cursor-pointer">
-                  @nate.com
-                </option>
-                <option value="@icloud.com" className="cursor-pointer">
-                  @icloud.com
-                </option>
-                <option value="@hanmail.net" className="cursor-pointer">
-                  @hanmail.net
-                </option>
-                {/* <option value="직접 입력" className="">
-                  직접 입력
-                </option> */}
+                {emailDomains.map((emailDomain) => {
+                  return (
+                    <option value={emailDomain} className="cursor-pointer">
+                      {emailDomain}
+                    </option>
+                  );
+                })}
               </select>
             </div>
             <div className="">
@@ -206,7 +198,7 @@ function SingUp() {
                 </p>
               )}
               {error.email && (
-                <p className="text-black-700 text-[12px] flex gap-0.5 pt-[6px]">
+                <p className="font-KR font-medium text-xs md:text-sm leading-[21px] tracking--0.02 text-black-700 text-[12px] flex gap-0.5 pt-[6px]">
                   <Image
                     src="images/ExclamationMarks/ExclamationMarks.svg"
                     alt=""
@@ -219,7 +211,7 @@ function SingUp() {
               )}
             </div>
           </div>
-          <div className="py-[6px]">
+          <div className="font-KR font-medium text-xs md:text-sm leading-[21px] tracking--0.02 py-[6px]">
             <label
               className={`text-[14px] font-semibold leading-[150%] ml-[2px] ${
                 error.password ? 'text-[#FF4732]/85' : 'text-[#4d4d4d]'
@@ -258,12 +250,14 @@ function SingUp() {
               </p>
             )}
           </div>
-          <div className="text-[#4D4D4D] py-[6px]">
-            <label
-              className={`text-[14px] leading-[150%] font-semibold ${error.passwordConfirm ? 'text-[#FF4732]/85' : 'text-[#4d4d4d]'}`}
-            >
-              비밀번호 확인
-            </label>
+          <div className="text-[#4D4D4D] py-[6px] font-KR font-medium text-xs md:text-sm leading-[21px] tracking--0.02">
+            <p>
+              <label
+                className={`pl-[2px] font-KR text-xs md:text-sm tracking--0.02 text-[14px] leading-[150%] font-semibold ${error.passwordConfirm ? 'text-[#FF4732]/85' : 'text-[#4d4d4d]'}`}
+              >
+                비밀번호 확인
+              </label>
+            </p>
             <input
               type="password"
               value={passwordConfirm}
@@ -290,7 +284,7 @@ function SingUp() {
             />
             <label
               htmlFor="over14"
-              className="text-[14px] pl-[6px] text-[#808080] focus:text-[#121212]"
+              className="text-[14px] pl-[6px] text-[#808080] focus:text-[#121212] font-KR font-medium text-xs md:text-sm leading-[21px] tracking--0.02"
             >
               [필수] 만 14세 이상입니다.
             </label>
@@ -298,7 +292,7 @@ function SingUp() {
           <div className="mb-[100px]">
             <button
               type="submit"
-              className={`py-3 px-4 w-full h-[49px] rounded-lg ${isFormValid ? 'bg-[#121212] text-white' : 'bg-black-100 text-black-300 hover:bg-[#5EB0FF]/80'}`}
+              className={`py-3 px-4 w-full h-[49px] rounded-lg pl-[2px] font-KR font-medium text-xs md:text-base leading-[20.8px] tracking--0.02 text-[#4d4d4d] ${isFormValid ? 'bg-[#121212] text-white' : 'bg-black-100 text-black-300 active:bg-[#5EB0FF]/80'}`}
               disabled={!isFormValid}
             >
               회원가입

@@ -2,8 +2,8 @@ import SingUp from './_components/SignUp';
 
 function SignUpPage() {
   return (
-    <main className="flex justify-center items-center w-full min-h-screen pt-[100px] pb-[200px] bg-neutral-50">
-      <div className="flex justify-center items-center w-full">
+    <main className="flex flex-col min-h-screen bg-neutral-50">
+      <div className="flex-grow flex justify-center items-center w-full md:mt-[46px] md:mb-[199px]">
         <SingUp />
       </div>
     </main>

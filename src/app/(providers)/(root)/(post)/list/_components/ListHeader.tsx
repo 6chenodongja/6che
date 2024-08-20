@@ -44,17 +44,20 @@ function ListHeader() {
   }, []);
 
   // 모달 오픈/닫기 함수
-  const openModal = () => {
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     if (!user) {
+      e.preventDefault();
       setIsModalOpen(true);
-    } else {
-      router.replace('/postform');
     }
   };
-  const closeModal = () => setIsModalOpen(false);
 
-  const handlerLoginModal = () => {
+  const closeModal = () => {
+    setIsModalOpen(false); // 모달 닫기
+  };
+
+  const handleConfirm = () => {
     closeModal();
+    router.push('/login'); // 로그인 페이지로 이동
   };
   return (
     <div className="mx-[16px]">
@@ -250,6 +253,7 @@ function ListHeader() {
           <Link
             href={'/postform'}
             className="flex-grow-0 flex-shrink-0 text-sm text-left text-white"
+            onClick={handleClick}
           >
             코디 등록
           </Link>
@@ -274,7 +278,7 @@ function ListHeader() {
       {isModalOpen && (
         <LoginModalProps
           isOpen={isModalOpen}
-          onConfirm={handlerLoginModal}
+          onConfirm={handleConfirm}
           onClose={closeModal}
         />
       )}
