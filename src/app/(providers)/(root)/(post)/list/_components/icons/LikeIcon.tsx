@@ -3,7 +3,7 @@ import Image from 'next/image';
 const LikeIcon = () => {
   return (
     <Image
-      src="/images/LikeButton/LikeIconButton.png"
+      src="/images/LikeButton/LikeIconbutton.png"
       alt="notLikeButton"
       width={28}
       height={28}
