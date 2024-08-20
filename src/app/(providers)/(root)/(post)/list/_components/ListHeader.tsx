@@ -20,7 +20,6 @@ function ListHeader() {
         );
 
         const { latitude, longitude } = position.coords;
-        console.log('Current Position:', latitude, longitude); // 위치 정보 로그
 
         // `/api/weather`로 현재 위치의 기온을 가져오는 로직
         const response = await fetch(
@@ -44,17 +43,20 @@ function ListHeader() {
   }, []);
 
   // 모달 오픈/닫기 함수
-  const openModal = () => {
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     if (!user) {
+      e.preventDefault();
       setIsModalOpen(true);
-    } else {
-      router.replace('/postform');
     }
   };
-  const closeModal = () => setIsModalOpen(false);
 
-  const handlerLoginModal = () => {
+  const closeModal = () => {
+    setIsModalOpen(false); // 모달 닫기
+  };
+
+  const handleConfirm = () => {
     closeModal();
+    router.push('/login'); // 로그인 페이지로 이동
   };
   return (
     <div className="mx-[16px]">
@@ -246,10 +248,11 @@ function ListHeader() {
             </p>
           </div>
         </div>
-        <div className="flex justify-center items-center flex-grow-0 flex-shrink-0 relative overflow-hidden gap-1 p-2 rounded-lg bg-[#121212]">
+        <div className="flex justify-center items-center flex-grow-0 flex-shrink-0 relative overflow-hidden gap-1 p-2 rounded-lg bg-[#121212] transition duration-100 hover:bg-[#5EB0FF]">
           <Link
             href={'/postform'}
             className="flex-grow-0 flex-shrink-0 text-sm text-left text-white"
+            onClick={handleClick}
           >
             코디 등록
           </Link>
@@ -274,7 +277,7 @@ function ListHeader() {
       {isModalOpen && (
         <LoginModalProps
           isOpen={isModalOpen}
-          onConfirm={handlerLoginModal}
+          onConfirm={handleConfirm}
           onClose={closeModal}
         />
       )}

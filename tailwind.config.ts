@@ -141,7 +141,7 @@ const config: Config = {
       letterSpacing: {
         '-0.32': '-0.32px',
         '-0.28': '-0.28px',
-
+        '-0.02': '-0.02em',
       },
       opacity: {
         'sds-size-stroke-border': 'var(--sds-size-stroke-border)',
@@ -177,7 +177,7 @@ const config: Config = {
       boxShadowPc: {
         'custom': '0px 0px 2px 0px rgba(0, 0, 0, 0.05), 4px 4px var(--Blur-20, 20px) 0px rgba(0, 0, 0, 0.05)',
       },
-
+      
     },
   },
   plugins: [],

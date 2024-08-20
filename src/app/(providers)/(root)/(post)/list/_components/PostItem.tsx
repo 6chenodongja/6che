@@ -3,7 +3,6 @@ import Link from 'next/link';
 import LikeButton from './LikeButton';
 import ListLiveLikedIcon from './icons/ListLiveLikedIcon';
 import { PostItemType } from '../../../../../../../types/post';
-import { useUserStore } from '@/zustand/store/useUserStore';
 
 interface PostProps {
   post: PostItemType;
@@ -32,7 +31,6 @@ function PostItem({ post, isLiked, handleLike }: PostProps) {
 
   // 닉네임 안전하게 처리
   const nickname = post.users?.nick_name || '';
-  const { user } = useUserStore();
 
   return (
     <div>
@@ -92,10 +90,7 @@ function PostItem({ post, isLiked, handleLike }: PostProps) {
                     />
                   )}
                 </div>
-                <span
-                  className="overflow-hidden whitespace-nowrap text-ellipsis"
-                  style={{ maxWidth: '100px' }}
-                >
+                <span className="overflow-hidden whitespace-nowrap text-ellipsis text-[16px] leading-[24px] -tracking-[0.32px] font-medium text-[#333] font-KR">
                   {nickname.length > 6
                     ? `${nickname.slice(0, 6)}...`
                     : nickname}

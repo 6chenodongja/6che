@@ -10,7 +10,6 @@ import LoadingScreen from '../(components)/LoadingScreen';
 import LoginDropdown from '@/components/LoginDropdown/LoginDropdown';
 import { useUserStore } from '@/zustand/store/useUserStore';
 import { supabase } from '@/supabase/client';
-import LoginPopup from '../(root)/(auth)/login/_components/LoginPopup';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -115,8 +114,28 @@ const Header = () => {
         ></div>
         <div className="relative w-full h-full flex items-center px-4">
           <div className="flex-1 flex justify-start md:hidden">
-            <button title="button" onClick={handleMenuToggle}>
-              <Image src="/images/menu.png" alt="메뉴" width={24} height={24} />
+            <button
+              title="button"
+              onClick={handleMenuToggle}
+              style={{
+                padding: '8px',
+                width: '40px',
+                height: '40px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                border: 'none',
+                background: 'none',
+                cursor: 'pointer',
+              }}
+            >
+              <Image
+                src="/images/menu.svg"
+                alt="메뉴"
+                width={28}
+                height={28}
+                sizes="100vw"
+              />
             </button>
           </div>
           <div className="md:flex-1 flex justify-center md:justify-start">
@@ -124,26 +143,25 @@ const Header = () => {
               <LogoText className="w-24 h-8" />
             </div>
           </div>
-          <div className="hidden md:flex items-end">
+          <div className="hidden md:flex justify-end items-end">
             {user ? (
               <LoginDropdown />
             ) : (
               <div className="flex gap-1">
-                <button
-                  onClick={handleLoginModal}
-                  className="font-NotoSansKR tracking-[-0.28px] leading-[130%] py-[11px] text-[14px]  font-normal px-4 rounded-lg bg-[#298CFF]/80 hover:bg-[#5EB0FF]/80 focus:bg-black-500/50 text-white"
-                >
-                  로그인
-                </button>
-                <Link href={'/signup'} className="">
-                  <button className="font-NotoSansKR font-semibold tracking-[-0.28px] leading-[130%] py-[11px] px-4 text-[14px] border-1 border-[#5EB0FF]/80 hover:bg-[##E6E6E6] focus:bg-[##b3b3b3] rounded-lg text-[#5EB0FF]/80">
+                <Link href={'/login'}>
+                  <button className="rounded-lg gap-[4px]  bg-[#298CFF]/80 active:bg-[#73aee7] text-white py-[11px] px-4 font-KR font-normal text-[14px] leading-[18.2px] tracking-[-0.02em] text-sm">
+                    로그인
+                  </button>
+                </Link>
+                <Link href={'/signup'}>
+                  <button className="font-KR font-normal text-[14px] leading-[18.2px] tracking-[-0.02em] text-sm rounded-lg  py-[10px] px-[15px] border-1 border-[#5EB0FF]/80 hover:bg-[#ededed]/60 active:bg-black/10 text-[#5EB0FF]/80">
                     회원가입
                   </button>
                 </Link>
               </div>
             )}
           </div>
-          <div className="block md:hidden flex-1 flex justify-end">
+          <div className="flex md:hidden flex-1 justify-end">
             {user ? (
               <LoginDropdown />
             ) : (
@@ -157,7 +175,7 @@ const Header = () => {
               <li>
                 <button
                   onClick={() => handleLinkClick('/')}
-                  className={`nav-button ${
+                  className={`nav-button  ${
                     activeLink === '/' ? 'active-link' : ''
                   }`}
                 >
@@ -167,7 +185,7 @@ const Header = () => {
               <li>
                 <button
                   onClick={() => handleLinkClick('/list')}
-                  className={`nav-button ${
+                  className={`nav-button2 ${
                     activeLink === '/list' ? 'active-link' : ''
                   }`}
                 >
@@ -177,7 +195,7 @@ const Header = () => {
               <li>
                 <button
                   onClick={() => handleLinkClick('/thermometer-style')}
-                  className={`nav-button ${
+                  className={`nav-button3 ${
                     activeLink === '/thermometer-style' ? 'active-link' : ''
                   }`}
                 >
@@ -187,7 +205,7 @@ const Header = () => {
               <li>
                 <button
                   onClick={() => handleLinkClick('/survey')}
-                  className={`nav-button ${
+                  className={`nav-button4 ${
                     activeLink === '/survey' ? 'active-link' : ''
                   }`}
                 >
@@ -233,7 +251,7 @@ const Header = () => {
                 }`}
                 onClick={() => handleLinkClick('/list')}
               >
-                스타일
+                코디
               </Link>
             </li>
             <li>
@@ -246,7 +264,7 @@ const Header = () => {
                 }`}
                 onClick={() => handleLinkClick('/thermometer-style')}
               >
-                옷 차림
+                옷차림
               </Link>
             </li>
             <li>
@@ -263,9 +281,6 @@ const Header = () => {
           </ul>
         </nav>
       </header>
-      {loginModal && (
-        <LoginPopup show={loginModal} onClose={handleLoginModal} />
-      )}
     </>
   );
 };

@@ -353,11 +353,9 @@ const QuestionPage: React.FC = () => {
                 </p>
               )}
             </div>
-
-            {/* Option Rendering Based on Question Index */}
             <div className="item4-1 card4-1div flex flex-col items-start w-full gap-4">
               {currentQuestionIndex === 0 ? (
-                <div className="item1-1 grid card-div grid-cols-2 gap-[8px] mb-4">
+                <div className="item1-1 grid card-div grid-cols-2 question-div gap-[8px] mb-4">
                   {questions[currentQuestionIndex].options.map(
                     (option, index) => (
                       <div

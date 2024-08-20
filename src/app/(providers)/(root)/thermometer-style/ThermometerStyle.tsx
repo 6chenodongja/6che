@@ -8,6 +8,7 @@ import React, {
   TouchEvent,
 } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 interface Outfit {
   imageSrc?: string;
@@ -77,43 +78,6 @@ const outfits: { [key: string]: Outfit[] } = {
     { imageSrc: '/images/Weather2/muffler.svg', label: '머플러' },
     { imageSrc: '/images/Weather2/Gloves.svg', label: '장갑' },
   ],
-};
-
-const temperatureImages: {
-  [key: string]: { sun: string; leaf: string };
-} = {
-  hot: {
-    sun: '/images/Weather2/Deco/parasol.svg',
-    leaf: '/images/Weather2/Deco/tube.svg',
-  },
-  warm: {
-    sun: '/images/Weather2/Deco/sun.svg',
-    leaf: '/images/Weather2/Deco/leaf.svg',
-  },
-  mild: {
-    sun: '/images/Weather2/Deco/straw_hat.svg',
-    leaf: '/images/Weather2/Deco/sun.svg',
-  },
-  cool: {
-    sun: '/images/Weather2/Deco/ginkgo_leaves.svg',
-    leaf: '/images/Weather2/Deco/leaf.svg',
-  },
-  chilly: {
-    sun: '/images/Weather2/Deco/forsythia.svg',
-    leaf: '/images/Weather2/Deco/cherry_blossoms.svg',
-  },
-  cold: {
-    sun: '/images/Weather2/Deco/ginkgo_leaves.svg',
-    leaf: '/images/Weather2/Deco/autumn_leaves.svg',
-  },
-  colder: {
-    sun: '/images/Weather2/Deco/sun.svg',
-    leaf: '/images/Weather2/Deco/fallen_leaves.svg',
-  },
-  coldest: {
-    sun: '/images/Weather2/Deco/snowman.svg',
-    leaf: '/images/Weather2/Deco/snow.svg',
-  },
 };
 
 const defaultImages: string[] = [
@@ -266,18 +230,10 @@ const ThermometerStyle: React.FC = () => {
     }
   }, [temperatureIndex]);
 
-  const currentTemperatureLabel = temperatureRanges[temperatureIndex].label;
-  const temperatureImagesToUse = temperatureImages[currentTemperatureLabel];
-
-  const getOutfitsForTemperature = (tempDisplay: string): Outfit[] => {
-    const matchedKey = Object.keys(outfits).find((key) => key === tempDisplay);
-    return matchedKey ? outfits[matchedKey] : [];
-  };
-
   const currentOutfits =
     initialView && temperatureIndex === Math.floor(temperatureRanges.length / 2)
       ? defaultImages.map((src) => ({ imageSrc: src, label: '' }))
-      : getOutfitsForTemperature(temperatureRanges[temperatureIndex].display);
+      : outfits[temperatureRanges[temperatureIndex].display] || [];
 
   const handleNext = () => {
     setCurrentOutfitIndex((prevIndex) => prevIndex + 4);
@@ -323,26 +279,6 @@ const ThermometerStyle: React.FC = () => {
         </div>
 
         <div className="relative w-full h-auto md:w-[412px] md:h-[400px] grid grid-cols-2 gap-[8px] md:gap-[14px] px-[40px] py-[25px]">
-          <div className="absolute left-[12px] top-[-5px] md:left-[-12px] md:top-[-35px]">
-            <Image
-              src={temperatureImagesToUse.sun}
-              alt="Sun Icon"
-              width={56}
-              height={46}
-              className="md:w-[104px] md:h-[104px]"
-            />
-          </div>
-
-          <div className="absolute right-[25px] top-[135px] z-[3] md:right-[-7px] md:top-[160px] md:z-[3]">
-            <Image
-              src={temperatureImagesToUse.leaf}
-              alt="Leaf Icon"
-              width={50}
-              height={46}
-              className="md:w-[100px] md:h-[100px]"
-            />
-          </div>
-
           {currentOutfits
             .slice(currentOutfitIndex, currentOutfitIndex + 4)
             .map((outfit, index) => (
@@ -501,12 +437,16 @@ const ThermometerStyle: React.FC = () => {
       </div>
 
       <div className="w-full flex flex-col items-center mb-8">
-        <button className="w-full md:w-[400px] md:h-[49px] px-4 py-2 mb-4 text-base bg-black text-white rounded-lg button-style">
-          온도에 맞는 코디 보러가기
-        </button>
-        <button className="w-full md:w-[400px] md:h-[49px] px-4 py-2 border-2 border-black bg-white rounded-lg text-base button-style">
-          취향 코디 추천받기
-        </button>
+        <Link href={'/list'}>
+          <button className="w-full md:w-[288px] md:h-[49px] md:text-[16px] px-4 py-2 mb-4 text-base bg-black text-white rounded-lg button-style hover:bg-[rgba(94,176,255,0.80)] active:bg-[#73AEE7]">
+            온도에 맞는 스타일
+          </button>
+        </Link>
+        <Link href={'/survey'}>
+          <button className="w-full md:w-[288px] md:h-[49px] md:text-[16px] px-4 py-2 border-2 border-black bg-white rounded-lg text-base button-style hover:border-[rgba(255,214,94,0.80)] hover:bg-[#FFF7D4] active:bg-[#E9E2C2] active:border-[rgba(255,214,94,0.80)]">
+            취향 코디 추천받기
+          </button>
+        </Link>
       </div>
     </div>
   );
