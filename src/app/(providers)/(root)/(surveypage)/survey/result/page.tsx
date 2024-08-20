@@ -134,7 +134,7 @@ const ResultPage: React.FC = () => {
             </button>
           </div>
           <div
-            className={`grid ${typeof window !== 'undefined' && window.innerWidth >= 768 ? 'grid-cols-3' : 'grid-cols-2'} gap-4 mb-4`}
+            className={`result-grid grid ${typeof window !== 'undefined' && window.innerWidth >= 768 ? 'grid-cols-3' : 'grid-cols-2'} gap-4 mb-4`}
           >
             {posts.map((post) => {
               const imageUrls = post.image_url?.split(',') || [];
