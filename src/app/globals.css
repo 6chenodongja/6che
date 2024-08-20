@@ -212,7 +212,7 @@
     top: 6px;
     position: relative;
   }
-  .footer-item-my{
+  .footer-item-my {
     position: relative;
     top: 1px;
   }
@@ -303,7 +303,7 @@
     top: 3px;
   }
 
-  .mybtn-second{
+  .mybtn-second {
     position: relative;
     top: 8px;
   }
@@ -1486,7 +1486,7 @@
     height: 40px;
   }
 
-  .question-grid {
+  .result-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 8px;

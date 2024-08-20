@@ -96,8 +96,8 @@ const ProfileForm: React.FC = () => {
   };
 
   return (
-    <main className="md:flex flex-col md:w-[480px] md:h-[724px] md:bg-white md:shadow-boxShadowPc md:backdrop-blur-sm md:rounded-3xl md:p-10 p-4 sm:p-6 lg:p-8">
-      <header className="fixed top-0 left-0 w-full h-[44px] py-[6px] px-4 flex justify-between items-center bg-white/50 shadow-xl">
+    <main className="bg-[#fbfbfb] fixed left-0 top-0 justify-center rounded-md items-center w-full h-full z-[60] md:bg-white md:relative flex-col md:w-[480px] md:shadow-boxShadowPc md:backdrop-blur-sm md:rounded-3xl overflow-hidden md:pb-[56px]">
+      <header className="w-full h-[56px] py-[6px] px-4 flex justify-between items-center bg-white md:border-b shadow-[0px_2px_5px_0px_rgba(0,0,0,0.05)] md:h-[62px]">
         <h1 className="text-[16px] font-semibold leading-[130%] tracking-[-0.32px] font-sans">
           닉네임 / 프로필 수정
         </h1>
@@ -109,11 +109,11 @@ const ProfileForm: React.FC = () => {
           </Link>
         </div>
       </header>
-      <section className="flex flex-col w-full gap-1.5 py-1.5">
-        <div className="grid grid-flow-row ml-4 mt-[26px]">
+      <section className="flex flex-col w-full gap-1.5 py-1.5 px-4 md:px-[40px]">
+        <div className="grid grid-flow-row mt-[26px]">
           <div className="mb-[6px]">
             <div className="flex justify-start items-start self-stretch flex-grow-0 flex-shrink-0 gap-1">
-              <div className="flex-col justify-start items-start flex-grow bg-white/50">
+              <div className="flex-col justify-start items-start flex-grow">
                 <label className="flex-grow-0 flex-shrink-0 font-medium text-[14px] pl-[2px] leading-[21px] tracking-[-0.02em] text-[#4d4d4d]">
                   닉네임
                 </label>
@@ -121,7 +121,7 @@ const ProfileForm: React.FC = () => {
                   type="text"
                   value={nickname}
                   onChange={handleNicknameChange}
-                  className="w-full py-3 px-4 text-[#b3b3b3] pl-3 border border-[#808080] rounded-lg hover:border-blue-500 focus:border-blue-500 focus:outline-none"
+                  className="w-full py-3 px-4 pl-3 border border-[#808080] rounded-lg hover:border-blue-500 focus:border-blue-500 focus:outline-none"
                   placeholder="최대 8글자"
                 />
               </div>
@@ -141,7 +141,7 @@ const ProfileForm: React.FC = () => {
 
         <div className="flex justify-start items-center self-stretch flex-grow-0 flex-shrink-0  gap-0.5">
           <div className="flex gap-1 flex-grow w-[268px] text-xs text-left text-[#4d4d4d]">
-            <span className="ml-[16px]">
+            <span>
               <Image
                 src="images/ExclamationMarks/ExclamationMarks.svg"
                 alt=""
@@ -153,7 +153,7 @@ const ProfileForm: React.FC = () => {
           </div>
         </div>
       </section>
-      <section className="flex flex-col justify-start items-center gap-2 py-1.5 mt-[32px]">
+      <section className="flex flex-col justify-start items-center gap-2 py-1.5 mt-[32px] px-4 md:px-[40px]">
         <header className="flex justify-start self-stretch flex-grow-0 flex-shrink-0 gap-2 pl-0.5">
           <h2 className="flex-grow-0 flex-shrink-0 text-sm font-medium text-[#4d4d4d]">
             프로필
@@ -167,7 +167,7 @@ const ProfileForm: React.FC = () => {
               alt={`profile-icon-${index}`}
               width={34}
               height={34}
-              className={`border-2 rounded-md ${profileIcon === icon ? 'border-blue-200' : 'border-transparent'}`}
+              className={`border-2 rounded-md ${profileIcon === icon ? 'border-blue-200' : 'border-transparent'} mx-auto`}
               onClick={() => handleProfileIconSelect(icon)}
             />
           ))}
