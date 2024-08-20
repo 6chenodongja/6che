@@ -8,6 +8,7 @@ import React, {
   TouchEvent,
 } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 interface Outfit {
   imageSrc?: string;
@@ -436,12 +437,16 @@ const ThermometerStyle: React.FC = () => {
       </div>
 
       <div className="w-full flex flex-col items-center mb-8">
-        <button className="w-full md:w-[288px] md:h-[49px] md:text-[16px] px-4 py-2 mb-4 text-base bg-black text-white rounded-lg button-style hover:bg-[rgba(94,176,255,0.80)] active:bg-[#73AEE7]">
-          온도에 맞는 스타일
-        </button>
-        <button className="w-full md:w-[288px] md:h-[49px] md:text-[16px] px-4 py-2 border-2 border-black bg-white rounded-lg text-base button-style hover:border-[rgba(255,214,94,0.80)] hover:bg-[#FFF7D4] active:bg-[#E9E2C2] active:border-[rgba(255,214,94,0.80)]">
-          취향 코디 추천받기
-        </button>
+        <Link href={'/list'}>
+          <button className="w-full md:w-[288px] md:h-[49px] md:text-[16px] px-4 py-2 mb-4 text-base bg-black text-white rounded-lg button-style hover:bg-[rgba(94,176,255,0.80)] active:bg-[#73AEE7]">
+            온도에 맞는 스타일
+          </button>
+        </Link>
+        <Link href={'/survey'}>
+          <button className="w-full md:w-[288px] md:h-[49px] md:text-[16px] px-4 py-2 border-2 border-black bg-white rounded-lg text-base button-style hover:border-[rgba(255,214,94,0.80)] hover:bg-[#FFF7D4] active:bg-[#E9E2C2] active:border-[rgba(255,214,94,0.80)]">
+            취향 코디 추천받기
+          </button>
+        </Link>
       </div>
     </div>
   );
