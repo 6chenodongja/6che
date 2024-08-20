@@ -22,9 +22,6 @@ function LogoutButton({ className }: { className?: string }) {
           </div>,
           {
             autoClose: 2500,
-            icon: false,
-            closeButton: false,
-            className: 'custom-toast',
           },
         );
         setTimeout(() => {
@@ -33,21 +30,13 @@ function LogoutButton({ className }: { className?: string }) {
       } else {
         console.error('로그아웃에 실패하였습니다.');
         toast.error('로그아웃에 실패하였습니다. 다시 시도해주세요.', {
-          position: 'bottom-center',
           autoClose: 2500,
-          icon: false,
-          closeButton: false,
-          className: 'custom-toast',
         });
       }
     } catch (error) {
       console.error('로그아웃 중 오류 발생:', error);
       toast.error('로그아웃 중 오류가 발생했습니다.', {
-        position: 'bottom-center',
         autoClose: 2500,
-        icon: false,
-        closeButton: false,
-        className: 'custom-toast',
       });
     }
   };

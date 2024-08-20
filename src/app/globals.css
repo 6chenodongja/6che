@@ -212,7 +212,7 @@
     top: 6px;
     position: relative;
   }
-  .footer-item-my{
+  .footer-item-my {
     position: relative;
     top: 1px;
   }
@@ -303,7 +303,7 @@
     top: 3px;
   }
 
-  .mybtn-second{
+  .mybtn-second {
     position: relative;
     top: 8px;
   }
@@ -1486,7 +1486,7 @@
     height: 40px;
   }
 
-  .question-grid {
+  .result-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 8px;
@@ -1855,174 +1855,6 @@
   }
 }
 
-/* login, singup, signUpDone */
-/* 768px 이하*/
-/* @media (max-width: 767px) {
-  .auth-mb-container {
-    width: 100%;
-    max-width: full;
-    margin: 0 auto;
-    padding-top: 70px;
-    box-sizing: border-box;
-    background-color: #fafafa;
-  }
-
-  .mem-text {
-    position: relative;
-    top: -80px;
-  }
-
-  .nickbox {
-    position: relative;
-    top: -70px;
-    right: 3px;
-  }
-
-  .ten-text {
-    position: relative;
-    top: -70px;
-    margin-left: -194px;
-  }
-
-  .unavailable-text {
-    position: relative;
-    top: -1px;
-    margin-left: 2px;
-  }
-
-  .nick-text {
-    position: relative;
-    top: -8px;
-  }
-
-  .nick-inputbox {
-    position: relative;
-    margin-left: auto;
-    margin-right: auto;
-    width: 102%;
-  }
-
-  .emailtext {
-    margin-right: 10px;
-    position: relative;
-    left: 23px;
-    top: -37px;
-  }
-
-  .meilbox {
-    position: relative;
-    top: -20px;
-  }
-
-  .meilinputbox {
-    margin-left: auto;
-    margin-right: auto;
-    width: 87%;
-    font-size: 13px;
-    position: relative;
-    top: -36px;
-  }
-
-  .passwordbox {
-    position: relative;
-    top: -42px;
-    right: -14px;
-  }
-
-  .password-input-box {
-    position: relative;
-    margin-left: auto;
-    margin-right: auto;
-    width: 91%;
-  }
-
-  .pass-text {
-    position: relative;
-    top: -39px;
-    right: 47px;
-  }
-
-  .pass-error {
-    position: relative;
-    top: -46px;
-    margin-left: -56px;
-  }
-
-  .password2-input-box {
-    position: relative;
-    margin-left: auto;
-    margin-right: auto;
-    width: 88%;
-    top: -34px;
-  }
-
-  .auth-navigation {
-    position: absolute;
-    right: 35px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-family: Varela;
-    font-size: 18px;
-    font-weight: 400;
-    line-height: 130%;
-    width: 31px;
-    margin-top: -20px;
-  }
-
-  .check-box {
-    position: relative;
-    top: 10px;
-    margin-left: -87px;
-  }
-
-  .next-btn {
-    width: 100%;
-    max-width: 288px;
-    padding: 10px 12px;
-    margin-top: 15px;
-    border-radius: 8px;
-    background: var(--Black, #121212);
-    color: #fff;
-    text-align: center;
-  }
-} */
-
-/* 768px 이상 */
-/*
-@media (min-width: 768px) {
-  .auth-pc-container {
-    display: full;
-    justify-content: center;
-    align-items: center;
-    padding-top: 55px;
-    padding-bottom: 20px;
-    border-radius: 20px;
-  }
-  .auth-content {
-    width: 480px;
-    height: 724px;
-    border-radius: 24px;
-
-    /* overflow: hidden; */
-/* position: relative;
-    margin-top: 46px;
-    margin-bottom: 200px;
-    margin-left: 720px;
-    margin-right: 720px;
-  }
-} */
-
-/* @media (max-width: 768px) {
-  .bottom-box {
-    display: full;
-    justify-content: center;
-    align-items: center;
-    padding-top: 55px;
-    padding-bottom: 20px;
-    border-radius: 20px;
-  }
-} */
 /* 토스트 알림 스타일-1 */
 .label-style {
   color: #4d4d4d;
