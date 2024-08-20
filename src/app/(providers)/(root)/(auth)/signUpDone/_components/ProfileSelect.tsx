@@ -70,13 +70,15 @@ const ProfileSelect = () => {
 
   return (
     <main
-      className={`hidden absolute top-0 left-0 flex-col justify-center items-center rounded-t-2xl py-14 px-10 md:bg-white md:w-full md:h-full md:flex ${isClosing ? 'md:!hidden' : ''}`}
+      className={`hidden absolute top-0 left-0 flex-col justify-center items-center rounded-3xl py-14 px-10 md:bg-white md:w-full md:h-full md:flex ${isClosing ? 'md:!hidden' : ''}`}
     >
       {/* <div className="flex flex-col justify-center rounded-t-2xl py-14 px-10 bg-white/70 backdrop-blur-[10px] md:w-full md:h-full md:bg-white"> */}
       <div className="flex flex-col w-full h-full justify-between">
         <div className="text-center">
-          <h1 className="text-[18px] font-bold ">프로필 선택</h1>
-          <h2 className="text-[14px] font-normal">
+          <h1 className="text-[18px] font-bold font-headline-03 md:text-[24px] pb-3">
+            프로필 선택
+          </h1>
+          <h2 className="text-[14px] font-normal font-body-KR-small">
             프로필은 마이페이지에서 변경할 수 있습니다
           </h2>
         </div>
@@ -92,7 +94,7 @@ const ProfileSelect = () => {
                   alt={`profile-icon-${index}`}
                   width={34}
                   height={34}
-                  className={`border-2 rounded-md p-1 w-full ${profileIcon === icon ? 'border-[#7EC5FF]/60' : 'border-transparent'}`}
+                  className={`border-4 rounded-md p-1 w-full ${profileIcon === icon ? 'border-[#7EC5FF]/60' : 'border-transparent'}`}
                   onClick={() => handleProfileIconSelect(icon)}
                 />
               </div>
@@ -101,7 +103,7 @@ const ProfileSelect = () => {
           {/* <div className="flex justify-center items-center"> */}
           <button
             type="submit"
-            className="font-sans w-full py-[16px] px-3 rounded-lg shadow-sm text-center font-semibold text-[white] bg-[#121212] hover:bg-[#5EB0FFCC]"
+            className="font-button text-[16px] w-full py-[16px] px-3 rounded-lg shadow-sm text-center font-medium text-[white] bg-[#121212] hover:bg-[#5EB0FF]/80 active:bg-[#73aee7]"
           >
             선택 완료
           </button>

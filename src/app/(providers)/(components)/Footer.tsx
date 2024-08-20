@@ -33,9 +33,7 @@ const Footer = () => {
     return <></>;
   }
 
-  const handleMypageClick = (
-    e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
-  ) => {
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     if (!user) {
       e.preventDefault();
       setIsModalOpen(true);
@@ -93,7 +91,7 @@ const Footer = () => {
                 <Link
                   href="/mypage"
                   className="footer-link mybtn"
-                  onClick={handleMypageClick}
+                  onClick={handleClick}
                 >
                   마이페이지
                 </Link>
@@ -102,7 +100,7 @@ const Footer = () => {
                     <Link
                       className="footer-link footer-text2 footer-text-style2 mybtn mybtn-second"
                       href="/postLike"
-                      onClick={handleMypageClick}
+                      onClick={handleClick}
                     >
                       좋아요한 코디
                     </Link>
@@ -111,7 +109,7 @@ const Footer = () => {
                     <Link
                       className="footer-link footer-item-my footer-text2 mb-[32px] mybtn-second"
                       href="/myStyle"
-                      onClick={handleMypageClick}
+                      onClick={handleClick}
                     >
                       내 코디
                     </Link>
@@ -121,9 +119,7 @@ const Footer = () => {
             </ul>
           </nav>
         </div>
-
         <hr className="hr-class" />
-
         {/* 두 번째 섹션: 6체노동자 정보 */}
         <div className="design-div">
           <div className="footer-gitcontent">

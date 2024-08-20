@@ -25,15 +25,15 @@ const DeletesUserIdModalProps = ({
           <Image src="/x.svg" alt="close" width={24} height={24} className="" />
         </button>
         <div className="text-center">
-          <h2 className="text-[18px] font-KR font-semibold text-[#4D4D4D] tracking-[-0.36px]">
+          <h2 className="text-[18px] font-KR font-semibold text-[#4D4D4D] tracking-[-0.02px] text-center">
             탈퇴하시겠습니까?
           </h2>
-          <div className="text-[14px] text-[#4D4D4D] font-KR font-medium leading-[21px] tracking-[-1.2px] pt-1 pb-6">
+          <div className="text-[14px] text-[#4D4D4D] text-center font-KR font-medium leading-[21px] tracking-[-1.2px] pt-1 pb-6">
             <p>탈퇴 시 좋아요한 코디, 내 코디</p>
             <p>기록은 복구할 수 없습니다.</p>
           </div>
         </div>
-        <div className="flex justify-center mb-">
+        <div className="flex justify-center font-KR">
           <button
             onClick={onConfirm}
             className="text-[#FFF] rounded-lg py-[14px] px-3 font-semibold bg-[#ff4632e3] hover:bg-blue-300"
