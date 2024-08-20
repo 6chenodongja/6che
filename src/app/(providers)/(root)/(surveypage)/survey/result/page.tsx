@@ -166,12 +166,13 @@ const ResultPage: React.FC = () => {
                     <Image
                       src={
                         likes.includes(post.id)
-                          ? '/images/icons/rhaert.png'
-                          : '/images/icons/ghaert.png'
+                          ? '/images/LikeButton/LikeIconbutton.png'
+                          : '/images/LikeButton/NotLikeIconButton.png'
                       }
                       alt="Like button"
-                      width={24}
-                      height={24}
+                      width={28}
+                      height={28}
+                      sizes="100vw"
                       style={{
                         imageRendering: 'auto',
                         display: 'block',
