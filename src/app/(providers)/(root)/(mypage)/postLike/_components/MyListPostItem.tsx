@@ -26,7 +26,7 @@ function MyListPostItem({ post, isLiked, handleLike }: PostProps) {
             width={100}
             height={100}
             sizes="100"
-            className="w-[140px] h-[200px] object-cover rounded-lg md:w-[234px] md:h-[389px]"
+            className="w-[140px] h-[200px] object-cover rounded-lg md:w-[234px] md:h-[389px] md:rounded-lg"
             priority
           />
         )}

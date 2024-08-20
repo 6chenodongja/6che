@@ -2045,3 +2045,44 @@
     box-sizing: border-box;
   }
 }
+
+/* 포스트 있을 때  */
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .PostLike-container {
+    margin: 0 auto;
+    box-sizing: border-box;
+  }
+  .postLike-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1400px) {
+  .PostLike-container {
+    margin: 0 auto;
+    box-sizing: border-box;
+  }
+  .postLike-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+@media (min-width: 1400px) and (max-width: 1920px) {
+  .PostLike-container {
+    margin: 0 auto;
+    box-sizing: border-box;
+  }
+  .postLike-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    justify-content: center;
+    align-items: center;
+  }
+}

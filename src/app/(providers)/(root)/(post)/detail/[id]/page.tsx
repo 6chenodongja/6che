@@ -225,13 +225,13 @@ function PostDetail({ params }: { params: { id: string } }) {
               <div className="flex flex-row gap-1 ">
                 <button
                   onClick={deleteModal}
-                  className="flex justify-center items-center bg-[#FF4732]/85 text-white rounded-xl px-[10px] py-[8px]"
+                  className="flex justify-center items-center bg-[#FF4732]/85 text-white rounded-xl px-[10px] py-[8px] transition duration-100 hover:bg-[#5EB0FF]"
                 >
                   삭제
                 </button>
                 <button
-                  onClick={() => router.push(`/edit/${params.id}`)}
-                  className="bg-[#121212] text-white rounded-xl px-[10px] py-[8px]"
+                  onClick={() => router.push(`/postform?id=${params.id}`)} // 게시글 ID를 쿼리 파라미터로 전달
+                  className="flex justify-center items-center bg-[#121212] text-white mr-4 rounded-xl px-[10px] py-[8px] transition duration-100 hover:bg-[#5EB0FF]"
                 >
                   수정
                 </button>
@@ -281,10 +281,10 @@ function PostDetail({ params }: { params: { id: string } }) {
           <div className="flex flex-col gap-2.5 mt-2 ml-auto">
             <div className="flex justify-between items-center self-stretch flex-grow-0 flex-shrink-0">
               <div className="flex justify-between items-center flex-grow-0 flex-shrink-0 gap-[5px]">
-                {user?.profileImage && (
+                {DetailList?.users?.avatar && (
                   <Image
-                    src={user.profileImage}
-                    alt="프로필 이미지"
+                    src={DetailList?.users?.avatar}
+                    alt="profile-icon"
                     width={24}
                     height={24}
                   />
@@ -346,7 +346,7 @@ function PostDetail({ params }: { params: { id: string } }) {
 
         {/* 모달 부분 */}
         {modalOpen && (
-          <div className="flex md:hidden inset-0 bg-black/20 z-50 fixed justify-center items-center ">
+          <div className="flex md:hidden inset-0 bg-black/20 z-50 fixed justify-center items-center">
             <div className="flex flex-col background w-[273px] h-[455px] rounded-2xl box-shadow backdrop-filter p-2">
               <button
                 onClick={clickModal}
@@ -392,7 +392,7 @@ function PostDetail({ params }: { params: { id: string } }) {
                 </Swiper>
               </div>
               {/* 카카오톡 공유*/}
-              <div className="flex justify-around items-center px-[25px] mt-5">
+              <div className="flex justify-around items-center px-[25px] mt-5 relative">
                 <div className="flex flex-col items-center">
                   <button
                     onClick={handleShearToKakao}
@@ -414,11 +414,11 @@ function PostDetail({ params }: { params: { id: string } }) {
                       />
                     </svg>
                   </button>
-                  <span className="mt-[7px] text">카카오톡</span>
+                  <span className="mt-[7px] text absolute top-0">카카오톡</span>
                 </div>
 
                 {/* 링크복사 */}
-                <div className="flex flex-col items-center justify-center">
+                <div className="flex flex-col items-center justify-center relative">
                   <button
                     onClick={copyURL}
                     className="w-10 h-10 bg-white text-white rounded-full middle-box-shadow middle-backdrop-filter"
@@ -461,7 +461,7 @@ function PostDetail({ params }: { params: { id: string } }) {
                       />
                     </svg>
                   </button>
-                  <span className="mt-[7px] text">링크복사</span>
+                  <span className="mt-[7px] text absolute top-0">링크복사</span>
                 </div>
               </div>
             </div>
@@ -563,7 +563,14 @@ function PostDetail({ params }: { params: { id: string } }) {
             <div className="flex flex-col gap-[5px] ml-6 mr-6 w-full">
               <div className="flex justify-between w-full">
                 <div className="flex items-center flex-grow-0 flex-shrink-0 gap-[5px]">
-                  <DetailNicknameIcon />
+                  {DetailList?.users?.avatar && (
+                    <Image
+                      src={DetailList?.users?.avatar}
+                      alt="profile-icon"
+                      width={24}
+                      height={24}
+                    />
+                  )}
                   <p className="flex-grow-0 flex-shrink-0 font-semibold text-[#333] text-[24px] leading-[31.2px] tracking-[-0.48px] font-KR">
                     {DetailList?.users?.nick_name}
                   </p>
@@ -621,13 +628,13 @@ function PostDetail({ params }: { params: { id: string } }) {
               <div className="flex flex-row gap-1 mt-auto absolute bottom-8 right-8">
                 <button
                   onClick={deleteModal}
-                  className="flex justify-center items-center bg-[#FF4732]/85 text-white rounded-xl px-[10px] py-[10px]"
+                  className="flex justify-center items-center bg-[#FF4732]/85 text-white rounded-xl px-[10px] py-[10px] transition duration-100 hover:bg-[#5EB0FF]"
                 >
                   삭제
                 </button>
                 <button
-                  onClick={() => router.push(`/edit/${params.id}`)}
-                  className="bg-[#121212] text-white rounded-xl px-[10px] py-[10px]"
+                  onClick={() => router.push(`/postform?id=${params.id}`)} // 게시글 ID를 쿼리 파라미터로 전달
+                  className="flex justify-center items-center bg-[#121212] text-white mr-4 rounded-xl px-[10px] py-[8px] transition duration-100 hover:bg-[#5EB0FF]"
                 >
                   수정
                 </button>
@@ -686,7 +693,7 @@ function PostDetail({ params }: { params: { id: string } }) {
             </div>
             {/* 카카오톡 공유*/}
             <div className="flex justify-around items-center px-[25px] mt-5">
-              <div className="flex flex-col items-center">
+              <div className="flex flex-col items-center relative">
                 <button
                   onClick={handleShearToKakao}
                   className="w-10 h-10 bg-[#FFD65E]/80 text-white rounded-full middle-box-shadow middle-backdrop-filter"
@@ -707,11 +714,11 @@ function PostDetail({ params }: { params: { id: string } }) {
                     />
                   </svg>
                 </button>
-                <span className="mt-[7px] text">카카오톡</span>
+                <span className="mt-[7px] text absolute top-0">카카오톡</span>
               </div>
 
               {/* 링크복사 */}
-              <div className="flex flex-col items-center justify-center">
+              <div className="flex flex-col items-center justify-center relative">
                 <button
                   onClick={copyURL}
                   className="w-10 h-10 bg-white text-white rounded-full middle-box-shadow middle-backdrop-filter"
@@ -754,7 +761,7 @@ function PostDetail({ params }: { params: { id: string } }) {
                     />
                   </svg>
                 </button>
-                <span className="mt-[7px] text">링크복사</span>
+                <span className="mt-[7px] text absolute top-0">링크복사</span>
               </div>
             </div>
           </div>

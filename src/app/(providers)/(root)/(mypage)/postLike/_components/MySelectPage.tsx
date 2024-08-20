@@ -126,7 +126,7 @@ function MySelectPage() {
         />
       </div>
 
-      <div className="max-w-[288px] mx-auto">
+      <div className="w-[288px] mx-auto md:w-full md:ml-4">
         <div className="flex justify-start items-center gap-[6px] flex-wrap">
           {Object.entries(selectedOptions).map(([key, options]) =>
             options.map((option) => (
