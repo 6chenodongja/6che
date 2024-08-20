@@ -12,7 +12,6 @@ import { useUserStore } from '@/zustand/store/useUserStore';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/supabase/client';
 import { PostDetailItem } from '../../../../../../../types/post';
-import DetailNicknameIcon from '../_components/icons/DetailNicknameIcon';
 import DetailLiveLikeIcon from '../_components/icons/DetailLiveLIkeIcon';
 
 function PostDetail({ params }: { params: { id: string } }) {
@@ -28,7 +27,7 @@ function PostDetail({ params }: { params: { id: string } }) {
   const [showModal, setShowModal] = useState(false);
 
   const router = useRouter();
-
+  // !
   const { user } = useUserStore();
 
   // 온도 정보만 추출하는 함수 추가

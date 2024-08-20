@@ -15,6 +15,7 @@ import { PostItemType, postListLikedType } from '../../../../../../types/post';
 import PostItem from './_components/PostItem';
 import ScrollButtons from './_components/ScrollButtons';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 function PostList() {
   const [likedPosts, setLikedPosts] = useState<postListLikedType[]>([]);
@@ -28,9 +29,16 @@ function PostList() {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [searchInput, setSearchInput] = useState<string>('');
   const [showSearchDropdown, setShowSearchDropdown] = useState<boolean>(false);
+  const [notUserModalOpen, setNotUserModalOpen] = useState(false);
   const router = useRouter();
 
   const { user } = useUserStore();
+
+  const notUserClickModal = () => setNotUserModalOpen(!notUserModalOpen);
+
+  const handleLogin = () => {
+    router.replace('/login');
+  };
 
   // 포스트 리스트 가져오기
   const fetchPosts = useCallback(
@@ -187,8 +195,7 @@ function PostList() {
   const handleLike = useCallback(
     async (postId: string) => {
       if (!user) {
-        alert('로그인이 되어있지 않습니다');
-        router.replace('/login');
+        notUserClickModal();
         return;
       }
 
@@ -339,6 +346,74 @@ function PostList() {
         ))}
         <ScrollButtons />
       </div>
+
+      {/* 768px 이하 모달 디자인 */}
+      {notUserModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50 md:hidden">
+          <div className="bg-white bg-opacity-70 shadow-[0_0_2px_0_rgba(0,0,0,0.05),4px_4px_20px_0_rgba(0,0,0,0.05)] backdrop-blur-[5px] w-[290px] max-w-full h-auto p-6 rounded-lg px-10 pt-10 pb-10 z-50">
+            <div className="text-center">
+              <button
+                title="x-icon"
+                onClick={() => setNotUserModalOpen(false)}
+                className="absolute top-2 right-2 rounded-full flex justify-end items-end p-2 hover:bg-black/5 focus:bg-black/10"
+              >
+                <Image src="/x.svg" alt="close" width={24} height={24} />
+              </button>
+              <h2 className="text-[18px] text-center font-medium leading-[130%] tracking-[-0.36px] font-KR text-[#4D4D4D]">
+                로그인이 필요한 기능입니다
+              </h2>
+            </div>
+            <div className="flex justify-center pt-[24px] gap-[11px]">
+              <button
+                onClick={() => setNotUserModalOpen(false)}
+                className="bg-gray-200 text-[16px] font-semibold leading-[130%] tracking-[-0.32px] text-[#4D4D4D] hover:bg-blue-300 rounded-lg px-4 py-2"
+              >
+                이전으로
+              </button>
+              <button
+                onClick={handleLogin}
+                className="text-[#FFF] bg-[#121212] hover:bg-blue-300 rounded-lg px-4 py-2 font-semibold"
+              >
+                로그인
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 768px 이상 모달 디자인 */}
+      {notUserModalOpen && (
+        <div className="hidden md:fixed md:inset-0 md:bg-black md:bg-opacity-40 md:flex md:justify-center md:items-center md:z-50">
+          <div className="bg-white bg-opacity-70 shadow-[0_0_2px_0_rgba(0,0,0,0.05),4px_4px_20px_0_rgba(0,0,0,0.05)] backdrop-blur-[5px] w-[290px] max-w-full h-auto p-6 rounded-lg px-10 pt-10 pb-10 z-50">
+            <div className="text-center">
+              <button
+                title="x-icon"
+                onClick={() => setNotUserModalOpen(false)}
+                className="absolute top-2 right-2 rounded-full flex justify-end items-end p-2 hover:bg-black/5 focus:bg-black/10"
+              >
+                <Image src="/x.svg" alt="close" width={24} height={24} />
+              </button>
+              <h2 className="text-[18px] text-center font-medium leading-[130%] tracking-[-0.36px] font-KR text-[#4D4D4D]">
+                로그인이 필요한 기능입니다
+              </h2>
+            </div>
+            <div className="flex justify-center pt-[24px] gap-[11px]">
+              <button
+                onClick={() => setNotUserModalOpen(false)}
+                className="bg-gray-200 text-[16px] font-semibold leading-[130%] tracking-[-0.32px] text-[#4D4D4D] hover:bg-blue-300 rounded-lg px-4 py-2"
+              >
+                이전으로
+              </button>
+              <button
+                onClick={handleLogin}
+                className="text-[#FFF] bg-[#121212] hover:bg-blue-300 rounded-lg px-4 py-2 font-semibold"
+              >
+                로그인
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

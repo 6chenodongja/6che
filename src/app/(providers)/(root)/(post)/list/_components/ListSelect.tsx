@@ -27,13 +27,27 @@ function ListSelects({
 }: ListSelectsProps) {
   const [isFilterOn, setIsFilterOn] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [isSearchOn, setIsSearchOn] = useState(false);
 
   const handleFilterClick = () => {
-    setIsFilterOn((prev) => !prev);
-    setShowDropdown((prev) => !prev);
-    if (showSearchDropdown) {
+    if (isSearchOn) {
+      setIsSearchOn(false);
       handleSearchClick();
     }
+
+    setIsFilterOn((prev) => !prev);
+
+    setShowDropdown((prev) => !isFilterOn);
+  };
+
+  const SearchClick = () => {
+    if (isFilterOn) {
+      setIsFilterOn(false);
+      setShowDropdown(false);
+    }
+
+    handleSearchClick();
+    setIsSearchOn((prev) => !prev);
   };
 
   const handleTabClick = (tab: string) => {
@@ -242,24 +256,43 @@ function ListSelects({
             <button
               className="flex justify-center items-center flex-grow-0 flex-shrink-0 overflow-hidden gap-2 p-1 rounded-[1000px]"
               style={{ filter: 'drop-shadow(0px 0px 4px rgba(0,0,0,0.08))' }}
-              onClick={handleSearchClick}
+              onClick={SearchClick}
             >
-              <svg
-                width={24}
-                height={24}
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                className="flex-grow-0 flex-shrink-0 w-6 h-6 relative"
-                preserveAspectRatio="xMidYMid meet"
-              >
-                <path
-                  fillRule="evenodd"
-                  clipRule="evenodd"
-                  d="M5.58333 10.1667C5.58333 7.63536 7.63536 5.58333 10.1667 5.58333C12.698 5.58333 14.75 7.63536 14.75 10.1667C14.75 12.698 12.698 14.75 10.1667 14.75C7.63536 14.75 5.58333 12.698 5.58333 10.1667ZM10.1667 3.75C6.62284 3.75 3.75 6.62284 3.75 10.1667C3.75 13.7105 6.62284 16.5833 10.1667 16.5833C13.7105 16.5833 16.5833 13.7105 16.5833 10.1667C16.5833 6.62284 13.7105 3.75 10.1667 3.75ZM16.3148 15.0185C15.9569 14.6605 15.3765 14.6605 15.0185 15.0185C14.6605 15.3765 14.6605 15.9569 15.0185 16.3148L18.6852 19.9815C19.0431 20.3395 19.6235 20.3395 19.9815 19.9815C20.3395 19.6235 20.3395 19.0431 19.9815 18.6852L16.3148 15.0185Z"
-                  fill="#121212"
-                />
-              </svg>
+              {isSearchOn ? (
+                <svg
+                  width={24}
+                  height={24}
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="flex-grow-0 flex-shrink-0 w-6 h-6 relative"
+                  preserveAspectRatio="xMidYMid meet"
+                >
+                  <path
+                    fillRule="evenodd"
+                    clipRule="evenodd"
+                    d="M5.58333 10.1667C5.58333 7.63536 7.63536 5.58333 10.1667 5.58333C12.698 5.58333 14.75 7.63536 14.75 10.1667C14.75 12.698 12.698 14.75 10.1667 14.75C7.63536 14.75 5.58333 12.698 5.58333 10.1667ZM10.1667 3.75C6.62284 3.75 3.75 6.62284 3.75 10.1667C3.75 13.7105 6.62284 16.5833 10.1667 16.5833C13.7105 16.5833 16.5833 13.7105 16.5833 10.1667C16.5833 6.62284 13.7105 3.75 10.1667 3.75ZM16.3148 15.0185C15.9569 14.6605 15.3765 14.6605 15.0185 15.0185C14.6605 15.3765 14.6605 15.9569 15.0185 16.3148L18.6852 19.9815C19.0431 20.3395 19.6235 20.3395 19.9815 19.9815C20.3395 19.6235 20.3395 19.0431 19.9815 18.6852L16.3148 15.0185Z"
+                    fill="#5EB0FF"
+                  />
+                </svg>
+              ) : (
+                <svg
+                  width={24}
+                  height={24}
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="flex-grow-0 flex-shrink-0 w-6 h-6 relative"
+                  preserveAspectRatio="xMidYMid meet"
+                >
+                  <path
+                    fillRule="evenodd"
+                    clipRule="evenodd"
+                    d="M5.58333 10.1667C5.58333 7.63536 7.63536 5.58333 10.1667 5.58333C12.698 5.58333 14.75 7.63536 14.75 10.1667C14.75 12.698 12.698 14.75 10.1667 14.75C7.63536 14.75 5.58333 12.698 5.58333 10.1667ZM10.1667 3.75C6.62284 3.75 3.75 6.62284 3.75 10.1667C3.75 13.7105 6.62284 16.5833 10.1667 16.5833C13.7105 16.5833 16.5833 13.7105 16.5833 10.1667C16.5833 6.62284 13.7105 3.75 10.1667 3.75ZM16.3148 15.0185C15.9569 14.6605 15.3765 14.6605 15.0185 15.0185C14.6605 15.3765 14.6605 15.9569 15.0185 16.3148L18.6852 19.9815C19.0431 20.3395 19.6235 20.3395 19.9815 19.9815C20.3395 19.6235 20.3395 19.0431 19.9815 18.6852L16.3148 15.0185Z"
+                    fill="#121212"
+                  />
+                </svg>
+              )}
             </button>
             {showSearchDropdown && (
               <div

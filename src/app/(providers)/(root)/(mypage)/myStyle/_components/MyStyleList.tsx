@@ -205,7 +205,7 @@ function MyStyleList({
               </p>
             </Link>
             <Link href={'/postLike'}>
-              <p className="flex px-[16px] items-center self-stretch font-semibold">
+              <p className="flex px-[16px] items-center self-stretch font-medium font-KR">
                 좋아요한 코디
               </p>
             </Link>
@@ -238,7 +238,7 @@ function MyStyleList({
             handlePostDelete={handlePostDelete}
           />
 
-          <div className="postLike-grid grid grid-cols-2 gap-y-[20px] gap-x-[20px] ml-4">
+          <div className="postLike-grid grid grid-cols-2 mx-[20px] gap-[20px]">
             {posts.map((post) => {
               return (
                 <MyStylePostItem
