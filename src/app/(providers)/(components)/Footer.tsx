@@ -101,7 +101,7 @@ const Footer = () => {
                   <li>
                     <Link
                       href="/mypage"
-                      className="footer-link footer-text2 footer-text-style2 mybtn"
+                      className="footer-link footer-text2 footer-text-style2 mybtn mybtn-second"
                     >
                       좋아요한 코디
                     </Link>
@@ -109,7 +109,7 @@ const Footer = () => {
                   <li>
                     <Link
                       href="/mypage"
-                      className="footer-link footer-text2 mb-[32px]"
+                      className="footer-link footer-item-my footer-text2 mb-[32px] mybtn-second"
                     >
                       내 코디
                     </Link>
