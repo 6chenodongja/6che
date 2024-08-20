@@ -132,7 +132,7 @@ function MyListPage({ posts, setPosts }: PostsProps) {
         </div>
         <div className="md:flex md:flex-col md:PostLike-container justify-start">
           <MySelectPage />
-          <div className="postLike-grid grid grid-cols-2 mx-[20px]">
+          <div className="postLike-grid grid grid-cols-2 mx-[20px] gap-[20px]">
             {posts.map((post) => (
               <MyListPostItem
                 post={post}

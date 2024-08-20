@@ -284,7 +284,7 @@ function MyLikeFilter({
               )}
             </button>
             {showDropdown && (
-              <div className="hidden md:absolute -right-[10px] top-7 md:w-[288px] md:h-[165px] md:rounded-lg md:border-opacity-50 md:flex md:flex-col md:items-start md:p-2 md:z-20 md:backdrop-blur-[5px] md:bg-white md:bg-opacity-90">
+              <div className="hidden md:absolute right-3 top-9 md:w-[288px] md:h-[165px] md:rounded-lg md:border-opacity-50 md:flex md:flex-col md:items-start md:p-2 md:z-20 md:backdrop-blur-[5px] md:bg-white md:bg-opacity-90">
                 <div className="flex flex-wrap gap-1 border-b border-gray-300 pb-1 mb-2">
                   {['유형', '날씨', '계절', '스타일', '장소'].map((item) => (
                     <button

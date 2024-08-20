@@ -1448,7 +1448,7 @@
     top: 79px;
   }
 
-  .grid {
+  .result-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 8px; /* 선택지 간 간격 */
@@ -1473,7 +1473,7 @@
     height: 40px;
   }
 
-  .grid {
+  .question-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 8px;
