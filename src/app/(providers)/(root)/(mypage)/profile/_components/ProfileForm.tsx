@@ -99,7 +99,7 @@ const ProfileForm: React.FC = () => {
   return (
     <main className="bg-[#fbfbfb] fixed left-0 top-0 justify-center rounded-md items-center w-full h-full z-[60] md:bg-white md:relative flex-col md:w-[480px] md:backdrop-blur-sm md:rounded-3xl overflow-hidden md:pb-[56px] md:shadow-2xl md:bg-blur-sm">
       <header className="w-full h-[56px] py-[6px] px-4 flex justify-between items-center bg-white md:border-b shadow-[0px_2px_5px_0px_rgba(0,0,0,0.05)] md:h-[62px]">
-        <h1 className="md:text-[16px] font-body-EN-medium font-semibold leading-[20.8px] tracking-[-0.02px]">
+        <h1 className="md:text-[16px] font-KR font-[500] leading-[20.8px] tracking-[-0.02px]">
           닉네임 / 프로필 수정
         </h1>
         <div className="">
@@ -115,7 +115,7 @@ const ProfileForm: React.FC = () => {
           <div className="mb-[6px]">
             <div className="flex justify-start items-start self-stretch flex-grow-0 flex-shrink-0 gap-1">
               <div className="flex-col justify-start items-start flex-grow">
-                <p className="tracking-[-2%] py-[6px]">
+                <p className="tracking-[-0.02px] py-[6px]">
                   <label
                     htmlFor="text"
                     className="pl-[2px] font-KR font-medium text-xs md:text-sm leading-[21px] tracking--0.02 "
@@ -133,12 +133,12 @@ const ProfileForm: React.FC = () => {
               </div>
             </div>
             {!nicknameAvailable && nickname && (
-              <p className="text-[#FF4732]/85 text-[12px] ml-1 mt-2">
+              <p className="text-[#FF4732]/85 text-[12px] ml-1 mt-2 font-caption font-[400] text-xs leading-[15.6px] tracking-[-0.02em]">
                 이미 사용하고 있는 닉네임입니다.
               </p>
             )}
             {nicknameAvailable && nickname && (
-              <p className="text-red-500 text-[12px] ml-1 mt-2">
+              <p className="text-red-500 text-[12px] ml-1 mt-2 font-caption font-[400] text-xs leading-[15.6px] tracking-[-0.02em]">
                 사용 가능한 닉네임이에요.
               </p>
             )}
@@ -155,13 +155,15 @@ const ProfileForm: React.FC = () => {
                 height={12}
               />
             </span>
-            <p>현재 닉네임 : {user?.nickname}</p>
+            <p className="font-caption font-[400] text-xs leading-[15.6px] tracking-[-0.02em]">
+              현재 닉네임 : {user?.nickname}
+            </p>
           </div>
         </div>
       </section>
       <section className="flex flex-col justify-start items-center gap-2 py-1.5 mt-[32px] px-4 md:px-[40px]">
         <header className="flex justify-start self-stretch flex-grow-0 flex-shrink-0 gap-2 pl-0.5">
-          <h2 className="flex-grow-0 flex-shrink-0 text-sm font-medium text-[#4d4d4d]">
+          <h2 className="flex-grow-0 flex-shrink-0 text-sm font-KR font-medium text-[#4d4d4d] md:text-sm leading-[21px] tracking--0.02">
             프로필
           </h2>
         </header>

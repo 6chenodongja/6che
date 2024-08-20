@@ -51,16 +51,16 @@ function MyPageContent() {
                   className="flex-grow-0 flex-shrink-0 rounded-[4px] shadow-[0_0_4px_0_rgba(18,18,18,0.1)]"
                 />
               )}
-              <div className="flex justify-start items-center self-stretch flex-grow-0 flex-shrink-0">
-                <span className="flex-grow-0 flex-shrink-0 text-lg font-semibold text-[16px] mb:text-[20px] leading-[23.4px] tracking-[-0.36px] text-left text-[#121212]">
+              <div className="flex justify-center items-center flex-grow-0 flex-shrink-0">
+                <span className="text-lg font-semibold leading-[23.4px] tracking-[-0.36px] text-left text-[#121212]">
                   {user?.nickname}
                 </span>
-                <span className="flex-grow-0 flex-shrink-0 text-lg text-left text-[18px] font-normal text-[#121212]">
+                <span className="text-lg font-KR text-left text-[18px] font-normal text-[#121212]">
                   님
                 </span>
               </div>
             </div>
-            <div className="flex justify-center items-center text-center py-[6px] px-3 rounded-lg bg-[#121212] hover:bg-blue-400 cursor-pointer md:items-start">
+            <div className="flex justify-center items-center text-center py-[6px] px-3 rounded-lg bg-[#121212] hover:bg-[#5EB0FF]/80 active:bg-black/10 cursor-pointer md:items-start">
               <button className="w-full h-full text-[12px] font-normal leading-[15.6px] tracking-[-0.02em] text-white font-body-KR-small">
                 <Link href={'/profile'} className="w-full h-full ">
                   수정
@@ -134,11 +134,11 @@ function MyPageContent() {
                 className="hover:bg-slate-50 rounded-lg "
                 onClick={openModal}
               >
-                <button className="text-[14px] font-body-KR-large md:text-[16px] md:font-body-KR-medium md:leading-[20.8px] leading-[18.2px] tracking-[-0.02px] px-3 py-2 focus:text-[#5EB0FF]/80">
+                <button className="text-[14px] rounded-lg font-body-KR-large md:text-[16px] md:font-body-KR-medium md:leading-[20.8px] leading-[18.2px] tracking-[-0.02px] px-3 py-2 hover:bg-[#ededed]/60 active:text-[#5EB0FF]/80 active:bg-black/10">
                   회원탈퇴
                 </button>
               </div>
-              <div className="hover:bg-slate-50 rounded-lg text-[14px] px-3 py-2  font-body-KR-large md:text-[16px] md:font-body-KR-medium md:leading-[20.8px] leading-[18.2px] tracking-[-0.02px] focus:text-[#5EB0FF]/80">
+              <div className="hover:bg-slate-50 rounded-lg text-[14px] px-3 py-2  font-body-KR-large md:text-[16px] md:font-body-KR-medium md:leading-[20.8px] leading-[18.2px] tracking-[-0.02px] hover:bg-[#ededed]/60 active:text-[#5EB0FF]/80 active:bg-black/10">
                 <LogoutButton className="focus:text-[#5EB0FF]/80" />
               </div>
             </div>
