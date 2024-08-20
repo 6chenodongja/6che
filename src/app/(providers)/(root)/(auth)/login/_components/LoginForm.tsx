@@ -43,9 +43,6 @@ function LoginForm() {
           </div>,
           {
             autoClose: 2500,
-            icon: false,
-            closeButton: false,
-            className: 'custom-toast',
           },
         );
 
@@ -56,21 +53,13 @@ function LoginForm() {
         }, 2500);
       } else {
         toast.error('로그인 실패. 다시 시도해주세요.', {
-          position: 'bottom-center',
           autoClose: 2500,
-          icon: false,
-          closeButton: false,
-          className: 'custom-toast',
         });
       }
     } catch (error) {
       console.error('로그인 중 오류 발생:', error);
       toast.error('아이디 또는 비밀번호를 확인해주세요.', {
-        position: 'bottom-center',
         autoClose: 2500,
-        icon: false,
-        closeButton: false,
-        className: 'custom-toast',
       });
     }
   };
@@ -143,7 +132,7 @@ function LoginForm() {
               아이디/비밀번호 찾기
               <Image
                 src="images/Thermometer/arrow_right.svg"
-                alt="오호"
+                alt=""
                 width={18}
                 height={18}
               />
