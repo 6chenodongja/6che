@@ -94,11 +94,7 @@ const convertFahrenheitToCelsius = (fahrenheit: number) => {
 
 // weather 아이콘을 반환하는 함수
 const getWeatherIconUrl = (weatherCode: string): string => {
-  console.log(`Received weather code: ${weatherCode}`);
-
-  // weatherCode에서 파일 이름만 추출
   const parsedCode = weatherCode.split(' ')[0];
-  console.log(`Parsed weather code: ${parsedCode}`);
 
   const iconMap: Record<string, string> = {
     '/sun.svg': '/images/Weather/sun.png',
@@ -110,9 +106,7 @@ const getWeatherIconUrl = (weatherCode: string): string => {
     '/sleet.svg': '/images/Weather/sleet.png',
   };
 
-  const url = iconMap[parsedCode] || '/icons/default.svg';
-  console.log(`Weather icon URL: ${url}`);
-  return url;
+  return iconMap[parsedCode] || '/icons/default.svg';
 };
 
 // 게시글 데이터를 가져오고 필터링하는 함수
@@ -151,7 +145,6 @@ const LocationInput = ({
 }: {
   setWeather: (weatherData: any) => void;
 }) => {
-  const [isEditing, setIsEditing] = useState(false);
   const [location, setLocation] = useState('서울시');
 
   type GeocodeAddressComponent = {
@@ -199,8 +192,6 @@ const LocationInput = ({
       } else {
         setLocation('위치 정보 없음');
       }
-
-      setIsEditing(false);
     } catch (error) {
       console.error('Failed to fetch location data', error);
       setLocation('위치 정보 없음');
@@ -229,24 +220,22 @@ const LocationInput = ({
   }, []);
 
   return (
-    <>
-      <div
-        className="h-[26px] md:h-[32px] px-2 py-1 bg-white/40 rounded-full shadow border border-white/50 linear-gradient(37deg, rgba(255,255,255,0.5018601190476191) 0%, rgba(255,255,255,0) 100%) background: rgb(255,255,255) backdrop-blur-[20px] justify-center items-center inline-flex md:w-[138px]"
-        style={{ zIndex: 1, cursor: 'pointer' }} // 위치 박스 z-index를 1로 설정하여 앞으로 보냄 및 cursor 속성 추가
-      >
-        <div className="justify-start items-center gap-0.5 flex">
-          <span
-            className="text-[#121212] text-xs md:text-[16px] font-normal font-['Noto Sans KR'] leading-none"
-            style={{ whiteSpace: 'nowrap', lineHeight: '1' }}
-          >
-            {location}
-          </span>
-        </div>
-        <div className="w-[18px] h-[18px] md:w-[24px] md:h-[24px] p-px justify-center items-center flex">
-          <IconLocation className="w-4 h-4 md:w-[24px] md:h-[24px]" />
-        </div>
+    <div
+      className="h-[26px] md:h-[32px] px-2 py-1 bg-white/40 rounded-full shadow border border-white/50 linear-gradient(37deg, rgba(255,255,255,0.5018601190476191) 0%, rgba(255,255,255,0) 100%) backdrop-blur-[20px] justify-center items-center inline-flex md:w-[138px]"
+      style={{ zIndex: 1, cursor: 'pointer' }}
+    >
+      <div className="justify-start items-center gap-0.5 flex">
+        <span
+          className="text-[#121212] text-xs md:text-[16px] font-normal font-['Noto Sans KR'] leading-none"
+          style={{ whiteSpace: 'nowrap', lineHeight: '1' }}
+        >
+          {location}
+        </span>
       </div>
-    </>
+      <div className="w-[18px] h-[18px] md:w-[24px] md:h-[24px] p-px justify-center items-center flex">
+        <IconLocation className="w-4 h-4 md:w-[24px] md:h-[24px]" />
+      </div>
+    </div>
   );
 };
 
@@ -300,10 +289,34 @@ const MainPage = () => {
     router.push('/survey');
   };
 
+  const currentHours = new Date().getHours();
+  const isNightTime = currentHours >= 18 || currentHours < 7;
+
+  const getBackgroundByTime = (hours: number) => {
+    if (hours >= 7 && hours < 9) {
+      return 'linear-gradient(180deg, rgba(41,140,255,1) 0%, rgba(95,163,243,0.6) 34%, rgba(255,149,24,0.3) 69%, rgba(255,205,30,0.1) 100%)';
+    } else if (hours >= 9 && hours < 13) {
+      return 'linear-gradient(180deg, rgba(41,140,255,0.8) 0%, rgba(95,163,243,0.5) 34%, rgba(156,190,229,0.2) 69%, rgba(255,255,255,0) 100%)';
+    } else if (hours >= 13 && hours < 16) {
+      return 'linear-gradient(180deg, rgba(41,140,255,1) 0%, rgba(81,158,248,0.7) 34%, rgba(95,163,243,0.3) 69%, rgba(95,163,243,0) 100%)';
+    } else if (hours >= 16 && hours < 18) {
+      return 'linear-gradient(180deg, rgba(41,140,255,1) 0%, rgba(81,108,248,0.6) 34%, rgba(255,149,24,0.3) 69%, rgba(255,205,30,0.1) 100%)';
+    } else if (hours >= 18 && hours < 20) {
+      return 'linear-gradient(180deg, rgba(7,39,122,1) 0%, rgba(20,80,183,0.6) 47%, rgba(183,25,34,0.3) 87%, rgba(255,178,30,0.1) 100%)';
+    } else {
+      return 'linear-gradient(180deg, rgba(17,25,47,1) 0%, rgba(26,35,66,0.6) 60%, rgba(34,45,92,0) 100%)';
+    }
+  };
+
+  const backgroundStyle = {
+    background: getBackgroundByTime(currentHours),
+  };
+  const textColor = isNightTime ? 'text-white' : 'text-[#121212]';
+  const iconSrc = isNightTime ? '/images/Up_Moon.svg' : '/images/Up_Sun.svg';
+  const iconAlt = isNightTime ? 'Up_Moon' : 'Up_Sun';
+
   // 날씨 데이터를 업데이트하는 함수
   const updateWeatherData = useCallback((data: any) => {
-    console.log('Weather Data:', data); // 전체 데이터 출력
-
     if (data && data.current) {
       setWeather(data.current);
 
@@ -319,22 +332,11 @@ const MainPage = () => {
 
       const uvIndex =
         data.current?.UVIndex ?? data.dailyForecasts?.[0]?.UVIndex ?? 'N/A';
-      console.log('UV Index:', uvIndex);
 
-      // 여기서 data 객체를 콘솔로 확인하여 일출과 일몰 시간이 어디에 존재하는지 확인
-      console.log('data.current.Sun:', data.current.Sun); // 예상되는 위치에서 Sun 정보 출력
-      console.log('data.dailyForecasts[0].Sun:', data.dailyForecasts?.[0]?.Sun); // 예상되는 위치에서 Sun 정보 출력
-      console.log('Full Weather Data:', JSON.stringify(data, null, 2));
-
-      // Sun 객체가 없는 경우 undefined 처리 방지 및 로그 확인
       const sunriseTime = data?.dailyForecasts?.[0]?.Sun?.Rise ?? '준비 중';
       const sunsetTime = data?.dailyForecasts?.[0]?.Sun?.Set ?? '준비 중';
-      console.log('Sunrise Time:', sunriseTime); // 일출 시간 출력
-      console.log('Sunset Time:', sunsetTime); // 일몰 시간 출력
 
-      // 풍속 데이터를 가져오고, 값이 없거나 0일 때 0으로 설정
       const windSpeed = data.current.Wind?.Speed?.Metric?.Value ?? 0;
-      console.log('풍속', windSpeed, 'km/h');
 
       setExtraWeatherInfo([
         {
@@ -459,34 +461,6 @@ const MainPage = () => {
     });
   };
 
-  // 클라이언트에서 시간대에 따른 배경색과 텍스트 색상 설정을 관리하는 부분
-  const [backgroundStyle, setBackgroundStyle] = useState({});
-  const [textColor, setTextColor] = useState('text-[#121212]');
-
-  useEffect(() => {
-    const currentHours = new Date().getHours();
-
-    const getBackgroundByTime = (hours: number) => {
-      if (hours >= 7 && hours < 9) {
-        return 'linear-gradient(180deg, rgba(41,140,255,1) 0%, rgba(95,163,243,0.6) 34%, rgba(255,149,24,0.3) 69%, rgba(255,205,30,0.1) 100%)';
-      } else if (hours >= 9 && hours < 13) {
-        return 'linear-gradient(180deg, rgba(41,140,255,0.8) 0%, rgba(95,163,243,0.5) 34%, rgba(156,190,229,0.2) 69%, rgba(255,255,255,0) 100%)';
-      } else if (hours >= 13 && hours < 16) {
-        return 'linear-gradient(180deg, rgba(41,140,255,1) 0%, rgba(81,158,248,0.7) 34%, rgba(95,163,243,0.3) 69%, rgba(95,163,243,0) 100%)';
-      } else if (hours >= 16 && hours < 18) {
-        return 'linear-gradient(180deg, rgba(41,140,255,1) 0%, rgba(81,108,248,0.6) 34%, rgba(255,149,24,0.3) 69%, rgba(255,205,30,0.1) 100%)';
-      } else if (hours >= 18 && hours < 20) {
-        return 'linear-gradient(180deg, rgba(7,39,122,1) 0%, rgba(20,80,183,0.6) 47%, rgba(183,25,34,0.3) 87%, rgba(255,178,30,0.1) 100%)';
-      } else {
-        return 'linear-gradient(180deg, rgba(17,25,47,1) 0%, rgba(26,35,66,0.6) 60%, rgba(34,45,92,0) 100%)';
-      }
-    };
-
-    const isNightTime = currentHours >= 18 || currentHours < 7;
-    setTextColor(isNightTime ? 'text-white' : 'text-[#121212]');
-    setBackgroundStyle({ background: getBackgroundByTime(currentHours) });
-  }, []);
-
   const handleElementSelection = (elements: string[]) => {
     setSelectedWeatherElements(elements);
   };
@@ -543,36 +517,26 @@ const MainPage = () => {
               right: '-84px',
               width: '94px',
               height: '94px',
-              zIndex: 0, // 뒤쪽에 배치
+              zIndex: 0,
             }}
           >
             <Image
-              src={(() => {
-                const currentHours = new Date().getHours();
-                return currentHours >= 18 || currentHours < 7
-                  ? '/images/Up_Moon.svg'
-                  : '/images/Up_Sun.svg';
-              })()}
-              alt={(() => {
-                const currentHours = new Date().getHours();
-                return currentHours >= 18 || currentHours < 7
-                  ? 'Up_Moon'
-                  : 'Up_Sun';
-              })()}
+              src={iconSrc}
+              alt={iconAlt}
               className="object-contain"
               width={94}
               height={94}
             />
           </div>
 
-          <div
+          {/* <div
             className="absolute"
             style={{
               top: '35px',
               right: '9px',
               width: '189px',
               height: '115px',
-              zIndex: 1, // 뒤쪽에 배치
+              zIndex: 1,
             }}
           >
             <Image
@@ -587,9 +551,9 @@ const MainPage = () => {
           <div
             className="absolute"
             style={{
-              top: '-23px', // 새로운 이미지의 위치 조정
-              right: '-124px', // 새로운 이미지의 위치 조정
-              zIndex: 0, // 뒤쪽에 배치
+              top: '-23px',
+              right: '-124px',
+              zIndex: 0,
             }}
           >
             <Image
@@ -599,7 +563,7 @@ const MainPage = () => {
               width={113}
               height={53}
             />
-          </div>
+          </div> */}
 
           <div
             className="relative w-[75px] h-[64px] mt-[15px] md:w-[100px] md:h-[85px]"
@@ -659,7 +623,7 @@ const MainPage = () => {
         </div>
 
         <h2
-          className={`${textColor} text-base font-black font-['Noto Sans KR'] leading-tight mt-[34px] block md:hidden`}
+          className={`${textColor} text-base font-weight:500px font-['Noto Sans KR'] leading-tight mt-[34px] block md:hidden`}
         >
           오늘 옷차림
         </h2>
@@ -1070,8 +1034,6 @@ const MainPage = () => {
                     return ((fahrenheit - 32) * 5) / 9;
                   };
 
-                  console.log('isMidnightTransition:', isMidnightTransition);
-
                   return (
                     <React.Fragment key={index}>
                       {isMidnightTransition && (
@@ -1179,7 +1141,7 @@ const MainPage = () => {
                       <div className="justify-center items-center gap-[11px] flex">
                         <div className="justify-start items-center gap-1 flex">
                           <div className="w-8 h-8 p-0.5 justify-center items-center flex">
-                            <div className="w-7 h-7 px-[2.33px] py-[5.83px] bg-white/60 rounded justify-center items-center inline-flex">
+                            {/* <div className="w-7 h-7 px-[2.33px] py-[5.83px] bg-white/60 rounded justify-center items-center inline-flex">
                               <div className="relative w-[23.33px] h-[16.33px]">
                                 <Image
                                   src="/images/Weather/sunset.svg"
@@ -1188,7 +1150,7 @@ const MainPage = () => {
                                   objectFit="cover"
                                 />
                               </div>
-                            </div>
+                            </div> */}
                           </div>
                           <div className="text-center text-black text-base font-normal font-['Varela'] leading-tight">
                             {Math.round(
@@ -1202,7 +1164,7 @@ const MainPage = () => {
                         <div className="w-0.5 h-6 bg-[#e6e6e6]/60 rounded-sm" />
                         <div className="justify-start items-center gap-1.5 flex">
                           <div className="w-8 h-8 p-0.5 justify-center items-center flex">
-                            <div className="w-7 h-7 px-[3.50px] pt-[3.50px] pb-[3.28px] bg-white/60 rounded justify-center items-center inline-flex">
+                            {/* <div className="w-7 h-7 px-[3.50px] pt-[3.50px] pb-[3.28px] bg-white/60 rounded justify-center items-center inline-flex">
                               <div className="relative w-[21px] h-[21.22px]">
                                 <Image
                                   src="/images/Weather/sunrise.svg"
@@ -1211,7 +1173,7 @@ const MainPage = () => {
                                   objectFit="cover"
                                 />
                               </div>
-                            </div>
+                            </div> */}
                           </div>
                           <div className="text-center text-black text-base font-normal font-['Varela'] leading-tight">
                             {Math.round(
@@ -1238,7 +1200,6 @@ const MainPage = () => {
         />
       )}
     </div>
-    
   );
 };
 

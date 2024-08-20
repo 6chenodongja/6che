@@ -18,10 +18,10 @@ const SurveyLayout: React.FC = () => {
 
   return (
     <div
-      className={`survey-container flex flex-col justify-center items-center w-full min-h-screen ${notoSansKR.className}`}
+      className={`survey-container bg-#FAFAFA flex flex-col justify-center items-center w-full min-h-screen ${notoSansKR.className}`}
     >
       <div
-        className="survey-content bg-#fafafa flex-grow flex flex-col items-center justify-between w-full max-w-lg mx-auto"
+        className="survey-content bg-#FFF flex-grow flex flex-col items-center justify-between w-full max-w-lg mx-auto"
         style={{}}
       >
         {showQuestionPage ? (

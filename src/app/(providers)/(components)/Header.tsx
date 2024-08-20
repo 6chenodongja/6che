@@ -114,8 +114,28 @@ const Header = () => {
         ></div>
         <div className="relative w-full h-full flex items-center px-4">
           <div className="flex-1 flex justify-start md:hidden">
-            <button title="button" onClick={handleMenuToggle}>
-              <Image src="/images/menu.png" alt="메뉴" width={24} height={24} />
+            <button
+              title="button"
+              onClick={handleMenuToggle}
+              style={{
+                padding: '8px',
+                width: '40px',
+                height: '40px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                border: 'none',
+                background: 'none',
+                cursor: 'pointer',
+              }}
+            >
+              <Image
+                src="/images/menu.svg"
+                alt="메뉴"
+                width={28}
+                height={28}
+                sizes="100vw"
+              />
             </button>
           </div>
           <div className="md:flex-1 flex justify-center md:justify-start">
@@ -155,7 +175,7 @@ const Header = () => {
               <li>
                 <button
                   onClick={() => handleLinkClick('/')}
-                  className={`nav-button ${
+                  className={`nav-button  ${
                     activeLink === '/' ? 'active-link' : ''
                   }`}
                 >
@@ -165,7 +185,7 @@ const Header = () => {
               <li>
                 <button
                   onClick={() => handleLinkClick('/list')}
-                  className={`nav-button ${
+                  className={`nav-button2 ${
                     activeLink === '/list' ? 'active-link' : ''
                   }`}
                 >
@@ -175,7 +195,7 @@ const Header = () => {
               <li>
                 <button
                   onClick={() => handleLinkClick('/thermometer-style')}
-                  className={`nav-button ${
+                  className={`nav-button3 ${
                     activeLink === '/thermometer-style' ? 'active-link' : ''
                   }`}
                 >
@@ -185,7 +205,7 @@ const Header = () => {
               <li>
                 <button
                   onClick={() => handleLinkClick('/survey')}
-                  className={`nav-button ${
+                  className={`nav-button4 ${
                     activeLink === '/survey' ? 'active-link' : ''
                   }`}
                 >
@@ -231,7 +251,7 @@ const Header = () => {
                 }`}
                 onClick={() => handleLinkClick('/list')}
               >
-                스타일
+                코디
               </Link>
             </li>
             <li>
@@ -244,7 +264,7 @@ const Header = () => {
                 }`}
                 onClick={() => handleLinkClick('/thermometer-style')}
               >
-                옷 차림
+                옷차림
               </Link>
             </li>
             <li>

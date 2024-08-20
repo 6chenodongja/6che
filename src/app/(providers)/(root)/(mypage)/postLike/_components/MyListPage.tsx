@@ -101,11 +101,11 @@ function MyListPage({ posts, setPosts }: PostsProps) {
         <div className="flex justify-center">
           <div className="md:w-[220px] md:h-[170px] md:px-[8xp] md:py-[16px] md:flex md:flex-col md:rounded-[12px] md:opacity-50 md:gap-[4px] md:mt-[20px] md:justify-around md:shadow-[0_2px_10px_0_rgba(0,0,0,0.05)] bg-[#FFF]">
             <Link href={'/mypage'}>
-              <p className="flex px-[16px] items-center font-KR text-[14px] font-medium leading-[18.2px] -tracking-[0.28] text-[#4D4D4D]">
+              <p className="flex px-[16px] items-center font-KR text-[14px] font-normal leading-[18.2px] -tracking-[1.28] text-[#4D4D4D]">
                 마이페이지
               </p>
             </Link>
-            <p className="flex px-[16px] items-center flex-row justify-between text-[#298CFF] font-bold">
+            <p className="flex px-[16px] items-center flex-row justify-between text-[#298CFF] font-semibold">
               좋아요한 코디
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -124,7 +124,7 @@ function MyListPage({ posts, setPosts }: PostsProps) {
               </svg>
             </p>
             <Link href={'/myStyle'}>
-              <p className="flex px-[16px] items-center self-stretch text-[16px] font-semibold">
+              <p className="flex px-[16px] items-center text-[16px] font-medium font-KR">
                 내 코디
               </p>
             </Link>
