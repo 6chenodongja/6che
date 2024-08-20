@@ -230,8 +230,8 @@ function PostDetail({ params }: { params: { id: string } }) {
                   삭제
                 </button>
                 <button
-                  onClick={() => router.push(`/edit/${params.id}`)}
-                  className="bg-[#121212] text-white rounded-xl px-[10px] py-[8px] transition duration-100 hover:bg-[#5EB0FF]"
+                  onClick={() => router.push(`/postform?id=${params.id}`)} // 게시글 ID를 쿼리 파라미터로 전달
+                  className="flex justify-center items-center bg-[#121212] text-white mr-4 rounded-xl px-[10px] py-[8px] transition duration-100 hover:bg-[#5EB0FF]"
                 >
                   수정
                 </button>
@@ -281,10 +281,10 @@ function PostDetail({ params }: { params: { id: string } }) {
           <div className="flex flex-col gap-2.5 mt-2 ml-auto">
             <div className="flex justify-between items-center self-stretch flex-grow-0 flex-shrink-0">
               <div className="flex justify-between items-center flex-grow-0 flex-shrink-0 gap-[5px]">
-                {user?.profileImage && (
+                {DetailList?.users?.avatar && (
                   <Image
-                    src={user.profileImage}
-                    alt="프로필 이미지"
+                    src={DetailList?.users?.avatar}
+                    alt="profile-icon"
                     width={24}
                     height={24}
                   />
@@ -563,10 +563,10 @@ function PostDetail({ params }: { params: { id: string } }) {
             <div className="flex flex-col gap-[5px] ml-6 mr-6 w-full">
               <div className="flex justify-between w-full">
                 <div className="flex items-center flex-grow-0 flex-shrink-0 gap-[5px]">
-                  {user?.profileImage && (
+                  {DetailList?.users?.avatar && (
                     <Image
-                      src={user.profileImage}
-                      alt="프로필 이미지"
+                      src={DetailList?.users?.avatar}
+                      alt="profile-icon"
                       width={24}
                       height={24}
                     />
@@ -633,8 +633,8 @@ function PostDetail({ params }: { params: { id: string } }) {
                   삭제
                 </button>
                 <button
-                  onClick={() => router.push(`/edit/${params.id}`)}
-                  className="bg-[#121212] text-white rounded-xl px-[10px] py-[10px] transition duration-100 hover:bg-[#5EB0FF]"
+                  onClick={() => router.push(`/postform?id=${params.id}`)} // 게시글 ID를 쿼리 파라미터로 전달
+                  className="flex justify-center items-center bg-[#121212] text-white mr-4 rounded-xl px-[10px] py-[8px] transition duration-100 hover:bg-[#5EB0FF]"
                 >
                   수정
                 </button>
