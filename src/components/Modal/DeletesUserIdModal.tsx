@@ -16,7 +16,7 @@ const DeletesUserIdModalProps = ({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-[58]">
-      <div className="bg-white bg-opacity-70 rounded-2xl shadow-[0px_0px_2px_0px_rgba(0,0,0,0.05),4px_4px_20px_0px_rgba(0,0,0,0.05)] backdrop-blur-sm w-[281px] max-w-full h-auto p-6 z-50rounded-lg px-10 pt-10 pb-6 z-50">
+      <div className="bg-white bg-opacity-90 rounded-2xl shadow-[0px_0px_2px_0px_rgba(0,0,0,0.05),4px_4px_20px_0px_rgba(0,0,0,0.05)] backdrop-blur-sm w-[281px] max-w-full h-auto p-6 z-50rounded-lg px-10 pt-10 pb-6 z-50">
         <button
           title="x-icon"
           onClick={onClose}

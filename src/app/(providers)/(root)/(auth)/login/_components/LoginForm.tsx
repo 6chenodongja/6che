@@ -37,16 +37,6 @@ function LoginForm() {
           profileImage: res.data.avatar,
         });
 
-        // 로그인 성공 Toast
-        toast.success(
-          <div className="toast-message">
-            <span>로그인을 하였어요!</span>
-          </div>,
-          {
-            autoClose: 2500,
-          },
-        );
-
         setTimeout(() => {
           if (!sessionStorage.getItem('redirect')) {
             router.push('/');
@@ -88,7 +78,7 @@ function LoginForm() {
     <main className="block px-4 items-center justify-center space-x-2 md:py-10 md:flex md:w-full md:h-full">
       <form
         onSubmit={onSubmit}
-        className="h-full w-full md:w-[480px] md:h-[742px] md:bg-white md:px-10 md:rounded-3xl md:py-14"
+        className="h-full w-full md:w-[480px] md:h-[742px] md:bg-white md:px-10 md:rounded-3xl md:py-14 md:shadow-[0px_0px_1px_rgba(0,0,0,0.10),_0px_2px_10px_rgba(0,0,0,0.05)]"
       >
         <h1 className="text-[26px] pb-[20px] md:pb-[24px] text-center text-[#121212] font-bold leading-[26px] tracking-[-0.04px] font-headline-04 md:text-[24px] md:font-headline-03 md:leading-[31.2px]">
           로그인
@@ -107,7 +97,7 @@ function LoginForm() {
             type="email"
             id="email"
             ref={emailRef}
-            className="w-full h-full py-3 px-4 border-1 border-black-500 rounded-lg hover:border-blue-500 focus:border-blue-500 focus:outline-none"
+            className="w-full h-full py-3 px-4 border-1 border-black-500 rounded-lg hover:border-blue-500 focus:border-blue-500 focus:outline-none font-body-EN-medium font-[400] text-[16px]"
           />
         </div>
         {/* 비밀번호 input */}

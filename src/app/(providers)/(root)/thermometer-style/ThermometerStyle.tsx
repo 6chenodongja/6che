@@ -251,22 +251,20 @@ const ThermometerStyle: React.FC = () => {
     >
       <div className="flex flex-col items-center mt-5 mb-8">
         <div
-          className="relative mb-3 mt-15 temperature-display-container"
+          className="relative mb-4 mt-10 temperature-display-container"
           style={{
-            marginTop: '-41px',
+            marginTop: '-40px',
             overflow: 'hidden',
-            display: 'flex',
-            height: '60px',
-            padding: '9px 0px 9px 0px',
-            justifyContent: 'flex-end',
-            alignItems: 'center',
-            flexShrink: 0,
           }}
         >
           <div
             className={`${
               isDesktop ? 'w-[219px] h-[72px]' : 'w-[146px] h-[48px]'
             } relative bg-white rounded-3xl shadow-inner`}
+            style={{
+              boxShadow:
+                'inset 0px -1.5px 3px rgba(0, 0, 0, 0.02), inset 0px 0px 30px rgba(0, 0, 0, 0.08), inset 0px 3px 6px rgba(0, 0, 0, 0.06)',
+            }}
           >
             <div
               className={`absolute inset-0 flex items-center justify-center ${
@@ -438,12 +436,12 @@ const ThermometerStyle: React.FC = () => {
 
       <div className="w-full flex flex-col items-center mb-8">
         <Link href={'/list'}>
-          <button className="w-full md:w-[288px] md:h-[49px] md:text-[16px] px-4 py-2 mb-4 text-base bg-black text-white rounded-lg button-style hover:bg-[rgba(94,176,255,0.80)] active:bg-[#73AEE7]">
+          <button className="w-full md:w-[335px] md:h-[49px] md:text-[16px] px-4 py-2 mb-4 text-base bg-black text-white rounded-lg button-style hover:bg-[rgba(94,176,255,0.80)] active:bg-[#73AEE7]">
             온도에 맞는 스타일
           </button>
         </Link>
         <Link href={'/survey'}>
-          <button className="w-full md:w-[288px] md:h-[49px] md:text-[16px] px-4 py-2 border-2 border-black bg-white rounded-lg text-base button-style hover:border-[rgba(255,214,94,0.80)] hover:bg-[#FFF7D4] active:bg-[#E9E2C2] active:border-[rgba(255,214,94,0.80)]">
+          <button className="w-full md:w-[335px] md:h-[49px] md:text-[16px] px-4 py-2 border-2 border-black bg-white rounded-lg text-base button-style hover:border-[rgba(255,214,94,0.80)] hover:bg-[#FFF7D4] active:bg-[#E9E2C2] active:border-[rgba(255,214,94,0.80)]">
             취향 코디 추천받기
           </button>
         </Link>
