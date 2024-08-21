@@ -1,0 +1,24 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="weather piece/Moon">
+<g id="Subtract" filter="url(#filter0_f_8005_21764)">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M169.149 135.95C170.617 133.323 167.954 130.411 165.016 131.077C160.721 132.05 156.25 132.565 151.66 132.565C118.481 132.565 91.5838 105.707 91.5838 72.5771C91.5838 56.9704 97.5525 42.7557 107.335 32.0849C109.369 29.8661 108.149 26.117 105.137 26.09C104.91 26.0879 104.684 26.0869 104.457 26.0869C63.5758 26.0869 30.4348 59.1789 30.4348 100C30.4348 140.821 63.5758 173.913 104.457 173.913C132.27 173.913 156.5 158.596 169.149 135.95Z" fill="#FFC329" fill-opacity="0.8"/>
+</g>
+<g id="Subtract_2" filter="url(#filter1_b_8005_21764)">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M169.149 135.95C170.617 133.323 167.954 130.411 165.016 131.077C160.721 132.05 156.25 132.565 151.66 132.565C118.481 132.565 91.5838 105.707 91.5838 72.5771C91.5838 56.9704 97.5525 42.7557 107.335 32.0849C109.369 29.8661 108.149 26.117 105.137 26.09C104.91 26.0879 104.684 26.0869 104.457 26.0869C63.5758 26.0869 30.4348 59.1789 30.4348 100C30.4348 140.821 63.5758 173.913 104.457 173.913C132.27 173.913 156.5 158.596 169.149 135.95Z" fill="#FFC329"/>
+<path d="M165.127 131.564C166.404 131.275 167.621 131.763 168.358 132.607C169.089 133.444 169.33 134.602 168.713 135.706C156.149 158.201 132.082 173.413 104.457 173.413C63.8512 173.413 30.9348 140.544 30.9348 100C30.9348 59.4557 63.8512 26.5869 104.457 26.5869C104.682 26.5869 104.908 26.5879 105.132 26.5899C106.4 26.6013 107.289 27.3841 107.656 28.431C108.027 29.4875 107.85 30.783 106.966 31.747C97.1028 42.5064 91.0838 56.8404 91.0838 72.5771C91.0838 105.984 118.205 133.065 151.66 133.065C156.288 133.065 160.795 132.546 165.127 131.564Z" stroke="white" stroke-opacity="0.4"/>
+</g>
+</g>
+<defs>
+<filter id="filter0_f_8005_21764" x="10.4348" y="6.08691" width="179.13" height="187.826" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feGaussianBlur stdDeviation="10" result="effect1_foregroundBlur_8005_21764"/>
+</filter>
+<filter id="filter1_b_8005_21764" x="22.4348" y="18.0869" width="155.13" height="163.826" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feGaussianBlur in="BackgroundImageFix" stdDeviation="4"/>
+<feComposite in2="SourceAlpha" operator="in" result="effect1_backgroundBlur_8005_21764"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_backgroundBlur_8005_21764" result="shape"/>
+</filter>
+</defs>
+</svg>
