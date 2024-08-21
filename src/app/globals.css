@@ -1947,7 +1947,7 @@
   }
 }
 /* 950px~1920px 이상 화면에서의 스타일 */
-@media (min-width: 950px) and (max-width: 1920px) {
+@media (min-width: 950px) and (max-width: 2560px) {
   .list-container {
     width: 100%;
     margin: 0 auto;
@@ -1976,7 +1976,7 @@
     box-sizing: border-box;
   }
 }
-@media (min-width: 768px) and (max-width: 1920px) {
+@media (min-width: 768px) and (max-width: 2560px) {
   .detail-container {
     width: 100%;
     margin: 0 auto;
@@ -1996,7 +1996,7 @@
   }
 }
 
-@media (min-width: 768px) and (max-width: 1920px) {
+@media (min-width: 768px) and (max-width: 2560px) {
   .notPostLike-container {
     width: 100%;
     margin: 0 auto;
@@ -2051,7 +2051,7 @@
   }
 }
 
-@media (min-width: 1750px) and (max-width: 1920px) {
+@media (min-width: 1750px) and (max-width: 2560px) {
   .PostLike-container {
     margin: 0 auto;
     box-sizing: border-box;
