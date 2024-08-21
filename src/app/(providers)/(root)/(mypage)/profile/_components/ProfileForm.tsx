@@ -167,7 +167,7 @@ const ProfileForm: React.FC = () => {
             프로필
           </h2>
         </header>
-        <div className="grid grid-cols-5 md:grid-cols-6 gap-2 md:grid md:gap-[9.6px] md:gap-y-8 w-full h-full pl-[19px] pr-4 py-4 md:px-5 md:py-3 rounded-2xl bg-white shadow-[0_0_2px_0_rgba(0, 0, 0, 0.151),0_2px_20px_0_rgba(18, 18, 18, 0.178)] cursor-pointer">
+        <div className="grid gap-2 grid-cols-5 md:grid-cols-6 md:grid md:gap-[9.6px] md:gap-y-8 w-full h-full pl-[19px] pr-4 py-4 md:px-5 md:py-3 rounded-2xl bg-white shadow-[0_0_2px_0_rgba(0, 0, 0, 0.151),0_2px_20px_0_rgba(18, 18, 18, 0.178)] cursor-pointer">
           {profileIcons.map((icon, index) => (
             <Image
               key={index}

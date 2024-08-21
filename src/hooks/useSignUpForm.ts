@@ -3,12 +3,6 @@ import { debounce } from 'lodash';
 import { ErrorState, verifyField, checkNicknameDuplication, checkEmailDuplication } from '@/utils/verification';
 import { emailDomains } from '@/utils/emailDomains';
 
-// TODO: 
-/**
- * 1. 이메일 도메인 input 창 만들기 
- * 2. 
- */
-
 export const useSignUpForm = () => {
   const [nickname, setNickname] = useState<string>('');
   const [emailId, setEmailId] = useState<string>('');
