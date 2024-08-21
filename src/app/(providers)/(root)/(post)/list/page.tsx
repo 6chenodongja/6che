@@ -344,6 +344,7 @@ function PostList() {
             handleLike={handleLike}
           />
         ))}
+        <ScrollButtons />
       </div>
 
       {/* 768px 이하 모달 디자인 */}
