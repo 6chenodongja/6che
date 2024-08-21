@@ -92,7 +92,6 @@ function MyListPage({ posts, setPosts }: PostsProps) {
               handleLike={handleLike}
             />
           ))}
-          <ScrollButtons />
         </div>
       </div>
 
