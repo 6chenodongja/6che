@@ -9,9 +9,9 @@ const ScrollButtons = () => {
   };
 
   return (
-    <div className="fixed bottom-[32px]">
+    <div className="fixed bottom-[32px] right-[32px]">
       <button
-        className="flex justify-end items-end p-2 rounded-full hover:animate-up bg-white ml-[240px]"
+        className="flex justify-end items-end p-2 rounded-full hover:animate-up bg-[rgba(255,255,255,0.40)] ml-[240px] shadow-[0px_6px_12px_0px_rgba(0,0,0,0.12),_0px_4px_8px_0px_rgba(0,0,0,0.08),0px_0px_4px_0px_rgba(0,0,0,0.08)] backdrop-blur-[2px]"
         onClick={scrollToTop}
       >
         <svg
