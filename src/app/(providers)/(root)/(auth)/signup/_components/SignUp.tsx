@@ -81,22 +81,24 @@ function SingUp() {
     <main className="block px-4 items-center justify-center space-x-2 md:py-10 md:flex md:w-full md:h-full">
       <form
         onSubmit={onSubmit}
-        className="h-full w-full md:w-[480px] md:h-[742px] md:bg-white md:px-10 md:rounded-3xl md:py-14"
+        className="h-full w-full md:w-[480px] md:h-[742px] md:bg-white md:px-10 md:rounded-3xl md:py-14 md:shadow-[0px_0px_1px_rgba(0,0,0,0.10),_0px_2px_10px_rgba(0,0,0,0.05)]"
       >
         <h1 className="md:font-body-KR-medium text-[20px] md:text-[24px] md:pb-[24px] text-center text-[#121212] font-bold leading-[130%] tracking-[-0.4px] md:tracking-[-0.48px]">
           회원가입
         </h1>
         <div className="w-full">
           <div className="tracking-[-0.02px] py-[6px]">
-            <label
-              className={`pl-[2px] font-KR font-medium text-xs md:text-sm leading-[21px] tracking--0.02 ${
-                error.nickname
-                  ? 'pl-[2px] font-KR font-medium text-xs md:text-sm leading-[21px] tracking--0.02 text-[#FF4732]/85'
-                  : 'pl-[2px] font-KR font-medium text-xs md:text-sm leading-[21px] tracking--0.02 text-[#4d4d4d]'
-              }`}
-            >
-              닉네임
-            </label>
+            <p className="md:text-sm w-full text-sm pb-[6px] leading-[21px] font-subtitle-KR-small tracking-[-0.02px] text-[#4d4d4d]">
+              <label
+                className={`pl-[2px] font-KR font-medium text-xs md:text-sm leading-[21px] tracking--0.02 ${
+                  error.nickname
+                    ? 'pl-[2px] font-KR font-medium text-xs md:text-sm leading-[21px] tracking--0.02 text-[#FF4732]/85'
+                    : 'pl-[2px] font-KR font-medium text-xs md:text-sm leading-[21px] tracking--0.02 text-[#4d4d4d]'
+                }`}
+              >
+                닉네임
+              </label>
+            </p>
             <input
               type="text"
               onChange={handleChange('nickname')}
@@ -137,7 +139,7 @@ function SingUp() {
               </p>
             )}
           </div>
-          <div className="">
+          <div className="pt-[6px] pb-[6px]">
             <p className="pl-[2px] md:text-sm  tracking--0.02 font-KR w-full text-sm pb-[6px] leading-[21px] font-semibold tracking-[-0.02em] text-[#4d4d4d]">
               이메일
             </p>
@@ -171,7 +173,7 @@ function SingUp() {
                 })}
               </select>
             </div>
-            <div className="">
+            <div className="font-[400] font-caption text-[12px] tracking-[-0.02em] leading-[15.6px]">
               {error.email && (
                 <p className="py-[6px] text-[12px] flex gap-0.5 pb-2 pt-[7px] text-[#FF4732]/85">
                   <Image
@@ -201,28 +203,18 @@ function SingUp() {
                   {emailMessage}
                 </p>
               )}
-              {error.email && (
-                <p className="font-KR font-medium text-xs md:text-sm leading-[21px] tracking--0.02 text-black-700 text-[12px] flex gap-0.5 pt-[6px]">
-                  <Image
-                    src="images/ExclamationMarks/ExclamationMarks.svg"
-                    alt=""
-                    width={12}
-                    height={12}
-                    className=""
-                  />
-                  최대 8글자
-                </p>
-              )}
             </div>
           </div>
           <div className="font-KR font-medium text-xs md:text-sm leading-[21px] tracking--0.02 py-[6px]">
-            <label
-              className={`text-[14px] font-semibold leading-[150%] ml-[2px] ${
-                error.password ? 'text-[#FF4732]/85' : 'text-[#4d4d4d]'
-              }`}
-            >
-              비밀번호
-            </label>
+            <p className="pb-[6px]">
+              <label
+                className={`text-[14px] font-semibold leading-[150%] ml-[2px] ${
+                  error.password ? 'text-[#FF4732]/85' : 'text-[#4d4d4d]'
+                }`}
+              >
+                비밀번호
+              </label>
+            </p>
             <input
               type="password"
               onChange={handleChange('password')}
@@ -255,7 +247,7 @@ function SingUp() {
             )}
           </div>
           <div className="text-[#4D4D4D] py-[6px] font-KR font-medium text-xs md:text-sm leading-[21px] tracking--0.02">
-            <p>
+            <p className="pb-[6px]">
               <label
                 className={`pl-[2px] font-KR text-xs md:text-sm tracking--0.02 text-[14px] leading-[150%] font-semibold ${error.passwordConfirm ? 'text-[#FF4732]/85' : 'text-[#4d4d4d]'}`}
               >
@@ -296,7 +288,7 @@ function SingUp() {
           <div className="mb-[100px]">
             <button
               type="submit"
-              className={`py-3 px-4 w-full h-[49px] rounded-lg pl-[2px] font-KR font-medium text-xs md:text-base leading-[20.8px] tracking--0.02 text-[#4d4d4d] ${isFormValid ? 'bg-[#121212] text-white' : 'bg-black-100 text-black-300 active:bg-[#5EB0FF]/80'}`}
+              className={`py-3 px-4 w-full h-[49px] rounded-lg font-KR font-medium text-xs text-center md:text-base leading-[20.8px] tracking--0.02 text-[#4d4d4d] ${isFormValid ? 'bg-[#121212] text-white' : 'bg-black-100 text-black-300'}`}
               disabled={!isFormValid}
             >
               회원가입
