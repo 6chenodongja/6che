@@ -345,12 +345,11 @@ function PostList() {
           />
         ))}
       </div>
-      <ScrollButtons />
 
       {/* 768px 이하 모달 디자인 */}
       {notUserModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50 md:hidden">
-          <div className="bg-white bg-opacity-70 shadow-[0_0_2px_0_rgba(0,0,0,0.05),4px_4px_20px_0_rgba(0,0,0,0.05)] backdrop-blur-[5px] w-[290px] max-w-full h-auto p-6 rounded-lg px-10 pt-10 pb-10 z-50">
+          <div className="bg-white bg-opacity-90 shadow-[0_0_2px_0_rgba(0,0,0,0.05),4px_4px_20px_0_rgba(0,0,0,0.05)] backdrop-blur-[5px] w-[290px] max-w-full h-auto p-6 rounded-2xl px-10 pt-10 pb-6 z-50">
             <div className="text-center">
               <button
                 title="x-icon"
@@ -384,7 +383,7 @@ function PostList() {
       {/* 768px 이상 모달 디자인 */}
       {notUserModalOpen && (
         <div className="hidden md:fixed md:inset-0 md:bg-black md:bg-opacity-40 md:flex md:justify-center md:items-center md:z-50">
-          <div className="bg-white bg-opacity-70 shadow-[0_0_2px_0_rgba(0,0,0,0.05),4px_4px_20px_0_rgba(0,0,0,0.05)] backdrop-blur-[5px] w-[290px] max-w-full h-auto p-6 rounded-lg px-10 pt-10 pb-10 z-50">
+          <div className="bg-white bg-opacity-90 shadow-[0_0_2px_0_rgba(0,0,0,0.05),4px_4px_20px_0_rgba(0,0,0,0.05)] backdrop-blur-[5px] w-[290px] max-w-full h-auto p-6 rounded-2xl px-10 pt-10 pb-6 z-50">
             <div className="text-center">
               <button
                 title="x-icon"
