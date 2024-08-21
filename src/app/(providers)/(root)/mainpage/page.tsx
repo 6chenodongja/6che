@@ -947,7 +947,7 @@ const MainPage = () => {
                       </div>
                     </div>
 
-                    {/* 하단 텍스트 10px 고정 */}
+                    {/* 하단 텍스트 10px 고정d */}
                     <span className="absolute bottom-[10px] text-center text-[#121212] text-base font-normal font-['Varela'] leading-tight">
                       {info.value}
                     </span>
