@@ -15,19 +15,25 @@
 <br/>
 
 ## 📖 주요 기능
-### 로그인 / 회원가입 / 마이페이지
+### 로그인 / 회원가입
+![image (5)](https://github.com/user-attachments/assets/ec0fa090-ba92-4824-bc20-096aaa188f26)
+![image (6)](https://github.com/user-attachments/assets/4e2aa7b8-b361-45fb-88be-e9ab356294f3)
 
 
 ### 메인페이지, 현위치 온도 및 날씨 요소
-
+![image (8)](https://github.com/user-attachments/assets/f63f4ef6-9edb-4add-bd2d-abeb8d5e4e99)
 
 ### 설문 페이지
+![image (9)](https://github.com/user-attachments/assets/7ce43e13-539b-46ef-b976-2a47ba792bc5)
 
 
 ### 코디 게시글
+![image (10)](https://github.com/user-attachments/assets/ef4eed9c-8a63-42ef-9127-a91e313da04e)
 
 
 ### 기온 별 온차림
+![image (12)](https://github.com/user-attachments/assets/134d1c1a-1d23-4417-975e-006010381f50)
+![image (11)](https://github.com/user-attachments/assets/cf88278e-d66c-4e95-b0b4-d520c7765d06)
 
 
 ## 📌 서비스 아키텍처
@@ -443,6 +449,5 @@
  ┃ ┃ ┗ 📜useUserStore.ts
  ┗ 📜middleware.ts
 ```
-<br />
 ## 🔗 링크
-⛅  [TEAM NOTION](https://teamsparta.notion.site/B-6-6-bf97551c7cd443f7a8ba82d55d39a750)   
+### [⛅ TEAM NOTION](https://teamsparta.notion.site/B-6-6-bf97551c7cd443f7a8ba82d55d39a750)
