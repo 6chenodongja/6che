@@ -278,6 +278,10 @@ const MainPage = () => {
     string[]
   >([]);
   const [marginBottom, setMarginBottom] = useState('120px'); // 기본값을 설정
+  const [backgroundStyle, setBackgroundStyle] = useState({});
+  const [textColor, setTextColor] = useState('text-[#121212]');
+  const [iconSrc, setIconSrc] = useState('/images/Up_Sun.svg');
+  const [iconAlt, setIconAlt] = useState('Up_Sun');
 
   useEffect(() => {
     const updateMarginBottom = () => {
@@ -309,28 +313,33 @@ const MainPage = () => {
   const currentHours = new Date().getHours();
   const isNightTime = currentHours >= 18 || currentHours < 7;
 
-  const getBackgroundByTime = (hours: number) => {
-    if (hours >= 7 && hours < 9) {
-      return 'linear-gradient(180deg, rgba(41,140,255,1) 0%, rgba(95,163,243,0.6) 34%, rgba(255,149,24,0.3) 69%, rgba(255,205,30,0.1) 100%)';
-    } else if (hours >= 9 && hours < 13) {
-      return 'linear-gradient(180deg, rgba(41,140,255,0.8) 0%, rgba(95,163,243,0.5) 34%, rgba(156,190,229,0.2) 69%, rgba(255,255,255,0) 100%)';
-    } else if (hours >= 13 && hours < 16) {
-      return 'linear-gradient(180deg, rgba(41,140,255,1) 0%, rgba(81,158,248,0.7) 34%, rgba(95,163,243,0.3) 69%, rgba(95,163,243,0) 100%)';
-    } else if (hours >= 16 && hours < 18) {
-      return 'linear-gradient(180deg, rgba(41,140,255,1) 0%, rgba(81,108,248,0.6) 34%, rgba(255,149,24,0.3) 69%, rgba(255,205,30,0.1) 100%)';
-    } else if (hours >= 18 && hours < 20) {
-      return 'linear-gradient(180deg, rgba(7,39,122,1) 0%, rgba(20,80,183,0.6) 47%, rgba(183,25,34,0.3) 87%, rgba(255,178,30,0.1) 100%)';
-    } else {
-      return 'linear-gradient(180deg, rgba(17,25,47,1) 0%, rgba(26,35,66,0.6) 60%, rgba(34,45,92,0) 100%)';
-    }
-  };
+  useEffect(() => {
+    const currentHours = new Date().getHours();
+    const isNightTime = currentHours >= 18 || currentHours < 7;
 
-  const backgroundStyle = {
-    background: getBackgroundByTime(currentHours),
-  };
-  const textColor = isNightTime ? 'text-white' : 'text-[#121212]';
-  const iconSrc = isNightTime ? '/images/Up_Moon.svg' : '/images/Up_Sun.svg';
-  const iconAlt = isNightTime ? 'Up_Moon' : 'Up_Sun';
+    const getBackgroundByTime = (hours: number) => {
+      if (hours >= 7 && hours < 9) {
+        return 'linear-gradient(180deg, rgba(41,140,255,1) 0%, rgba(95,163,243,0.6) 34%, rgba(255,149,24,0.3) 69%, rgba(255,205,30,0.1) 100%)';
+      } else if (hours >= 9 && hours < 13) {
+        return 'linear-gradient(180deg, rgba(41,140,255,0.8) 0%, rgba(95,163,243,0.5) 34%, rgba(156,190,229,0.2) 69%, rgba(255,255,255,0) 100%)';
+      } else if (hours >= 13 && hours < 16) {
+        return 'linear-gradient(180deg, rgba(41,140,255,1) 0%, rgba(81,158,248,0.7) 34%, rgba(95,163,243,0.3) 69%, rgba(95,163,243,0) 100%)';
+      } else if (hours >= 16 && hours < 18) {
+        return 'linear-gradient(180deg, rgba(41,140,255,1) 0%, rgba(81,108,248,0.6) 34%, rgba(255,149,24,0.3) 69%, rgba(255,205,30,0.1) 100%)';
+      } else if (hours >= 18 && hours < 20) {
+        return 'linear-gradient(180deg, rgba(7,39,122,1) 0%, rgba(20,80,183,0.6) 47%, rgba(183,25,34,0.3) 87%, rgba(255,178,30,0.1) 100%)';
+      } else {
+        return 'linear-gradient(180deg, rgba(17,25,47,1) 0%, rgba(26,35,66,0.6) 60%, rgba(34,45,92,0) 100%)';
+      }
+    };
+
+    setBackgroundStyle({
+      background: getBackgroundByTime(currentHours),
+    });
+    setTextColor(isNightTime ? 'text-white' : 'text-[#121212]');
+    setIconSrc(isNightTime ? '/images/Up_Moon.svg' : '/images/Up_Sun.svg');
+    setIconAlt(isNightTime ? 'Up_Moon' : 'Up_Sun');
+  }, []);
 
   // 날씨 데이터를 업데이트하는 함수
   const updateWeatherData = useCallback((data: any) => {
