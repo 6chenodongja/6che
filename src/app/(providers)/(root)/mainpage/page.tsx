@@ -277,6 +277,23 @@ const MainPage = () => {
   const [selectedWeatherElements, setSelectedWeatherElements] = useState<
     string[]
   >([]);
+  const [marginBottom, setMarginBottom] = useState('120px'); // 기본값을 설정
+
+  useEffect(() => {
+    const updateMarginBottom = () => {
+      const margin = window.innerWidth < 768 ? '120px' : '200px';
+      setMarginBottom(margin);
+    };
+
+    // 컴포넌트 마운트 시와 화면 크기 변경 시 마진 업데이트
+    updateMarginBottom();
+    window.addEventListener('resize', updateMarginBottom);
+
+    // 클린업 함수로 이벤트 리스너 제거
+    return () => {
+      window.removeEventListener('resize', updateMarginBottom);
+    };
+  }, []); // 빈 배열로 의존성을 설정해, 마운트 시와 리사이즈 시에만 동작하도록 설정
 
   const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -930,7 +947,7 @@ const MainPage = () => {
                       </div>
                     </div>
 
-                    {/* 하단 텍스트 10px 고정 */}
+                    {/* 하단 텍스트 10px 고정d */}
                     <span className="absolute bottom-[10px] text-center text-[#121212] text-base font-normal font-['Varela'] leading-tight">
                       {info.value}
                     </span>
@@ -1082,6 +1099,9 @@ const MainPage = () => {
         <button
           onClick={handleWeeklyWeatherClick}
           className="px-3 py-2 bg-white/40 rounded-full shadow border border-white linear-gradient(37deg, rgba(255,255,255,0.5018601190476191) 0%, rgba(255,255,255,0) 100%) background: rgb(255,255,255) backdrop-blur-[20px] flex justify-center items-center gap-2 mt-4"
+          style={{
+            marginBottom: isWeeklyWeatherVisible ? '0px' : marginBottom,
+          }}
         >
           <div className="text-[#4d4d4d] text-sm font-normal font-['Noto Sans KR'] leading-[18.20px]">
             이번주 날씨
@@ -1093,7 +1113,7 @@ const MainPage = () => {
                   isOpen ? 'rotate-[180deg]' : 'rotate-[-360deg]'
                 }`}
                 fill="none"
-                stroke="#000000" // 검은색으로 변경
+                stroke="#000000"
                 viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
               >
@@ -1115,7 +1135,11 @@ const MainPage = () => {
               animate={{ height: 'auto', opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
               transition={{ duration: 0.5 }}
-              className="w-full max-w-[878px] mt-8 mb-[120px] mx-auto"
+              className={`w-full max-w-[878px] mt-8 ${
+                isWeeklyWeatherVisible
+                  ? 'mb-[120px] md:mb-[200px]'
+                  : 'mb-[120px] md:mb-[200px]'
+              } mx-auto`}
             >
               <div className="w-full h-auto px-2.5 py-5 bg-white/40 rounded-2xl shadow border border-white linear-gradient(37deg, rgba(255,255,255,0.5018601190476191) 0%, rgba(255,255,255,0) 100%) background: rgb(255,255,255) backdrop-blur-[20px] flex-col justify-start items-start inline-flex">
                 {filterWeeklyWeather(weeklyWeather)
@@ -1142,15 +1166,15 @@ const MainPage = () => {
                         <div className="justify-start items-center gap-1 flex">
                           <div className="w-8 h-8 p-0.5 justify-center items-center flex">
                             {/* <div className="w-7 h-7 px-[2.33px] py-[5.83px] bg-white/60 rounded justify-center items-center inline-flex">
-                              <div className="relative w-[23.33px] h-[16.33px]">
-                                <Image
-                                  src="/images/Weather/sunset.svg"
-                                  alt="sunset"
-                                  layout="fill"
-                                  objectFit="cover"
-                                />
-                              </div>
-                            </div> */}
+                      <div className="relative w-[23.33px] h-[16.33px]">
+                        <Image
+                          src="/images/Weather/sunset.svg"
+                          alt="sunset"
+                          layout="fill"
+                          objectFit="cover"
+                        />
+                      </div>
+                    </div> */}
                           </div>
                           <div className="text-center text-black text-base font-normal font-['Varela'] leading-tight">
                             {Math.round(
@@ -1165,15 +1189,15 @@ const MainPage = () => {
                         <div className="justify-start items-center gap-1.5 flex">
                           <div className="w-8 h-8 p-0.5 justify-center items-center flex">
                             {/* <div className="w-7 h-7 px-[3.50px] pt-[3.50px] pb-[3.28px] bg-white/60 rounded justify-center items-center inline-flex">
-                              <div className="relative w-[21px] h-[21.22px]">
-                                <Image
-                                  src="/images/Weather/sunrise.svg"
-                                  alt="sunrise"
-                                  layout="fill"
-                                  objectFit="cover"
-                                />
-                              </div>
-                            </div> */}
+                      <div className="relative w-[21px] h-[21.22px]">
+                        <Image
+                          src="/images/Weather/sunrise.svg"
+                          alt="sunrise"
+                          layout="fill"
+                          objectFit="cover"
+                        />
+                      </div>
+                    </div> */}
                           </div>
                           <div className="text-center text-black text-base font-normal font-['Varela'] leading-tight">
                             {Math.round(
