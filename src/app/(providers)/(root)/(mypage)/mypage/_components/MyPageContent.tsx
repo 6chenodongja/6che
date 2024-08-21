@@ -138,7 +138,7 @@ function MyPageContent() {
                   회원탈퇴
                 </button>
               </div>
-              <div className="hover:bg-slate-50 rounded-lg text-[14px] px-3 py-2  font-body-KR-large md:text-[16px] md:font-body-KR-medium md:leading-[20.8px] leading-[18.2px] tracking-[-0.02px] hover:bg-[#ededed]/60 active:text-[#5EB0FF]/80 active:bg-black/10">
+              <div className=" rounded-lg text-[14px] px-3 py-2  font-body-KR-large md:text-[16px] md:font-body-KR-medium md:leading-[20.8px] leading-[18.2px] tracking-[-0.02px] hover:bg-[#ededed]/60 active:text-[#5EB0FF]/80 active:bg-black/10">
                 <LogoutButton className="focus:text-[#5EB0FF]/80" />
               </div>
             </div>
